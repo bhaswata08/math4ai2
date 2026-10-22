@@ -675,3 +675,12 @@
 .reveal ul.credits li { margin-bottom: 0.8em; color: var(--ink-dim); }
 .reveal ul.credits b { color: var(--ink); }
 .reveal .mono { font-family: var(--font-mono); font-size: 0.9em; }
+
+/* --- 4.10 verdict line under an interactive readout ---------------------- */
+.reveal .verdict { font-size: 0.75em; color: var(--result); margin-top: 0.3em; min-height: 1.4em; }
+.reveal .verdict[data-sign="0"] { color: var(--accent); }
+
+/* --- 4.11 recap grid: 2 x 2 cards with text large enough to read --------- */
+.reveal .beats.recap { gap: 0.7em; }
+.reveal .beats.recap .beat { font-size: 0.85em; padding: 0.7em 0.9em; }
+.reveal .beats.recap .beat p { margin: 0; }

@@ -5,9 +5,7 @@
     "01-what-is-a-vector.html",
     "02-coordinates.html",
     "03-addition.html",
-    "04-scaling.html"
-  ],
-  "planned": [
+    "04-scaling.html",
     "05-dot-product.html",
     "06-recap.html"
   ],
