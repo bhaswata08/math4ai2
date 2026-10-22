@@ -37,12 +37,10 @@ class NormPythagoras(Scene):
         x_leg = Line(ORIGIN, np.array([3.0, 0.0, 0.0]), stroke_width=5, color=X_COLOR)
         l_x = MathTex(r"3", font_size=MIN_FONT, color=X_COLOR)
         l_x.next_to(np.array([1.5, 0.0, 0.0]), DOWN, buff=0.2)
-        l_x.add_background_rectangle(color=BG, opacity=0.9, buff=0.08)
 
         y_leg = Line(np.array([3.0, 0.0, 0.0]), v_coords, stroke_width=5, color=Y_COLOR)
         l_y = MathTex(r"2", font_size=MIN_FONT, color=Y_COLOR)
         l_y.next_to(np.array([3.0, 1.0, 0.0]), RIGHT, buff=0.2)
-        l_y.add_background_rectangle(color=BG, opacity=0.9, buff=0.08)
 
         ra_h = Line(np.array([2.75, 0.0, 0.0]), np.array([2.75, 0.25, 0.0]), stroke_width=2.5, color=INK_DIM)
         ra_v = Line(np.array([2.75, 0.25, 0.0]), np.array([3.0, 0.25, 0.0]), stroke_width=2.5, color=INK_DIM)
@@ -426,3 +424,185 @@ class Normalize(Scene):
         self.play(unit_circle.animate.set_stroke(color=HIGHLIGHT, width=3.5), run_time=0.8)
         self.play(unit_circle.animate.set_stroke(color=INK_DIM, width=2.5), run_time=0.8)
         self.wait(2.5)
+
+
+class TwoWalkers(Scene):
+    """The city walker and the crow: L1 (Manhattan) vs L2 (Euclidean) for v = [3, 2].
+
+    The walker cannot cut through buildings and follows the streets (grid lines):
+    L1 = 3 + 2 = 5. The crow flies straight over them: L2 = sqrt(13) ~ 3.61.
+    Same arrow, two lengths.
+    """
+
+    CARD_LEFT = -4.65
+    CARD_TOP = 2.4
+
+    def _card(self, content, top=None):
+        """Card sized to content, left edge pinned at CARD_LEFT, top at CARD_TOP."""
+        top = self.CARD_TOP if top is None else top
+        pad = 0.28
+        box = RoundedRectangle(
+            corner_radius=0.15,
+            width=content.width + 2 * pad,
+            height=content.height + 2 * pad,
+            stroke_color=GRID,
+            stroke_width=1.5,
+            fill_color=BG,
+            fill_opacity=0.98,
+        )
+        box.move_to(np.array([self.CARD_LEFT + box.width / 2, top - box.height / 2, 0.0]))
+        content.move_to(box.get_center())
+        return VGroup(box, content)
+
+    def construct(self):
+        plane = house_plane()
+        self.add(plane)
+
+        v_coords = np.array([3.0, 2.0, 0.0])
+
+        # Buildings: dim squares inset from the streets. The first four are the
+        # cells the straight line from (0,0) to (3,2) crosses; the rest are neighbours.
+        inset = 0.14
+        cells = [(0, 0), (1, 0), (1, 1), (2, 1), (0, 1), (2, 0), (3, 0), (3, 1)]
+        buildings = VGroup(*[
+            Square(
+                side_length=1 - 2 * inset,
+                stroke_width=0,
+                fill_color=INK_FAINT,
+                fill_opacity=0.35,
+            ).move_to(np.array([cx + 0.5, cy + 0.5, 0.0]))
+            for cx, cy in cells
+        ])
+        self.add(buildings)
+
+        v_arr = Arrow(
+            ORIGIN,
+            v_coords,
+            buff=0,
+            stroke_width=6,
+            max_tip_length_to_length_ratio=0.25,
+            color=V_COLOR,
+        )
+        l_v = MathTex(r"\vec{v}", font_size=MIN_FONT, color=V_COLOR)
+        l_v.next_to(v_arr.point_from_proportion(0.65), UL, buff=0.18)
+        l_v.add_background_rectangle(color=BG, opacity=0.9, buff=0.08)
+
+        # 1. Givens: plane, buildings, v, and the question on a card (one line)
+        top_caption = Tex(r"How long is\\this arrow?", font_size=MIN_FONT, color=INK)
+        top_group = self._card(top_caption)
+        v_arr.set_z_index(5)
+        self.add(top_group, v_arr, l_v)
+        self.wait(1.8)
+
+        # Live odometer builder: returns (row, tracker); the number keeps its left edge.
+        def make_odo(color, decimals, final, verb="walked:"):
+            lbl = Tex(verb, font_size=MIN_FONT, color=color)
+            num = DecimalNumber(final, num_decimal_places=decimals, font_size=MIN_FONT, color=color)
+            row = VGroup(lbl, num).arrange(RIGHT, buff=0.2)
+            tracker = ValueTracker(0.0)
+
+            def upd(m):
+                m.set_value(tracker.get_value())
+                m.next_to(lbl, RIGHT, buff=0.2, aligned_edge=DOWN)
+
+            num.add_updater(upd)
+            return row, num, tracker
+
+        def speech_lines(color, *lines):
+            return VGroup(*[Tex(t, font_size=MIN_FONT, color=color) for t in lines]).arrange(
+                DOWN, aligned_edge=LEFT, buff=0.12
+            )
+
+        def readout(who, math, color):
+            return VGroup(
+                Tex(who, font_size=MIN_FONT, color=color),
+                MathTex(math, font_size=MIN_FONT, color=color),
+            ).arrange(DOWN, aligned_edge=LEFT, buff=0.1)
+
+        W_MATH = r"L_1 = 3 + 2 = 5"
+        C_MATH = r"L_2 = \sqrt{13} \approx 3.61"
+
+        def stack(*items, buff=0.3):
+            return VGroup(*items).arrange(DOWN, aligned_edge=LEFT, buff=buff)
+
+        # 2. The walker
+        dot_w = Dot(ORIGIN, radius=0.14, color=X_COLOR)
+        w_speech = speech_lines(
+            X_COLOR, r"\textbf{Walker:} I can't", "cut through", "buildings, so I", "follow the streets."
+        )
+        w_odo, w_num, w_tr = make_odo(X_COLOR, 0, 5)
+        w_content = stack(w_speech, w_odo)
+        w_group = self._card(w_content)
+        w_tr.set_value(0.0)
+        w_num.update()
+        self.play(FadeOut(top_group), FadeIn(w_group), FadeIn(dot_w), run_time=1.0)
+        self.wait(0.8)
+
+        trail_x = Line(ORIGIN, np.array([3.0, 0.0, 0.0]), stroke_width=6, color=X_COLOR)
+        l_x = MathTex(r"3", font_size=MIN_FONT, color=X_COLOR)
+        l_x.next_to(np.array([1.5, 0.0, 0.0]), DOWN, buff=0.2)
+        self.play(
+            Create(trail_x),
+            dot_w.animate.move_to(np.array([3.0, 0.0, 0.0])),
+            w_tr.animate.set_value(3.0),
+            run_time=1.8, rate_func=linear,
+        )
+        self.play(FadeIn(l_x), run_time=0.4)
+        self.wait(0.4)
+
+        # Walker reaches the tip; v is drawn above the dots so its head stays visible.
+        trail_y = Line(np.array([3.0, 0.0, 0.0]), np.array([3.0, 2.0, 0.0]), stroke_width=6, color=Y_COLOR)
+        l_y = MathTex(r"2", font_size=MIN_FONT, color=Y_COLOR)
+        l_y.next_to(np.array([3.0, 1.0, 0.0]), RIGHT, buff=0.2)
+        self.play(
+            Create(trail_y),
+            dot_w.animate.move_to(np.array([3.0, 2.0, 0.0])),
+            w_tr.animate.set_value(5.0),
+            run_time=1.5, rate_func=linear,
+        )
+        self.play(FadeIn(l_y), run_time=0.4)
+        w_num.clear_updaters()
+        self.wait(0.4)
+
+        w_read = readout("Walker:", W_MATH, X_COLOR)
+        w_group2 = self._card(stack(w_speech.copy(), w_read))
+        self.play(FadeOut(w_group), FadeIn(w_group2), run_time=0.6)
+        self.wait(1.4)
+
+        # 3. The crow
+        dot_c = Dot(ORIGIN, radius=0.08, color=RESULT_COLOR)
+        c_speech = speech_lines(
+            RESULT_COLOR, r"\textbf{Crow:} Why so", "slow? I fly", "straight.", "Pythagoras."
+        )
+        c_odo, c_num, c_tr = make_odo(RESULT_COLOR, 2, 3.61, verb="flew:")
+        c_group = self._card(stack(c_speech, c_odo))
+        c_tr.set_value(0.0)
+        c_num.update()
+        self.play(FadeOut(w_group2), FadeIn(c_group), FadeIn(dot_c), run_time=1.0)
+        self.wait(0.6)
+
+        # The crow flies straight over the buildings to the same tip. Its dot is
+        # smaller than the walker's, so both stay visible there.
+        trail_c = Line(ORIGIN, v_coords, stroke_width=4.5, color=RESULT_COLOR)
+        dest_c = v_coords
+        self.play(
+            Create(trail_c),
+            dot_c.animate.move_to(dest_c),
+            c_tr.animate.set_value(3.61),
+            run_time=2.2, rate_func=linear,
+        )
+        c_num.clear_updaters()
+        self.wait(0.5)
+
+        c_read = readout("Crow:", C_MATH, RESULT_COLOR)
+        c_group2 = self._card(stack(c_speech.copy(), c_read))
+        self.play(FadeOut(c_group), FadeIn(c_group2), run_time=0.6)
+        self.wait(1.4)
+
+        # 4. Both readouts and the punchline; the question card left when the walker spoke.
+        end_w = readout("Walker:", W_MATH, X_COLOR)
+        end_c = readout("Crow:", C_MATH, RESULT_COLOR)
+        end_note = Tex(r"Same arrow,\\two lengths.", font_size=MIN_FONT, color=INK)
+        end_group = self._card(stack(end_w, end_c, end_note, buff=0.22))
+        self.play(FadeOut(c_group2), FadeIn(end_group), run_time=1.0)
+        self.wait(3.5)
