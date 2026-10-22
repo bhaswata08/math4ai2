@@ -55,7 +55,8 @@ The same meaning on every slide and in every clip. Tokens live in
 Scene files start with `from shared.anim.house import *`. Clips are 10-30
 seconds, one idea each; split a long upstream scene into several. Every
 MathTex/Text has `font_size >= 40` (a clip shows at about 0.57x on the slide).
-No Pi creatures. A port of 3b1b code names the upstream file in its header:
+No Pi creatures. A port of 3b1b code names the upstream file in its header
+(source files only; on slides, credit goes on the Credits slide):
 "Adapted from 3b1b/videos <path>, (c) 3Blue1Brown, CC BY-NC-SA 4.0".
 
 ## Licence
@@ -93,3 +94,9 @@ KaTeX labels and draggable handles. Colours come from `role('v')` etc.
 - Practice and check slides: show a worked solution for the **first problem
   only**, revealed as a fragment right after it. Never show answers to the
   other problems, on the slide or anywhere else in the deck. Students do those.
+- Attribution lives on **slide 2 only**, a Credits slide (`ul.credits`): video
+  and scene sources, papers behind any example, tools, and the deck licence.
+  No credit or citation lines on individual slides. A caveat such as
+  "illustrative values" is not attribution and stays on its slide.
+- Slide 1 carries the presenter: "Presented by Bhaswata Choudhury, Design
+  Engineer".

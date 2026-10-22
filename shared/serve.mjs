@@ -34,23 +34,38 @@ createServer(async (req, res) => {
   const type = TYPES[extname(file)] ?? 'application/octet-stream';
 
   try {
-    const { size } = await stat(file);
+    const info = await stat(file);
+    // /decks/x without the slash: redirect, so relative paths in index.html
+    // resolve inside the deck. Reading a directory as a file used to throw
+    // after the 200 header had gone out and take the whole server down.
+    if (info.isDirectory()) {
+      res.writeHead(301, { Location: path + '/' });
+      res.end();
+      return;
+    }
+    const size = info.size;
     const range = /bytes=(\d*)-(\d*)/.exec(req.headers.range ?? '');
     if (range) {
       const start = range[1] ? Number(range[1]) : 0;
-      const end = range[2] ? Number(range[2]) : size - 1;
+      const end = Math.min(range[2] ? Number(range[2]) : size - 1, size - 1);
+      if (start > end) {
+        res.writeHead(416, { 'Content-Range': `bytes */${size}` });
+        res.end();
+        return;
+      }
       res.writeHead(206, {
         'Content-Type': type,
         'Content-Range': `bytes ${start}-${end}/${size}`,
         'Content-Length': end - start + 1,
         'Accept-Ranges': 'bytes',
       });
-      createReadStream(file, { start, end }).pipe(res);
+      createReadStream(file, { start, end }).on('error', () => res.destroy()).pipe(res);
       return;
     }
     res.writeHead(200, { 'Content-Type': type, 'Content-Length': size, 'Accept-Ranges': 'bytes', 'Cache-Control': 'no-store' });
     res.end(await readFile(file));
   } catch {
+    if (res.headersSent) { res.destroy(); return; }
     res.writeHead(404, { 'Content-Type': 'text/plain' });
     res.end('not found');
   }
