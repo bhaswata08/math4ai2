@@ -87,3 +87,9 @@ Interactive figures: `<div data-fig="name">` in a section, and a deck script
 (listed under `scripts` in deck.json) that calls `Figures.register(name, mount)`.
 `shared/js/plane.js` gives a coordinate plane with arrows, dashed segments,
 KaTeX labels and draggable handles. Colours come from `role('v')` etc.
+
+## House rules for content
+
+- Practice and check slides: show a worked solution for the **first problem
+  only**, revealed as a fragment right after it. Never show answers to the
+  other problems, on the slide or anywhere else in the deck. Students do those.
