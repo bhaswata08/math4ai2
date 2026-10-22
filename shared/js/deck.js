@@ -46,9 +46,22 @@
     // #/9/0/0 do not look like two slides.
     fragmentInURL: false,
     slideNumber: 'c/t',
+    // Reveal's own bar counts fragment steps, so it jumps when a clip's play
+    // step fires. The bar below counts slides only.
+    progress: false,
     transition: 'fade',
     transitionSpeed: 'fast',
   });
 
   Clips.attach(Reveal);
+
+  const bar = document.createElement('div');
+  bar.className = 'deck-progress';
+  document.querySelector('.reveal').appendChild(bar);
+  const total = Reveal.getTotalSlides();
+  const update = () => {
+    bar.style.width = (total > 1 ? (Reveal.getSlidePastCount() / (total - 1)) * 100 : 100) + '%';
+  };
+  Reveal.on('slidechanged', update);
+  update();
 })();

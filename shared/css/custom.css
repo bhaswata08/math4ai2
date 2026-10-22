@@ -652,4 +652,8 @@
 
 /* --- 4.8 reveal chrome on the dark background ---------------------------- */
 .reveal .controls { color: var(--ink-faint); }
-.reveal .progress { color: var(--accent); }
+.reveal .deck-progress {
+  position: absolute; left: 0; bottom: 0; height: 3px; z-index: 10;
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
