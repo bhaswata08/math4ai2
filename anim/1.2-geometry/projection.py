@@ -101,27 +101,30 @@ class ProjectionFormula(Scene):
         title.to_corner(UL, buff=0.35)
         title.add_background_rectangle(color=BG, opacity=0.9, buff=0.08)
 
-        step1 = MathTex(r"\text{proj}_{\vec{v}}\vec{w} = c\,\vec{v}", font_size=MIN_FONT)
+        # Direction times magnitude: the unit vector along v, scaled by the
+        # length of the shadow w casts on it.
+        eq1 = MathTex(r"\hat{v} = \frac{\vec{v}}{\|\vec{v}\|}", font_size=MIN_FONT, color=V_COLOR)
+        note1 = Tex("direction", font_size=MIN_FONT, color=INK_DIM)
+        step1 = VGroup(eq1, note1).arrange(RIGHT, buff=0.35)
         step1.next_to(title, DOWN, buff=0.18, aligned_edge=LEFT)
         step1.add_background_rectangle(color=BG, opacity=0.9, buff=0.08)
 
-        step2 = MathTex(
-            r"c = \frac{\vec{v} \cdot \vec{w}}{\|\vec{v}\|^2} = \frac{\vec{v} \cdot \vec{w}}{\vec{v} \cdot \vec{v}}",
-            font_size=MIN_FONT,
-        )
+        eq2 = MathTex(r"\hat{v} \cdot \vec{w} = \|\vec{w}\| \cos\theta", font_size=MIN_FONT)
+        note2 = Tex("shadow length", font_size=MIN_FONT, color=INK_DIM)
+        step2 = VGroup(eq2, note2).arrange(DOWN, buff=0.12, aligned_edge=LEFT)
         step2.next_to(step1, DOWN, buff=0.18, aligned_edge=LEFT)
         step2.add_background_rectangle(color=BG, opacity=0.9, buff=0.08)
 
         step3 = MathTex(
-            r"\text{proj}_{\vec{v}}\vec{w} = \left(\frac{\vec{v} \cdot \vec{w}}{\vec{v} \cdot \vec{v}}\right)\vec{v}",
-            font_size=MIN_FONT + 2,
+            r"\text{proj}_{\vec{v}}\vec{w} = \hat{v}\,(\hat{v} \cdot \vec{w})",
+            font_size=MIN_FONT + 4,
             color=RESULT_COLOR,
         )
         step3.next_to(step2, DOWN, buff=0.22, aligned_edge=LEFT)
         step3.add_background_rectangle(color=BG, opacity=0.9, buff=0.08)
 
         step4 = MathTex(
-            r"= \frac{5}{10}\vec{v} = \frac{1}{2}\vec{v} = \begin{bmatrix} 1.5 \\ 0.5 \end{bmatrix}",
+            r"= \frac{5}{\sqrt{10}}\,\frac{1}{\sqrt{10}}\begin{bmatrix} 3 \\ 1 \end{bmatrix} = \begin{bmatrix} 1.5 \\ 0.5 \end{bmatrix}",
             font_size=MIN_FONT,
             color=RESULT_COLOR,
         )
