@@ -1,0 +1,133 @@
+<!-- ============================================================
+     ACT 3 of 6. Span. Budget: 25 min.
+     Source: 3b1b EoLA ch. 2 (VectorsToDotsScene, LinearDependentVectors,
+     WhenVectorsLineUp, BothVectorsCouldBeZero). The 3D clip is authored.
+     Goal: students say what span means (all reachable tips) and name
+     the three outcomes in the plane: plane, line, point.
+     Act 4 owns independence, the reason a span can fall short.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 3 of 6</div>
+  <h1>Span</h1>
+  <p class="act-sub">Every point you can reach by mixing the same two vectors.</p>
+  <div class="act-time">25 min</div>
+</section>
+
+<section class="clip-slide">
+  <h2>Keep only the tips</h2>
+  <video class="clip" src="assets/clips/SpanAsDots.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Draw many combinations, then keep just their tips. The tips fill the plane.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Definition</div>
+  <h2>The span of two vectors</h2>
+  <div class="eq-big">
+    $$\operatorname{span}(\textcolor{#6fd0c0}{\vec v}, \textcolor{#c792ea}{\vec w}) = \bigl\{\, \textcolor{#f0a35e}{a}\,\textcolor{#6fd0c0}{\vec v} + \textcolor{#f0a35e}{b}\,\textcolor{#c792ea}{\vec w} \;:\; a, b \in \mathbb{R} \,\bigr\}$$
+  </div>
+  <p class="caption">The set of all linear combinations: every tip you can land on by choosing \(a\) and \(b\).</p>
+</section>
+
+<section class="clip-slide">
+  <h2>When the vectors line up</h2>
+  <video class="clip" src="assets/clips/SpanLine.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">If <span class="cv">\(\vec v\)</span> and <span class="cw">\(\vec w\)</span> point along one line, every combination stays on it. If both are zero, only the origin is left.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Try it</div>
+  <h2>Drag the vectors, watch the span</h2>
+  <div class="clip-row" data-fig="span">
+    <div class="plane-host"></div>
+    <div>
+      <div class="readout"></div>
+      <div class="verdict"></div>
+      <div class="hint">drag the circles · line them up, or drag both onto the origin</div>
+    </div>
+  </div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Three cases</div>
+  <h2>The plane, a line, or a point</h2>
+  <div class="views">
+    <div class="view">
+      <h4>Not parallel</h4>
+      <svg viewBox="0 0 240 190" aria-label="two vectors that do not line up, span is the whole plane">
+        <defs>
+          <marker id="m3a" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 z" fill="#6fd0c0"/></marker>
+          <marker id="m3b" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 z" fill="#c792ea"/></marker>
+        </defs>
+        <rect x="10" y="10" width="220" height="170" fill="#f0a35e" fill-opacity="0.18" stroke="#f0a35e" stroke-opacity="0.5" stroke-dasharray="6 6"/>
+        <line x1="120" y1="95" x2="180" y2="55" stroke="#6fd0c0" stroke-width="5" marker-end="url(#m3a)"/>
+        <line x1="120" y1="95" x2="100" y2="35" stroke="#c792ea" stroke-width="5" marker-end="url(#m3b)"/>
+        <circle cx="120" cy="95" r="5" fill="#e9ebef"/>
+      </svg>
+      <div class="who" style="font-size:0.68em">The whole plane</div>
+    </div>
+    <div class="view">
+      <h4>Parallel</h4>
+      <svg viewBox="0 0 240 190" aria-label="two vectors on one line, span is that line">
+        <defs>
+          <marker id="m3c" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 z" fill="#6fd0c0"/></marker>
+          <marker id="m3d" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 z" fill="#c792ea"/></marker>
+        </defs>
+        <line x1="10" y1="145" x2="230" y2="45" stroke="#f0a35e" stroke-opacity="0.6" stroke-width="12"/>
+        <line x1="120" y1="95" x2="180" y2="68" stroke="#6fd0c0" stroke-width="5" marker-end="url(#m3c)"/>
+        <line x1="120" y1="95" x2="60" y2="122" stroke="#c792ea" stroke-width="5" marker-end="url(#m3d)"/>
+        <circle cx="120" cy="95" r="5" fill="#e9ebef"/>
+      </svg>
+      <div class="who" style="font-size:0.68em">One line through the origin</div>
+    </div>
+    <div class="view">
+      <h4>Both zero</h4>
+      <svg viewBox="0 0 240 190" aria-label="both vectors zero, span is the origin only">
+        <circle cx="120" cy="95" r="26" fill="#f0a35e" fill-opacity="0.25"/>
+        <circle cx="120" cy="95" r="10" fill="#f0a35e"/>
+      </svg>
+      <div class="who" style="font-size:0.68em">Only the origin</div>
+    </div>
+  </div>
+  <p class="takeaway">The span always contains the origin, since \(a = b = 0\) is allowed.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>In three dimensions</h2>
+  <video class="clip" src="assets/clips/Span3D.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Two vectors in 3D still span only a flat sheet through the origin.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Where this shows up</div>
+  <h2>A linear layer can only reach a span</h2>
+  <div class="cols wide-right" style="align-items:center">
+    <div>
+      <p style="font-size:0.8em" class="cdim">A layer with three outputs and two inputs.</p>
+      <p style="font-size:0.9em">$$W\vec x = x_1 \textcolor{#6fd0c0}{\vec c_1} + x_2 \textcolor{#c792ea}{\vec c_2}$$</p>
+      <p style="font-size:0.8em" class="cdim">Every output is a combination of the two columns of \(W\), so the outputs fill a plane inside 3D and never leave it.</p>
+    </div>
+    <svg viewBox="0 0 560 380" aria-label="outputs lie on a plane through the origin in 3D; a point off the plane is never reached">
+      <defs>
+        <marker id="m3e" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 z" fill="#6fd0c0"/></marker>
+        <marker id="m3f" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 z" fill="#c792ea"/></marker>
+      </defs>
+      <polygon points="70,310 390,310 510,190 190,190" fill="#f0a35e" fill-opacity="0.14" stroke="#f0a35e" stroke-opacity="0.6" stroke-dasharray="8 8" stroke-width="2"/>
+      <line x1="290" y1="250" x2="380" y2="250" stroke="#6fd0c0" stroke-width="6" marker-end="url(#m3e)"/>
+      <line x1="290" y1="250" x2="332" y2="208" stroke="#c792ea" stroke-width="6" marker-end="url(#m3f)"/>
+      <circle cx="290" cy="250" r="6" fill="#e9ebef"/>
+      <circle cx="440" cy="208" r="9" fill="#f0a35e"/>
+      <g stroke="#ff6b6b" stroke-width="5" stroke-linecap="round"><line x1="270" y1="90" x2="300" y2="120"/><line x1="300" y1="90" x2="270" y2="120"/></g>
+      <g font-family="Inter" font-size="24">
+        <text x="300" y="290" fill="#6fd0c0">column 1</text>
+        <text x="300" y="232" fill="#c792ea" text-anchor="end">column 2</text>
+        <text x="440" y="240" fill="#f0a35e" text-anchor="middle">output</text>
+        <text x="318" y="112" fill="#ff6b6b">never reached</text>
+      </g>
+    </svg>
+  </div>
+  <p class="src">sketch, not to scale</p>
+</section>

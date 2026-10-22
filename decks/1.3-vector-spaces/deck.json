@@ -1,0 +1,15 @@
+{
+  "title": "Vector spaces · Mathematics for AI 1.3",
+  "sections": [
+    "00-open.html",
+    "01-scalars.html",
+    "02-combinations.html",
+    "03-span.html",
+    "04-independence.html",
+    "05-spaces.html",
+    "06-recap.html"
+  ],
+  "scripts": [
+    "figures.js"
+  ]
+}

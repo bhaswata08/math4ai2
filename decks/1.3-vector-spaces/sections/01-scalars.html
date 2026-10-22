@@ -1,0 +1,52 @@
+<!-- ============================================================
+     ACT 1 of 6. Coordinates are scalars. Budget: 10 min.
+     Source: 3b1b EoLA ch. 2 (CoordinatesAsScalars).
+     Goal: students read [3, -2] as 3 i-hat plus (-2) j-hat, so that
+     "scale then add" is the one idea behind every coordinate pair.
+     Act 2 owns general linear combinations. Basis and dimension
+     are Block 1.4: here i-hat and j-hat are only named.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 1 of 6</div>
+  <h1>Coordinates are scalars</h1>
+  <p class="act-sub">Every pair of numbers is a recipe: how much of each arrow.</p>
+  <div class="act-time">10 min</div>
+</section>
+
+<section class="clip-slide">
+  <h2>Scale two arrows, then add</h2>
+  <video class="clip" src="assets/clips/BasisScalars.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption"><span class="cx">3</span> stretches \(\hat\imath\), <span class="cy">\(-2\)</span> stretches and flips \(\hat\jmath\); place them tip to tail.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 1</b> / The recipe</div>
+  <h2>A coordinate pair is two scalars</h2>
+  <div class="cols wide-right" style="align-items:center">
+    <div class="eq-big">
+      $$\begin{bmatrix} \textcolor{#8bd17c}{3} \\ \textcolor{#e8798a}{-2} \end{bmatrix} = \textcolor{#8bd17c}{3}\,\hat\imath + \textcolor{#e8798a}{(-2)}\,\hat\jmath$$
+    </div>
+    <svg style="height:430px" viewBox="0 0 360 300" aria-label="3 i-hat then minus 2 j-hat, tip to tail, reaching the point 3, minus 2">
+      <g stroke="#2a3f5c" stroke-width="1.5">
+        <line x1="0" y1="30" x2="360" y2="30"/><line x1="0" y1="150" x2="360" y2="150"/><line x1="0" y1="210" x2="360" y2="210"/><line x1="0" y1="270" x2="360" y2="270"/>
+        <line x1="0" y1="90" x2="360" y2="90" stroke="#a7b0be" stroke-width="2.5" stroke-opacity="0.7"/>
+        <line x1="120" y1="0" x2="120" y2="300"/><line x1="180" y1="0" x2="180" y2="300"/><line x1="240" y1="0" x2="240" y2="300"/><line x1="300" y1="0" x2="300" y2="300"/>
+        <line x1="60" y1="0" x2="60" y2="300" stroke="#a7b0be" stroke-width="2.5" stroke-opacity="0.7"/>
+      </g>
+      <line x1="60" y1="90" x2="224" y2="90" stroke="#8bd17c" stroke-width="6"/>
+      <polygon points="240,90 220,81 220,99" fill="#8bd17c"/>
+      <line x1="240" y1="90" x2="240" y2="194" stroke="#e8798a" stroke-width="6"/>
+      <polygon points="240,210 231,190 249,190" fill="#e8798a"/>
+      <line x1="60" y1="90" x2="223" y2="199" stroke="#f0a35e" stroke-width="6"/>
+      <polygon points="240,210 219,205 227,193" fill="#f0a35e"/>
+      <g font-family="Inter" font-size="22">
+        <text x="150" y="76" fill="#8bd17c" text-anchor="middle">3 î</text>
+        <text x="256" y="156" fill="#e8798a">−2 ĵ</text>
+        <text x="76" y="190" fill="#f0a35e">[3, −2]</text>
+      </g>
+    </svg>
+  </div>
+  <p class="takeaway">Every vector is built by <b>scaling, then adding</b>. Next: do the same with any two arrows you like.</p>
+</section>

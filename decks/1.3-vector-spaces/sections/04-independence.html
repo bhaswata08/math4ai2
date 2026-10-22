@@ -1,0 +1,69 @@
+<!-- ============================================================
+     ACT 4 of 6. Linear independence. Budget: 20 min.
+     Source: 3b1b EoLA ch. 2 (LinearDependentEquations,
+     AlternateDefOfLinearlyDependent). The 3D clip is authored.
+     Goal: students call a vector redundant when it already lies in
+     the span of the others, and state the test a v + b w + c u = 0.
+     Basis and dimension, the payoff of independence, are Block 1.4.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 4 of 6</div>
+  <h1>Linear independence</h1>
+  <p class="act-sub">Does a new vector add anything the others could not already reach?</p>
+  <div class="act-time">20 min</div>
+</section>
+
+<section class="clip-slide">
+  <h2>Add a third vector</h2>
+  <video class="clip" src="assets/clips/ThirdVector3D.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">On the plane, the span does not change. Off the plane, it grows to all of 3D.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Redundant means a combination of the others</h2>
+  <video class="clip" src="assets/clips/LinearDependence.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">If \(\vec u = a\vec v + b\vec w\), then \(\vec u\) adds nothing: the vectors are <em>dependent</em>.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / The test</div>
+  <h2>Only the zero mix gives zero</h2>
+  <div class="eq-big">
+    $$a\,\textcolor{#6fd0c0}{\vec v} + b\,\textcolor{#c792ea}{\vec w} + c\,\textcolor{#f0a35e}{\vec u} = \vec 0$$
+  </div>
+  <div class="beats two">
+    <div class="beat breaks"><h4>Dependent</h4><p>Some choice with <b>not all</b> of \(a, b, c\) zero gives \(\vec 0\).</p><span class="note" style="font-size:1em">\(\begin{bmatrix} 1 \\ 2 \end{bmatrix}\) and \(\begin{bmatrix} 2 \\ 4 \end{bmatrix}\): \(\;2\begin{bmatrix} 1 \\ 2 \end{bmatrix} - 1\begin{bmatrix} 2 \\ 4 \end{bmatrix} = \vec 0\)</span></div>
+    <div class="beat anchor"><h4>Independent</h4><p>Only \(a = b = c = 0\) gives \(\vec 0\).</p><span class="note" style="font-size:1em">\(\begin{bmatrix} 1 \\ 0 \end{bmatrix}\) and \(\begin{bmatrix} 1 \\ 1 \end{bmatrix}\): \(\;a + b = 0\) and \(b = 0\), so \(a = 0\)</span></div>
+  </div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / Where this shows up</div>
+  <h2>A redundant feature is a dependent column</h2>
+  <div class="cols wide-right" style="align-items:center">
+    <div>
+      <p style="font-size:0.8em" class="cdim">Price stored twice, in dollars and in cents.</p>
+      <p style="font-size:0.9em">$$\textcolor{#c792ea}{\vec c} = 100\,\textcolor{#6fd0c0}{\vec d}$$</p>
+      <p style="font-size:0.8em" class="cdim">The cents column carries no new direction, so a linear model cannot tell the two weights apart.</p>
+    </div>
+    <svg viewBox="0 0 560 380" aria-label="the cents column is a stretched copy of the dollars column, on the same line">
+      <defs>
+        <marker id="m4a" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 z" fill="#6fd0c0"/></marker>
+        <marker id="m4b" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 z" fill="#c792ea"/></marker>
+      </defs>
+      <line x1="30" y1="300" x2="530" y2="100" stroke="#ffffff" stroke-opacity="0.2" stroke-width="2" stroke-dasharray="8 8"/>
+      <line x1="30" y1="300" x2="160" y2="248" stroke="#6fd0c0" stroke-width="7" marker-end="url(#m4a)"/>
+      <line x1="30" y1="300" x2="420" y2="144" stroke="#c792ea" stroke-width="18" stroke-opacity="0.45"/>
+      <polygon points="450,132 424,159 412,130" fill="#c792ea" fill-opacity="0.45"/>
+      <circle cx="30" cy="300" r="6" fill="#e9ebef"/>
+      <g font-family="Inter" font-size="24">
+        <text x="150" y="300" fill="#6fd0c0">dollars</text>
+        <text x="300" y="182" fill="#c792ea">cents</text>
+      </g>
+    </svg>
+  </div>
+  <p class="src">illustrative; arrow lengths not to scale</p>
+</section>

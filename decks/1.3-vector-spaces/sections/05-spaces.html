@@ -1,0 +1,140 @@
+<!-- ============================================================
+     ACT 5 of 6. Vector spaces and subspaces. Budget: 20 min.
+     Source: authored for this course (SubspaceTest); idea of abstract
+     vector spaces from 3b1b EoLA ch. 16.
+     Goal: students name what a vector space must allow, see that
+     polynomials, functions and weight vectors qualify, and test
+     whether a set through the origin or off it is a subspace.
+     Basis and dimension are Block 1.4.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 5 of 6</div>
+  <h1>Vector spaces and subspaces</h1>
+  <p class="act-sub">What the objects are does not matter. What you can do with them does.</p>
+  <div class="act-time">20 min</div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / Three rules</div>
+  <h2>What a vector space must allow</h2>
+  <div class="views">
+    <div class="view">
+      <h4>Add</h4>
+      <svg viewBox="0 0 240 190" aria-label="two vectors and their sum">
+        <defs>
+          <marker id="m5a" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 z" fill="#6fd0c0"/></marker>
+          <marker id="m5b" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 z" fill="#c792ea"/></marker>
+          <marker id="m5c" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 z" fill="#f0a35e"/></marker>
+        </defs>
+        <rect x="10" y="10" width="220" height="170" fill="#ffffff" fill-opacity="0.05" stroke="#a7b0be" stroke-opacity="0.5" stroke-dasharray="6 6"/>
+        <line x1="40" y1="150" x2="120" y2="130" stroke="#6fd0c0" stroke-width="5" marker-end="url(#m5a)"/>
+        <line x1="40" y1="150" x2="80" y2="50" stroke="#c792ea" stroke-width="5" marker-end="url(#m5b)"/>
+        <line x1="40" y1="150" x2="160" y2="30" stroke="#f0a35e" stroke-width="5" marker-end="url(#m5c)"/>
+      </svg>
+      <div class="who" style="font-size:0.68em">\(\vec u + \vec v\) stays inside</div>
+    </div>
+    <div class="view">
+      <h4>Scale</h4>
+      <svg viewBox="0 0 240 190" aria-label="a vector and scaled copies of it">
+        <defs>
+          <marker id="m5d" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 z" fill="#6fd0c0"/></marker>
+          <marker id="m5e" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 z" fill="#f0a35e"/></marker>
+        </defs>
+        <rect x="10" y="10" width="220" height="170" fill="#ffffff" fill-opacity="0.05" stroke="#a7b0be" stroke-opacity="0.5" stroke-dasharray="6 6"/>
+        <line x1="120" y1="95" x2="160" y2="70" stroke="#6fd0c0" stroke-width="5" marker-end="url(#m5d)"/>
+        <line x1="120" y1="95" x2="200" y2="45" stroke="#f0a35e" stroke-opacity="0.6" stroke-width="5" marker-end="url(#m5e)"/>
+        <line x1="120" y1="95" x2="60" y2="132" stroke="#f0a35e" stroke-opacity="0.6" stroke-width="5" marker-end="url(#m5e)"/>
+        <circle cx="120" cy="95" r="5" fill="#e9ebef"/>
+      </svg>
+      <div class="who" style="font-size:0.68em">\(c\,\vec v\) stays inside, for every \(c\)</div>
+    </div>
+    <div class="view">
+      <h4>Zero</h4>
+      <svg viewBox="0 0 240 190" aria-label="the origin is inside the space">
+        <rect x="10" y="10" width="220" height="170" fill="#ffffff" fill-opacity="0.05" stroke="#a7b0be" stroke-opacity="0.5" stroke-dasharray="6 6"/>
+        <circle cx="120" cy="95" r="22" fill="#ffd166" fill-opacity="0.25"/>
+        <circle cx="120" cy="95" r="9" fill="#ffd166"/>
+      </svg>
+      <div class="who" style="font-size:0.68em">\(\vec 0\) is inside</div>
+    </div>
+  </div>
+  <p class="takeaway">A <b>vector space</b> is any collection where adding and scaling never leave it, and the zero vector is in it.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / Beyond arrows</div>
+  <h2>Other things that add and scale</h2>
+  <div class="views">
+    <div class="view">
+      <h4>Polynomials</h4>
+      <div style="height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:0.8em">
+        <div>\(p = \textcolor{#6fd0c0}{1 + 2x}\)</div>
+        <div>\(q = \textcolor{#c792ea}{3 - x^2}\)</div>
+        <div>\(p + q = \textcolor{#f0a35e}{4 + 2x - x^2}\)</div>
+        <div>\(2p = \textcolor{#f0a35e}{2 + 4x}\)</div>
+      </div>
+      <div class="who" style="font-size:0.68em">Zero: the polynomial \(0\)</div>
+    </div>
+    <div class="view">
+      <h4>Functions</h4>
+      <div style="height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:0.8em">
+        <div>\(f(x) = \textcolor{#6fd0c0}{\sin x}\)</div>
+        <div>\(g(x) = \textcolor{#c792ea}{x^2}\)</div>
+        <div>\((f + g)(x) = \textcolor{#f0a35e}{\sin x + x^2}\)</div>
+        <div>\((3f)(x) = \textcolor{#f0a35e}{3\sin x}\)</div>
+      </div>
+      <div class="who" style="font-size:0.68em">Zero: the function that is always \(0\)</div>
+    </div>
+    <div class="view">
+      <h4>Model weights</h4>
+      <div style="height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:0.8em">
+        <div>\(w_A = \textcolor{#6fd0c0}{(0.2,\,-0.4,\,1.0)}\)</div>
+        <div>\(w_B = \textcolor{#c792ea}{(0.6,\,0,\,-0.2)}\)</div>
+        <div>\(\tfrac12(w_A + w_B) = \textcolor{#f0a35e}{(0.4,\,-0.2,\,0.4)}\)</div>
+        <div>\(2w_A = \textcolor{#f0a35e}{(0.4,\,-0.8,\,2.0)}\)</div>
+      </div>
+      <div class="who" style="font-size:0.68em">Averaging two models gives a model. Zero: all weights \(0\)</div>
+    </div>
+  </div>
+  <p class="src">illustrative values</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Is this set a subspace?</h2>
+  <video class="clip" src="assets/clips/SubspaceTest.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">A line through the origin passes the test. A line that misses the origin fails: its sum leaves the line, and \(0\cdot\vec v\) is not on it.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / Subspaces</div>
+  <h2>A vector space inside a vector space</h2>
+  <div class="views">
+    <div class="view">
+      <h4>Plane through 0</h4>
+      <svg viewBox="0 0 240 190" aria-label="a plane through the origin in 3D">
+        <polygon points="25,150 175,150 225,50 75,50" fill="#f0a35e" fill-opacity="0.2" stroke="#f0a35e" stroke-dasharray="6 6" stroke-width="2"/>
+        <circle cx="125" cy="100" r="7" fill="#ffd166"/>
+      </svg>
+      <div class="who" style="font-size:0.68em;color:#ffd166">A subspace of \(\mathbb{R}^3\)</div>
+    </div>
+    <div class="view">
+      <h4>Line through 0</h4>
+      <svg viewBox="0 0 240 190" aria-label="a line through the origin">
+        <line x1="20" y1="150" x2="220" y2="40" stroke="#f0a35e" stroke-opacity="0.7" stroke-width="10"/>
+        <circle cx="120" cy="95" r="7" fill="#ffd166"/>
+      </svg>
+      <div class="who" style="font-size:0.68em;color:#ffd166">A subspace of \(\mathbb{R}^3\)</div>
+    </div>
+    <div class="view" style="border-top-color:var(--warn)">
+      <h4 style="color:var(--warn)">Plane missing 0</h4>
+      <svg viewBox="0 0 240 190" aria-label="a plane that does not pass through the origin">
+        <polygon points="25,100 175,100 225,20 75,20" fill="#ff6b6b" fill-opacity="0.15" stroke="#ff6b6b" stroke-dasharray="6 6" stroke-width="2"/>
+        <circle cx="125" cy="150" r="7" fill="#ffd166"/>
+      </svg>
+      <div class="who" style="font-size:0.68em;color:#ff6b6b">Not a subspace: no zero vector</div>
+    </div>
+  </div>
+  <p class="takeaway">The <b>span of any vectors is a subspace</b>, and a subspace is itself a vector space.</p>
+</section>
