@@ -120,6 +120,13 @@
   <p class="src">the full neuron adds a bias and an activation: \(\sigma(\vec w \cdot \vec x + b)\)</p>
 </section>
 
+<section class="clip-slide">
+  <h2>Direction and length, together</h2>
+  <video class="clip" src="assets/clips/DotAlignMagnitude.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Each word's score is \(\|\vec h\|\) times its <span class="cr">shadow</span> on <span class="cv">\(\vec h\)</span>. Direction picks the sign, length scales it.</p>
+</section>
+
 <section class="act-body">
   <div class="act-tag"><b>Act 5</b> / Where this shows up</div>
   <h2>A language model picks the next word with dot products</h2>
@@ -128,33 +135,42 @@
       <p class="mono" style="font-size:0.62em">"I'm visiting Italy and want a classic pasta dish, so I ordered ____."</p>
       $$\text{score} = \textcolor{#6fd0c0}{\vec h} \cdot \textcolor{#c792ea}{\vec w} = \|\textcolor{#6fd0c0}{\vec h}\|\,\|\textcolor{#c792ea}{\vec w}\| \cos\theta$$
       <p style="font-size:0.72em" class="cdim"><span class="cv">\(\vec h\)</span>: the model's state after the prompt, \(\|\vec h\| = 10\). <span class="cw">\(\vec w\)</span>: one vector per word.</p>
-      <p style="font-size:0.72em">Spaghetti: \(10 \cdot 6 \cdot 0.95 = \textcolor{#f0a35e}{57}\)</p>
-      <p style="font-size:0.72em" class="cdim">Orecchiette points almost as well, but its short <span class="cw">\(\vec w\)</span> drops it below pizza.</p>
+      <p style="font-size:0.72em">Spaghetti: \(10 \cdot 6 \cdot 0.9 = \textcolor{#f0a35e}{54}\)</p>
+      <p style="font-size:0.72em" class="cdim">Alignment sets the sign. Length sets how loud: orecchiette points the same way as spaghetti but scores a quarter as much.</p>
     </div>
-    <svg viewBox="0 0 600 400" aria-label="four words placed by alignment and length, each with its score">
+    <svg viewBox="0 0 600 400" aria-label="alignment on the x axis, magnitude on the y axis, one word in each quadrant with its score">
+      <defs>
+        <marker id="ax" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#a7b0be"/></marker>
+      </defs>
       <g font-family="Inter" text-anchor="middle">
-        <line x1="290" y1="60" x2="290" y2="340" stroke="#2a3f5c" stroke-width="2"/>
-        <line x1="40" y1="90" x2="560" y2="90" stroke="#2a3f5c" stroke-width="2" stroke-dasharray="6 6"/>
-        <line x1="40" y1="282" x2="560" y2="282" stroke="#2a3f5c" stroke-width="2" stroke-dasharray="6 6"/>
-        <line x1="40" y1="340" x2="560" y2="340" stroke="#a7b0be" stroke-width="2"/>
-        <text x="70" y="370" fill="#a7b0be" font-size="22">−1</text>
-        <text x="290" y="370" fill="#a7b0be" font-size="22">0</text>
-        <text x="510" y="370" fill="#a7b0be" font-size="22">1</text>
-        <text x="400" y="396" fill="#a7b0be" font-size="22">alignment cos θ</text>
-        <text x="44" y="120" fill="#c792ea" font-size="22" text-anchor="start">‖w‖ = 6</text>
-        <text x="44" y="312" fill="#c792ea" font-size="22" text-anchor="start">‖w‖ = 1.2</text>
-        <circle cx="499" cy="90" r="9" fill="#f0a35e"/>
-        <text x="499" y="70" fill="#e9ebef" font-size="24">spaghetti</text>
-        <text x="499" y="124" fill="#f0a35e" font-size="24">+57</text>
-        <circle cx="367" cy="90" r="9" fill="#f0a35e"/>
-        <text x="367" y="70" fill="#e9ebef" font-size="24">pizza</text>
-        <text x="367" y="124" fill="#f0a35e" font-size="24">+21</text>
-        <circle cx="488" cy="282" r="9" fill="#f0a35e"/>
-        <text x="488" y="262" fill="#e9ebef" font-size="24">orecchiette</text>
-        <text x="488" y="316" fill="#f0a35e" font-size="24">+10.8</text>
-        <circle cx="180" cy="282" r="9" fill="#ff6b6b"/>
-        <text x="180" y="262" fill="#e9ebef" font-size="24">tacos</text>
-        <text x="180" y="316" fill="#ff6b6b" font-size="24">−6</text>
+        <rect x="40" y="20" width="260" height="360" fill="#ff6b6b0c"/>
+        <rect x="300" y="20" width="260" height="360" fill="#f0a35e0c"/>
+        <line x1="40" y1="200" x2="560" y2="200" stroke="#a7b0be" stroke-width="2" marker-start="url(#ax)" marker-end="url(#ax)"/>
+        <line x1="300" y1="380" x2="300" y2="20" stroke="#a7b0be" stroke-width="2" marker-start="url(#ax)" marker-end="url(#ax)"/>
+        <text x="50" y="188" fill="#a7b0be" font-size="20" text-anchor="start">negative alignment</text>
+        <text x="550" y="188" fill="#a7b0be" font-size="20" text-anchor="end">positive alignment</text>
+        <line x1="120" y1="194" x2="120" y2="206" stroke="#a7b0be" stroke-width="2"/>
+        <line x1="480" y1="194" x2="480" y2="206" stroke="#a7b0be" stroke-width="2"/>
+        <text x="120" y="226" fill="#a7b0be" font-size="20">cos θ = −0.9</text>
+        <text x="480" y="226" fill="#a7b0be" font-size="20">cos θ = 0.9</text>
+        <line x1="294" y1="99" x2="306" y2="99" stroke="#a7b0be" stroke-width="2"/>
+        <line x1="294" y1="301" x2="306" y2="301" stroke="#a7b0be" stroke-width="2"/>
+        <text x="290" y="106" fill="#c792ea" font-size="20" text-anchor="end">‖w‖ = 6</text>
+        <text x="290" y="308" fill="#c792ea" font-size="20" text-anchor="end">‖w‖ = 1.5</text>
+        <text x="310" y="38" fill="#c792ea" font-size="20" text-anchor="start">high magnitude</text>
+        <text x="310" y="374" fill="#c792ea" font-size="20" text-anchor="start">low magnitude</text>
+        <circle cx="120" cy="98.75" r="9" fill="#ff6b6b"/>
+        <text x="120" y="76.75" fill="#e9ebef" font-size="26">sushi</text>
+        <text x="120" y="134.75" fill="#ff6b6b" font-size="28">−54</text>
+        <circle cx="480" cy="98.75" r="9" fill="#f0a35e"/>
+        <text x="480" y="76.75" fill="#e9ebef" font-size="26">spaghetti</text>
+        <text x="480" y="134.75" fill="#f0a35e" font-size="28">+54</text>
+        <circle cx="120" cy="301.25" r="9" fill="#ff6b6b"/>
+        <text x="120" y="279.25" fill="#e9ebef" font-size="26">tacos</text>
+        <text x="120" y="337.25" fill="#ff6b6b" font-size="28">−13.5</text>
+        <circle cx="480" cy="301.25" r="9" fill="#f0a35e"/>
+        <text x="480" y="279.25" fill="#e9ebef" font-size="26">orecchiette</text>
+        <text x="480" y="337.25" fill="#f0a35e" font-size="28">+13.5</text>
       </g>
     </svg>
   </div>

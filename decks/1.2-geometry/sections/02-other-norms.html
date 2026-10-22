@@ -1,24 +1,24 @@
 <!-- ============================================================
-     ACT 2 of 7. Other ways to measure: L1 and L-infinity.
+     ACT 2 of 7. More ways to measure: L-infinity and the Lp family.
      Budget: 15 min.
      Source: authored for this course.
      Goal: students compute L1, L2 and L-infinity for one vector,
      and know that each norm has its own "unit ball" shape.
-     Act 1 owns the L2 derivation. Act 3 owns normalizing.
+     Act 1 owns L1 and L2 (the two walkers). Act 3 owns normalizing.
      ============================================================ -->
 
 <section class="act-open">
   <div class="act-num">Act 2 of 7</div>
-  <h1>Other ways to measure</h1>
-  <p class="act-sub">Walk the grid, or take the biggest entry. Same vector, different length.</p>
+  <h1>More ways to measure</h1>
+  <p class="act-sub">Keep only the biggest entry, or pick any p in between.</p>
   <div class="act-time">15 min</div>
 </section>
 
 <section class="clip-slide">
-  <h2>Streets versus straight line</h2>
+  <h2>A third answer: the chessboard</h2>
   <video class="clip" src="assets/clips/NormManhattan.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption"><span class="cr">L1 = 3 + 2 = 5</span> along the grid. <span class="cv">L2 = \(\sqrt{13} \approx 3.61\)</span> as the crow flies. L∞ = 3, the biggest entry.</p>
+  <p class="caption"><span class="cr">L1 = 5</span> walks the grid. <span class="cv">L2 ≈ 3.61</span> goes straight. <span style="color:var(--accent)">L∞ = 3</span> keeps only the biggest entry: the Chebyshev norm, or chessboard distance.</p>
 </section>
 
 <section class="clip-slide">
@@ -33,34 +33,40 @@
   <h2>One vector, three lengths</h2>
   <table style="font-size:0.95em">
     <tr><th>Norm</th><th>Rule</th><th>\(\vec v = [3, 2]\)</th></tr>
-    <tr><td class="cr">L1</td><td>\(\lVert \vec v \rVert_1 = \sum_i |v_i|\)</td><td class="num">3 + 2 = 5</td></tr>
-    <tr><td class="cv">L2</td><td>\(\lVert \vec v \rVert_2 = \sqrt{\sum_i v_i^2}\)</td><td class="num">√13 ≈ 3.61</td></tr>
-    <tr><td style="color:var(--accent)">L∞</td><td>\(\lVert \vec v \rVert_\infty = \max_i |v_i|\)</td><td class="num">max(3, 2) = 3</td></tr>
+    <tr><td class="cr">L1 · Manhattan</td><td>\(\lVert \vec v \rVert_1 = \sum_i |v_i|\)</td><td class="num">3 + 2 = 5</td></tr>
+    <tr><td class="cv">L2 · Euclidean</td><td>\(\lVert \vec v \rVert_2 = \sqrt{\sum_i v_i^2}\)</td><td class="num">√13 ≈ 3.61</td></tr>
+    <tr><td style="color:var(--accent)">L∞ · Chebyshev</td><td>\(\lVert \vec v \rVert_\infty = \max_i |v_i|\)</td><td class="num">max(3, 2) = 3</td></tr>
   </table>
   <p class="takeaway">Always \(L_\infty \le L_2 \le L_1\). Which one you use is a modelling choice.</p>
 </section>
 
 <section class="act-body">
   <div class="act-tag"><b>Act 2</b> / One family</div>
-  <h2>L1, L2 and L∞ are one formula</h2>
-  $$\lVert \vec v \rVert_p = \big(|v_1|^p + |v_2|^p + \dots + |v_n|^p\big)^{1/p}, \qquad p \ge 1$$
-  <table style="font-size:0.95em">
-    <tr><th>\(p\)</th><th class="cr">1</th><th class="cv">2</th><th>4</th><th>10</th><th style="color:var(--accent)">\(\infty\)</th></tr>
-    <tr><td>\(\lVert [3, 2] \rVert_p\)</td><td class="num">5</td><td class="num">3.61</td><td class="num">3.14</td><td class="num">3.01</td><td class="num">3</td></tr>
+  <h2>L3, L4 and beyond: the Minkowski norms</h2>
+  $$\lVert \vec v \rVert_p = \big(|v_1|^p + |v_2|^p + \cdots + |v_n|^p\big)^{1/p}, \qquad p \ge 1$$
+  <table style="font-size:0.85em">
+    <tr><th>Norm</th><th>\(\vec v = (10, 2)\)</th><th></th></tr>
+    <tr><td class="cr">L1</td><td>\(10 + 2\)</td><td class="num">12</td></tr>
+    <tr><td class="cv">L2</td><td>\(\sqrt{10^2 + 2^2} = \sqrt{104}\)</td><td class="num">≈ 10.198</td></tr>
+    <tr><td>L3</td><td>\(\sqrt[3]{10^3 + 2^3} = \sqrt[3]{1008}\)</td><td class="num">≈ 10.026</td></tr>
+    <tr><td>L4</td><td>\(\sqrt[4]{10^4 + 2^4} = \sqrt[4]{10016}\)</td><td class="num">≈ 10.004</td></tr>
+    <tr><td style="color:var(--accent)">L∞</td><td>\(\max(10, 2)\)</td><td class="num">10</td></tr>
   </table>
-  <p class="takeaway">As \(p\) grows, the <b>largest entry</b> takes over. At \(p = \infty\) it is all that is left.</p>
+  <p class="takeaway">Raising to a higher \(p\) makes the <b>largest entry</b> grow far faster than the rest, so it takes over.</p>
 </section>
 
 <section class="act-body">
   <div class="act-tag"><b>Act 2</b> / Why the max</div>
   <h2>Why \(p \to \infty\) picks the largest entry</h2>
-  <p style="font-size:0.75em" class="cdim">Let \(|x_k|\) be the largest entry. Pull \(|x_k|^p\) out of the sum:</p>
-  $$\lVert \vec x \rVert_p = \Big(|x_k|^p \sum_i \Big(\tfrac{|x_i|}{|x_k|}\Big)^p\Big)^{1/p} = |x_k| \Big(1 + \sum_{i \ne k} \Big(\tfrac{|x_i|}{|x_k|}\Big)^p\Big)^{1/p}$$
-  <p class="fragment" style="font-size:0.75em">Every ratio is at most 1, so the bracket stays between 1 and \(n\). Raising it to \(1/p\) sends it to 1, since \(n^{1/p} \to 1\).</p>
-  <div class="fragment">
-    $$\boxed{\lVert \vec x \rVert_\infty = \lim_{p \to \infty} \lVert \vec x \rVert_p = \max_i |x_i|}$$
-  </div>
-  <p class="src">AdaMax (Kingma and Ba, 2015) uses this limit: it swaps Adam's average of squared gradients for a running max of \(|g|\).</p>
+  <table class="deriv" style="font-size:0.72em">
+    <tr><td>$$\lVert \vec x \rVert_p = \big(|x_1|^p + |x_2|^p + \cdots + |x_n|^p\big)^{1/p}$$</td><td>definition; let \(|x_k|\) be the largest entry</td></tr>
+    <tr><td>$$= \Big(|x_k|^p \Big(\Big(\tfrac{|x_1|}{|x_k|}\Big)^p + \cdots + \Big(\tfrac{|x_k|}{|x_k|}\Big)^p + \cdots + \Big(\tfrac{|x_n|}{|x_k|}\Big)^p\Big)\Big)^{1/p}$$</td><td>pull \(|x_k|^p\) out of every term</td></tr>
+    <tr><td>$$= |x_k| \Big(1 + \sum_{i \ne k} \Big(\tfrac{|x_i|}{|x_k|}\Big)^p\Big)^{1/p}$$</td><td>the \(k\)-th term is 1, and \((|x_k|^p)^{1/p} = |x_k|\)</td></tr>
+    <tr><td>$$\Big(\tfrac{|x_i|}{|x_k|}\Big)^p \xrightarrow{\;p \to \infty\;} 0 \quad (i \ne k)$$</td><td>each ratio is below 1, so its powers shrink to 0</td></tr>
+    <tr><td>$$\lim_{p \to \infty} \lVert \vec x \rVert_p = |x_k| \cdot 1 = |x_k|$$</td><td>the bracket goes to 1, and so does its \(1/p\)-th power</td></tr>
+  </table>
+  $$\boxed{\lVert \vec x \rVert_\infty = \lim_{p \to \infty} \lVert \vec x \rVert_p = \max_i |x_i|} \quad \text{the Chebyshev norm, or chessboard distance}$$
+  <p class="src">ties for the largest entry: the bracket stays below n, and n^(1/p) → 1. AdaMax (Kingma and Ba, 2015) uses this limit: it swaps Adam's average of squared gradients for a running max of |g|.</p>
 </section>
 
 <section class="act-body">

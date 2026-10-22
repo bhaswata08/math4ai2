@@ -1,32 +1,41 @@
 <!-- ============================================================
-     ACT 1 of 7. Length: the L2 norm. Budget: 15 min.
+     ACT 1 of 7. Length: L1 first, then L2. Budget: 15 min.
      Source: authored for this course (no 3b1b chapter on norms).
-     Goal: students compute the length of a vector with
-     Pythagoras, in any dimension.
-     Act 2 owns L1 and L-infinity and the interactive norms figure;
-     here only the straight-line length is named.
+     Goal: students meet length as a question with two answers.
+     The city walker follows the grid (L1, Manhattan or taxicab);
+     the crow flies straight with Pythagoras (L2, Euclidean).
+     Both rules generalise to n entries.
+     Act 2 owns L-infinity, the Lp family and the unit balls.
      ============================================================ -->
 
 <section class="act-open">
   <div class="act-num">Act 1 of 7</div>
   <h1>Length</h1>
-  <p class="act-sub">How long is an arrow? Pythagoras answers it.</p>
+  <p class="act-sub">What does it mean for a vector to have a length? A city walker and a crow answer differently.</p>
   <div class="act-time">15 min</div>
 </section>
 
 <section class="clip-slide">
-  <h2>Length from two legs</h2>
+  <h2>The city walker and the crow</h2>
+  <video class="clip" src="assets/clips/TwoWalkers.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">The <span class="cx">walker</span> cannot cut through buildings: \(3 + 2 = 5\) blocks. The <span class="cr">crow</span> flies straight: \(\sqrt{3^2 + 2^2} \approx 3.61\). Same arrow, two lengths.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>The crow's shortcut is Pythagoras</h2>
   <video class="clip" src="assets/clips/NormPythagoras.mp4"></video>
   <span class="fragment clip-play"></span>
   <p class="caption">The <span class="cx">x part</span> and the <span class="cy">y part</span> are the legs of a right triangle. \(\lVert \vec v \rVert = \sqrt{3^2 + 2^2} = \sqrt{13}\).</p>
 </section>
 
 <section class="act-body">
-  <div class="act-tag"><b>Act 1</b> / Any dimension</div>
-  <h2>Same rule for n entries</h2>
-  <div class="eq-big">
-    $$\lVert \textcolor{#6fd0c0}{\vec v} \rVert_2 = \sqrt{v_1^2 + v_2^2 + \cdots + v_n^2} = \sqrt{\textcolor{#6fd0c0}{\vec v} \cdot \textcolor{#6fd0c0}{\vec v}}$$
+  <div class="act-tag"><b>Act 1</b> / Two travelers</div>
+  <h2>Two rules, any number of entries</h2>
+  <div class="beats">
+    <div class="beat purpose"><h4>City walker · L1 · Manhattan</h4><p>Steps taken strictly along the axes. \(\lVert \vec v \rVert_1 = |v_1| + |v_2| + \cdots + |v_n|\)</p></div>
+    <div class="beat purpose"><h4>Crow · L2 · Euclidean</h4><p>Ruler distance, the same however you turn the grid. \(\lVert \vec v \rVert_2 = \sqrt{v_1^2 + \cdots + v_n^2} = \sqrt{\vec v \cdot \vec v}\)</p></div>
   </div>
-  <p>For \(\vec v = [1, 2, 2]\): \(\sqrt{1 + 4 + 4} = \sqrt{9} = \textcolor{#f0a35e}{3}\).</p>
-  <p class="takeaway">The length is the square root of the vector's <b>dot product with itself</b>.</p>
+  <p>For \(\vec v = [1, -2, 2]\): \(L_1 = 1 + 2 + 2 = \textcolor{#f0a35e}{5}\), \(\;L_2 = \sqrt{1 + 4 + 4} = \textcolor{#f0a35e}{3}\).</p>
+  <p class="takeaway">L1 takes absolute values: two blocks backwards are still two blocks walked.</p>
 </section>
