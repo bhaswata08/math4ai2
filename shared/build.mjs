@@ -27,13 +27,13 @@ const dataUri = async (file) => {
   return `data:${MIME[ext]};base64,${(await readFile(file)).toString('base64')}`;
 };
 
-// Inline a stylesheet's fonts. Only woff2 is kept: every browser that runs
+// Inline a stylesheet's fonts and images. Only woff2 is kept: every browser that runs
 // reveal reads it, and the woff/ttf fallbacks would double the file.
 async function inlineCss(rel) {
   const file = join(ROOT, rel);
   let css = await readFile(file, 'utf8');
   css = css.replace(/,\s*url\([^)]*\.(woff|ttf)\)\s*format\(['"][a-z]+['"]\)/g, '');
-  const urls = [...new Set([...css.matchAll(/url\((['"]?)([^)'"]+\.woff2)\1\)/g)].map((m) => m[2]))];
+  const urls = [...new Set([...css.matchAll(/url\((['"]?)([^)'"]+\.(?:woff2|png|svg))\1\)/g)].map((m) => m[2]))];
   for (const u of urls) css = css.split(u).join(await dataUri(join(dirname(file), u)));
   return css;
 }

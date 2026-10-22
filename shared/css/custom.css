@@ -645,9 +645,22 @@
 }
 
 /* --- 4.7 logo ------------------------------------------------------------ */
-/* The C-DAC mark is dark teal on transparent. Knocked out to white so it
-   reads on the dark background. */
-.reveal .title-slide .logo { width: 120px; filter: brightness(0) invert(1); opacity: 0.9; margin-bottom: 1.4em; }
+/* The C-DAC mark sits top right on every slide. It is a pseudo-element on
+   each top level section, so it scales with the stage and needs no markup.
+   The source PNG is dark teal on transparent, knocked out to white here so
+   it reads on the dark background. */
+.reveal .slides > section::after {
+  content: "";
+  position: absolute;
+  top: -0.3em;
+  right: 0;
+  width: 84px;
+  height: 60px;
+  background: url(../assets/cdac-logo.png) right top / contain no-repeat;
+  filter: brightness(0) invert(1);
+  opacity: 0.85;
+  pointer-events: none;
+}
 
 /* --- 4.8 reveal chrome on the dark background ---------------------------- */
 .reveal .controls { color: var(--ink-faint); }

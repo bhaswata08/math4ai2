@@ -98,5 +98,7 @@ KaTeX labels and draggable handles. Colours come from `role('v')` etc.
   and scene sources, papers behind any example, tools, and the deck licence.
   No credit or citation lines on individual slides. A caveat such as
   "illustrative values" is not attribution and stays on its slide.
-- Slide 1 carries the presenter: "Presented by Bhaswata Choudhury, Design
-  Engineer".
+- Slide 1 carries the presenter: "Presented by Bhaswata Choudhury, Design Engineer,
+  C-DAC Bangalore, AI-Team". No licence blurb on the Credits slide.
+- The C-DAC logo sits top right on every slide, from CSS (`section::after` in
+  `shared/css/custom.css`); do not add logo markup to sections.
