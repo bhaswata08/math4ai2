@@ -1,0 +1,31 @@
+<!-- ============================================================
+     ACT 3 of 7. Unit vectors and normalizing. Budget: 10 min.
+     Source: authored for this course.
+     Goal: students divide a vector by its length to get a unit
+     vector, and know it keeps the direction.
+     Act 1 owns the length formula; Act 6 owns orthonormal sets.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 3 of 7</div>
+  <h1>Unit vectors</h1>
+  <p class="act-sub">Keep the direction, throw the length away.</p>
+  <div class="act-time">10 min</div>
+</section>
+
+<section class="clip-slide">
+  <h2>Divide by your own length</h2>
+  <video class="clip" src="assets/clips/Normalize.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Each vector lands on the unit circle, still pointing the same way. \(\hat v = \vec v / \lVert \vec v \rVert\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Example</div>
+  <h2>Normalizing [3, 4]</h2>
+  <div class="eq-big">
+    $$\textcolor{#6fd0c0}{\vec v} = \begin{bmatrix} 3 \\ 4 \end{bmatrix}, \quad \lVert \vec v \rVert = \sqrt{9 + 16} = 5, \quad \textcolor{#f0a35e}{\hat v} = \frac{1}{5}\begin{bmatrix} 3 \\ 4 \end{bmatrix} = \textcolor{#f0a35e}{\begin{bmatrix} 0.6 \\ 0.8 \end{bmatrix}}$$
+  </div>
+  <p>Check: \(0.6^2 + 0.8^2 = 0.36 + 0.64 = 1\).</p>
+  <p class="takeaway">The zero vector has no direction, so it <b>cannot be normalized</b>.</p>
+</section>

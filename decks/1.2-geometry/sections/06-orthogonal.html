@@ -1,0 +1,48 @@
+<!-- ============================================================
+     ACT 6 of 7. Orthogonal and orthonormal. Budget: 15 min.
+     Source: authored for this course.
+     Goal: students test orthogonality with a dot product, define
+     orthonormal, and read coordinates off as dot products.
+     Act 3 owns normalizing; Act 5 owns cosine.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 6 of 7</div>
+  <h1>Orthogonal and orthonormal</h1>
+  <p class="act-sub">Perpendicular, unit-length directions make the best coordinate axes.</p>
+  <div class="act-time">15 min</div>
+</section>
+
+<section class="clip-slide">
+  <h2>Orthogonal means dot product zero</h2>
+  <video class="clip" src="assets/clips/OrthogonalTest.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption"><span class="cv">\([2, 1]\)</span> and <span class="cw">\([-1, 2]\)</span>: \(-2 + 2 = 0\), so they are perpendicular.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 6</b> / Three words</div>
+  <h2>Orthogonal, unit, orthonormal</h2>
+  <div class="beats">
+    <div class="beat purpose"><h4>Orthogonal</h4><p>\(\vec v \cdot \vec w = 0\). Perpendicular, \(\cos\theta = 0\).</p></div>
+    <div class="beat purpose"><h4>Unit</h4><p>\(\lVert \vec u \rVert = 1\). Normalized length.</p></div>
+    <div class="beat purpose"><h4>Orthonormal</h4><p>Orthogonal to each other, and every one has length 1.</p></div>
+  </div>
+</section>
+
+<section class="clip-slide">
+  <h2>Coordinates are dot products</h2>
+  <video class="clip" src="assets/clips/OrthonormalCoordinates.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">In an orthonormal basis, the coordinates of \(\vec x\) are \(\vec x \cdot \vec u_1\) and \(\vec x \cdot \vec u_2\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 6</b> / Example</div>
+  <h2>Coordinates of [2, 1] in a rotated basis</h2>
+  <div class="eq-big">
+    $$\vec u_1 = \begin{bmatrix} 0.6 \\ 0.8 \end{bmatrix}, \; \vec u_2 = \begin{bmatrix} -0.8 \\ 0.6 \end{bmatrix}$$
+    $$\vec x \cdot \vec u_1 = 1.2 + 0.8 = \textcolor{#f0a35e}{2}, \qquad \vec x \cdot \vec u_2 = -1.6 + 0.6 = \textcolor{#f0a35e}{-1}$$
+  </div>
+  <p>Check: \(\vec u_1 \cdot \vec u_2 = -0.48 + 0.48 = 0\), both have length 1, and \(2\vec u_1 - \vec u_2 = [2, 1]\).</p>
+</section>

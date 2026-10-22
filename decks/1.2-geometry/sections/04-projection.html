@@ -1,0 +1,41 @@
+<!-- ============================================================
+     ACT 4 of 7. Projection. Budget: 20 min.
+     Source: authored for this course; builds on the dot product
+     as projection times length (Block 1.1, Act 5).
+     Goal: students compute the vector projection of w onto v
+     with the formula, and check the leftover is perpendicular.
+     Act 5 owns the angle and cosine.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 4 of 7</div>
+  <h1>Projection</h1>
+  <p class="act-sub">The shadow one vector casts on the line of another.</p>
+  <div class="act-time">20 min</div>
+</section>
+
+<section class="clip-slide">
+  <h2>Drop w onto the line through v</h2>
+  <video class="clip" src="assets/clips/ProjectionFormula.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">The <span class="cr">shadow</span> is \(\operatorname{proj}_{\vec v} \vec w = \dfrac{\vec v \cdot \vec w}{\vec v \cdot \vec v}\,\vec v\). It is a multiple of <span class="cv">\(\vec v\)</span>.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / Example</div>
+  <h2>Project [1, 2] onto [3, 1]</h2>
+  <div class="eq-big">
+    $$\textcolor{#6fd0c0}{\vec v \cdot \vec v} = 10, \quad \textcolor{#6fd0c0}{\vec v} \cdot \textcolor{#c792ea}{\vec w} = 3 + 2 = 5, \quad \operatorname{proj} = \frac{5}{10}\begin{bmatrix} 3 \\ 1 \end{bmatrix} = \textcolor{#f0a35e}{\begin{bmatrix} 1.5 \\ 0.5 \end{bmatrix}}$$
+  </div>
+  <p>Leftover: \(\vec w - \operatorname{proj} = [-0.5, 1.5]\).</p>
+  <p>Check: \([3, 1] \cdot [-0.5, 1.5] = -1.5 + 1.5 = 0\), so it is perpendicular to \(\vec v\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / Try it</div>
+  <h2>Drag either vector, watch the shadow</h2>
+  <div class="clip-row" data-fig="project">
+    <div class="plane-host"></div>
+    <div><div class="readout"></div><div class="hint">drag the circles · the dashed line drops <span class="cw">w</span> perpendicular onto the line through <span class="cv">v</span></div></div>
+  </div>
+</section>

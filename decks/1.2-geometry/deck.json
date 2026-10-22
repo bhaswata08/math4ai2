@@ -1,0 +1,16 @@
+{
+  "title": "Geometry of vectors · Mathematics for AI 1.2",
+  "sections": [
+    "00-open.html",
+    "01-length.html",
+    "02-other-norms.html",
+    "03-unit-vectors.html",
+    "04-projection.html",
+    "05-cosine.html",
+    "06-orthogonal.html",
+    "07-recap.html"
+  ],
+  "scripts": [
+    "figures.js"
+  ]
+}

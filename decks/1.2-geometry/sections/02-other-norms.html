@@ -1,0 +1,62 @@
+<!-- ============================================================
+     ACT 2 of 7. Other ways to measure: L1 and L-infinity.
+     Budget: 15 min.
+     Source: authored for this course.
+     Goal: students compute L1, L2 and L-infinity for one vector,
+     and know that each norm has its own "unit ball" shape.
+     Act 1 owns the L2 derivation. Act 3 owns normalizing.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 2 of 7</div>
+  <h1>Other ways to measure</h1>
+  <p class="act-sub">Walk the grid, or take the biggest entry. Same vector, different length.</p>
+  <div class="act-time">15 min</div>
+</section>
+
+<section class="clip-slide">
+  <h2>Streets versus straight line</h2>
+  <video class="clip" src="assets/clips/NormManhattan.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption"><span class="cr">L1 = 3 + 2 = 5</span> along the grid. <span class="cv">L2 = \(\sqrt{13} \approx 3.61\)</span> as the crow flies. L∞ = 3, the biggest entry.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Every vector of length 1</h2>
+  <video class="clip" src="assets/clips/UnitBalls.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">The tips of all length-1 vectors: a circle for L2, a diamond for L1, a square for L∞.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Three norms</div>
+  <h2>One vector, three lengths</h2>
+  <table style="font-size:0.95em">
+    <tr><th>Norm</th><th>Rule</th><th>\(\vec v = [3, 2]\)</th></tr>
+    <tr><td class="cr">L1</td><td>\(\lVert \vec v \rVert_1 = \sum_i |v_i|\)</td><td class="num">3 + 2 = 5</td></tr>
+    <tr><td class="cv">L2</td><td>\(\lVert \vec v \rVert_2 = \sqrt{\sum_i v_i^2}\)</td><td class="num">√13 ≈ 3.61</td></tr>
+    <tr><td style="color:var(--accent)">L∞</td><td>\(\lVert \vec v \rVert_\infty = \max_i |v_i|\)</td><td class="num">max(3, 2) = 3</td></tr>
+  </table>
+  <p class="takeaway">Always \(L_\infty \le L_2 \le L_1\). Which one you use is a modelling choice.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Try it</div>
+  <h2>Drag the tip, compare the three</h2>
+  <div class="clip-row" data-fig="norms">
+    <div class="plane-host"></div>
+    <div><div class="readout"></div><div class="hint">drag the circle · the gold square is the L∞ ball through the tip, the amber path is the L1 walk</div></div>
+  </div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Where this shows up</div>
+  <h2>Penalising weights is a norm</h2>
+  <div class="cols" style="align-items:start">
+    <div class="beat purpose"><h4>Ridge</h4><p>Loss \(+ \lambda \lVert \vec w \rVert_2^2\). Shrinks every weight a little.</p></div>
+    <div class="beat purpose"><h4>Lasso</h4><p>Loss \(+ \lambda \lVert \vec w \rVert_1\). Pushes many weights to exactly zero.</p></div>
+  </div>
+  <p>Weights \(\vec w = [0.5, -1, 2]\) (illustrative values):</p>
+  <p>\(\lVert \vec w \rVert_1 = 0.5 + 1 + 2 = 3.5\)</p>
+  <p>\(\lVert \vec w \rVert_2^2 = 0.25 + 1 + 4 = 5.25\)</p>
+</section>

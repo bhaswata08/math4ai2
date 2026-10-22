@@ -1,0 +1,60 @@
+<!-- ============================================================
+     ACT 5 of 7. Cosine similarity. Budget: 20 min.
+     Source: authored for this course.
+     Goal: students compute cos θ from the dot product and the two
+     lengths, read it as an angle, and know it ignores length.
+     Act 4 owns projection; Act 6 owns orthogonality as cos = 0.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 5 of 7</div>
+  <h1>Cosine similarity</h1>
+  <p class="act-sub">Compare direction, ignore size.</p>
+  <div class="act-time">20 min</div>
+</section>
+
+<section class="clip-slide">
+  <h2>The dot product holds the angle</h2>
+  <video class="clip" src="assets/clips/CosineAngle.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(\vec v \cdot \vec w = \lVert \vec v \rVert \lVert \vec w \rVert \cos\theta\), so \(\cos\theta = \dfrac{\vec v \cdot \vec w}{\lVert \vec v \rVert \lVert \vec w \rVert}\). It runs from 1 to \(-1\).</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Stretching a vector changes nothing</h2>
+  <video class="clip" src="assets/clips/CosineScaleInvariant.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">The dot product triples when \(\vec w\) becomes \(3\vec w\). The cosine does not move.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / Example</div>
+  <h2>The angle between [3, 1] and [1, 2]</h2>
+  <div class="eq-big">
+    $$\cos\theta = \frac{5}{\sqrt{10}\,\sqrt{5}} = \frac{5}{\sqrt{50}} = \frac{1}{\sqrt{2}} \approx \textcolor{#f0a35e}{0.71}, \qquad \theta = \textcolor{#ffd166}{45^\circ}$$
+  </div>
+  <p>Triple the second vector to \([3, 6]\): the dot product is 15, the length is \(3\sqrt{5}\).</p>
+  <p>\(\cos\theta = \dfrac{15}{3\sqrt{50}} = 0.71\), unchanged.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / Try it</div>
+  <h2>Drag either vector, read the angle</h2>
+  <div class="clip-row" data-fig="cosine">
+    <div class="plane-host"></div>
+    <div><div class="readout" style="font-size:0.8em"></div><div class="hint">drag the circles · 1 means same direction, 0 means perpendicular, −1 means opposite</div></div>
+  </div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / Where this shows up</div>
+  <h2>Vector search ranks by cosine</h2>
+  <p>A query and three documents, each as an embedding (illustrative). Query \(\vec q = [1, 0]\).</p>
+  <table style="font-size:0.95em">
+    <tr><th>Document</th><th>Embedding</th><th>\(\cos\theta\) with \(\vec q\)</th><th>Rank</th></tr>
+    <tr><td>A</td><td class="num">[2, 1]</td><td class="num">2/√5 ≈ 0.89</td><td class="num">1</td></tr>
+    <tr><td>B</td><td class="num">[1, 3]</td><td class="num">1/√10 ≈ 0.32</td><td class="num">2</td></tr>
+    <tr><td>C</td><td class="num">[−1, 1]</td><td class="num">−1/√2 ≈ −0.71</td><td class="num">3</td></tr>
+  </table>
+  <p class="takeaway">Search returns the documents whose embedding points <b>closest to the query's direction</b>.</p>
+</section>

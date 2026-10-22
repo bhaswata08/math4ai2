@@ -1,0 +1,32 @@
+<!-- ============================================================
+     ACT 1 of 7. Length: the L2 norm. Budget: 15 min.
+     Source: authored for this course (no 3b1b chapter on norms).
+     Goal: students compute the length of a vector with
+     Pythagoras, in any dimension.
+     Act 2 owns L1 and L-infinity and the interactive norms figure;
+     here only the straight-line length is named.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 1 of 7</div>
+  <h1>Length</h1>
+  <p class="act-sub">How long is an arrow? Pythagoras answers it.</p>
+  <div class="act-time">15 min</div>
+</section>
+
+<section class="clip-slide">
+  <h2>Length from two legs</h2>
+  <video class="clip" src="assets/clips/NormPythagoras.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">The <span class="cx">x part</span> and the <span class="cy">y part</span> are the legs of a right triangle. \(\lVert \vec v \rVert = \sqrt{3^2 + 2^2} = \sqrt{13}\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 1</b> / Any dimension</div>
+  <h2>Same rule for n entries</h2>
+  <div class="eq-big">
+    $$\lVert \textcolor{#6fd0c0}{\vec v} \rVert_2 = \sqrt{v_1^2 + v_2^2 + \cdots + v_n^2} = \sqrt{\textcolor{#6fd0c0}{\vec v} \cdot \textcolor{#6fd0c0}{\vec v}}$$
+  </div>
+  <p>For \(\vec v = [1, 2, 2]\): \(\sqrt{1 + 4 + 4} = \sqrt{9} = \textcolor{#f0a35e}{3}\).</p>
+  <p class="takeaway">The length is the square root of the vector's <b>dot product with itself</b>.</p>
+</section>
