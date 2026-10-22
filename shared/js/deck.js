@@ -42,6 +42,9 @@
     maxScale: 2.0,
     // Written directly, not through the History API, so #/12 works on file://.
     hash: true,
+    // A clip's play step is a fragment. Keep it out of the URL so #/9 and
+    // #/9/0/0 do not look like two slides.
+    fragmentInURL: false,
     slideNumber: 'c/t',
     transition: 'fade',
     transitionSpeed: 'fast',

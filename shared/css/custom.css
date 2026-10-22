@@ -611,7 +611,7 @@
 .reveal .caption { margin-top: 0.5em; color: var(--ink-dim); font-size: 0.8em; text-align: center; }
 /* A fragment that exists only to trigger playback. Invisible, takes no space. */
 .reveal .fragment.clip-play { display: none; }
-.reveal .credit { color: var(--ink-faint); font-size: 0.5em; font-family: var(--font-mono); margin-top: 0.4em; align-self: flex-end; }
+.reveal .credit { color: var(--ink-faint); font-size: 0.5em; font-family: var(--font-mono); margin-top: 0.4em; align-self: flex-start; }
 
 /* --- 4.4 interactive figure: a live SVG plane plus a readout ------------- */
 .reveal .fig { position: relative; user-select: none; }
