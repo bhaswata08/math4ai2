@@ -1,0 +1,14 @@
+{
+  "title": "Basis and dimension · Mathematics for AI 1.4",
+  "sections": [
+    "00-open.html",
+    "01-basis.html",
+    "02-dimension.html",
+    "03-change.html",
+    "04-intersection.html",
+    "05-recap.html"
+  ],
+  "scripts": [
+    "figures.js"
+  ]
+}

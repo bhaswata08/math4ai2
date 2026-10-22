@@ -1,0 +1,64 @@
+<!-- ============================================================
+     ACT 2 of 5. Dimension. Budget: 15 min.
+     Source: authored for this course (DimensionCount).
+     Goal: students define dimension as the size of any basis and
+     read it off for lines, planes and space.
+     Act 1 owns the basis definition; Act 4 owns subspace intersection.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 2 of 5</div>
+  <h1>Dimension</h1>
+  <p class="act-sub">How many vectors a basis needs.</p>
+  <div class="act-time">15 min</div>
+</section>
+
+<section class="clip-slide">
+  <h2>Count the basis vectors</h2>
+  <video class="clip" src="assets/clips/DimensionCount.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">A line needs 1, a plane needs 2, space needs 3. One more makes the set dependent. One fewer loses part of the span.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Definition</div>
+  <h2>Dimension</h2>
+  <div class="eq-big">
+    $$\dim V = \textcolor{#f0a35e}{\text{number of vectors in any basis of } V}$$
+  </div>
+  <p class="caption">Every basis of the same space has the same size, so the count is well defined.</p>
+  <table style="font-size:0.8em">
+    <thead><tr><th>space</th><th>a basis</th><th>dimension</th></tr></thead>
+    <tbody>
+      <tr><td>\(\mathbb{R}^2\)</td><td>\(\hat\imath, \hat\jmath\)</td><td class="num">2</td></tr>
+      <tr><td>\(\mathbb{R}^3\)</td><td>\(\vec e_1, \vec e_2, \vec e_3\)</td><td class="num">3</td></tr>
+      <tr><td>a plane through 0 in \(\mathbb{R}^3\)</td><td>any two independent vectors in it</td><td class="num">2</td></tr>
+      <tr><td>a line through 0</td><td>any one nonzero vector on it</td><td class="num">1</td></tr>
+      <tr><td>\(\{\vec 0\}\)</td><td>the empty set</td><td class="num">0</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Where this shows up</div>
+  <h2>An embedding lives in 768 dimensions</h2>
+  <div class="cols wide-right" style="align-items:center">
+    <div>
+      <p style="font-size:0.8em" class="cdim">A BERT-style model turns each word into a list of 768 numbers.</p>
+      <p style="font-size:0.9em">$$\vec w \in \mathbb{R}^{768},\qquad \dim = 768$$</p>
+      <p style="font-size:0.8em" class="cdim">Every embedding is a combination of 768 basis vectors, one per coordinate.</p>
+    </div>
+    <svg viewBox="0 0 560 380" aria-label="a vector with many coordinate bars, labelled 768 numbers">
+      <line x1="30" y1="300" x2="530" y2="300" stroke="#a7b0be" stroke-width="2.5" stroke-opacity="0.7"/>
+      <g fill="#6fd0c0" fill-opacity="0.85">
+        <rect x="40" y="200" width="14" height="100"/><rect x="62" y="260" width="14" height="40"/><rect x="84" y="150" width="14" height="150"/><rect x="106" y="230" width="14" height="70"/><rect x="128" y="120" width="14" height="180"/><rect x="150" y="250" width="14" height="50"/><rect x="172" y="190" width="14" height="110"/><rect x="194" y="270" width="14" height="30"/><rect x="216" y="160" width="14" height="140"/><rect x="238" y="220" width="14" height="80"/><rect x="260" y="100" width="14" height="200"/><rect x="282" y="240" width="14" height="60"/>
+      </g>
+      <g fill="#a7b0be" fill-opacity="0.9"><circle cx="330" cy="285" r="5"/><circle cx="355" cy="285" r="5"/><circle cx="380" cy="285" r="5"/></g>
+      <g fill="#6fd0c0" fill-opacity="0.85"><rect x="410" y="170" width="14" height="130"/><rect x="432" y="250" width="14" height="50"/><rect x="454" y="210" width="14" height="90"/><rect x="476" y="140" width="14" height="160"/><rect x="498" y="260" width="14" height="40"/></g>
+      <g font-family="Inter" font-size="24">
+        <text x="280" y="345" fill="#f0a35e" text-anchor="middle">768 numbers</text>
+      </g>
+    </svg>
+  </div>
+  <p class="src">sketch, bars are illustrative</p>
+</section>

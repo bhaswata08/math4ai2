@@ -1,0 +1,117 @@
+<!-- ============================================================
+     ACT 3 of 5. Changing basis. Budget: 35 min.
+     Source: 3b1b EoLA ch. 13 (JennysGrid, ShowOriginOfGrid,
+     TranslateFromJenny). TranslateToJenny is authored (the reverse).
+     Goal: students translate coordinates both ways between our
+     basis and Jennifer's b1, b2, using combinations and two
+     equations only. The change-of-basis matrix is Day 2 and is
+     only named here.
+     Act 4 owns subspace intersection.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 3 of 5</div>
+  <h1>Changing basis</h1>
+  <p class="act-sub">Jennifer and we describe the same arrows with different numbers.</p>
+  <div class="act-time">35 min</div>
+</section>
+
+<section class="clip-slide">
+  <h2>Jennifer's grid</h2>
+  <video class="clip" src="assets/clips/JennysGrid.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Same origin, different grid lines. Her first steps are \(\vec b_1 = [2, 1]\) and \(\vec b_2 = [-1, 1]\).</p>
+</section>
+
+<section class="clip-slide">
+  <h2>From her numbers to ours</h2>
+  <video class="clip" src="assets/clips/TranslateFromJenny.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Jennifer says \([-1, 2]\). Build \(-1\,\vec b_1 + 2\,\vec b_2\) on her grid, then read the tip on ours.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Her numbers to ours</div>
+  <h2>Scale her basis vectors, then add</h2>
+  <div class="eq-big">
+    $$-1\textcolor{#6fd0c0}{\begin{bmatrix} 2 \\ 1 \end{bmatrix}} + 2\textcolor{#c792ea}{\begin{bmatrix} -1 \\ 1 \end{bmatrix}} = \begin{bmatrix} -2 - 2 \\ -1 + 2 \end{bmatrix} = \textcolor{#f0a35e}{\begin{bmatrix} -4 \\ 1 \end{bmatrix}}$$
+  </div>
+  <p class="caption">Her \([-1, 2]\) is our \([-4, 1]\). Day 2 packs this recipe into the change-of-basis matrix.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>From our numbers to hers</h2>
+  <video class="clip" src="assets/clips/TranslateToJenny.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">We say \([3, 2]\). Find \(a, b\) with \(a\,\vec b_1 + b\,\vec b_2 = [3, 2]\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Our numbers to hers</div>
+  <h2>Two equations, two unknowns</h2>
+  <div class="eq-big">
+    $$a\textcolor{#6fd0c0}{\begin{bmatrix} 2 \\ 1 \end{bmatrix}} + b\textcolor{#c792ea}{\begin{bmatrix} -1 \\ 1 \end{bmatrix}} = \begin{bmatrix} 3 \\ 2 \end{bmatrix}
+    \;\Longrightarrow\;
+    \begin{aligned} 2a - b &= 3 \\ a + b &= 2 \end{aligned}$$
+  </div>
+  <div class="eq-big">
+    $$3a = 5 \;\Rightarrow\; \textcolor{#f0a35e}{a = \tfrac53},\quad \textcolor{#f0a35e}{b = 2 - \tfrac53 = \tfrac13}$$
+  </div>
+  <p class="caption">Check: \(\tfrac53[2,1] + \tfrac13[-1,1] = [3, 2]\). Her coordinates are \((\tfrac53, \tfrac13)\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Try it</div>
+  <h2>Drag the basis, drag the target</h2>
+  <div class="clip-row" data-fig="basis">
+    <div class="plane-host"></div>
+    <div>
+      <div class="readout"></div>
+      <div class="verdict"></div>
+      <div class="hint">drag the circles · <span class="cv">b1</span>, <span class="cw">b2</span>, and the <span class="cr">target x</span> · line b1 and b2 up</div>
+    </div>
+  </div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / A better basis</div>
+  <h2>Orthonormal: coordinates are dot products</h2>
+  <div class="eq-big">
+    $$\vec x = (\vec x\cdot\textcolor{#6fd0c0}{\vec u_1})\,\textcolor{#6fd0c0}{\vec u_1} + (\vec x\cdot\textcolor{#c792ea}{\vec u_2})\,\textcolor{#c792ea}{\vec u_2}$$
+  </div>
+  <p class="caption">With \(\vec u_1 = [0.6, 0.8]\), \(\vec u_2 = [-0.8, 0.6]\) and \(\vec x = [3, 2]\): no equations to solve.</p>
+  <div class="eq-big">
+    $$\vec x\cdot\vec u_1 = 1.8 + 1.6 = \textcolor{#f0a35e}{3.4},\qquad \vec x\cdot\vec u_2 = -2.4 + 1.2 = \textcolor{#f0a35e}{-1.2}$$
+  </div>
+  <p class="caption">Check: \(3.4[0.6, 0.8] - 1.2[-0.8, 0.6] = [2.04 + 0.96,\ 2.72 - 0.72] = [3, 2]\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Where this shows up</div>
+  <h2>PCA chooses a better basis for the data</h2>
+  <div class="cols wide-right" style="align-items:center">
+    <div>
+      <p style="font-size:0.8em" class="cdim">A cloud of points stretched along a diagonal.</p>
+      <p style="font-size:0.9em">$$\text{PCA: new axes } \textcolor{#6fd0c0}{\vec u_1}, \textcolor{#c792ea}{\vec u_2} \text{ along the spread}$$</p>
+      <p style="font-size:0.8em" class="cdim">Same points, new coordinates: most of the variation sits in the first one. Day 3.</p>
+    </div>
+    <svg viewBox="0 0 560 380" aria-label="a diagonal cloud of points with two new axes along and across the cloud">
+      <line x1="0" y1="190" x2="560" y2="190" stroke="#2a3f5c" stroke-width="2"/>
+      <line x1="280" y1="0" x2="280" y2="380" stroke="#2a3f5c" stroke-width="2"/>
+      <g fill="#a7b0be" fill-opacity="0.85">
+        <circle cx="170" cy="265" r="7"/><circle cx="205" cy="225" r="7"/><circle cx="215" cy="270" r="7"/><circle cx="250" cy="215" r="7"/><circle cx="270" cy="185" r="7"/><circle cx="300" cy="205" r="7"/><circle cx="330" cy="160" r="7"/><circle cx="350" cy="130" r="7"/><circle cx="365" cy="180" r="7"/><circle cx="395" cy="120" r="7"/><circle cx="420" cy="95" r="7"/>
+      </g>
+      <defs>
+        <marker id="m3a" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 z" fill="#6fd0c0"/></marker>
+        <marker id="m3b" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 z" fill="#c792ea"/></marker>
+      </defs>
+      <line x1="280" y1="190" x2="440" y2="72" stroke="#6fd0c0" stroke-width="6" marker-end="url(#m3a)"/>
+      <line x1="280" y1="190" x2="212" y2="108" stroke="#c792ea" stroke-width="6" marker-end="url(#m3b)"/>
+      <g font-family="Inter" font-size="24">
+        <text x="448" y="66" fill="#6fd0c0">u1</text>
+        <text x="190" y="100" fill="#c792ea">u2</text>
+      </g>
+    </svg>
+  </div>
+  <p class="src">illustrative points</p>
+</section>

@@ -1,0 +1,64 @@
+<!-- ============================================================
+     ACT 1 of 5. What a basis is. Budget: 20 min.
+     Source: 3b1b EoLA ch. 2 (TechnicalDefinitionOfBasis,
+     WhatIfWeChoseADifferentBasis). BasisDefinition is authored.
+     Goal: students state the definition (independent and spanning),
+     check it on examples, and see that coordinates depend on the basis.
+     Act 2 owns dimension; Act 3 owns translating between bases.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 1 of 5</div>
+  <h1>What a basis is</h1>
+  <p class="act-sub">The fewest vectors that still reach every point.</p>
+  <div class="act-time">20 min</div>
+</section>
+
+<section class="clip-slide">
+  <h2>Which sets are a basis?</h2>
+  <video class="clip" src="assets/clips/BasisDefinition.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption"><span class="cv">\(\hat\imath\)</span> and <span class="cw">\(\hat\jmath\)</span> work. So do two skewed vectors. Two parallel vectors fall short, and three are one too many.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 1</b> / Definition</div>
+  <h2>A basis</h2>
+  <div class="eq-big">
+    $$\textcolor{#ffd166}{\text{basis}} = \textcolor{#6fd0c0}{\text{linearly independent}} \;+\; \textcolor{#f0a35e}{\text{spans the space}}$$
+  </div>
+  <p class="caption">Spanning means every vector is reachable. Independence means none is wasted.</p>
+  <div class="beats two">
+    <div class="beat purpose"><h4>Spans only</h4><p>\(\hat\imath, \hat\jmath, [1, 1]\) reach everything, but \([1, 1] = \hat\imath + \hat\jmath\) is redundant.</p></div>
+    <div class="beat breaks"><h4>Independent only</h4><p>\([2, 1]\) alone is independent, but it reaches only a line.</p></div>
+  </div>
+</section>
+
+<section class="clip-slide">
+  <h2>Same arrow, two bases</h2>
+  <video class="clip" src="assets/clips/SameVectorTwoBases.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">The arrow is fixed. Its coordinates are \((3, 2)\) on one grid and \((\tfrac53, \tfrac13)\) on the other.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 1</b> / Coordinates</div>
+  <h2>Coordinates depend on the basis</h2>
+  <div class="eq-big">
+    $$\begin{bmatrix} 3 \\ 2 \end{bmatrix} = 3\textcolor{#6fd0c0}{\hat\imath} + 2\textcolor{#c792ea}{\hat\jmath}
+    \qquad
+    \begin{bmatrix} 3 \\ 2 \end{bmatrix} = \tfrac53\textcolor{#6fd0c0}{\begin{bmatrix} 2 \\ 1 \end{bmatrix}} + \tfrac13\textcolor{#c792ea}{\begin{bmatrix} -1 \\ 1 \end{bmatrix}}$$
+  </div>
+  <p class="caption">Check: \(\tfrac53[2,1] + \tfrac13[-1,1] = [\tfrac{10}{3} - \tfrac13,\ \tfrac53 + \tfrac13] = [3, 2]\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 1</b> / The default</div>
+  <h2>The standard basis in n dimensions</h2>
+  <div class="eq-big">
+    $$\vec e_1 = \begin{bmatrix} 1 \\ 0 \\ \vdots \\ 0 \end{bmatrix},\quad
+      \vec e_2 = \begin{bmatrix} 0 \\ 1 \\ \vdots \\ 0 \end{bmatrix},\quad \dots,\quad
+      \vec e_n = \begin{bmatrix} 0 \\ 0 \\ \vdots \\ 1 \end{bmatrix}$$
+  </div>
+  <p class="caption">In the plane \(\vec e_1 = \hat\imath\) and \(\vec e_2 = \hat\jmath\). Writing a vector as a list of numbers silently picks this basis.</p>
+</section>

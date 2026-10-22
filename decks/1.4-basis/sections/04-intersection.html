@@ -1,0 +1,47 @@
+<!-- ============================================================
+     ACT 4 of 5. Intersection of subspaces. Budget: 20 min.
+     Source: authored for this course (SubspaceIntersection3D).
+     Goal: students find the intersection of two planes through the
+     origin by solving both conditions, and know it is a subspace
+     while the union usually is not.
+     Act 2 owns dimension; the span of each plane is from Block 1.3.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 4 of 5</div>
+  <h1>Intersection of subspaces</h1>
+  <p class="act-sub">What two subspaces share.</p>
+  <div class="act-time">20 min</div>
+</section>
+
+<section class="clip-slide">
+  <h2>Two planes meet in a line</h2>
+  <video class="clip" src="assets/clips/SubspaceIntersection3D.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">The intersection of subspaces is a subspace. A line missing the plane meets it only at the origin, \(\{\vec 0\}\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / Worked example</div>
+  <h2>The planes \(z = 0\) and \(x = 0\)</h2>
+  <div class="eq-big">
+    $$\{z = 0\} = \operatorname{span}\Bigl\{\textcolor{#6fd0c0}{\begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}}, \textcolor{#c792ea}{\begin{bmatrix} 0 \\ 1 \\ 0 \end{bmatrix}}\Bigr\}
+    \qquad
+    \{x = 0\} = \operatorname{span}\Bigl\{\textcolor{#c792ea}{\begin{bmatrix} 0 \\ 1 \\ 0 \end{bmatrix}}, \textcolor{#8bd17c}{\begin{bmatrix} 0 \\ 0 \\ 1 \end{bmatrix}}\Bigr\}$$
+  </div>
+  <p class="caption">A point is in both when \(z = 0\) and \(x = 0\), which leaves \([0, y, 0]\).</p>
+  <div class="eq-big">
+    $$\{z = 0\} \cap \{x = 0\} = \operatorname{span}\Bigl\{\textcolor{#c792ea}{\begin{bmatrix} 0 \\ 1 \\ 0 \end{bmatrix}}\Bigr\} = \textcolor{#f0a35e}{\text{the } y\text{-axis}}$$
+  </div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / A trap</div>
+  <h2>The union is usually not a subspace</h2>
+  <div class="eq-big">
+    $$\textcolor{#6fd0c0}{\begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}} \in \{z = 0\},\quad
+      \textcolor{#8bd17c}{\begin{bmatrix} 0 \\ 0 \\ 1 \end{bmatrix}} \in \{x = 0\},\quad
+      \textcolor{#ff6b6b}{\begin{bmatrix} 1 \\ 0 \\ 1 \end{bmatrix}} \notin \text{either}$$
+  </div>
+  <p class="takeaway">The <b>intersection</b> keeps the add and scale rules. The <b>union</b> breaks closure under addition.</p>
+</section>
