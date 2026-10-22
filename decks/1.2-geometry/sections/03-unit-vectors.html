@@ -2,7 +2,8 @@
      ACT 3 of 7. Unit vectors and normalizing. Budget: 10 min.
      Source: authored for this course.
      Goal: students divide a vector by its length to get a unit
-     vector, and know it keeps the direction.
+     vector, and know it keeps the direction. The last slide says
+     why unit length always means L2: rotation, smoothness, angles.
      Act 1 owns the length formula; Act 6 owns orthonormal sets.
      ============================================================ -->
 
@@ -28,4 +29,15 @@
   </div>
   <p>Check: \(0.6^2 + 0.8^2 = 0.36 + 0.64 = 1\).</p>
   <p class="takeaway">The zero vector has no direction, so it <b>cannot be normalized</b>.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Which length?</div>
+  <h2>A unit vector always means L2 length 1</h2>
+  <div class="beats">
+    <div class="beat purpose"><h4>Rotation does not change it</h4><p>Turn \([1, 0]\) by 45° to \([0.71, 0.71]\): L2 stays 1, but L1 becomes 1.41 and L∞ becomes 0.71. Only L2 is a property of the arrow, not of the grid.</p></div>
+    <div class="beat purpose"><h4>Smooth to differentiate</h4><p>\(\lVert \vec v \rVert_2^2 = \vec v \cdot \vec v\) has gradient \(2\vec v\) everywhere. L1 has a kink wherever an entry is 0, and L∞ wherever two entries tie.</p></div>
+    <div class="beat purpose"><h4>Tied to angles</h4><p>\(\lVert \vec v \rVert_2 = \sqrt{\vec v \cdot \vec v}\), so for unit vectors \(\hat v \cdot \hat w = \cos\theta\) with nothing left to divide.</p></div>
+  </div>
+  <p class="takeaway">"Normalize" means divide by the <b>L2</b> norm, unless someone says otherwise.</p>
 </section>
