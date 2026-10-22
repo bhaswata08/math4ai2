@@ -9,9 +9,17 @@ the slide with no visible frame, and fixes the colour roles below. Use the
 role names, never raw hex, so a colour means the same thing in every clip
 and on every slide (the deck CSS carries the same tokens).
 
-Text floor: clips play about 1100px wide on a 1280px slide, so a clip is
-shown at roughly 0.57x of its 1920px render. Keep every MathTex and Text at
-font_size >= 40 so nothing lands below about 23px on the slide.
+Framing: the camera frame is 10 x 5.625 units (x in [-5, 5], y in
+[-2.81, 2.81]), not manim's default 14.2 x 8. Course vectors are 2 to 4
+units long and filled too little of the default frame, so every arrow and
+label came out small on a projector. Keep scene content inside that box.
+
+Text floor: clips play about 1100px wide on a 1280px slide. With this
+frame, font_size 40 lands at roughly 30px on the slide; never go below it.
+
+First frame: the slide shows a clip's first frame before it plays, so
+frame one must already show the givens (plane, axes, input vectors). Never
+open on an empty frame.
 """
 
 from manim import *  # noqa: F401,F403
@@ -34,6 +42,8 @@ HIGHLIGHT = "#ffd166"    # momentary emphasis only, never a resting colour
 MIN_FONT = 40
 
 config.background_color = BG
+config.frame_height = 5.625
+config.frame_width = 10
 config.frame_rate = 30
 
 

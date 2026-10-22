@@ -11,7 +11,7 @@ the shafts and keeps the tips.
 
 from shared.anim.house import *
 
-# One unit per scene unit, origin pushed to the lower left so the data can
+# The plane fills the house frame, origin pushed to the lower left so the data can
 # fill the frame and the arrows fan out instead of bunching.
 X_RANGE = (-2, 12.2, 1)
 Y_RANGE = (-1.2, 6.8, 1)
@@ -31,7 +31,7 @@ def cloud(n=30, seed=7):
 
 
 def caption(text):
-    t = Tex(text, font_size=48, color=INK)
+    t = Tex(text, font_size=40, color=INK)
     t.to_corner(UL, buff=0.45)
     t.add_background_rectangle(color=BG, opacity=0.9, buff=0.15)
     return t
@@ -45,7 +45,7 @@ def swap(old, new):
 class ScatterAsVectors(Scene):
     def construct(self):
         plane = NumberPlane(
-            x_range=X_RANGE, y_range=Y_RANGE, x_length=14.2, y_length=8,
+            x_range=X_RANGE, y_range=Y_RANGE, x_length=config.frame_width, y_length=config.frame_height,
             background_line_style={"stroke_color": GRID, "stroke_width": 2, "stroke_opacity": 0.8},
             axis_config={"stroke_color": INK_DIM, "stroke_width": 3},
             faded_line_ratio=1,
@@ -56,7 +56,7 @@ class ScatterAsVectors(Scene):
         pts = [plane.c2p(*p) for p in data]
         star = pts[-1]
 
-        dots = VGroup(*[Dot(p, radius=0.08, color=INK_DIM) for p in pts])
+        dots = VGroup(*[Dot(p, radius=0.06, color=INK_DIM) for p in pts])
 
         # 1. A scatter plot, as students know it. It is already on screen in
         # the first frame, because that frame is what the slide shows before
@@ -66,9 +66,9 @@ class ScatterAsVectors(Scene):
         self.wait(1.5)
 
         # 2. One point is a vector: an arrow from the origin to it.
-        one = Arrow(origin, star, buff=0, color=V_COLOR, stroke_width=6,
+        one = Arrow(origin, star, buff=0, color=V_COLOR, stroke_width=5,
                     max_tip_length_to_length_ratio=0.08)
-        coords = Matrix([[star_xy[0]], [star_xy[1]]], element_to_mobject_config={"font_size": 48})
+        coords = Matrix([[star_xy[0]], [star_xy[1]]], element_to_mobject_config={"font_size": 40})
         coords.set_color(V_COLOR)
         coords.next_to(star, UL, buff=0.25).shift(0.6 * UP)
         coords.add_background_rectangle(color=BG, opacity=0.9, buff=0.12)
@@ -80,7 +80,7 @@ class ScatterAsVectors(Scene):
         cap2 = caption("Every point is a vector")
         arrows = VGroup(*[
             Arrow(origin, p, buff=0, color=V_COLOR, stroke_width=3,
-                  max_tip_length_to_length_ratio=0.1, tip_length=0.22)
+                  max_tip_length_to_length_ratio=0.1, tip_length=0.16)
             for p in pts[:-1]
         ])
         self.play(FadeOut(coords), *swap(cap, cap2))
@@ -94,19 +94,19 @@ class ScatterAsVectors(Scene):
         tips = VGroup(*[a.tip.copy() for a in everything])
         self.add(tips)
         self.play(*swap(cap2, cap3), FadeOut(everything), FadeOut(dots), run_time=1.5)
-        final = VGroup(*[Dot(p, radius=0.09, color=V_COLOR) for p in pts])
+        final = VGroup(*[Dot(p, radius=0.065, color=V_COLOR) for p in pts])
         self.play(*[ReplacementTransform(t, d) for t, d in zip(tips, final)], run_time=1)
         self.wait(1)
 
         # 5. The shape of the cloud: an ellipse from the data's own spread
-        # (2.3 standard deviations along each principal direction), which is
+        # (2.5 standard deviations along each principal direction), which is
         # the picture PCA returns to on Day 3.
         cap4 = caption("The shape of the data")
         xy = np.array([p[:2] for p in pts])
         centre = xy.mean(axis=0)
         evals, evecs = np.linalg.eigh(np.cov(xy.T))
         major = evecs[:, 1]
-        shape = Ellipse(width=2 * 2.3 * np.sqrt(evals[1]), height=2 * 2.3 * np.sqrt(evals[0]),
+        shape = Ellipse(width=2 * 2.5 * np.sqrt(evals[1]), height=2 * 2.5 * np.sqrt(evals[0]),
                         color=RESULT_COLOR, stroke_width=5)
         shape.rotate(np.arctan2(major[1], major[0])).move_to([*centre, 0])
         self.play(*swap(cap3, cap4), Create(shape), run_time=1.5)
