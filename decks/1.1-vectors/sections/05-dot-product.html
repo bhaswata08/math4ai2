@@ -40,6 +40,13 @@
 </section>
 
 <section class="clip-slide">
+  <h2>Only the angle can make it negative</h2>
+  <video class="clip" src="assets/clips/DotCosineForm.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(\vec v \cdot \vec w = \|\vec v\|\,\|\vec w\| \cos\theta\). Lengths are never negative, so the sign comes from \(\cos\theta\) alone.</p>
+</section>
+
+<section class="clip-slide">
   <h2>Pointing apart gives a negative number</h2>
   <video class="clip" src="assets/clips/DotNegative.mp4"></video>
   <span class="fragment clip-play"></span>
@@ -51,6 +58,13 @@
   <video class="clip" src="assets/clips/DotSign.mp4"></video>
   <span class="fragment clip-play"></span>
   <p class="caption">Positive: roughly the same direction. Zero: perpendicular. Negative: roughly opposite.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>The dot product measures alignment</h2>
+  <video class="clip" src="assets/clips/DotAlignmentCircles.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Obtuse angle: misaligned, negative. Right angle: perpendicular, zero. Acute angle: aligned, positive.</p>
 </section>
 
 <section class="clip-slide">
@@ -104,4 +118,45 @@
     </svg>
   </div>
   <p class="src">the full neuron adds a bias and an activation: \(\sigma(\vec w \cdot \vec x + b)\)</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / Where this shows up</div>
+  <h2>A language model picks the next word with dot products</h2>
+  <div class="cols wide-right" style="align-items:center">
+    <div>
+      <p class="mono" style="font-size:0.62em">"I'm visiting Italy and want a classic pasta dish, so I ordered ____."</p>
+      $$\text{score} = \textcolor{#6fd0c0}{\vec h} \cdot \textcolor{#c792ea}{\vec w} = \|\textcolor{#6fd0c0}{\vec h}\|\,\|\textcolor{#c792ea}{\vec w}\| \cos\theta$$
+      <p style="font-size:0.72em" class="cdim"><span class="cv">\(\vec h\)</span>: the model's state after the prompt, \(\|\vec h\| = 10\). <span class="cw">\(\vec w\)</span>: one vector per word.</p>
+      <p style="font-size:0.72em">Spaghetti: \(10 \cdot 6 \cdot 0.95 = \textcolor{#f0a35e}{57}\)</p>
+      <p style="font-size:0.72em" class="cdim">Orecchiette points almost as well, but its short <span class="cw">\(\vec w\)</span> drops it below pizza.</p>
+    </div>
+    <svg viewBox="0 0 600 400" aria-label="four words placed by alignment and length, each with its score">
+      <g font-family="Inter" text-anchor="middle">
+        <line x1="290" y1="60" x2="290" y2="340" stroke="#2a3f5c" stroke-width="2"/>
+        <line x1="40" y1="90" x2="560" y2="90" stroke="#2a3f5c" stroke-width="2" stroke-dasharray="6 6"/>
+        <line x1="40" y1="282" x2="560" y2="282" stroke="#2a3f5c" stroke-width="2" stroke-dasharray="6 6"/>
+        <line x1="40" y1="340" x2="560" y2="340" stroke="#a7b0be" stroke-width="2"/>
+        <text x="70" y="370" fill="#a7b0be" font-size="22">−1</text>
+        <text x="290" y="370" fill="#a7b0be" font-size="22">0</text>
+        <text x="510" y="370" fill="#a7b0be" font-size="22">1</text>
+        <text x="400" y="396" fill="#a7b0be" font-size="22">alignment cos θ</text>
+        <text x="44" y="120" fill="#c792ea" font-size="22" text-anchor="start">‖w‖ = 6</text>
+        <text x="44" y="312" fill="#c792ea" font-size="22" text-anchor="start">‖w‖ = 1.2</text>
+        <circle cx="499" cy="90" r="9" fill="#f0a35e"/>
+        <text x="499" y="70" fill="#e9ebef" font-size="24">spaghetti</text>
+        <text x="499" y="124" fill="#f0a35e" font-size="24">+57</text>
+        <circle cx="367" cy="90" r="9" fill="#f0a35e"/>
+        <text x="367" y="70" fill="#e9ebef" font-size="24">pizza</text>
+        <text x="367" y="124" fill="#f0a35e" font-size="24">+21</text>
+        <circle cx="488" cy="282" r="9" fill="#f0a35e"/>
+        <text x="488" y="262" fill="#e9ebef" font-size="24">orecchiette</text>
+        <text x="488" y="316" fill="#f0a35e" font-size="24">+10.8</text>
+        <circle cx="180" cy="282" r="9" fill="#ff6b6b"/>
+        <text x="180" y="262" fill="#e9ebef" font-size="24">tacos</text>
+        <text x="180" y="316" fill="#ff6b6b" font-size="24">−6</text>
+      </g>
+    </svg>
+  </div>
+  <p class="src">illustrative values. The highest score becomes the most likely next word.</p>
 </section>
