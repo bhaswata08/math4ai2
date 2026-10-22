@@ -41,6 +41,42 @@
 </section>
 
 <section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / One family</div>
+  <h2>L1, L2 and L∞ are one formula</h2>
+  $$\lVert \vec v \rVert_p = \big(|v_1|^p + |v_2|^p + \dots + |v_n|^p\big)^{1/p}, \qquad p \ge 1$$
+  <table style="font-size:0.95em">
+    <tr><th>\(p\)</th><th class="cr">1</th><th class="cv">2</th><th>4</th><th>10</th><th style="color:var(--accent)">\(\infty\)</th></tr>
+    <tr><td>\(\lVert [3, 2] \rVert_p\)</td><td class="num">5</td><td class="num">3.61</td><td class="num">3.14</td><td class="num">3.01</td><td class="num">3</td></tr>
+  </table>
+  <p class="takeaway">As \(p\) grows, the <b>largest entry</b> takes over. At \(p = \infty\) it is all that is left.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Why the max</div>
+  <h2>Why \(p \to \infty\) picks the largest entry</h2>
+  <p style="font-size:0.75em" class="cdim">Let \(|x_k|\) be the largest entry. Pull \(|x_k|^p\) out of the sum:</p>
+  $$\lVert \vec x \rVert_p = \Big(|x_k|^p \sum_i \Big(\tfrac{|x_i|}{|x_k|}\Big)^p\Big)^{1/p} = |x_k| \Big(1 + \sum_{i \ne k} \Big(\tfrac{|x_i|}{|x_k|}\Big)^p\Big)^{1/p}$$
+  <p class="fragment" style="font-size:0.75em">Every ratio is at most 1, so the bracket stays between 1 and \(n\). Raising it to \(1/p\) sends it to 1, since \(n^{1/p} \to 1\).</p>
+  <div class="fragment">
+    $$\boxed{\lVert \vec x \rVert_\infty = \lim_{p \to \infty} \lVert \vec x \rVert_p = \max_i |x_i|}$$
+  </div>
+  <p class="src">AdaMax (Kingma and Ba, 2015) uses this limit: it swaps Adam's average of squared gradients for a running max of \(|g|\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Try it</div>
+  <h2>Slide p, watch the ball change</h2>
+  <div class="clip-row" data-fig="lp">
+    <div class="plane-host"></div>
+    <div>
+      <div class="readout"></div>
+      <div class="slider-row"><span>\(p\)</span><input type="range" min="1" max="20" step="0.1" value="2"></div>
+      <div class="hint">drag the circle · the amber curve is every point with the same \(L_p\) length as the tip · far right is \(p = \infty\)</div>
+    </div>
+  </div>
+</section>
+
+<section class="act-body">
   <div class="act-tag"><b>Act 2</b> / Try it</div>
   <h2>Drag the tip, compare the three</h2>
   <div class="clip-row" data-fig="norms">

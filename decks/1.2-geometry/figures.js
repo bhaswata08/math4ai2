@@ -128,3 +128,43 @@ Figures.register('cosine', (el) => {
   const hw = p.handle(() => w, (q) => { w = q; draw(); }, { color: role('w') });
   draw();
 });
+
+// v draggable, p from the slider (its far end stands for infinity). Draws
+// the L_p ball through v's tip, which morphs from diamond to circle to square.
+Figures.register('lp', (el) => {
+  const p = new Plane(el.querySelector('.plane-host'), PLANE);
+  const out = el.querySelector('.readout');
+  const slider = el.querySelector('input[type=range]');
+  let v = [2, 1], q = Number(slider.value);
+  const INF = Number(slider.max);
+
+  const draw = () => {
+    const a = Math.abs(v[0]), b = Math.abs(v[1]);
+    const inf = q >= INF;
+    const r = inf ? Math.max(a, b) : Math.pow(a ** q + b ** q, 1 / q);
+    p.clear();
+    if (r > 0) {
+      // |x|^q + |y|^q = r^q, traced through (sgn c |c|^(2/q), sgn s |s|^(2/q)).
+      const pts = [];
+      for (let i = 0; i <= 720; i++) {
+        const t = (i / 720) * 2 * Math.PI, c = Math.cos(t), s = Math.sin(t);
+        const k = inf ? 0 : 2 / q;
+        const f = (u) => Math.sign(u) * Math.pow(Math.abs(u), k);
+        const m = inf ? 1 / Math.max(Math.abs(c), Math.abs(s)) : 1;
+        pts.push(p.px(inf ? [r * c * m, r * s * m] : [r * f(c), r * f(s)]).join(','));
+      }
+      svgEl('polyline', { points: pts.join(' '), fill: 'none', stroke: role('result'), 'stroke-width': 3.5 }, p.layer);
+    }
+    p.arrow([0, 0], v, role('v'));
+    hv.place();
+    const vx = fmt(a), vy = fmt(b);
+    katex.render(inf
+      ? `\\begin{gathered} p = \\infty \\\\ \\lVert \\vec v \\rVert_\\infty = \\max(${vx}, ${vy}) = \\textcolor{${role('result')}}{${fmt(r)}} \\end{gathered}`
+      : `\\begin{gathered} p = ${q.toFixed(1)} \\\\ \\lVert \\vec v \\rVert_p = (${vx}^{p} + ${vy}^{p})^{1/p} = \\textcolor{${role('result')}}{${r.toFixed(2)}} \\end{gathered}`,
+      out, { displayMode: true });
+  };
+  const hv = p.handle(() => v, (nv) => { v = nv; draw(); }, { color: role('v') });
+  slider.addEventListener('input', () => { q = Number(slider.value); draw(); });
+  slider.addEventListener('keydown', (e) => e.stopPropagation());
+  draw();
+});
