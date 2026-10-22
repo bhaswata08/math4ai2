@@ -5,14 +5,21 @@
 #
 # Writes decks/<deck>/assets/clips/<Scene>.mp4 and a poster frame
 # <Scene>.png (the last frame, which is what the slide shows before the clip
-# plays and after it ends). Use -ql for a fast draft while iterating.
+# plays and after it ends). Use -ql for a fast draft while iterating; drafts
+# are written to build/drafts/<deck>/ instead.
 # manim comes from the pinned flake in this repo, see flake.nix.
 set -euo pipefail
 
 SRC="$1"; SCENE="$2"; DECK="$3"; QUALITY="${4:--qh}"
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 MEDIA="$ROOT/build/manim"
-OUT="$ROOT/$DECK/assets/clips"
+# Only a full-quality render lands in the deck. Drafts go to build/drafts so
+# they can never overwrite a finished 1080p clip.
+if [ "$QUALITY" = "-qh" ]; then
+    OUT="$ROOT/$DECK/assets/clips"
+else
+    OUT="$ROOT/build/drafts/$DECK"
+fi
 mkdir -p "$OUT"
 
 PYTHONPATH="$ROOT" nix run "$ROOT#manim" -- render "$QUALITY" --format=mp4 \
