@@ -1,0 +1,5 @@
+node_modules/
+media/
+build/
+decks/*/deck.html
+__pycache__/

@@ -1,0 +1,12 @@
+{
+  "name": "math4ai2",
+  "scripts": {},
+  "type": "module",
+  "private": "true",
+  "dependencies": {
+    "@fontsource/inter": "5.3.0",
+    "@fontsource/jetbrains-mono": "5.3.0",
+    "katex": "0.19.0",
+    "reveal.js": "6.0.2"
+  }
+}
