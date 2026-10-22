@@ -47,8 +47,15 @@ class ProjectionFormula(Scene):
         l_w.next_to(w_coords, UL, buff=0.18)
         l_w.add_background_rectangle(color=BG, opacity=0.9, buff=0.08)
 
-        # 1. Frame one shows givens: plane, v, w, labels
-        self.add(v_arr, l_v, w_arr, l_w)
+        c_v = MathTex(r"\begin{bmatrix} 3 \\ 1 \end{bmatrix}", font_size=MIN_FONT, color=V_COLOR)
+        c_v.next_to(v_coords, UR, buff=0.12)
+        c_v.add_background_rectangle(color=BG, opacity=0.9, buff=0.06)
+        c_w = MathTex(r"\begin{bmatrix} 1 \\ 2 \end{bmatrix}", font_size=MIN_FONT, color=W_COLOR)
+        c_w.next_to(w_coords, RIGHT, buff=0.25)
+        c_w.add_background_rectangle(color=BG, opacity=0.9, buff=0.06)
+
+        # 1. Frame one shows givens: plane, v, w, labels and coordinates
+        self.add(v_arr, l_v, c_v, w_arr, l_w, c_w)
         self.wait(1.5)
 
         # 2. Line through v
@@ -97,47 +104,55 @@ class ProjectionFormula(Scene):
         self.wait(0.8)
 
         # 5. Formula built in steps on the left
-        title = Tex(r"Projection of $\vec{w}$ onto $\vec{v}$:", font_size=MIN_FONT - 2, color=INK_DIM)
-        title.to_corner(UL, buff=0.35)
-        title.add_background_rectangle(color=BG, opacity=0.9, buff=0.08)
-
-        # Direction times magnitude: the unit vector along v, scaled by the
-        # length of the shadow w casts on it.
-        eq1 = MathTex(r"\hat{v} = \frac{\vec{v}}{\|\vec{v}\|}", font_size=MIN_FONT, color=V_COLOR)
-        note1 = Tex("direction", font_size=MIN_FONT, color=INK_DIM)
-        step1 = VGroup(eq1, note1).arrange(RIGHT, buff=0.35)
-        step1.next_to(title, DOWN, buff=0.18, aligned_edge=LEFT)
+        # Phase 1: the two ingredients, with the numbers carried through.
+        step1 = MathTex(
+            r"\hat{v} = \frac{\vec{v}}{\|\vec{v}\|} = \frac{[3, 1]}{\sqrt{10}}",
+            font_size=MIN_FONT,
+            color=V_COLOR,
+        )
+        step1.to_corner(UL, buff=0.3)
         step1.add_background_rectangle(color=BG, opacity=0.9, buff=0.08)
 
-        eq2 = MathTex(r"\hat{v} \cdot \vec{w} = \|\vec{w}\| \cos\theta", font_size=MIN_FONT)
-        note2 = Tex("shadow length", font_size=MIN_FONT, color=INK_DIM)
-        step2 = VGroup(eq2, note2).arrange(DOWN, buff=0.12, aligned_edge=LEFT)
-        step2.next_to(step1, DOWN, buff=0.18, aligned_edge=LEFT)
+        step2 = MathTex(
+            r"\hat{v} \cdot \vec{w} = \frac{3 + 2}{\sqrt{10}} = \frac{5}{\sqrt{10}}",
+            font_size=MIN_FONT,
+        )
+        step2.next_to(step1, DOWN, buff=0.25, aligned_edge=LEFT)
         step2.add_background_rectangle(color=BG, opacity=0.9, buff=0.08)
 
-        step3 = MathTex(
-            r"\text{proj}_{\vec{v}}\vec{w} = \hat{v}\,(\hat{v} \cdot \vec{w})",
+        # Phase 2 replaces them: direction times shadow length. Braces sit
+        # under the two factors; the labels may extend past their brace.
+        eq3 = MathTex(
+            r"\text{proj}_{\vec{v}}\vec{w} =", r"\hat{v}", r"\,(\hat{v} \cdot \vec{w})",
             font_size=MIN_FONT + 4,
             color=RESULT_COLOR,
         )
-        step3.next_to(step2, DOWN, buff=0.22, aligned_edge=LEFT)
+        b1 = Brace(eq3[1], DOWN, buff=0.08, color=RESULT_COLOR)
+        b2 = Brace(eq3[2], DOWN, buff=0.08, color=RESULT_COLOR)
+        l1 = Tex("direction", font_size=MIN_FONT, color=V_COLOR).next_to(b1, DOWN, buff=0.08)
+        l2 = Tex(r"shadow\\length", font_size=MIN_FONT, color=INK).next_to(b2, DOWN, buff=0.08)
+        if l1.get_right()[0] > l2.get_left()[0] - 0.2:
+            l1.shift(LEFT * (l1.get_right()[0] - l2.get_left()[0] + 0.2))
+        step3 = VGroup(eq3, b1, b2, l1, l2)
+        step3.to_corner(UL, buff=0.3)
         step3.add_background_rectangle(color=BG, opacity=0.9, buff=0.08)
 
         step4 = MathTex(
-            r"= \frac{5}{\sqrt{10}}\,\frac{1}{\sqrt{10}}\begin{bmatrix} 3 \\ 1 \end{bmatrix} = \begin{bmatrix} 1.5 \\ 0.5 \end{bmatrix}",
+            r"= \frac{5}{10}\,[3, 1] = [1.5,\, 0.5]",
             font_size=MIN_FONT,
             color=RESULT_COLOR,
         )
-        step4.next_to(step3, DOWN, buff=0.18, aligned_edge=LEFT)
+        step4.next_to(step3, DOWN, buff=0.25, aligned_edge=LEFT)
         step4.add_background_rectangle(color=BG, opacity=0.9, buff=0.08)
         # Background rectangles skew aligned_edge, so pin every line to one margin.
-        for m in (title, step1, step2, step3, step4):
+        for m in (step1, step2, step3, step4):
             m.to_edge(LEFT, buff=0.3)
 
-        self.play(Write(title), Write(step1), run_time=1.2)
+        self.play(Write(step1), run_time=1.2)
         self.wait(0.4)
         self.play(Write(step2), run_time=1.4)
-        self.wait(0.5)
+        self.wait(2.0)
+        self.play(FadeOut(step1), FadeOut(step2), run_time=0.6)
         self.play(Write(step3), run_time=1.4)
         self.wait(0.5)
         self.play(Write(step4), run_time=1.4)
