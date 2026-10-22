@@ -1,0 +1,114 @@
+<!-- ============================================================
+     ACT 1 of 6. What a vector is. Budget: 15 min.
+     Source: 3b1b EoLA ch. 1 (DifferentConceptions, DataAnalyst).
+     Goal: students hold three readings of one object, and see
+     that a dataset is a cloud of vectors.
+     Act 2 owns coordinates and the list-to-arrow translation.
+     Here the three views are only named, not connected.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 1 of 6</div>
+  <h1>What is a vector?</h1>
+  <p class="act-sub">Three people give three answers, and all of them are right.</p>
+  <div class="act-time">15 min</div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 1</b> / Three views</div>
+  <h2>One object, three readings</h2>
+  <div class="views">
+    <div class="view">
+      <h4>A list of numbers</h4>
+      <div style="height:190px;display:flex;align-items:center;justify-content:center;font-size:1.5em">
+        \(\begin{bmatrix} \textcolor{#8bd17c}{3} \\ \textcolor{#e8798a}{-1} \end{bmatrix}\)
+      </div>
+      <div class="who">Computer science: order matters, and you can compute with it</div>
+    </div>
+    <div class="view">
+      <h4>An arrow</h4>
+      <svg viewBox="0 0 240 190" aria-label="an arrow from the origin">
+        <g stroke="#2a3f5c" stroke-width="1.5">
+          <line x1="20" y1="20" x2="20" y2="170"/><line x1="60" y1="20" x2="60" y2="170"/><line x1="100" y1="20" x2="100" y2="170"/>
+          <line x1="140" y1="20" x2="140" y2="170"/><line x1="180" y1="20" x2="180" y2="170"/><line x1="220" y1="20" x2="220" y2="170"/>
+          <line x1="20" y1="30" x2="220" y2="30"/><line x1="20" y1="70" x2="220" y2="70"/><line x1="20" y1="110" x2="220" y2="110"/><line x1="20" y1="150" x2="220" y2="150"/>
+        </g>
+        <line x1="20" y1="110" x2="220" y2="110" stroke="#a7b0be" stroke-width="2.5"/>
+        <line x1="60" y1="20" x2="60" y2="170" stroke="#a7b0be" stroke-width="2.5"/>
+        <line x1="60" y1="110" x2="166" y2="146" stroke="#6fd0c0" stroke-width="5"/>
+        <polygon points="180,150 162,154 168,138" fill="#6fd0c0"/>
+      </svg>
+      <div class="who">Physics: a length and a direction, free to sit anywhere</div>
+    </div>
+    <div class="view">
+      <h4>A data point</h4>
+      <svg viewBox="0 0 240 190" aria-label="a scatter of houses">
+        <line x1="30" y1="165" x2="225" y2="165" stroke="#a7b0be" stroke-width="2"/>
+        <line x1="30" y1="20" x2="30" y2="165" stroke="#a7b0be" stroke-width="2"/>
+        <g fill="#6d7789">
+          <circle cx="60" cy="140" r="5"/><circle cx="78" cy="128" r="5"/><circle cx="95" cy="118" r="5"/>
+          <circle cx="110" cy="122" r="5"/><circle cx="128" cy="96" r="5"/><circle cx="150" cy="88" r="5"/>
+          <circle cx="168" cy="70" r="5"/><circle cx="190" cy="58" r="5"/><circle cx="205" cy="40" r="5"/>
+        </g>
+        <circle cx="140" cy="102" r="8" fill="#6fd0c0"/>
+        <text x="128" y="185" fill="#a7b0be" font-size="15" text-anchor="middle" font-family="Inter">area</text>
+        <text x="14" y="95" fill="#a7b0be" font-size="15" text-anchor="middle" font-family="Inter" transform="rotate(-90 14 95)">price</text>
+      </svg>
+      <div class="who">Data science: one row of a table, one point in a cloud</div>
+    </div>
+  </div>
+  <p class="takeaway">Linear algebra moves between these freely. <b>The list is what the computer stores; the arrow is what you draw.</b></p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 1</b> / A list of numbers</div>
+  <h2>Order and length are part of the vector</h2>
+  <div class="cols">
+    <div class="eq-big">
+      $$\begin{bmatrix} 1 \\ 2 \end{bmatrix} \neq \begin{bmatrix} 2 \\ 1 \end{bmatrix}$$
+    </div>
+    <div class="eq-big">
+      $$\vec v \in \mathbb{R}^{n}$$
+    </div>
+  </div>
+  <div class="cols" style="margin-top:0.2em">
+    <p class="caption">Same numbers, different order: a different vector.</p>
+    <p class="caption">\(n\) entries, each a real number. \(n\) is the dimension.</p>
+  </div>
+</section>
+
+<section class="clip-slide">
+  <h2>A dataset is a cloud of vectors</h2>
+  <video class="clip" src="assets/clips/DataAsVectors.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Each row becomes an arrow. Drop the arrows, keep the tips, and the shape of the data appears.</p>
+  <div class="credit">adapted from 3Blue1Brown, EoLA ch. 1</div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 1</b> / Where this shows up</div>
+  <h2>A language model stores every word as a vector</h2>
+  <div class="cols wide-right" style="align-items:center">
+    <div>
+      <p style="font-size:0.8em" class="cdim">Each word maps to a list of numbers, typically 768 or 1024 of them.</p>
+      <p style="font-size:0.95em">\(\text{cat} \mapsto \begin{bmatrix} 0.21 \\ -1.30 \\ 0.77 \\ \vdots \\ 0.05 \end{bmatrix}\)</p>
+      <p style="font-size:0.8em" class="cdim">Similar meanings land close together.</p>
+    </div>
+    <svg viewBox="0 0 560 380" aria-label="words placed in a plane, animals in one cluster, vehicles in another">
+      <line x1="20" y1="350" x2="545" y2="350" stroke="#a7b0be" stroke-width="2"/>
+      <line x1="30" y1="20" x2="30" y2="360" stroke="#a7b0be" stroke-width="2"/>
+      <ellipse cx="175" cy="130" rx="150" ry="85" fill="#6fd0c01a" stroke="#6fd0c0" stroke-dasharray="6 6"/>
+      <ellipse cx="410" cy="255" rx="120" ry="75" fill="#c792ea1a" stroke="#c792ea" stroke-dasharray="6 6"/>
+      <g font-family="Inter" font-size="24" fill="#e9ebef">
+        <circle cx="120" cy="105" r="6" fill="#6fd0c0"/><text x="132" y="112">cat</text>
+        <circle cx="105" cy="160" r="6" fill="#6fd0c0"/><text x="117" y="167">kitten</text>
+        <circle cx="200" cy="95" r="6" fill="#6fd0c0"/><text x="212" y="102">dog</text>
+        <circle cx="210" cy="165" r="6" fill="#6fd0c0"/><text x="222" y="172">puppy</text>
+        <circle cx="360" cy="230" r="6" fill="#c792ea"/><text x="372" y="237">car</text>
+        <circle cx="440" cy="225" r="6" fill="#c792ea"/><text x="452" y="232">truck</text>
+        <circle cx="390" cy="290" r="6" fill="#c792ea"/><text x="402" y="297">bus</text>
+      </g>
+    </svg>
+  </div>
+  <p class="src">illustrative values and a 2-D sketch; real embeddings have hundreds of dimensions</p>
+</section>

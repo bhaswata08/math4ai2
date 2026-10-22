@@ -1,0 +1,22 @@
+{
+  "_comment": "Shared stylesheets and scripts every deck loads, in order, as paths from the repo root. shared/js/dev.js reads this in the browser and shared/build.mjs reads it to inline everything, so this is the only list.",
+  "css": [
+    "node_modules/@fontsource/inter/latin-400.css",
+    "node_modules/@fontsource/inter/latin-500.css",
+    "node_modules/@fontsource/inter/latin-600.css",
+    "node_modules/@fontsource/jetbrains-mono/latin-400.css",
+    "node_modules/@fontsource/jetbrains-mono/latin-500.css",
+    "node_modules/katex/dist/katex.min.css",
+    "node_modules/reveal.js/dist/reset.css",
+    "node_modules/reveal.js/dist/reveal.css",
+    "shared/css/custom.css"
+  ],
+  "js": [
+    "node_modules/reveal.js/dist/reveal.js",
+    "node_modules/katex/dist/katex.min.js",
+    "node_modules/katex/dist/contrib/auto-render.min.js",
+    "shared/js/plane.js",
+    "shared/js/clips.js"
+  ],
+  "boot": "shared/js/deck.js"
+}

@@ -1,0 +1,17 @@
+{
+  "title": "Vectors · Mathematics for AI 1.1",
+  "sections": [
+    "00-open.html",
+    "01-what-is-a-vector.html",
+    "02-coordinates.html",
+    "03-addition.html",
+    "04-scaling.html"
+  ],
+  "planned": [
+    "05-dot-product.html",
+    "06-recap.html"
+  ],
+  "scripts": [
+    "figures.js"
+  ]
+}

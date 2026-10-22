@@ -1,0 +1,72 @@
+<!-- ============================================================
+     ACT 3 of 6. Addition. Budget: 20 min.
+     Source: 3b1b EoLA ch. 1 (VectorAddition, VectorAdditionNumerically).
+     Goal: students add by picture (tip to tail) and by arithmetic
+     (entry by entry), and see why the two agree.
+     Act 4 owns scaling. Linear combinations wait for Block 1.3.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 3 of 6</div>
+  <h1>Adding vectors</h1>
+  <p class="act-sub">Put one arrow's tail on the other's tip.</p>
+  <div class="act-time">20 min</div>
+</section>
+
+<section class="clip-slide">
+  <h2>Tip to tail</h2>
+  <video class="clip" src="assets/clips/AdditionTipToTail.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Slide <span class="cw">\(\vec w\)</span> so it starts where <span class="cv">\(\vec v\)</span> ends. The <span class="cr">sum</span> runs from the start to the final tip.</p>
+  <div class="credit">adapted from 3Blue1Brown, EoLA ch. 1</div>
+</section>
+
+<section class="clip-slide">
+  <h2>Why this rule?</h2>
+  <video class="clip" src="assets/clips/AdditionWhyNotThis.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Each vector is a movement. Do one movement, then the other: the sum is the total trip.</p>
+  <div class="credit">adapted from 3Blue1Brown, EoLA ch. 1</div>
+</section>
+
+<section class="clip-slide">
+  <h2>The arithmetic agrees with the picture</h2>
+  <video class="clip" src="assets/clips/AdditionNumerically.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Add the <span class="cx">x</span> entries, add the <span class="cy">y</span> entries.</p>
+  <div class="credit">adapted from 3Blue1Brown, EoLA ch. 1</div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Try it</div>
+  <h2>Drag either vector</h2>
+  <div class="clip-row" data-fig="add">
+    <div class="plane-host"></div>
+    <div><div class="readout"></div><div class="hint">drag the circles · the faded copy shows tip to tail</div></div>
+  </div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Where this shows up</div>
+  <h2>Meaning adds up in an embedding</h2>
+  <div class="cols wide-right" style="align-items:center">
+    <div>
+      $$\text{king} - \text{man} + \text{woman} \approx \text{queen}$$
+      <p style="font-size:0.75em" class="cdim">The step from <i>man</i> to <i>woman</i> is roughly the same vector as the step from <i>king</i> to <i>queen</i>.</p>
+    </div>
+    <svg viewBox="0 0 560 380" aria-label="parallelogram of man, woman, king, queen">
+      <g font-family="Inter" font-size="26" fill="#e9ebef">
+        <circle cx="90" cy="300" r="7" fill="#a7b0be"/><text x="74" y="309" text-anchor="end">man</text>
+        <circle cx="250" cy="250" r="7" fill="#a7b0be"/><text x="266" y="259">woman</text>
+        <circle cx="260" cy="110" r="7" fill="#a7b0be"/><text x="200" y="85">king</text>
+        <circle cx="420" cy="60" r="7" fill="#f0a35e"/><text x="436" y="68" fill="#f0a35e">queen</text>
+      </g>
+      <line x1="90" y1="300" x2="234" y2="255" stroke="#c792ea" stroke-width="5"/>
+      <polygon points="250,250 230,265 226,247" fill="#c792ea"/>
+      <line x1="260" y1="110" x2="404" y2="65" stroke="#c792ea" stroke-width="5" stroke-dasharray="12 8"/>
+      <polygon points="420,60 400,75 396,57" fill="#c792ea"/>
+      <text x="110" y="335" font-family="Inter" font-size="22" fill="#c792ea">woman − man</text>
+    </svg>
+  </div>
+  <p class="src">Mikolov et al. 2013, word2vec; the relation holds approximately, sketch not to scale</p>
+</section>

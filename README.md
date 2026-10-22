@@ -44,7 +44,8 @@ The same meaning on every slide and in every clip. Tokens live in
 | result | `#f0a35e` amber | anything derived: sums, scaled vectors, gradients, projections |
 | x component | `#8bd17c` green | x parts, x-axis motion |
 | y component | `#e8798a` rose | y parts, y-axis motion |
-| highlight | `#ffd166` | momentary emphasis only |
+| structure / highlight | `#ffd166` gold | act tags, list markers, emphasis on slides; momentary emphasis in clips |
+| mistake | `#ff6b6b` red | common mistakes, "what goes wrong" (slides only) |
 
 ## Manim
 
@@ -62,3 +63,27 @@ No Pi creatures. A port of 3b1b code names the upstream file in its header:
 Decks are CC BY-NC-SA 4.0 and credit Grant Sanderson wherever 3b1b material is
 used. CDAC cleared CC BY-NC for this programme, and reuse of 3b1b/videos was
 cleared (recorded in ../math4ai, commit 705f222).
+
+## Decks
+
+    node shared/serve.mjs 8123                     # then open http://localhost:8123/decks/1.1-vectors/
+    node shared/build.mjs decks/1.1-vectors        # single self-contained deck.html, clips inlined
+    shared/shot.sh http://localhost:8123/decks/1.1-vectors/ <out-dir> 0 3 7   # screenshots of #/0, #/3, #/7
+
+A deck is `index.html` (identical boilerplate in every deck), `deck.json`
+(title, section order, optional per-deck scripts) and `sections/`. Shared CSS
+and JS are listed once, in `shared/manifest.json`, which both the editing view
+and the build read.
+
+Slide types (classes in `shared/css/custom.css`): `title-slide`, `act-open`,
+`act-body` (with `act-tag`), `clip-slide`. Maths is KaTeX with `\( \)` inline
+and `$$ $$` display; single `$` is not maths.
+
+A clip slide is a `<video class="clip" src="assets/clips/X.mp4">` plus one
+invisible `<span class="fragment clip-play"></span>`: "next" plays the clip,
+"next" again moves on, going back rewinds. See `shared/js/clips.js`.
+
+Interactive figures: `<div data-fig="name">` in a section, and a deck script
+(listed under `scripts` in deck.json) that calls `Figures.register(name, mount)`.
+`shared/js/plane.js` gives a coordinate plane with arrows, dashed segments,
+KaTeX labels and draggable handles. Colours come from `role('v')` etc.
