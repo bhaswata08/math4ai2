@@ -1,9 +1,10 @@
 <!-- ============================================================
      ACT 3 of 4. Convex optimisation. Budget: 20 min.
-     Source: built for this course (lagrange.py: ConvexVsNot).
+     Source: built for this course (convex.py: ChordTest, ConvexSets,
+     ConvexStarts, NonConvexStarts, ActiveVsInactive).
      Goal: students recognise a convex problem (convex objective,
-     convex feasible set) and know its guarantee. Builds on Block
-     4.2 Act 4 (convex functions).
+     convex feasible set), know its guarantee, and know what an
+     inequality constraint does (active or inactive, KKT).
      ============================================================ -->
 
 <section class="act-open">
@@ -14,26 +15,64 @@
 </section>
 
 <section class="clip-slide">
-  <h2>Three starts, one answer</h2>
-  <video class="clip" src="assets/clips/ConvexVsNot.mp4"></video>
+  <h2>Convex function: the chord stays above the graph</h2>
+  <video class="clip" src="assets/clips/ChordTest.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">On a convex function every start ends at the same minimum. Without convexity, the start decides.</p>
+  <p class="caption">Pick any two points on the curve and join them. On a convex function the chord never dips below the graph.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Convex set: the segment stays inside</h2>
+  <video class="clip" src="assets/clips/ConvexSets.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Any two points of a convex set can be joined by a segment that stays in the set. A crescent fails: the segment leaves it.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Convex: every start, one answer</h2>
+  <video class="clip" src="assets/clips/ConvexStarts.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Three gradient descent runs from three starts end at the same minimum.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Not convex: the start decides</h2>
+  <video class="clip" src="assets/clips/NonConvexStarts.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">On a double well the runs split: two reach the global minimum, one stops in the local one.</p>
 </section>
 
 <section class="act-body">
   <div class="act-tag"><b>Act 3</b> / Definition</div>
   <h2>A convex problem</h2>
-  $$\min_{\mathbf x}\; f(\mathbf x) \quad \text{s.t.}\quad g_i(\mathbf x) \le 0,\quad A\mathbf x = \mathbf b$$
-  <div class="beats two">
+  <div class="eq-big">$$\min_{\mathbf x}\; f(\mathbf x) \quad \text{s.t.}\quad g_i(\mathbf x) \le 0,\quad A\mathbf x = \mathbf b$$</div>
+  <div class="beats two" style="font-size:1.25em">
     <div class="beat purpose"><h4>Requirements</h4><p>\(f\) and every \(g_i\) convex; equality constraints affine. Then the feasible set is convex.</p></div>
     <div class="beat purpose"><h4>Guarantee</h4><p>Every local minimum is global, and solvers find it reliably. Inequalities are handled by the KKT conditions, the generalisation of Lagrange.</p></div>
   </div>
 </section>
 
 <section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Inequalities</div>
+  <h2>Inequality constraints: active or not</h2>
+  <div class="clip-row" style="grid-template-columns:1.8fr 1fr">
+    <video class="clip" src="assets/clips/ActiveVsInactive.mp4"></video>
+    <div style="font-size:0.9em">
+      <p>Minimise \(f\) over the disc \(g \le 0\).</p>
+      <ul>
+        <li><span class="cr">Centre outside:</span> optimum on the boundary: <b>active</b>, \(\lambda &gt; 0\)</li>
+        <li><span class="cr">Centre inside:</span> free minimum: <b>inactive</b>, \(\lambda = 0\)</li>
+      </ul>
+    </div>
+  </div>
+  <span class="fragment clip-play"></span>
+  <p class="takeaway" style="font-size:1.1em">KKT in one line: \(\nabla f + \lambda\nabla g = 0,\ \lambda \ge 0,\ \lambda\,g = 0\). Either the constraint binds (\(g = 0\)) or its multiplier is zero. This is complementary slackness.</p>
+</section>
+
+<section class="act-body">
   <div class="act-tag"><b>Act 3</b> / Examples</div>
   <h2>Convex or not</h2>
-  <table style="font-size:0.8em">
+  <table style="font-size:1.05em">
     <thead><tr><th>problem</th><th>convex?</th></tr></thead>
     <tbody>
       <tr><td>least squares, ridge regression</td><td>yes</td></tr>
