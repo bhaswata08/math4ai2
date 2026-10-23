@@ -1,0 +1,27 @@
+<!-- ============================================================
+     ACT 5 of 5. Recap and practice. Budget: 12 min.
+     House rule: worked answer for problem 1 only.
+     ============================================================ -->
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / Recap</div>
+  <h2>Everything in this block</h2>
+  <div class="beats two recap">
+    <div class="beat purpose"><h4>Shapes</h4><p>One entry per (output, input) pair. \(\partial L/\partial W\) has the shape of \(W\).</p></div>
+    <div class="beat purpose"><h4>Identities</h4><p>\(\nabla \mathbf a^{\top}\mathbf x = \mathbf a\), \(\nabla \mathbf x^{\top}A\mathbf x = (A + A^{\top})\mathbf x\), \(\partial L/\partial W = \boldsymbol\delta\mathbf x^{\top}\).</p></div>
+    <div class="beat purpose"><h4>Backprop</h4><p>Chain rule from the loss backwards, reusing each layer's \(\boldsymbol\delta\).</p></div>
+    <div class="beat purpose"><h4>Autodiff</h4><p>Record the forward pass, sweep it in reverse. One sweep, every gradient.</p></div>
+  </div>
+  <p class="takeaway">Next block: second derivatives, and what they say about the <b>shape</b> of a loss.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / Practice</div>
+  <h2>By hand</h2>
+  <ol class="practice">
+    <li>Shape of \(\partial \mathbf f/\partial \mathbf x\) for \(\mathbf f: \mathbb R^{3} \to \mathbb R^{2}\) <span class="fragment">\(2 \times 3\)</span></li>
+    <li>\(\nabla_{\mathbf x}\,\lVert A\mathbf x - \mathbf b \rVert^2\), checked entry by entry for a \(2 \times 2\) \(A\).</li>
+    <li>Forward and reverse sweeps by hand for \(f(x, y) = \sin(xy) + x\) at \((1, 0)\).</li>
+    <li>For \(\hat y = \sigma(wx + b)\) and \(C = (\hat y - y)^2\), derive \(\partial C/\partial w\) and \(\partial C/\partial b\).</li>
+  </ol>
+</section>

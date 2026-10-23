@@ -1,0 +1,49 @@
+<!-- ============================================================
+     ACT 4 of 5. Automatic differentiation. Budget: 20 min.
+     Goal: students trace forward and reverse mode on a small graph
+     by hand, and explain why reverse mode suits one loss and many
+     parameters.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 4 of 5</div>
+  <h1>Automatic differentiation</h1>
+  <p class="act-sub">Not symbolic, not numeric: the chain rule, applied to a recorded computation.</p>
+  <div class="act-time">20 min</div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / A worked graph</div>
+  <h2>\(f(x, y) = (x + y)\,y\) at \(x = 2,\ y = 3\)</h2>
+  <table style="font-size:0.85em">
+    <thead><tr><th>node</th><th>forward value</th><th>backward sweep</th></tr></thead>
+    <tbody>
+      <tr><td>\(u = x + y\)</td><td>\(5\)</td><td>\(\bar u = y = 3\)</td></tr>
+      <tr><td>\(f = u \cdot y\)</td><td>\(15\)</td><td>\(\bar f = 1\)</td></tr>
+      <tr><td>\(x\)</td><td>\(2\)</td><td>\(\bar x = \bar u \cdot 1 = 3\)</td></tr>
+      <tr><td>\(y\)</td><td>\(3\)</td><td>\(\bar y = \bar u \cdot 1 + \bar f \cdot u = 3 + 5 = 8\)</td></tr>
+    </tbody>
+  </table>
+  <p class="takeaway">Check: \(f = xy + y^2\), so \(\partial f/\partial x = y = 3\) and \(\partial f/\partial y = x + 2y = 8\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / Forward or reverse</div>
+  <h2>Which direction to sweep</h2>
+  <div class="beats two">
+    <div class="beat purpose"><h4>Forward mode</h4><p>One sweep per <b>input</b>. Cheap when there are few inputs and many outputs.</p></div>
+    <div class="beat purpose"><h4>Reverse mode</h4><p>One sweep per <b>output</b>. A loss is one output with millions of parameters: one backward pass gives every gradient.</p></div>
+  </div>
+  <p class="takeaway">Backpropagation is reverse-mode automatic differentiation on a neural network.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / In code</div>
+  <h2>What <span class="mono">loss.backward()</span> does</h2>
+<pre class="mono" style="font-size:0.85em; line-height:1.45"><code>x = torch.tensor(2.0, requires_grad=True)
+y = torch.tensor(3.0, requires_grad=True)
+f = (x + y) * y      # forward: records the graph
+f.backward()         # reverse sweep from f
+print(x.grad, y.grad)  # tensor(3.) tensor(8.)</code></pre>
+  <p class="takeaway">The same numbers as the table, with no formula for \(\partial f/\partial y\) ever written down.</p>
+</section>

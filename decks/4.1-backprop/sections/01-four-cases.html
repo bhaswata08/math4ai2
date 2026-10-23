@@ -1,0 +1,34 @@
+<!-- ============================================================
+     ACT 1 of 5. The four cases. Budget: 15 min.
+     Goal: students predict the shape of a derivative from the shapes
+     of input and output, including derivatives with respect to a
+     matrix. Convention: numerator layout (Jacobian is m x n), as in
+     Block 3.4, with the gradient as a column vector.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 1 of 5</div>
+  <h1>The four cases</h1>
+  <p class="act-sub">Before computing a derivative, know its shape.</p>
+  <div class="act-time">15 min</div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 1</b> / Shapes</div>
+  <h2>Input shape × output shape</h2>
+  <table style="font-size:0.8em">
+    <thead><tr><th></th><th>scalar input</th><th>vector input</th></tr></thead>
+    <tbody>
+      <tr><td>scalar output</td><td>\(\dfrac{df}{dx}\): a number</td><td>\(\nabla f \in \mathbb R^{n}\): a vector</td></tr>
+      <tr><td>vector output (\(m\) entries)</td><td>\(\dfrac{d\mathbf f}{dx} \in \mathbb R^{m}\): a velocity</td><td>\(J \in \mathbb R^{m \times n}\): the Jacobian</td></tr>
+    </tbody>
+  </table>
+  <p class="takeaway">One entry per (output, input) pair. Count them and you know the shape.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 1</b> / With respect to a matrix</div>
+  <h2>A scalar loss, a matrix of weights</h2>
+  $$L: \mathbb R^{m \times n} \to \mathbb R \qquad \frac{\partial L}{\partial W} = \begin{bmatrix} \partial L/\partial w_{11} & \cdots & \partial L/\partial w_{1n} \\ \vdots & & \vdots \\ \partial L/\partial w_{m1} & \cdots & \partial L/\partial w_{mn} \end{bmatrix} \in \mathbb R^{m \times n}$$
+  <p class="takeaway">The gradient has the same shape as the weights, so the update \(W \leftarrow W - \eta\,\partial L/\partial W\) type-checks.</p>
+</section>

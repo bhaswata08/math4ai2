@@ -1,0 +1,11 @@
+{
+  "title": "Matrix calculus and backpropagation · Mathematics for AI 4.1",
+  "sections": [
+    "00-open.html",
+    "01-four-cases.html",
+    "02-identities.html",
+    "03-backprop.html",
+    "04-autodiff.html",
+    "05-recap.html"
+  ]
+}

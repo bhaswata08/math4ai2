@@ -1,0 +1,45 @@
+<!-- ============================================================
+     ACT 2 of 5. Identities. Budget: 20 min.
+     Goal: students use five identities without re-deriving them, and
+     can check each one entry by entry. Derive the first two on the
+     board; the rest are stated.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 2 of 5</div>
+  <h1>Identities worth memorising</h1>
+  <p class="act-sub">Five rules cover almost every model in this course.</p>
+  <div class="act-time">20 min</div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / The table</div>
+  <h2>Gradients of common forms</h2>
+  <table style="font-size:0.85em">
+    <thead><tr><th>function</th><th>gradient</th><th>where it shows up</th></tr></thead>
+    <tbody>
+      <tr><td>\(\mathbf a^{\top}\mathbf x\)</td><td>\(\mathbf a\)</td><td>a linear score</td></tr>
+      <tr><td>\(\mathbf x^{\top}\mathbf x = \lVert \mathbf x \rVert^2\)</td><td>\(2\mathbf x\)</td><td>L2 regularisation</td></tr>
+      <tr><td>\(\mathbf x^{\top} A\,\mathbf x\)</td><td>\((A + A^{\top})\,\mathbf x\), or \(2A\mathbf x\) if \(A\) is symmetric</td><td>quadratic losses, Hessians</td></tr>
+      <tr><td>\(\lVert A\mathbf x - \mathbf b \rVert^2\)</td><td>\(2A^{\top}(A\mathbf x - \mathbf b)\)</td><td>least squares</td></tr>
+      <tr><td>\(A\mathbf x\) (vector output)</td><td>Jacobian \(A\)</td><td>a linear layer</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Check one by hand</div>
+  <h2>\(\nabla(\mathbf a^{\top}\mathbf x) = \mathbf a\)</h2>
+  $$\mathbf a^{\top}\mathbf x = a_1 x_1 + a_2 x_2 + \cdots + a_n x_n \quad\Longrightarrow\quad \frac{\partial}{\partial x_i} = a_i$$
+  <p class="takeaway">Every identity in the table can be checked this way: write the sum, differentiate one entry.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / A linear layer</div>
+  <h2>\(\mathbf z = W\mathbf x + \mathbf b\), loss \(L(\mathbf z)\)</h2>
+  <div class="cols">
+    <div>$$\frac{\partial L}{\partial W} = \boldsymbol\delta\,\mathbf x^{\top}$$<p class="cdim" style="font-size:0.7em">outer product: \(m \times 1\) times \(1 \times n\)</p></div>
+    <div>$$\frac{\partial L}{\partial \mathbf x} = W^{\top}\boldsymbol\delta$$<p class="cdim" style="font-size:0.7em">passed back to the previous layer</p></div>
+  </div>
+  <p class="takeaway">Here \(\boldsymbol\delta = \partial L/\partial \mathbf z\). These two lines are a whole backward pass through one layer.</p>
+</section>

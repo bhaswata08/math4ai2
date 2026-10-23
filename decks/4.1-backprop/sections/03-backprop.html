@@ -1,0 +1,51 @@
+<!-- ============================================================
+     ACT 3 of 5. Backpropagation. Budget: 35 min.
+     Source: 3b1b NN ch. 4 (part3.py: SimplestNetworkExample,
+     GeneralFormulas), ported in backprop.py.
+     Goal: students derive dC/dw for the last layer with the chain
+     rule, then see the same factors reused one layer back. Builds
+     directly on Block 3.3's ChainRuleGeneral clip.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 3 of 5</div>
+  <h1>Backpropagation</h1>
+  <p class="act-sub">The chain rule from Day 3, applied to a network, from the loss backwards.</p>
+  <div class="act-time">35 min</div>
+</section>
+
+<section class="clip-slide">
+  <h2>The smallest network</h2>
+  <video class="clip" src="assets/clips/TinyNetwork.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">One neuron per layer, so every quantity is a single number.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>What depends on what</h2>
+  <video class="clip" src="assets/clips/DependencyTree.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">A nudge to <span class="cv">\(w^{(L)}\)</span> moves \(z\), which moves \(a\), which moves the <span class="cr">cost</span>.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Three local factors</h2>
+  <video class="clip" src="assets/clips/ChainRuleProduct.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Multiply the factors along the path: the chain rule from Block 3.3.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>One layer further back</h2>
+  <video class="clip" src="assets/clips/GoDeeper.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Each layer reuses the factor already computed for the layer after it. That reuse is the whole trick.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / With many neurons</div>
+  <h2>The same equations, in matrix form</h2>
+  $$\boldsymbol\delta^{(L)} = \nabla_{\mathbf a} C \odot \sigma'(\mathbf z^{(L)}) \qquad \boldsymbol\delta^{(l)} = \big(W^{(l+1)\top}\boldsymbol\delta^{(l+1)}\big) \odot \sigma'(\mathbf z^{(l)})$$
+  $$\frac{\partial C}{\partial W^{(l)}} = \boldsymbol\delta^{(l)}\,\mathbf a^{(l-1)\top} \qquad \frac{\partial C}{\partial \mathbf b^{(l)}} = \boldsymbol\delta^{(l)}$$
+  <p class="takeaway">\(\odot\) is the Hadamard product from Block 2.1. The transpose is Act 2's \(W^{\top}\boldsymbol\delta\).</p>
+</section>
