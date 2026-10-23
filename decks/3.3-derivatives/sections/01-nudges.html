@@ -1,0 +1,45 @@
+<!-- ============================================================
+     ACT 1 of 6. Thinking in nudges. Budget: 12 min.
+     Source: 3b1b EoC ch. 1 (IntroduceCircle, ApproximateOneRing,
+     RecapCircleSolution.smaller_dr), ported in circle_rings.py.
+     Goal: students meet dA ≈ (something) · dr, and see the error
+     vanish faster than the nudge. That habit carries the whole block.
+     Deliberately stops before integration: the course never
+     integrates, so the upstream "area under 2πr" payoff is cut.
+     Act 2 owns the formal definition of the derivative.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 1 of 6</div>
+  <h1>Thinking in nudges</h1>
+  <p class="act-sub">Change the input a little. Watch how much the output changes.</p>
+  <div class="act-time">12 min</div>
+</section>
+
+<section class="clip-slide">
+  <h2>Where does a circle's area come from?</h2>
+  <video class="clip" src="assets/clips/CircleArea.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Cut the disc into thin rings of thickness <span class="cy">\(dr\)</span>.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Unroll one ring</h2>
+  <video class="clip" src="assets/clips/UnwrapRing.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">A ring of radius \(r\) is almost a rectangle: <span class="cr">\(dA \approx 2\pi r\,dr\)</span>.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>The error shrinks faster than the nudge</h2>
+  <video class="clip" src="assets/clips/ShrinkDr.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">The error is \(\pi\,dr^2\): halve <span class="cy">\(dr\)</span> and it quarters. In the limit, <span class="cr">\(dA/dr = 2\pi r\)</span>.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 1</b> / The habit</div>
+  <h2>One move, used all day</h2>
+  $$\underbrace{dA}_{\text{change out}} \;\approx\; \underbrace{2\pi r}_{\text{rate}} \cdot \underbrace{dr}_{\text{change in}}$$
+  <p class="takeaway">The <span class="cr">rate</span> is the derivative. The leftover \(dr^2\) term is what we throw away.</p>
+</section>

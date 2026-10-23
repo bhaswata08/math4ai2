@@ -1,0 +1,56 @@
+<!-- ============================================================
+     ACT 4 of 6. Sums, products, chains. Budget: 20 min.
+     Source: 3b1b EoC ch. 4 (SumRule, IntroduceProductAsArea,
+     ThreeLinesChainRule, GeneralizeChainRule), ported in
+     chain_product.py.
+     Goal: students differentiate any combination of table
+     functions, and read the chain rule as "nudges multiply along a
+     chain". Block 4.1 builds backpropagation on exactly that
+     picture, so the chain diagram here is deliberate.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 4 of 6</div>
+  <h1>Sums, products, chains</h1>
+  <p class="act-sub">Combine functions, and the nudges combine in a predictable way.</p>
+  <div class="act-time">20 min</div>
+</section>
+
+<section class="clip-slide">
+  <h2>Sum rule: nudges stack</h2>
+  <video class="clip" src="assets/clips/SumRule.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">The change in \(g + h\) is the change in <span class="cv">\(g\)</span> plus the change in <span class="cw">\(h\)</span>.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Product rule: a box gains two strips</h2>
+  <video class="clip" src="assets/clips/ProductAsArea.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption"><span class="cr">\(d(gh) = g\,dh + h\,dg\)</span>. The corner \(dg\,dh\) is too small to count.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Chain rule: three number lines</h2>
+  <video class="clip" src="assets/clips/ChainRuleLines.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">A nudge <span class="cx">\(dx\)</span> is stretched by \(2x\), then by \(\cos(x^2)\). The stretches multiply.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Chain rule in general</h2>
+  <video class="clip" src="assets/clips/ChainRuleGeneral.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">One local factor per link, multiplied along the chain. Backpropagation is this, repeated.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / Try it</div>
+  <h2>Combine the rules</h2>
+  <ol class="practice">
+    <li>\(\dfrac{d}{dx}\,(x^3 + \sin x)\) <span class="fragment">\(= 3x^2 + \cos x\)</span></li>
+    <li>\(\dfrac{d}{dx}\,(x^2 \sin x)\)</li>
+    <li>\(\dfrac{d}{dx}\,e^{-x^2}\)</li>
+    <li>Show that \(\sigma'(x) = \sigma(x)\,(1 - \sigma(x))\) for \(\sigma(x) = (1 + e^{-x})^{-1}\).</li>
+  </ol>
+</section>

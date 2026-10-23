@@ -1,0 +1,70 @@
+<!-- ============================================================
+     ACT 2 of 6. The derivative. Budget: 25 min.
+     Source: 3b1b EoC ch. 2 (IntroduceCar, GraphCarTrajectory,
+     CompareTwoTimes, DsOverDtGraphically, SecantLineToTangentLine,
+     TCubedExample), ported in derivative_paradox.py.
+     Goal: students define ds/dt as the limit of a ratio, see the
+     ratio settle while dt and ds both vanish, and compute d(t^3)/dt
+     from the definition.
+     Act 3 owns the shortcut rules; here every derivative is from
+     first principles.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 2 of 6</div>
+  <h1>The derivative</h1>
+  <p class="act-sub">Speed "at an instant" sounds like a contradiction. It is a limit.</p>
+  <div class="act-time">25 min</div>
+</section>
+
+<section class="clip-slide">
+  <h2>Distance against time</h2>
+  <video class="clip" src="assets/clips/CarTrajectory.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">The <span class="cv">graph \(s(t)\)</span> records where the car is at every moment.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Speed needs two moments</h2>
+  <video class="clip" src="assets/clips/TwoTimes.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Average speed over <span class="cx">\(dt\)</span> is <span class="cy">\(ds\)</span> divided by <span class="cx">\(dt\)</span>.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Shrink the gap</h2>
+  <video class="clip" src="assets/clips/ShrinkDt.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption"><span class="cx">\(dt\)</span> and <span class="cy">\(ds\)</span> both go to zero. <span class="cr">Their ratio</span> does not.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Secant becomes tangent</h2>
+  <video class="clip" src="assets/clips/SecantToTangent.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">The derivative is the slope of the tangent line, and it changes with \(t\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Definition</div>
+  <h2>The derivative</h2>
+  $$\frac{df}{dx}(x) \;=\; \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}$$
+  <p class="takeaway">Read it as: <span class="cr">output change</span> per unit of <span class="cx">input change</span>, for very small changes.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>From the definition: \(s(t) = t^3\)</h2>
+  <video class="clip" src="assets/clips/TCubed.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Every term with a leftover <span class="cx">\(dt\)</span> vanishes. What survives is <span class="cr">\(3t^2\)</span>.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Try it</div>
+  <h2>From first principles</h2>
+  <ol class="practice">
+    <li>\(f(x) = x^2\). Expand \(\frac{(x+h)^2 - x^2}{h}\) and let \(h \to 0\). <span class="fragment">\(= 2x + h \to 2x\)</span></li>
+    <li>\(f(x) = 5x + 3\). What is the derivative, and why does \(h\) not appear at all?</li>
+    <li>\(f(x) = |x|\) at \(x = 0\): compute the ratio for \(h &gt; 0\) and for \(h &lt; 0\). Is there one tangent?</li>
+  </ol>
+</section>

@@ -1,0 +1,40 @@
+<!-- ============================================================
+     ACT 5 of 6. Partial derivatives. Budget: 12 min.
+     Source: built for this course (partials.py); notation after
+     3b1b videos _2017/gradient.py.
+     Goal: students take a partial derivative by freezing every
+     other input, and see it as a slope along one slice.
+     Block 3.4 owns the gradient, directional derivative and
+     Jacobian; the gradient appears here only as a one-line teaser.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 5 of 6</div>
+  <h1>Partial derivatives</h1>
+  <p class="act-sub">A model has millions of inputs. Nudge one, hold the rest still.</p>
+  <div class="act-time">12 min</div>
+</section>
+
+<section class="clip-slide">
+  <h2>Slice along \(x\)</h2>
+  <video class="clip" src="assets/clips/PartialX.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Freeze <span class="cy">\(y\)</span>. The surface becomes a curve in <span class="cx">\(x\)</span>, and its slope is <span class="cr">\(\partial f/\partial x\)</span>.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Slice along \(y\)</h2>
+  <video class="clip" src="assets/clips/PartialY.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Freeze <span class="cx">\(x\)</span> instead. Two slopes, one per input.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / How to compute</div>
+  <h2>Treat the other inputs as constants</h2>
+  $$f(x, y) = x^2 y + \sin y$$
+  <div class="cols">
+    <div>$$\frac{\partial f}{\partial x} = 2xy$$<p class="cdim" style="font-size:0.7em">\(y\) is a constant, \(\sin y\) disappears</p></div>
+    <div>$$\frac{\partial f}{\partial y} = x^2 + \cos y$$<p class="cdim" style="font-size:0.7em">\(x^2\) is a constant coefficient</p></div>
+  </div>
+</section>

@@ -1,0 +1,12 @@
+{
+  "title": "Derivatives · Mathematics for AI 3.3",
+  "sections": [
+    "00-open.html",
+    "01-nudges.html",
+    "02-derivative.html",
+    "03-rules-geometry.html",
+    "04-chain-rule.html",
+    "05-partials.html",
+    "06-recap.html"
+  ]
+}
