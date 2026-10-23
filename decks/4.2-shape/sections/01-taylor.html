@@ -2,7 +2,7 @@
      ACT 1 of 5. Linearisation and Taylor series. Budget: 30 min.
      Source: 3b1b EoC ch. 11 (chapter10.py: ConstructQuadratic
      Approximation, MoreTerms, FactorialTerms, ApproximateNearNewPoint),
-     ported in taylor.py.
+     ported in taylor.py; FactorialByDifferentiating and the numeric ApproximateNearPoint are original.
      Goal: students build a Taylor polynomial by matching derivatives
      and read f(a+h) ≈ f(a) + f'(a)h + ½f''(a)h², which Act 2 lifts
      to many variables. Convergence and radius of convergence are cut.
@@ -31,14 +31,14 @@
 
 <section class="clip-slide">
   <h2>Where the factorial comes from</h2>
-  <video class="clip" src="assets/clips/FactorialTerms.mp4"></video>
+  <video class="clip" src="assets/clips/FactorialByDifferentiating.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">Differentiating \(x^n\) \(n\) times leaves \(n!\), so each coefficient is divided by it.</p>
+  <p class="caption">Differentiating \(c_4x^4\) four times leaves \(4\cdot3\cdot2\cdot1 = 24\), so \(c_4 = f^{(4)}(0)/24\).</p>
 </section>
 
 <section class="clip-slide">
   <h2>Around any point</h2>
   <video class="clip" src="assets/clips/ApproximateNearPoint.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">First order is the tangent line. Second order adds the curvature.</p>
+  <p class="caption">Tangent line, then curvature. Shrink \(h\) by 5: the linear error falls about 25 times, the quadratic error about 100.</p>
 </section>

@@ -285,118 +285,101 @@ class MoreTerms(Scene):
             color=RESULT_COLOR,
         ).move_to(UP * 2.05)
 
+        def deg(n):
+            return MathTex(rf"\text{{degree }}{n}", font_size=MIN_FONT, color=RESULT_COLOR).move_to(axes.c2p(-5.0, -1.2))
+
+        d2, d4, d6, d8 = deg(2), deg(4), deg(6), deg(8)
+
         # Frame 1 shows P2 initial state
-        self.add(axes, x_label, cos_curve, cos_label, curve_p2, f2)
-        # Settle on P2 (sheet 20% sample falls here)
-        self.wait(3.5)
+        self.add(axes, x_label, cos_curve, cos_label, curve_p2, f2, d2)
+        self.wait(3.0)
 
-        # Degree 4
-        self.play(
-            FadeOut(f2),
-            FadeIn(f4),
-            ReplacementTransform(curve_p2, curve_p4),
-            run_time=1.0,
-        )
-        # Settle on P4 (sheet 50% sample falls here)
-        self.wait(4.0)
-
-        # Degree 6
-        self.play(
-            FadeOut(f4),
-            FadeIn(f6),
-            ReplacementTransform(curve_p4, curve_p6),
-            run_time=1.0,
-        )
-        # Settle on P6 (sheet 80% sample falls here)
-        self.wait(4.0)
-
-        # Degree 8
-        self.play(
-            FadeOut(f6),
-            FadeIn(f8),
-            ReplacementTransform(curve_p6, curve_p8),
-            run_time=1.0,
-        )
-        # Settle on P8 (sheet last frame falls here)
-        self.wait(2.2)
+        cur = curve_p2
+        for fo, fi, do, di, cn in ((f2, f4, d2, d4, curve_p4), (f4, f6, d4, d6, curve_p6), (f6, f8, d6, d8, curve_p8)):
+            self.play(FadeOut(fo), FadeOut(do), run_time=0.4)
+            self.play(FadeIn(fi), FadeIn(di), ReplacementTransform(cur, cn), run_time=1.2)
+            cur = cn
+            self.wait(3.0)
+        self.wait(1.0)
 
 
 # =============================================================================
-# SCENE 3: FactorialTerms
+# SCENE 3: FactorialByDifferentiating
 # =============================================================================
-class FactorialTerms(Scene):
+class FactorialByDifferentiating(Scene):
     def construct(self):
-        # 4 lines built vertically with buff >= 0.35, all fonts >= MIN_FONT
-        line1 = MathTex(
-            r"\frac{d^n}{dx^n}\bigl(",
-            r"c_n",
-            r"\,x^n\bigr) = n!",
-            r"c_n",
-            font_size=MIN_FONT + 2,
-        )
-        line1[0].set_color(INK)
-        line1[1].set_color(RESULT_COLOR)
-        line1[2].set_color(INK)
-        line1[3].set_color(RESULT_COLOR)
+        n = 4
+        # row k holds the k-fold derivative of c_4 x^4, built from the real product n(n-1)...
+        rows = []
+        factors = []
+        for k in range(n + 1):
+            power = n - k
+            mult = [n - j for j in range(k)]            # 4, 3, 2, 1 as far as differentiated
+            prod = int(np.prod(mult)) if mult else 1
+            parts = []
+            if k == 0:
+                parts = [r"c_4x^4"]
+            else:
+                parts = [r"\cdot".join(str(m) for m in mult), r"\,c_4" + ("" if power == 0 else (r"x" if power == 1 else rf"x^{power}"))]
+            rows.append((parts, prod, power))
+        assert rows[-1][1] == 24 == int(np.prod(range(1, n + 1)))
 
-        line2 = MathTex(
-            r"P^{(n)}(0) = ",
-            r"f^{(n)}(0)",
-            r"\implies n!",
-            r"c_n",
-            r"=",
-            r"f^{(n)}(0)",
-            font_size=MIN_FONT + 2,
-        )
-        line2[0].set_color(RESULT_COLOR)
-        line2[1].set_color(V_COLOR)
-        line2[2].set_color(INK)
-        line2[3].set_color(RESULT_COLOR)
-        line2[4].set_color(INK)
-        line2[5].set_color(V_COLOR)
+        mobs = []
+        for k, (parts, prod, power) in enumerate(rows):
+            if k == 0:
+                m = MathTex(parts[0], font_size=MIN_FONT + 4, color=RESULT_COLOR)
+                new_factor = None
+            else:
+                eq = rf"=\,{prod}\,c_4" + ("" if power == 0 else (r"x" if power == 1 else rf"x^{power}"))
+                m = MathTex(parts[0], parts[1], *([] if k == 1 else [eq]), font_size=MIN_FONT + 2, color=RESULT_COLOR)
+            mobs.append(m)
+        col = VGroup(*mobs).arrange(DOWN, aligned_edge=LEFT, buff=0.3)
+        col.move_to(LEFT * 0.4 + UP * 0.1)
+        col.align_to(RIGHT * -1.6, LEFT)
+        dd = []
+        for k in range(1, n + 1):
+            lab = MathTex(r"\mathrm{d}/\mathrm{d}x", font_size=MIN_FONT, color=INK_DIM)
+            lab.next_to(mobs[k], LEFT, buff=0.3)
+            dd.append(lab)
+        tag = MathTex(r"4\cdot3\cdot2\cdot1=4!=24", font_size=MIN_FONT + 4, color=HIGHLIGHT)
+        tag.next_to(mobs[-1], DOWN, buff=0.35).align_to(mobs[-1], LEFT)
+        # the mixed multiplier's newest factor flashes gold, then rests amber
+        self.add(mobs[0])
+        self.wait(2.0)
+        for k in range(1, n + 1):
+            m = mobs[k]
+            newest = m[0]
+            self.play(FadeIn(dd[k - 1]), FadeIn(m), run_time=0.8)
+            self.play(Indicate(newest, color=HIGHLIGHT, scale_factor=1.15), run_time=0.8)
+            self.wait(0.3)
+        self.play(FadeIn(tag), run_time=0.8)
+        self.wait(2.0)
+        self.play(*[FadeOut(m) for m in (*mobs, *dd, tag)], run_time=0.8)
 
-        line3 = MathTex(
-            r"c_n",
-            r"=",
-            r"\frac{f^{(n)}(0)}{n!}",
-            font_size=MIN_FONT + 4,
-        )
-        line3[0].set_color(RESULT_COLOR)
-        line3[1].set_color(INK)
-        line3[2].set_color(V_COLOR)
+        # match with cos at 0
+        d4 = int(np.round(np.cos(0.0)))  # cos''''(x) = cos(x), so cos''''(0) = 1
+        l1 = MathTex(r"P^{(4)}(0)=24\,c_4", font_size=MIN_FONT + 4, color=RESULT_COLOR)
+        l2 = MathTex(rf"\cos^{{(4)}}(0)={d4}", font_size=MIN_FONT + 4, color=V_COLOR)
+        l3 = MathTex(rf"24\,c_4={d4}\ \Rightarrow\ c_4=\frac{{{d4}}}{{24}}", font_size=MIN_FONT + 4, color=RESULT_COLOR)
+        l4 = MathTex(r"P(x)=1-\frac{x^2}{2}+", r"\frac{x^4}{24}", font_size=MIN_FONT + 4, color=RESULT_COLOR)
+        l4[1].set_color(HIGHLIGHT)
+        grp = VGroup(l1, l2, l3, l4).arrange(DOWN, aligned_edge=LEFT, buff=0.4).move_to(ORIGIN)
+        for l in (l1, l2, l3):
+            self.play(FadeIn(l), run_time=0.8)
+            self.wait(1.0)
+        self.play(FadeIn(l4), run_time=0.8)
+        self.wait(2.0)
+        self.play(*[FadeOut(m) for m in (l1, l2, l3, l4)], run_time=0.8)
 
-        line4 = MathTex(
-            r"P(x)",
-            r"=",
-            r"\sum_{n=0}^{\infty} \frac{f^{(n)}(a)}{n!}\,(x - a)^n",
-            font_size=MIN_FONT + 4,
-        )
-        line4[0].set_color(RESULT_COLOR)
-        line4[1].set_color(INK)
-        line4[2].set_color(V_COLOR)
-
-        lines = VGroup(line1, line2, line3, line4).arrange(DOWN, buff=0.42)
-        lines.move_to(ORIGIN)
-
-        # Frame 1 shows line1 (never an empty opening frame)
-        self.add(line1)
-        # Settle on Line 1 (sheet 20% sample falls here at ~4.0s)
-        self.wait(4.5)
-
-        # Step 2: Match derivative equation
-        self.play(Write(line2), run_time=1.2)
-        # Settle on Lines 1 & 2 (sheet 50% sample falls here at ~9.8s)
-        self.wait(4.5)
-
-        # Step 3: Solve for coefficient c_n
-        self.play(Write(line3), run_time=1.2)
-        # Settle on Lines 1, 2, 3 (sheet 80% sample falls here at ~15.5s)
-        self.wait(5.0)
-
-        # Step 4: General Taylor series expansion
-        self.play(Write(line4), run_time=1.4)
-        # Settle on all 4 lines (sheet last frame falls here at ~19.5s)
-        self.wait(2.2)
+        # general rule, stated at 0 first, then shifted to a
+        g1 = MathTex(r"c_4=\frac{f^{(4)}(0)}{4!}=\frac{f^{(4)}(0)}{24}", font_size=MIN_FONT + 4, color=RESULT_COLOR)
+        g2 = MathTex(r"c_n=\frac{f^{(n)}(0)}{n!}", font_size=MIN_FONT + 4, color=RESULT_COLOR)
+        g3 = MathTex(r"\text{around }a:\ c_n(x-a)^n,\ c_n=\frac{f^{(n)}(a)}{n!}", font_size=MIN_FONT + 4, color=INK)
+        gg = VGroup(g1, g2, g3).arrange(DOWN, aligned_edge=LEFT, buff=0.5).move_to(ORIGIN)
+        for g_ in (g1, g2, g3):
+            self.play(FadeIn(g_), run_time=0.8)
+            self.wait(1.4)
+        self.wait(1.0)
 
 
 # =============================================================================
@@ -404,153 +387,108 @@ class FactorialTerms(Scene):
 # =============================================================================
 class ApproximateNearPoint(Scene):
     def construct(self):
-        # 1. Coordinate Axes for f(x) = e^{x/2}
+        a = 1.0
+        f_fn = lambda x: np.exp(0.5 * x)
+        fa = f_fn(a)
+        f1 = 0.5 * fa
+        f2 = 0.25 * fa
+        lin_fn = lambda x: fa + f1 * (x - a)
+        quad_fn = lambda x: lin_fn(x) + 0.5 * f2 * (x - a) ** 2
+
         axes = Axes(
-            x_range=[-0.5, 3.201, 1],
-            y_range=[0, 3.801, 1],
-            x_length=6.4,
-            y_length=3.0,
-            axis_config={
-                "stroke_color": INK_DIM,
-                "stroke_width": 2.5,
-                "include_ticks": True,
-                "include_tip": False,
-            },
+            x_range=[-0.5, 3.201, 1], y_range=[0, 3.801, 1], x_length=6.4, y_length=3.0,
+            axis_config={"stroke_color": INK_DIM, "stroke_width": 2.5, "include_ticks": True, "include_tip": False},
             tips=False,
         ).move_to(LEFT * 0.9 + UP * 0.45)
-
         axes.add_coordinates(font_size=MIN_FONT)
         for axis in axes.get_axes():
             if hasattr(axis, "numbers"):
                 for num in axis.numbers:
                     num.set_color(INK_DIM)
-
         x_axis_label = MathTex("x", font_size=MIN_FONT, color=X_COLOR)
-        x_axis_label.next_to(axes.c2p(3.2, 0), RIGHT, buff=0.15).add_background_rectangle(
-            color=BG, opacity=0.85, buff=0.08
-        )
+        x_axis_label.next_to(axes.c2p(3.2, 0), RIGHT, buff=0.15).add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
+        f_curve = axes.plot(f_fn, x_range=[-0.4, 2.65], color=V_COLOR, stroke_width=3.5)
+        f_label = MathTex(r"f(x)=e^{x/2}", font_size=MIN_FONT, color=V_COLOR)
+        f_label.move_to(axes.c2p(0.8, 3.35)).add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
 
-        # Function f(x) = exp(x / 2)
-        def f_fn(x):
-            return np.exp(0.5 * x)
-
-        f_curve = axes.plot(
-            f_fn,
-            x_range=[-0.4, 2.65],
-            color=V_COLOR,
-            stroke_width=3.5,
-        )
-        # Position f(x) label in open space above curve and right of y-axis
-        f_label = MathTex(r"f(x) = e^{x/2}", font_size=MIN_FONT, color=V_COLOR)
-        f_label.move_to(axes.c2p(0.8, 3.3)).add_background_rectangle(
-            color=BG, opacity=0.85, buff=0.08
-        )
-
-        # Expansion point a = 1
-        a_val = 1.0
-        fa_val = f_fn(a_val)  # approx 1.6487
-        dfa_val = 0.5 * fa_val  # approx 0.8244
-        d2fa_val = 0.25 * fa_val  # approx 0.4122
-
-        p_a = axes.c2p(a_val, fa_val)
-        p_axis = axes.c2p(a_val, 0)
-        v_dash = DashedLine(p_axis, p_a, stroke_color=INK_DIM, stroke_width=2)
+        p_a = axes.c2p(a, fa)
+        v_dash = DashedLine(axes.c2p(a, 0), p_a, stroke_color=INK_DIM, stroke_width=2)
         dot_a = Dot(p_a, radius=0.08, color=RESULT_COLOR)
-        a_label = MathTex("a = 1", font_size=MIN_FONT, color=X_COLOR)
-        a_label.next_to(p_axis, DOWN, buff=0.18).add_background_rectangle(
-            color=BG, opacity=1.0, buff=0.10
-        )
-        a_label.set_z_index(5)
+        a_label = MathTex("a=1", font_size=MIN_FONT, color=X_COLOR)
+        a_label.next_to(axes.c2p(a, 0), DOWN, buff=0.55).add_background_rectangle(color=BG, opacity=1.0, buff=0.10)
 
-        # Approximations
-        def lin_fn(x):
-            return fa_val + dfa_val * (x - a_val)
-
-        def quad_fn(x):
-            return lin_fn(x) + 0.5 * d2fa_val * ((x - a_val) ** 2)
-
-        lin_curve = axes.plot(
-            lin_fn,
-            x_range=[0.0, 3.0],
-            color=RESULT_COLOR,
-            stroke_width=3.5,
-        )
+        lin_curve = axes.plot(lin_fn, x_range=[0.0, 2.65], color=RESULT_COLOR, stroke_width=3.5)
         lin_label = MathTex(r"\text{linear}", font_size=MIN_FONT, color=RESULT_COLOR)
-        lin_label.move_to(axes.c2p(2.85, 2.5)).add_background_rectangle(
-            color=BG, opacity=0.85, buff=0.08
-        )
-
-        quad_curve = axes.plot(
-            quad_fn,
-            x_range=[0.0, 2.7],
-            color=RESULT_COLOR,
-            stroke_width=3.5,
-        )
-        # Position quadratic label below the curve in clear open space
+        lin_label.move_to(axes.c2p(0.7, 0.55)).add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
+        quad_curve = axes.plot(quad_fn, x_range=[0.0, 2.65], color=RESULT_COLOR, stroke_width=3.5)
         quad_label = MathTex(r"\text{quadratic}", font_size=MIN_FONT, color=RESULT_COLOR)
-        quad_label.move_to(axes.c2p(2.45, 2.25)).add_background_rectangle(
-            color=BG, opacity=0.85, buff=0.08
-        )
+        quad_label.move_to(axes.c2p(0.7, 2.45)).add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
 
-        # Error gap at x = 2.1
-        x_err = 2.1
-        err_line = DoubleArrow(
-            axes.c2p(x_err, lin_fn(x_err)),
-            axes.c2p(x_err, f_fn(x_err)),
-            buff=0.0,
-            stroke_width=2.5,
-            color=Y_COLOR,
-            max_tip_length_to_length_ratio=0.35,
-        )
-        err_label = MathTex(r"\text{error}", font_size=MIN_FONT, color=Y_COLOR)
-        err_label.next_to(err_line, LEFT, buff=0.12).add_background_rectangle(
-            color=BG, opacity=0.85, buff=0.08
-        )
+        x_err = 2.6
+        err_bar = DoubleArrow(axes.c2p(x_err, lin_fn(x_err)), axes.c2p(x_err, f_fn(x_err)), buff=0.0,
+                              stroke_width=3, color=HIGHLIGHT, max_tip_length_to_length_ratio=0.35)
+        err_label = MathTex(r"\text{error}", font_size=MIN_FONT, color=HIGHLIGHT)
+        err_label.next_to(err_bar, RIGHT, buff=0.15)
+        err_bar2 = DoubleArrow(axes.c2p(x_err, quad_fn(x_err)), axes.c2p(x_err, f_fn(x_err)), buff=0.0,
+                               stroke_width=3, color=HIGHLIGHT, max_tip_length_to_length_ratio=0.35)
 
-        # Final Taylor approximation formula setting up multivariate version
-        final_formula = MathTex(
-            r"f(a+h)",
-            r"\approx",
-            r"f(a)",
-            r"+",
-            r"f'(a)\,h",
-            r"+",
-            r"\tfrac12 f''(a)\,h^2",
-            font_size=MIN_FONT + 2,
-        )
-        final_formula[0].set_color(V_COLOR)
-        final_formula[1].set_color(INK)
-        final_formula[2].set_color(V_COLOR)
-        final_formula[3].set_color(INK)
-        final_formula[4].set_color(RESULT_COLOR)
-        final_formula[5].set_color(INK)
-        final_formula[6].set_color(RESULT_COLOR)
-        final_formula.move_to(DOWN * 2.15)
+        final_formula = MathTex(r"f(a+h)", r"\approx", r"f(a)", r"+", r"f'(a)\,h", r"+", r"\tfrac12 f''(a)\,h^2",
+                                font_size=MIN_FONT + 2)
+        for i, c in enumerate([V_COLOR, INK, V_COLOR, INK, RESULT_COLOR, INK, RESULT_COLOR]):
+            final_formula[i].set_color(c)
+        final_formula.move_to(DOWN * 2.35)
 
-        # Opening frame shows function and expansion point
         self.add(axes, x_axis_label, f_curve, f_label, v_dash, dot_a, a_label)
-        # Settle on givens (sheet 20% sample falls here)
-        self.wait(3.5)
-
-        # 1. Linear approximation
+        self.wait(2.0)
         self.play(Create(lin_curve), FadeIn(lin_label), run_time=1.0)
-        self.play(Create(err_line), FadeIn(err_label), run_time=0.8)
-        # Settle on linear + error (sheet 50% sample falls here)
-        self.wait(3.8)
+        self.play(Create(err_bar), FadeIn(err_label), run_time=0.8)
+        self.wait(2.5)
+        self.play(FadeOut(err_bar), FadeOut(err_label), FadeOut(lin_label), run_time=0.5)
+        self.play(ReplacementTransform(lin_curve, quad_curve), FadeIn(quad_label), run_time=1.2)
+        self.play(Create(err_bar2), run_time=0.6)
+        self.wait(2.5)
+        self.play(FadeOut(err_bar2), FadeIn(final_formula), run_time=1.0)
+        self.wait(3.0)
 
-        # 2. Quadratic approximation hugs closer and shrinks the error
-        self.play(
-            FadeOut(err_line),
-            FadeOut(err_label),
-            ReplacementTransform(lin_curve, quad_curve),
-            FadeOut(lin_label),
-            FadeIn(quad_label),
-            run_time=1.2,
-        )
-        # Settle on quadratic (sheet 80% sample falls here)
-        self.wait(3.2)
+        # ---- numbers: how fast the error shrinks with h ----
+        self.play(*[FadeOut(m) for m in self.mobjects], run_time=0.8)
 
-        # 3. Final multivariate-ready formula
-        self.play(Write(final_formula), run_time=1.2)
-        # Settle on final state (sheet last frame falls here)
+        def fmt(v, sig=4):
+            return np.format_float_positional(v, precision=sig, unique=False, fractional=False, trim="-")
+
+        head = MathTex(rf"f(1)={fmt(fa,4)},\ f'(1)={fmt(f1,3)},\ f''(1)={fmt(f2,3)}", font_size=MIN_FONT, color=V_COLOR)
+        head.move_to(UP * 2.3)
+        rows = []
+        errs = []
+        for h in (0.5, 0.1):
+            ft = f_fn(a + h)
+            li, qu = lin_fn(a + h), quad_fn(a + h)
+            errs.append((abs(ft - li), abs(ft - qu)))
+            r = MathTex(rf"h={h:g}:\ f({a+h:g})={fmt(ft,4)},\ \text{{lin}}={fmt(li,4)},\ \text{{quad}}={fmt(qu,4)}",
+                        font_size=MIN_FONT)
+            rows.append(r)
+        rows[0].move_to(UP * 1.5)
+        rows[1].move_to(UP * 0.8)
+        # error table
+        cx = [-3.7, -0.5, 3.0]
+        h1 = MathTex(r"\text{linear error}\sim h^2", font_size=MIN_FONT, color=INK_DIM).move_to(RIGHT * cx[1] + DOWN * 0.1)
+        h2 = MathTex(r"\text{quad error}\sim h^3", font_size=MIN_FONT, color=INK_DIM).move_to(RIGHT * cx[2] + DOWN * 0.1)
+        h1.shift(LEFT * 0.0)
+        cells = VGroup()
+        for i, h in enumerate((0.5, 0.1)):
+            y = -0.9 - 0.7 * i
+            cells.add(MathTex(rf"h={h:g}", font_size=MIN_FONT, color=INK).move_to(RIGHT * cx[0] + UP * y))
+            cells.add(MathTex(fmt(errs[i][0], 2), font_size=MIN_FONT, color=RESULT_COLOR).move_to(RIGHT * cx[1] + UP * y))
+            cells.add(MathTex(fmt(errs[i][1], 2), font_size=MIN_FONT, color=RESULT_COLOR).move_to(RIGHT * cx[2] + UP * y))
+        # sanity: shrinking h by 5 cuts the errors by about 5^2 and 5^3
+        assert 20 < errs[0][0] / errs[1][0] < 35 and 70 < errs[0][1] / errs[1][1] < 160
+        self.add(head)
         self.wait(1.5)
+        self.play(FadeIn(rows[0]), run_time=0.8)
+        self.wait(2.0)
+        self.play(FadeIn(rows[1]), run_time=0.8)
+        self.wait(2.0)
+        self.play(FadeIn(h1), FadeIn(h2), FadeIn(cells[0:3]), run_time=1.0)
+        self.wait(1.5)
+        self.play(FadeIn(cells[3:6]), run_time=1.0)
+        self.wait(4.0)

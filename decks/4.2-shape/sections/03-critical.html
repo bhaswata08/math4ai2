@@ -1,6 +1,6 @@
 <!-- ============================================================
      ACT 3 of 5. Critical points. Budget: 20 min.
-     Source: built for this course (curvature.py: CriticalPoints).
+     Source: built for this course (curvature.py: CriticalPoints, CriticalPointsNumbers).
      Goal: students find critical points (∇f = 0) and classify them
      by the signs of H's eigenvalues; know saddles dominate in high
      dimensions. Block 4.3 owns what gradient descent does near them.
@@ -20,22 +20,29 @@
   <p class="caption">All three have \(\nabla f = 0\). Only the eigenvalues of \(H\) tell them apart.</p>
 </section>
 
+<section class="clip-slide">
+  <h2>One function, two flat points</h2>
+  <video class="clip" src="assets/clips/CriticalPointsNumbers.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">For \(f = x^3 + 2xy - y^2\), \(\nabla f = 0\) at \((0,0)\) and \((-\tfrac23,-\tfrac23)\). Eigenvalues \(1.24, -3.24\): saddle. \(-0.76, -5.24\): maximum.</p>
+</section>
+
 <section class="act-body">
   <div class="act-tag"><b>Act 3</b> / The second-derivative test</div>
   <h2>At a point where \(\nabla f = \mathbf 0\)</h2>
-  <div class="beats two recap">
+  <div class="beats two recap" style="font-size:1.3em">
     <div class="beat purpose"><h4>Minimum</h4><p>All \(\lambda_i &gt; 0\): \(H\) is positive definite.</p></div>
     <div class="beat purpose"><h4>Maximum</h4><p>All \(\lambda_i &lt; 0\): \(H\) is negative definite.</p></div>
     <div class="beat purpose"><h4>Saddle</h4><p>Mixed signs: up in some directions, down in others.</p></div>
     <div class="beat purpose"><h4>Undecided</h4><p>Some \(\lambda_i = 0\): the test is silent. Look at higher-order terms.</p></div>
   </div>
-  <p class="takeaway">In a model with millions of parameters, all-positive is rare: most flat points of a loss are saddles.</p>
+  <p class="takeaway" style="font-size:0.85em">In a model with millions of parameters, all-positive is rare: most flat points of a loss are saddles.</p>
 </section>
 
 <section class="act-body">
   <div class="act-tag"><b>Act 3</b> / Try it</div>
   <h2>Find and classify</h2>
-  <ol class="practice">
+  <ol class="practice" style="font-size:1.3em">
     <li>\(f(x, y) = x^2 + xy + y^2\) <span class="fragment">\(\nabla f = 0\) at the origin; \(H = \begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix}\), \(\lambda = 3, 1\): minimum</span></li>
     <li>\(f(x, y) = x^3 - 3x + y^2\): two critical points. Classify both.</li>
     <li>\(f(x, y) = x^4 + y^4\) at the origin. What does the test say, and what is the truth?</li>
