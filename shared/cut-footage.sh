@@ -11,9 +11,13 @@
 # The source videos are not in the repo; the .tsv says where they come from.
 set -euo pipefail
 TSV="$1"; SRC="$2"
+# The source videos sit on near-black (about rgb 8,8,8); the slides on #12151b.
+# Lift that floor to the slide background so a clip has no visible box, and
+# stretch the rest of the range so whites stay white.
+LIFT="format=rgb24,lutrgb=r='18+max(val-8\\,0)*237/247':g='21+max(val-8\\,0)*234/247':b='27+max(val-8\\,0)*228/247',format=yuv420p"
 grep -v '^#' "$TSV" | grep -v '^\s*$' | while IFS=$'\t' read -r DECK NAME FILE START END CROP; do
     OUT="$DECK/assets/clips"; mkdir -p "$OUT"
-    VF="scale=1920:1080:flags=lanczos,fps=30"
+    VF="scale=1920:1080:flags=lanczos,fps=30,$LIFT"
     [ -n "${CROP:-}" ] && VF="crop=$CROP,$VF"
     ffmpeg -loglevel error -y -ss "$START" -to "$END" -i "$SRC/$FILE" -vf "$VF" \
         -c:v libx264 -preset slow -crf 22 -pix_fmt yuv420p -movflags +faststart -an "$OUT/$NAME.mp4" </dev/null
