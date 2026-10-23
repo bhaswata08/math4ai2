@@ -189,3 +189,123 @@ class PDAngle(Scene):
         self.play(FadeTransform(mat1, mat2), FadeTransform(tag1, tag2), run_time=1)
         self.play(th.animate.set_value(2 * PI), run_time=7, rate_func=linear)
         self.wait(1)
+
+
+class LevelSetsDefinite(Scene):
+    """The level curve x^T A x = 1 for a positive definite, an indefinite and a semi-definite A.
+
+    The matrices are not the ones in the practice problems on the slide.
+    """
+
+    def construct(self):
+        A1 = np.array([[2.0, 1.0], [1.0, 2.0]])
+        A2 = np.array([[1.0, 3.0], [3.0, 1.0]])
+        A3 = np.array([[4.0, 2.0], [2.0, 1.0]])
+        dets = [np.linalg.det(A) for A in (A1, A2, A3)]
+        assert np.allclose(dets, [3, -8, 0])
+
+        U = 1.2
+        CEN = np.array([2.3, 0.0, 0.0])
+        RNG = 2.0
+
+        plane = house_plane(x_range=[-2, 2, 1], y_range=[-2, 2, 1], x_length=4 * U, y_length=4 * U)
+        plane.move_to(CEN)
+        for ax in (plane.x_axis, plane.y_axis):
+            ax.add_numbers(x_values=[-2, -1, 1, 2], font_size=MIN_FONT, excluding=[0]) if ax is plane.x_axis \
+                else ax.add_numbers(x_values=[-2, -1, 1, 2], font_size=MIN_FONT, excluding=[0])
+        for ax in (plane.x_axis, plane.y_axis):
+            for n in ax.numbers:
+                n.set_color(INK_DIM)
+                label_box(n, opacity=0.9, buff=0.04)
+
+        sv = ValueTracker(0.0)   # 0..1 goes A1 -> A2, 1..2 goes A2 -> A3
+
+        def cur_A():
+            s = sv.get_value()
+            if s <= 1:
+                return (1 - s) * A1 + s * A2
+            return (2 - s) * A2 + (s - 1) * A3
+
+        def curve_for(A, col=RESULT_COLOR, width=7, unit=U, centre=CEN, rng=RNG):
+            f = lambda x, y: A[0, 0] * x * x + 2 * A[0, 1] * x * y + A[1, 1] * y * y - 1
+            c = ImplicitFunction(f, x_range=(-rng, rng), y_range=(-rng, rng), color=col, stroke_width=width,
+                                 min_depth=6, max_quads=3000)
+            c.scale(unit, about_point=ORIGIN).shift(centre)
+            return c
+
+        curve = always_redraw(lambda: curve_for(cur_A()))
+
+        # left panel: live matrix and determinant
+        LX = -2.55
+
+        def mat_readout():
+            A = cur_A()
+            ents = VGroup()
+            for (i, j, px, py) in [(0, 0, -0.7, 0.42), (0, 1, 0.7, 0.42), (1, 0, -0.7, -0.42), (1, 1, 0.7, -0.42)]:
+                v = A[i, j] if abs(A[i, j]) > 0.05 else 0.0
+                ents.add(DecimalNumber(v, num_decimal_places=1, font_size=MIN_FONT, color=INK)
+                         .move_to([LX + px, 1.7 + py, 0]))
+            return ents
+
+        brk = VGroup(MathTex(r"\Bigg[", font_size=MIN_FONT * 1.5, color=INK).move_to([LX - 1.3, 1.7, 0]),
+                     MathTex(r"\Bigg]", font_size=MIN_FONT * 1.5, color=INK).move_to([LX + 1.3, 1.7, 0]))
+        a_lab = tex(r"A=", INK).move_to([LX - 1.95, 1.7, 0])
+        ents = always_redraw(mat_readout)
+
+        def det_readout():
+            A = cur_A()
+            d = float(np.linalg.det(A))
+            if abs(d) < 0.05:
+                d = 0.0
+            g = VGroup(tex(r"\det A=", INK),
+                       DecimalNumber(d, num_decimal_places=1, font_size=MIN_FONT + 8, color=RESULT_COLOR))
+            g.arrange(RIGHT, buff=0.15).move_to([LX, -0.15, 0])
+            return g
+
+        det = always_redraw(det_readout)
+        form = tex(r"\mathbf{x}^{T}A\,\mathbf{x}=1", INK).move_to([LX, 2.55 - 0.0, 0])
+        form.move_to([LX, 0.45, 0])
+
+        def tag(s1, s2):
+            g = VGroup(tex(s1, INK), tex(s2, INK_DIM)).arrange(DOWN, buff=0.2).move_to([LX, -1.4, 0])
+            return g
+
+        t1 = tag(r"\text{positive definite}", r"\text{closed curve}")
+        t2 = tag(r"\text{indefinite}", r"\text{two branches}")
+        t3 = tag(r"\text{semi-definite}", r"\text{two lines}")
+        for t in (t1, t2, t3):
+            assert t.width < 4.6, t.width
+
+        self.add(plane, curve, brk, a_lab, ents, det, form, t1)
+        self.wait(2.5)
+        self.play(FadeOut(t1), run_time=0.4)
+        self.play(sv.animate.set_value(1.0), run_time=4, rate_func=smooth)
+        self.play(FadeIn(t2), run_time=0.5)
+        self.wait(2)
+        self.play(FadeOut(t2), run_time=0.4)
+        self.play(sv.animate.set_value(2.0), run_time=4, rate_func=smooth)
+        self.play(FadeIn(t3), run_time=0.5)
+        self.wait(2)
+
+        # final: three panels
+        curve.clear_updaters()
+        ents.clear_updaters()
+        det.clear_updaters()
+        self.play(*[FadeOut(m) for m in (plane, curve, brk, a_lab, ents, det, form, t3)], run_time=0.6)
+        u2, rng2 = 0.62, 2.0
+        outs = []
+        for k, (A, name) in enumerate([(A1, r"\text{positive definite}"), (A2, r"\text{indefinite}"),
+                                       (A3, r"\text{semi-definite}")]):
+            cx = -3.2 + 3.2 * k
+            pl = house_plane(x_range=[-2, 2, 1], y_range=[-2, 2, 1], x_length=4 * u2, y_length=4 * u2)
+            pl.move_to([cx, 0.85, 0])
+            cv = curve_for(A, unit=u2, centre=np.array([cx, 0.85, 0]), rng=rng2, width=6)
+            d = float(np.linalg.det(A))
+            dl = tex(r"\det A=" + f"{d:.0f}", RESULT_COLOR).move_to([cx, -0.9, 0])
+            tg = tex(name, INK, 40)
+            if tg.width > 3.1:
+                tg.scale(3.1 / tg.width)
+            tg.move_to([cx, -1.7, 0])
+            outs.append(VGroup(pl, cv, dl, tg))
+        self.play(*[FadeIn(o) for o in outs], run_time=1.2)
+        self.wait(2.5)

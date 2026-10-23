@@ -11,27 +11,22 @@
      ============================================================ -->
 
 <style>
-  .reveal .ft { border: 2px solid var(--rule); border-radius: 12px; padding: 0.45em 0.6em; line-height: 1.25; }
-  .reveal .ft-root { font-size: 0.82em; }
-  .reveal .ft .ft { font-size: 1em; }
-  .reveal .ft .ft-t { font-weight: 600; color: var(--ink); display: block; margin-bottom: 0.3em; }
+  .reveal .ft { border: 2px solid var(--rule); border-radius: 12px; padding: 0.4em 0.55em; line-height: 1.25; }
+  .reveal .ft .ft-t { font-weight: 600; color: var(--ink); display: block; }
   .reveal .ft .ft-s { color: var(--ink-dim); font-weight: 400; }
-  .reveal .ft-root { background: var(--bg-sunken); }
-  .reveal .ft-row { display: grid; grid-template-columns: 1fr 2.1fr; gap: 0.7em; align-items: stretch; }
-  .reveal .ft-inv { border-color: var(--v); }
-  .reveal .ft-sym { border-color: var(--w); }
-  .reveal .ft-inv > .ft-t { color: var(--v); }
-  .reveal .ft-sym > .ft-t { color: var(--w); }
-  .reveal .ft-orth { border-color: var(--v); background: var(--bg-raised); margin-top: 0.5em; }
-  .reveal .ft-inner { display: grid; grid-template-columns: 1fr 2fr; gap: 0.6em; align-items: stretch; }
-  .reveal .ft-diag { border-color: var(--x); background: var(--bg-raised); }
-  .reveal .ft-psd { border-color: var(--accent); background: var(--bg-raised); }
-  .reveal .ft-psd > .ft-t { color: var(--accent); }
-  .reveal .ft-psd-in { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6em; }
-  .reveal .ft-pd { border-color: var(--accent); background: var(--accent-soft); }
-  .reveal .ft-proj { border-color: var(--result); background: var(--bg-sunken); }
-  .reveal .ft-proj > .ft-t { color: var(--result); }
-  .reveal .ft-note { font-size: 0.6em; color: var(--ink-dim); margin: 0.6em 0 0 0; line-height: 1.4; }
+  .reveal .ft-root { background: var(--bg-sunken); font-size: 0.95em; }
+  .reveal .ft-grid { display: grid; grid-template-columns: 1.15fr 1.1fr 1.1fr 1.05fr; grid-template-rows: 2.1em 2.1em 2.1em auto; gap: 0.3em 0.5em; margin-top: 0.4em; }
+  .reveal .ft-box { border: 2px solid var(--rule); border-radius: 14px; padding: 0.35em 0.6em; font-weight: 600; color: var(--ink); align-self: stretch; }
+  .reveal .ft-box .ft-s { color: var(--ink-dim); font-weight: 400; }
+  .reveal .ft-sym { grid-column: 2 / 5; grid-row: 1 / 5; margin-left: -0.25em; margin-right: -0.25em; }
+  .reveal .ft-psd { grid-column: 2 / 4; grid-row: 2 / 5; margin: 0.3em -0.1em 0 0; border-color: var(--accent); }
+  .reveal .ft-inv { grid-column: 1 / 3; grid-row: 3 / 5; margin: 0.5em 0.1em -0.25em -0.25em; border-style: dashed; border-color: var(--ink-dim); }
+  .reveal .ft-item { grid-row: 4; background: var(--bg-raised); z-index: 2; align-self: end; margin-bottom: 0.1em; }
+  .reveal .ft-orth { grid-column: 1; border-color: var(--ink-dim); }
+  .reveal .ft-pd { grid-column: 2; border-color: var(--accent); background: var(--accent-soft); margin-right: 0.35em; }
+  .reveal .ft-proj { grid-column: 3; border-color: var(--result); }
+  .reveal .ft-diag { grid-column: 4; border-color: var(--x); margin-right: 0.3em; }
+  .reveal .ft-note { font-size: 0.78em; color: var(--ink-dim); margin: 0.5em 0 0 0; line-height: 1.4; }
 </style>
 
 <section class="act-body">
@@ -39,25 +34,15 @@
   <h2>How the special matrices fit together</h2>
   <div class="ft ft-root">
     <span class="ft-t">Square matrices <span class="ft-s">\(n\times n\)</span></span>
-    <div class="ft-row">
-      <div class="ft ft-inv">
-        <span class="ft-t">Invertible <span class="ft-s">\(\det\neq0\)</span></span>
-        <div class="ft ft-orth"><span class="ft-t">Orthogonal</span>\(Q^{-1}=Q^T\), \(\det=\pm1\)</div>
-      </div>
-      <div class="ft ft-sym">
-        <span class="ft-t">Symmetric <span class="ft-s">\(A=A^T\)</span></span>
-        <div class="ft-inner">
-          <div class="ft ft-diag"><span class="ft-t">Diagonal</span>scale each axis</div>
-          <div class="ft ft-psd">
-            <span class="ft-t">Positive semi-definite <span class="ft-s">\(x^TAx\ge0\)</span></span>
-            <div class="ft-psd-in">
-              <div class="ft ft-pd"><span class="ft-t">Positive definite</span>\(x^TAx>0\): PSD and invertible</div>
-              <div class="ft ft-proj"><span class="ft-t">Projections</span>\(P=uu^T\), \(\det=0\)</div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="ft-grid">
+      <div class="ft-box ft-sym">Symmetric <span class="ft-s">\(A=A^T\)</span></div>
+      <div class="ft-box ft-psd">Positive semi-definite <span class="ft-s">\(x^TAx\ge0\)</span></div>
+      <div class="ft-box ft-inv">Invertible <span class="ft-s">\(\det\neq0\)</span></div>
+      <div class="ft ft-item ft-orth"><span class="ft-t">Orthogonal</span>\(Q^{-1}=Q^T\)</div>
+      <div class="ft ft-item ft-pd"><span class="ft-t">Positive definite</span>\(x^TAx>0\)</div>
+      <div class="ft ft-item ft-proj"><span class="ft-t">Orthogonal projection</span>\(P=uu^T\), \(\det=0\)</div>
+      <div class="ft ft-item ft-diag"><span class="ft-t">Diagonal</span>scale each axis</div>
     </div>
   </div>
-  <p class="ft-note">The identity \(I\) is diagonal, orthogonal and positive definite. Boxes side by side can still overlap: reflections such as \(\mathrm{diag}(-1,1)\) are orthogonal and symmetric. Every positive definite matrix is also invertible.</p>
+  <p class="ft-note">Positive definite sits where Invertible overlaps Symmetric: it is symmetric, positive semi-definite and invertible. The identity \(I\) is diagonal, orthogonal and positive definite. Reflections such as \(\mathrm{diag}(-1,1)\) are orthogonal and symmetric, so those two boxes also overlap.</p>
 </section>
