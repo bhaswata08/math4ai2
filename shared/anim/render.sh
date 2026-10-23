@@ -26,12 +26,14 @@ PYTHONPATH="$ROOT" nix run "$ROOT#manim" -- render "$QUALITY" --format=mp4 \
     --media_dir "$MEDIA" "$ROOT/$SRC" "$SCENE"
 
 case "$QUALITY" in
-    -ql) QDIR=480p15 ;;
-    -qm) QDIR=720p30 ;;
-    -qh) QDIR=1080p30 ;;
+    -ql) HEIGHT=480 ;;
+    -qm) HEIGHT=720 ;;
+    -qh) HEIGHT=1080 ;;
     *) echo "unsupported quality $QUALITY" >&2; exit 1 ;;
 esac
-RAW="$MEDIA/videos/$(basename "$SRC" .py)/$QDIR/$SCENE.mp4"
+# manim names the folder <height>p<fps>. house.py pins 30 fps, which turns
+# the -ql default of 480p15 into 480p30, so match the height only.
+RAW="$(ls -t "$MEDIA/videos/$(basename "$SRC" .py)/${HEIGHT}p"*/"$SCENE.mp4" | head -1)"
 
 # Re-encode small and seekable: h264, yuv420p for every browser, faststart
 # so playback begins before the whole file is read.
