@@ -36,6 +36,13 @@
 </section>
 
 <section class="clip-slide">
+  <h2>Put numbers in</h2>
+  <video class="clip" src="assets/clips/TinyNetworkNumbers.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Multiply the three factors, then nudge \(w\) by 0.01 and check: the cost moves by the product times 0.01.</p>
+</section>
+
+<section class="clip-slide">
   <h2>One layer further back</h2>
   <video class="clip" src="assets/clips/GoDeeper.mp4"></video>
   <span class="fragment clip-play"></span>
@@ -48,4 +55,11 @@
   $$\boldsymbol\delta^{(L)} = \nabla_{\mathbf a} C \odot \sigma'(\mathbf z^{(L)}) \qquad \boldsymbol\delta^{(l)} = \big(W^{(l+1)\top}\boldsymbol\delta^{(l+1)}\big) \odot \sigma'(\mathbf z^{(l)})$$
   $$\frac{\partial C}{\partial W^{(l)}} = \boldsymbol\delta^{(l)}\,\mathbf a^{(l-1)\top} \qquad \frac{\partial C}{\partial \mathbf b^{(l)}} = \boldsymbol\delta^{(l)}$$
   <p class="takeaway">\(\odot\) is the Hadamard product from Block 2.1. The transpose is Act 2's \(W^{\top}\boldsymbol\delta\).</p>
+</section>
+
+<section class="clip-slide">
+  <h2>The matrix form, with numbers</h2>
+  <video class="clip" src="assets/clips/MatrixBackprop.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Step back through \(W^\top\), multiply entry by entry with \(\sigma'\), then the weight gradient is \(\boldsymbol\delta\,\mathbf a^\top\), an outer product.</p>
 </section>

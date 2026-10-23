@@ -13,17 +13,24 @@
   <div class="act-time">15 min</div>
 </section>
 
+<section class="clip-slide">
+  <h2>Counting the pairs</h2>
+  <video class="clip" src="assets/clips/CountThePairs.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Every input-output pair gets one partial derivative. Count the pairs and you know the shape.</p>
+</section>
+
 <section class="act-body">
   <div class="act-tag"><b>Act 1</b> / Shapes</div>
   <h2>Input shape × output shape</h2>
-  <table style="font-size:0.8em">
+  <table style="font-size:1.05em">
     <thead><tr><th></th><th>scalar input</th><th>vector input</th></tr></thead>
     <tbody>
       <tr><td>scalar output</td><td>\(\dfrac{df}{dx}\): a number</td><td>\(\nabla f \in \mathbb R^{n}\): a vector</td></tr>
       <tr><td>vector output (\(m\) entries)</td><td>\(\dfrac{d\mathbf f}{dx} \in \mathbb R^{m}\): a velocity</td><td>\(J \in \mathbb R^{m \times n}\): the Jacobian</td></tr>
     </tbody>
   </table>
-  <p class="takeaway">One entry per (output, input) pair. Count them and you know the shape.</p>
+  <p class="takeaway">One entry per (output, input) pair. Count them and you know the shape. We write gradients as columns.</p>
 </section>
 
 <section class="act-body">

@@ -1,495 +1,550 @@
 # Adapted from 3b1b/videos _2017/nn/part3.py, (c) 3Blue1Brown, CC BY-NC-SA 4.0
+#
+# Colour scheme for this file: activations and weights (given quantities) teal,
+# sigma' violet, derived quantities (delta, gradients, cost) amber.
 
 from shared.anim.house import *
 import numpy as np
 
+F = MIN_FONT
+A_COL = V_COLOR          # activations, weights, inputs
+S_COL = W_COLOR          # sigma' factors
+D_COL = RESULT_COLOR     # delta, gradients, cost
+
+
+def tex(s, color=INK, size=F, bg=False):
+    m = MathTex(s, font_size=size, color=color)
+    if bg:
+        m.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
+    return m
+
+
+def node(center, r=0.4, color=INK, sw=3.0):
+    return Circle(radius=r, color=color, stroke_width=sw, fill_color=BG, fill_opacity=1.0).move_to(center)
+
+
+def edge(a, b, color=INK_DIM, sw=3.0):
+    return Arrow(a, b, buff=0.08, color=color, stroke_width=sw, max_tip_length_to_length_ratio=0.22)
+
+
+def box(center, w, h, color):
+    return RoundedRectangle(corner_radius=0.1, width=w, height=h, color=color, stroke_width=2.5,
+                            fill_color=BG, fill_opacity=1.0).move_to(center)
+
+
+def sigma(z):
+    return 1.0 / (1.0 + np.exp(-z))
+
 
 class TinyNetwork(Scene):
     def construct(self):
-        # 1. Title at top
-        title = MathTex(
-            r"\text{The simplest network: one neuron per layer}",
-            font_size=MIN_FONT,
-            color=INK,
-        ).move_to(UP * 2.35)
-        title.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
+        y0 = 1.6
+        xs = [-3.7, -1.85, 0.0, 1.85]
+        n0, n1, n2, n3 = [node(np.array([x, y0, 0]), color=c, sw=s) for x, c, s in
+                          zip(xs, [INK_DIM, INK_DIM, INK, INK], [2.5, 2.5, 3.0, 3.0])]
+        lbl_a0 = tex(r"a^{(0)}", INK_DIM).next_to(n0, UP, buff=0.14)
+        lbl_a1 = tex(r"a^{(1)}", INK_DIM).next_to(n1, UP, buff=0.14)
+        lbl_a2 = tex(r"a^{(L-1)}", A_COL).next_to(n2, UP, buff=0.14)
+        lbl_a3 = tex(r"a^{(L)}", A_COL).next_to(n3, UP, buff=0.14)
 
-        # 2. 4 Neurons horizontally across upper half (y = 1.15)
-        r = 0.32
-        p0 = np.array([-3.75, 1.15, 0])
-        p1 = np.array([-1.90, 1.15, 0])
-        p2 = np.array([-0.05, 1.15, 0])
-        p3 = np.array([1.80, 1.15, 0])
+        e0 = edge(n0.get_right(), n1.get_left(), INK_DIM)
+        e1 = edge(n1.get_right(), n2.get_left(), INK_DIM)
+        e2 = edge(n2.get_right(), n3.get_left(), A_COL, 3.5)
+        w1 = tex(r"w^{(1)}", INK_DIM, bg=True).next_to(e0, DOWN, buff=0.12)
+        w2 = tex(r"w^{(2)}", INK_DIM, bg=True).next_to(e1, DOWN, buff=0.12)
+        wL = tex(r"w^{(L)}", A_COL, bg=True).next_to(e2, DOWN, buff=0.12)
 
-        neuron_0 = Circle(radius=r, color=INK_DIM, stroke_width=2.5, fill_color=BG, fill_opacity=1.0).move_to(p0)
-        neuron_1 = Circle(radius=r, color=INK_DIM, stroke_width=2.5, fill_color=BG, fill_opacity=1.0).move_to(p1)
-        neuron_2 = Circle(radius=r, color=INK, stroke_width=3.0, fill_color=BG, fill_opacity=1.0).move_to(p2)
-        neuron_3 = Circle(radius=r, color=INK, stroke_width=3.0, fill_color=BG, fill_opacity=1.0).move_to(p3)
+        cost_box = box(np.array([3.75, y0, 0]), 1.2, 0.8, D_COL)
+        cost_txt = tex(r"C", D_COL).move_to(cost_box)
+        a_to_c = edge(n3.get_right(), cost_box.get_left(), D_COL)
+        y_box = box(np.array([3.75, 0.4, 0]), 1.0, 0.7, A_COL)
+        y_txt = tex(r"y", A_COL).move_to(y_box)
+        y_to_c = Arrow(y_box.get_top(), cost_box.get_bottom(), buff=0.08, color=INK_DIM, stroke_width=2.5,
+                       max_tip_length_to_length_ratio=0.3)
 
-        lbl_a0 = MathTex(r"a^{(0)}", font_size=MIN_FONT, color=INK_DIM).next_to(neuron_0, UP, buff=0.14)
-        lbl_a1 = MathTex(r"a^{(1)}", font_size=MIN_FONT, color=INK_DIM).next_to(neuron_1, UP, buff=0.14)
-        lbl_a2 = MathTex(r"a^{(L-1)}", font_size=MIN_FONT, color=V_COLOR).next_to(neuron_2, UP, buff=0.14)
-        lbl_a3 = MathTex(r"a^{(L)}", font_size=MIN_FONT, color=V_COLOR).next_to(neuron_3, UP, buff=0.14)
+        early = VGroup(n0, n1, e0, e1, lbl_a0, lbl_a1, w1, w2)
+        early.set_opacity(0.2)
+        last = VGroup(n2, n3, e2, lbl_a2, lbl_a3, wL, cost_box, cost_txt, a_to_c, y_box, y_txt, y_to_c)
+        self.add(early, last)
+        self.wait(2.0)
 
-        # Edges between neurons
-        edge_0 = Arrow(neuron_0.get_right(), neuron_1.get_left(), buff=0.08, color=INK_DIM, stroke_width=2.5, max_tip_length_to_length_ratio=0.22)
-        edge_1 = Arrow(neuron_1.get_right(), neuron_2.get_left(), buff=0.08, color=INK_DIM, stroke_width=2.5, max_tip_length_to_length_ratio=0.22)
-        edge_2 = Arrow(neuron_2.get_right(), neuron_3.get_left(), buff=0.08, color=V_COLOR, stroke_width=3.5, max_tip_length_to_length_ratio=0.22)
+        b_arrow = Arrow(np.array([1.85, 0.35, 0]), np.array([1.85, 1.15, 0]), buff=0.05, color=A_COL,
+                        stroke_width=3, max_tip_length_to_length_ratio=0.25)
+        b_lbl = tex(r"+\, b^{(L)}", A_COL, bg=True).next_to(b_arrow, DOWN, buff=0.08)
+        self.play(Create(b_arrow), FadeIn(b_lbl), run_time=1.0)
+        self.wait(1.0)
 
-        lbl_w1 = MathTex(r"w^{(1)}", font_size=MIN_FONT, color=INK_DIM).next_to(edge_0, DOWN, buff=0.12)
-        lbl_w1.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
-        lbl_w2 = MathTex(r"w^{(2)}", font_size=MIN_FONT, color=INK_DIM).next_to(edge_1, DOWN, buff=0.12)
-        lbl_w2.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
-        lbl_wL = MathTex(r"w^{(L)}", font_size=MIN_FONT, color=V_COLOR).next_to(edge_2, DOWN, buff=0.12)
-        lbl_wL.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
-
-        # Cost and Target on the right
-        cost_box = RoundedRectangle(corner_radius=0.1, width=1.25, height=0.65, color=RESULT_COLOR, stroke_width=2.5, fill_color=BG, fill_opacity=1.0).move_to(np.array([3.65, 1.15, 0]))
-        cost_txt = MathTex(r"C", font_size=MIN_FONT, color=RESULT_COLOR).move_to(cost_box.get_center())
-
-        arrow_a_to_c = Arrow(neuron_3.get_right(), cost_box.get_left(), buff=0.08, color=RESULT_COLOR, stroke_width=2.5, max_tip_length_to_length_ratio=0.22)
-
-        y_box = RoundedRectangle(corner_radius=0.1, width=1.05, height=0.58, color=V_COLOR, stroke_width=2.2, fill_color=BG, fill_opacity=1.0).move_to(np.array([3.65, 0.05, 0]))
-        y_txt = MathTex(r"y", font_size=MIN_FONT, color=V_COLOR).move_to(y_box.get_center())
-
-        arrow_y_to_c = Arrow(y_box.get_top(), cost_box.get_bottom(), buff=0.08, color=INK_DIM, stroke_width=2.2, max_tip_length_to_length_ratio=0.25)
-
-        early_group = VGroup(neuron_0, neuron_1, edge_0, edge_1, lbl_a0, lbl_a1, lbl_w1, lbl_w2)
-        last_group = VGroup(neuron_2, neuron_3, edge_2, lbl_a2, lbl_a3, lbl_wL, cost_box, cost_txt, arrow_a_to_c, y_box, y_txt, arrow_y_to_c)
-
-        # Frame 0 must show givens (never open on empty frame)
-        self.add(title, early_group, last_group)
-        self.wait(1.5)
-
-        # 3. Dim early layers, focus just on last two layers
-        self.play(
-            early_group.animate.set_opacity(0.18),
-            run_time=1.2,
-        )
-        self.wait(0.8)
-
-        # 4. Introduce bias b^{(L)} feeding into Neuron 3 from below
-        bias_arrow = Arrow(
-            np.array([1.80, 0.22, 0]), np.array([1.80, 0.75, 0]),
-            buff=0.05, color=V_COLOR, stroke_width=2.5, max_tip_length_to_length_ratio=0.25,
-        )
-        bias_lbl = MathTex(r"+ b^{(L)}", font_size=MIN_FONT, color=V_COLOR).next_to(bias_arrow, DOWN, buff=0.08)
-        bias_lbl.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
-
-        self.play(Create(bias_arrow), FadeIn(bias_lbl), run_time=1.0)
-        self.wait(0.8)
-
-        # 5. Formulas for the last link in a single row below (y = -1.45)
-        eq_z = MathTex(
-            r"z^{(L)}", r"=", r"w^{(L)}", r"a^{(L-1)}", r"+", r"b^{(L)}",
-            font_size=MIN_FONT,
-        )
+        eq_z = MathTex(r"z^{(L)}", r"=", r"w^{(L)}", r"a^{(L-1)}", r"+", r"b^{(L)}", font_size=F)
         eq_z[0].set_color(INK)
-        eq_z[2].set_color(V_COLOR)
-        eq_z[3].set_color(V_COLOR)
-        eq_z[5].set_color(V_COLOR)
+        for i in (2, 3, 5):
+            eq_z[i].set_color(A_COL)
+        eq_a = MathTex(r"a^{(L)}", r"=", r"\sigma(", r"z^{(L)}", r")", font_size=F)
+        eq_a[0].set_color(A_COL)
+        eq_c = MathTex(r"C", r"=", r"(", r"a^{(L)}", r"-", r"y", r")^2", font_size=F)
+        eq_c[0].set_color(D_COL)
+        eq_c[3].set_color(A_COL)
+        eq_c[5].set_color(A_COL)
+        VGroup(eq_z, eq_a).arrange(RIGHT, buff=0.8).move_to(np.array([0, -0.75, 0]))
+        eq_c.move_to(np.array([0, -1.9, 0]))
+        box_c = SurroundingRectangle(eq_c, color=D_COL, buff=0.16, stroke_width=2.5)
 
-        eq_a = MathTex(
-            r"a^{(L)}", r"=", r"\sigma(", r"z^{(L)}", r")",
-            font_size=MIN_FONT,
-        )
-        eq_a[0].set_color(V_COLOR)
-        eq_a[3].set_color(INK)
-
-        eq_c = MathTex(
-            r"C", r"=", r"(", r"a^{(L)}", r"-", r"y", r")^2",
-            font_size=MIN_FONT,
-        )
-        eq_c[0].set_color(RESULT_COLOR)
-        eq_c[3].set_color(V_COLOR)
-        eq_c[5].set_color(V_COLOR)
-
-        box_c_formula = SurroundingRectangle(eq_c, color=RESULT_COLOR, buff=0.12, stroke_width=2)
-        group_c = VGroup(eq_c, box_c_formula)
-
-        VGroup(eq_z, eq_a).arrange(RIGHT, buff=0.7).move_to(np.array([0.0, -1.0, 0]))
-        group_c.move_to(np.array([0.0, -2.0, 0]))
-        eq_c.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
-
-        self.play(Write(eq_z), run_time=1.2)
-        self.wait(0.6)
-        self.play(Write(eq_a), run_time=1.2)
-        self.wait(0.6)
-        self.play(Write(eq_c), FadeIn(box_c_formula), run_time=1.4)
+        self.play(FadeIn(eq_z), run_time=0.8)
+        self.wait(1.2)
+        self.play(FadeIn(eq_a), run_time=0.8)
+        self.wait(1.2)
+        self.play(FadeIn(eq_c), FadeIn(box_c), run_time=0.8)
         self.wait(3.0)
 
 
 class DependencyTree(Scene):
     def construct(self):
-        # 1. Title
-        title = MathTex(
-            r"\text{Dependency tree: how a nudge ripples to the cost}",
-            font_size=MIN_FONT,
-            color=INK,
-        ).move_to(UP * 2.35)
-        title.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
+        yp = 0.35
+        bw = box(np.array([-3.6, yp, 0]), 1.4, 0.8, A_COL)
+        tw = tex(r"w^{(L)}", A_COL).move_to(bw)
+        bz = box(np.array([-1.2, yp, 0]), 1.3, 0.8, INK_DIM)
+        tz = tex(r"z^{(L)}", INK).move_to(bz)
+        ba = box(np.array([1.2, yp, 0]), 1.3, 0.8, A_COL)
+        ta = tex(r"a^{(L)}", A_COL).move_to(ba)
+        bc = box(np.array([3.6, yp, 0]), 1.3, 0.8, D_COL)
+        tc = tex(r"C", D_COL).move_to(bc)
+        by = box(np.array([3.6, -1.15, 0]), 1.3, 0.8, A_COL)
+        ty = tex(r"y", A_COL).move_to(by)
 
-        # 2. Main path nodes across y = 0.50
-        box_w = RoundedRectangle(corner_radius=0.1, width=1.35, height=0.62, stroke_color=V_COLOR, stroke_width=2.5, fill_color=BG, fill_opacity=1.0).move_to(np.array([-3.6, 0.50, 0]))
-        txt_w = MathTex(r"w^{(L)}", font_size=MIN_FONT, color=V_COLOR).move_to(box_w.get_center())
-
-        box_z = RoundedRectangle(corner_radius=0.1, width=1.2, height=0.62, stroke_color=INK_DIM, stroke_width=2.5, fill_color=BG, fill_opacity=1.0).move_to(np.array([-1.2, 0.50, 0]))
-        txt_z = MathTex(r"z^{(L)}", font_size=MIN_FONT, color=INK).move_to(box_z.get_center())
-
-        box_a = RoundedRectangle(corner_radius=0.1, width=1.2, height=0.62, stroke_color=V_COLOR, stroke_width=2.5, fill_color=BG, fill_opacity=1.0).move_to(np.array([1.2, 0.50, 0]))
-        txt_a = MathTex(r"a^{(L)}", font_size=MIN_FONT, color=V_COLOR).move_to(box_a.get_center())
-
-        box_c = RoundedRectangle(corner_radius=0.1, width=1.2, height=0.62, stroke_color=RESULT_COLOR, stroke_width=2.5, fill_color=BG, fill_opacity=1.0).move_to(np.array([3.6, 0.50, 0]))
-        txt_c = MathTex(r"C", font_size=MIN_FONT, color=RESULT_COLOR).move_to(box_c.get_center())
-
-        # Auxiliary inputs below:
-        box_a_prev = RoundedRectangle(corner_radius=0.1, width=1.35, height=0.62, stroke_color=V_COLOR, stroke_width=2.5, fill_color=BG, fill_opacity=1.0).move_to(np.array([-3.6, -0.65, 0]))
-        txt_a_prev = MathTex(r"a^{(L-1)}", font_size=MIN_FONT, color=V_COLOR).move_to(box_a_prev.get_center())
-
-        box_b = RoundedRectangle(corner_radius=0.1, width=1.35, height=0.62, stroke_color=V_COLOR, stroke_width=2.5, fill_color=BG, fill_opacity=1.0).move_to(np.array([-1.2, -0.75, 0]))
-        txt_b = MathTex(r"b^{(L)}", font_size=MIN_FONT, color=V_COLOR).move_to(box_b.get_center())
-
-        box_y = RoundedRectangle(corner_radius=0.1, width=1.1, height=0.62, stroke_color=V_COLOR, stroke_width=2.5, fill_color=BG, fill_opacity=1.0).move_to(np.array([3.6, -0.65, 0]))
-        txt_y = MathTex(r"y", font_size=MIN_FONT, color=V_COLOR).move_to(box_y.get_center())
-
-        # Arrows connecting the nodes
-        arr_w_z = Arrow(box_w.get_right(), box_z.get_left(), buff=0.1, color=INK_DIM, stroke_width=2.5, max_tip_length_to_length_ratio=0.2)
-        arr_ap_z = Arrow(box_a_prev.get_right(), box_z.get_bottom(), buff=0.1, color=INK_DIM, stroke_width=2.2, max_tip_length_to_length_ratio=0.2)
-        arr_b_z = Arrow(box_b.get_top(), box_z.get_bottom(), buff=0.1, color=INK_DIM, stroke_width=2.2, max_tip_length_to_length_ratio=0.25)
-        arr_z_a = Arrow(box_z.get_right(), box_a.get_left(), buff=0.1, color=INK_DIM, stroke_width=2.5, max_tip_length_to_length_ratio=0.2)
-        arr_a_c = Arrow(box_a.get_right(), box_c.get_left(), buff=0.1, color=INK_DIM, stroke_width=2.5, max_tip_length_to_length_ratio=0.2)
-        arr_y_c = Arrow(box_y.get_top(), box_c.get_bottom(), buff=0.1, color=INK_DIM, stroke_width=2.2, max_tip_length_to_length_ratio=0.25)
-
-        tree_mobs = VGroup(
-            box_w, txt_w, box_a_prev, txt_a_prev, box_b, txt_b,
-            box_z, txt_z, box_a, txt_a, box_c, txt_c, box_y, txt_y,
-            arr_w_z, arr_ap_z, arr_b_z, arr_z_a, arr_a_c, arr_y_c,
-        )
-
-        # Frame 0 setup
-        tree_mobs.shift(DOWN * 0.3)
-        self.add(title, tree_mobs)
+        a_wz = edge(bw.get_right(), bz.get_left())
+        a_za = edge(bz.get_right(), ba.get_left())
+        a_ac = edge(ba.get_right(), bc.get_left())
+        a_yc = Arrow(by.get_top(), bc.get_bottom(), buff=0.08, color=INK_DIM, stroke_width=3,
+                     max_tip_length_to_length_ratio=0.3)
+        tree = VGroup(bw, tw, bz, tz, ba, ta, bc, tc, by, ty, a_wz, a_za, a_ac, a_yc)
+        self.add(tree)
         self.wait(1.5)
 
-        # 3. Nudge dw on w^{(L)}
-        flash_w = SurroundingRectangle(box_w, color=HIGHLIGHT, buff=0.08, stroke_width=3)
-        nudge_w = MathTex(r"dw", font_size=MIN_FONT, color=X_COLOR).next_to(box_w, UP, buff=0.14)
-        nudge_w.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
+        def nudge(b, s, col):
+            fl = SurroundingRectangle(b, color=HIGHLIGHT, buff=0.08, stroke_width=3)
+            lab = tex(s, col, bg=True).next_to(b, UP, buff=0.14)
+            return fl, lab
 
-        self.play(Create(flash_w), FadeIn(nudge_w), run_time=0.6)
-        self.play(FadeOut(flash_w), run_time=0.4)
+        fl, nw = nudge(bw, r"dw", A_COL)
+        self.play(Create(fl), FadeIn(nw), run_time=0.6)
+        self.play(FadeOut(fl), run_time=0.4)
         self.wait(0.4)
 
-        # 4. Propagate w -> z:
-        # Local factor ABOVE arrow: \frac{\partial z^{(L)}}{\partial w^{(L)}}
-        lbl_f1 = MathTex(r"\frac{\partial z^{(L)}}{\partial w^{(L)}}", font_size=MIN_FONT + 2, color=X_COLOR)
-        lbl_f1.next_to(arr_w_z, UP, buff=0.55)
-        lbl_f1.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
+        steps = [
+            (a_wz, bz, r"\frac{\partial z^{(L)}}{\partial w^{(L)}}", A_COL, r"dz", A_COL),
+            (a_za, ba, r"\frac{\partial a^{(L)}}{\partial z^{(L)}}", S_COL, r"da", A_COL),
+            (a_ac, bc, r"\frac{\partial C}{\partial a^{(L)}}", D_COL, r"dC", D_COL),
+        ]
+        for arr, tgt, fac, fcol, dn, dcol in steps:
+            lf = tex(fac, fcol, size=F + 2, bg=True).next_to(arr, UP, buff=0.75)
+            fl, nl = nudge(tgt, dn, dcol)
+            self.play(arr.animate.set_color(fcol).set_stroke(width=4.5), FadeIn(lf), run_time=1.0)
+            self.play(Create(fl), FadeIn(nl), run_time=0.5)
+            self.play(FadeOut(fl), run_time=0.3)
+            self.wait(0.7)
 
-        nudge_z = MathTex(r"dz", font_size=MIN_FONT, color=X_COLOR).next_to(box_z, UP, buff=0.14)
-        nudge_z.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
-        flash_z = SurroundingRectangle(box_z, color=HIGHLIGHT, buff=0.08, stroke_width=3)
-
-        self.play(
-            arr_w_z.animate.set_color(X_COLOR).set_stroke(width=4),
-            FadeIn(lbl_f1),
-            run_time=1.0,
-        )
-        self.play(Create(flash_z), FadeIn(nudge_z), run_time=0.5)
-        self.play(FadeOut(flash_z), run_time=0.3)
-        self.wait(0.6)
-
-        # 5. Propagate z -> a:
-        # Local factor ABOVE arrow: \frac{\partial a^{(L)}}{\partial z^{(L)}}
-        lbl_f2 = MathTex(r"\frac{\partial a^{(L)}}{\partial z^{(L)}}", font_size=MIN_FONT + 2, color=W_COLOR)
-        lbl_f2.next_to(arr_z_a, UP, buff=0.55)
-        lbl_f2.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
-
-        nudge_a = MathTex(r"da", font_size=MIN_FONT, color=W_COLOR).next_to(box_a, UP, buff=0.14)
-        nudge_a.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
-        flash_a = SurroundingRectangle(box_a, color=HIGHLIGHT, buff=0.08, stroke_width=3)
-
-        self.play(
-            arr_z_a.animate.set_color(W_COLOR).set_stroke(width=4),
-            FadeIn(lbl_f2),
-            run_time=1.0,
-        )
-        self.play(Create(flash_a), FadeIn(nudge_a), run_time=0.5)
-        self.play(FadeOut(flash_a), run_time=0.3)
-        self.wait(0.6)
-
-        # 6. Propagate a -> C:
-        # Local factor ABOVE arrow: \frac{\partial C}{\partial a^{(L)}}
-        lbl_f3 = MathTex(r"\frac{\partial C}{\partial a^{(L)}}", font_size=MIN_FONT + 2, color=Y_COLOR)
-        lbl_f3.next_to(arr_a_c, UP, buff=0.55)
-        lbl_f3.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
-
-        nudge_c = MathTex(r"dC", font_size=MIN_FONT, color=RESULT_COLOR).next_to(box_c, UP, buff=0.14)
-        nudge_c.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
-        flash_c = SurroundingRectangle(box_c, color=HIGHLIGHT, buff=0.08, stroke_width=3)
-
-        self.play(
-            arr_a_c.animate.set_color(Y_COLOR).set_stroke(width=4),
-            FadeIn(lbl_f3),
-            run_time=1.0,
-        )
-        self.play(Create(flash_c), FadeIn(nudge_c), run_time=0.5)
-        self.play(FadeOut(flash_c), run_time=0.3)
-        self.wait(0.6)
-
-        # 7. Summary chain flow at bottom
-        flow_summary = MathTex(
-            r"dw", r"\;\longrightarrow\;",
-            r"dz", r"\;\longrightarrow\;",
-            r"da", r"\;\longrightarrow\;",
-            r"dC",
-            font_size=MIN_FONT + 2,
-        )
-        flow_summary[0].set_color(X_COLOR)
-        flow_summary[1].set_color(INK_DIM)
-        flow_summary[2].set_color(X_COLOR)
-        flow_summary[3].set_color(INK_DIM)
-        flow_summary[4].set_color(W_COLOR)
-        flow_summary[5].set_color(INK_DIM)
-        flow_summary[6].set_color(RESULT_COLOR)
-        flow_summary.move_to(np.array([0.0, -2.15, 0]))
-        flow_summary.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
-
-        flow_box = SurroundingRectangle(flow_summary, color=RESULT_COLOR, buff=0.12, stroke_width=2)
-
-        self.play(Write(flow_summary), FadeIn(flow_box), run_time=1.4)
+        flow = MathTex(r"dw", r"\;\longrightarrow\;", r"dz", r"\;\longrightarrow\;",
+                       r"da", r"\;\longrightarrow\;", r"dC", font_size=F + 2)
+        for i, c in enumerate([A_COL, INK_DIM, A_COL, INK_DIM, A_COL, INK_DIM, D_COL]):
+            flow[i].set_color(c)
+        flow.move_to(np.array([-0.9, -2.25, 0]))
+        fbox = SurroundingRectangle(flow, color=D_COL, buff=0.14, stroke_width=2.5)
+        self.play(FadeIn(flow), FadeIn(fbox), run_time=1.0)
         self.wait(3.0)
 
 
 class ChainRuleProduct(Scene):
     def construct(self):
-        # 1. Title
-        title = MathTex(
-            r"\text{Chain rule: multiplying three local factors}",
-            font_size=MIN_FONT,
-            color=INK,
-        ).move_to(UP * 2.35)
-        title.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
-
-        # 2. Main chain rule equation with generous spacing between factors
-        chain_eq = MathTex(
-            r"\frac{\partial C}{\partial w^{(L)}}",  # 0
-            r"=",                                    # 1
-            r"\frac{\partial z^{(L)}}{\partial w^{(L)}}",  # 2
-            r"\quad\cdot\quad",                      # 3
-            r"\frac{\partial a^{(L)}}{\partial z^{(L)}}",  # 4
-            r"\quad\cdot\quad",                      # 5
-            r"\frac{\partial C}{\partial a^{(L)}}",  # 6
-            font_size=MIN_FONT + 2,
-        )
-        chain_eq[0].set_color(RESULT_COLOR)
-        chain_eq[1].set_color(INK)
-        chain_eq[2].set_color(X_COLOR)
-        chain_eq[3].set_color(INK)
-        chain_eq[4].set_color(W_COLOR)
-        chain_eq[5].set_color(INK)
-        chain_eq[6].set_color(Y_COLOR)
-        chain_eq.move_to(np.array([0.0, 1.35, 0]))
-        chain_eq.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
-
-        # Frame 0 setup
-        self.add(title, chain_eq)
+        chain = MathTex(
+            r"\frac{\partial C}{\partial w^{(L)}}", r"=",
+            r"\frac{\partial z^{(L)}}{\partial w^{(L)}}", r"\quad\cdot\quad",
+            r"\frac{\partial a^{(L)}}{\partial z^{(L)}}", r"\quad\cdot\quad",
+            r"\frac{\partial C}{\partial a^{(L)}}", font_size=F)
+        chain[0].set_color(INK)
+        chain[2].set_color(A_COL)
+        chain[4].set_color(S_COL)
+        chain[6].set_color(D_COL)
+        chain.move_to(np.array([0, 1.75, 0]))
+        self.add(chain)
         self.wait(1.5)
 
-        # Coordinates under each factor
-        x1 = chain_eq[2].get_x()
-        x2 = chain_eq[4].get_x()
-        x3 = chain_eq[6].get_x()
+        evals = [
+            (2, r"a^{(L-1)}", A_COL),
+            (4, r"\sigma'(z^{(L)})", S_COL),
+            (6, r"2(a^{(L)} - y)", D_COL),
+        ]
+        shown = []
+        for idx, s, col in evals:
+            x = chain[idx].get_x()
+            arr = Arrow(np.array([x, 1.05, 0]), np.array([x, 0.35, 0]), buff=0.05, color=col, stroke_width=3,
+                        max_tip_length_to_length_ratio=0.25)
+            ev = tex(s, col, size=F).move_to(np.array([x, -0.1, 0]))
+            self.play(Create(arr), run_time=0.7)
+            self.play(FadeIn(ev, shift=DOWN * 0.2), run_time=0.7)
+            self.wait(0.7)
+            shown.append(ev)
 
-        # 3. Factor 1: evaluate dz/dw = a^{(L-1)}
-        arr1 = Arrow(np.array([x1, 0.85, 0]), np.array([x1, 0.35, 0]), buff=0.05, color=X_COLOR, stroke_width=2.5, max_tip_length_to_length_ratio=0.25)
-        eval_f1 = MathTex(r"a^{(L-1)}", font_size=MIN_FONT + 2, color=X_COLOR).move_to(np.array([x1, -0.05, 0]))
-        eval_f1.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
-
-        self.play(Create(arr1), run_time=0.8)
-        self.play(FadeIn(eval_f1, shift=DOWN * 0.2), run_time=0.8)
-        self.wait(0.6)
-
-        # 4. Factor 2: evaluate da/dz = \sigma'(z^{(L)})
-        arr2 = Arrow(np.array([x2, 0.85, 0]), np.array([x2, 0.35, 0]), buff=0.05, color=W_COLOR, stroke_width=2.5, max_tip_length_to_length_ratio=0.25)
-        eval_f2 = MathTex(r"\sigma'(z^{(L)})", font_size=MIN_FONT + 2, color=W_COLOR).move_to(np.array([x2, -0.05, 0]))
-        eval_f2.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
-
-        self.play(Create(arr2), run_time=0.8)
-        self.play(FadeIn(eval_f2, shift=DOWN * 0.2), run_time=0.8)
-        self.wait(0.6)
-
-        # 5. Factor 3: evaluate dC/da = 2(a^{(L)} - y)
-        arr3 = Arrow(np.array([x3, 0.85, 0]), np.array([x3, 0.35, 0]), buff=0.05, color=Y_COLOR, stroke_width=2.5, max_tip_length_to_length_ratio=0.25)
-        eval_f3 = MathTex(r"2(a^{(L)} - y)", font_size=MIN_FONT + 2, color=Y_COLOR).move_to(np.array([x3, -0.05, 0]))
-        eval_f3.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
-
-        self.play(Create(arr3), run_time=0.8)
-        self.play(FadeIn(eval_f3, shift=DOWN * 0.2), run_time=0.8)
-        self.wait(0.8)
-
-        # 6. Gather evaluated factors into the final product formula at y = -1.45
-        final_eq = MathTex(
-            r"\frac{\partial C}{\partial w^{(L)}}",  # 0
-            r"=",                                    # 1
-            r"a^{(L-1)}",                            # 2
-            r"\cdot",                                # 3
-            r"\sigma'(z^{(L)})",                     # 4
-            r"\cdot",                                # 5
-            r"2(a^{(L)} - y)",                       # 6
-            font_size=MIN_FONT + 2,
-        )
-        final_eq[0].set_color(RESULT_COLOR)
-        final_eq[1].set_color(INK)
-        final_eq[2].set_color(X_COLOR)
-        final_eq[3].set_color(INK)
-        final_eq[4].set_color(W_COLOR)
-        final_eq[5].set_color(INK)
-        final_eq[6].set_color(Y_COLOR)
-        final_eq.move_to(np.array([0.0, -1.85, 0]))
-        final_eq.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
-
-        final_box = SurroundingRectangle(final_eq, color=RESULT_COLOR, buff=0.14, stroke_width=2.5)
-
-        self.play(
-            Write(final_eq),
-            run_time=1.4,
-        )
-        self.play(FadeIn(final_box), run_time=0.6)
-        self.wait(3.0)
+        final = MathTex(r"\frac{\partial C}{\partial w^{(L)}}", r"=", r"a^{(L-1)}", r"\cdot",
+                        r"\sigma'(z^{(L)})", r"\cdot", r"2(a^{(L)} - y)", font_size=F + 2)
+        final[0].set_color(INK)
+        final[2].set_color(A_COL)
+        final[4].set_color(S_COL)
+        final[6].set_color(D_COL)
+        final.move_to(np.array([0, -1.65, 0]))
+        fbox = SurroundingRectangle(final, color=D_COL, buff=0.16, stroke_width=2.5)
+        self.play(FadeIn(final, shift=UP * 0.2), FadeIn(fbox), run_time=1.0)
+        self.wait(3.5)
 
 
 class GoDeeper(Scene):
     def construct(self):
-        # 1. Title
-        title = MathTex(
-            r"\text{The backward pass: reusing factors one layer back}",
-            font_size=MIN_FONT,
-            color=INK,
-        ).move_to(UP * 2.35)
-        title.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
+        yn = 1.6
+        xs = [-3.45, -1.15, 1.15]
+        n_l2, n_l1, n_l = [node(np.array([x, yn, 0]), color=INK_DIM, sw=2.5) for x in xs]
+        bc = box(np.array([3.45, yn, 0]), 1.2, 0.8, D_COL)
+        tc = tex(r"C", D_COL).move_to(bc)
+        lab_l2 = tex(r"a^{(L-2)}", A_COL).next_to(n_l2, UP, buff=0.12)
+        lab_l1 = tex(r"a^{(L-1)}", A_COL).next_to(n_l1, UP, buff=0.12)
+        lab_l = tex(r"a^{(L)}", A_COL).next_to(n_l, UP, buff=0.12)
+        f1 = edge(n_l2.get_right(), n_l1.get_left())
+        f2 = edge(n_l1.get_right(), n_l.get_left())
+        f3 = edge(n_l.get_right(), bc.get_left(), D_COL)
+        wl1 = tex(r"w^{(L-1)}", A_COL, bg=True).next_to(f1, DOWN, buff=0.1)
+        wl = tex(r"w^{(L)}", A_COL, bg=True).next_to(f2, DOWN, buff=0.1)
+        net = VGroup(n_l2, n_l1, n_l, bc, tc, lab_l2, lab_l1, lab_l, f1, f2, f3, wl1, wl)
 
-        # 2. Chain of neurons at y = 1.05
-        r = 0.32
-        p_l2 = np.array([-3.45, 1.05, 0])
-        p_l1 = np.array([-1.15, 1.05, 0])
-        p_l = np.array([1.15, 1.05, 0])
-        p_c = np.array([3.45, 1.05, 0])
-
-        neuron_l2 = Circle(radius=r, color=INK_DIM, stroke_width=2.5, fill_color=BG, fill_opacity=1.0).move_to(p_l2)
-        neuron_l1 = Circle(radius=r, color=INK_DIM, stroke_width=2.5, fill_color=BG, fill_opacity=1.0).move_to(p_l1)
-        neuron_l = Circle(radius=r, color=INK_DIM, stroke_width=2.5, fill_color=BG, fill_opacity=1.0).move_to(p_l)
-
-        box_c = RoundedRectangle(corner_radius=0.1, width=1.1, height=0.65, color=RESULT_COLOR, stroke_width=2.5, fill_color=BG, fill_opacity=1.0).move_to(p_c)
-        txt_c = MathTex(r"C", font_size=MIN_FONT, color=RESULT_COLOR).move_to(box_c.get_center())
-
-        lbl_l2 = MathTex(r"a^{(L-2)}", font_size=MIN_FONT, color=INK_DIM).next_to(neuron_l2, UP, buff=0.12)
-        lbl_l1 = MathTex(r"a^{(L-1)}", font_size=MIN_FONT, color=V_COLOR).next_to(neuron_l1, UP, buff=0.12)
-        lbl_l = MathTex(r"a^{(L)}", font_size=MIN_FONT, color=V_COLOR).next_to(neuron_l, UP, buff=0.12)
-
-        arr_fwd_1 = Arrow(neuron_l2.get_right(), neuron_l1.get_left(), buff=0.08, color=INK_DIM, stroke_width=2.5, max_tip_length_to_length_ratio=0.22)
-        arr_fwd_2 = Arrow(neuron_l1.get_right(), neuron_l.get_left(), buff=0.08, color=INK_DIM, stroke_width=2.5, max_tip_length_to_length_ratio=0.22)
-        arr_fwd_3 = Arrow(neuron_l.get_right(), box_c.get_left(), buff=0.08, color=RESULT_COLOR, stroke_width=2.5, max_tip_length_to_length_ratio=0.22)
-
-        lbl_wl1 = MathTex(r"w^{(L-1)}", font_size=MIN_FONT, color=V_COLOR).next_to(arr_fwd_1, DOWN, buff=0.1)
-        lbl_wl1.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
-        lbl_wl = MathTex(r"w^{(L)}", font_size=MIN_FONT, color=V_COLOR).next_to(arr_fwd_2, DOWN, buff=0.1)
-        lbl_wl.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
-
-        network_group = VGroup(
-            neuron_l2, neuron_l1, neuron_l, box_c, txt_c,
-            lbl_l2, lbl_l1, lbl_l,
-            arr_fwd_1, arr_fwd_2, arr_fwd_3,
-            lbl_wl1, lbl_wl,
-        )
-
-        # 3. Middle formula at y = -0.15: sensitivity wrt previous activation
-        eq_prev_a = MathTex(
-            r"\frac{\partial C}{\partial a^{(L-1)}}",  # 0
-            r"=",                                      # 1
-            r"w^{(L)}",                                # 2
-            r"\cdot",                                  # 3
-            r"\sigma'(z^{(L)})",                       # 4
-            r"\cdot",                                  # 5
-            r"2(a^{(L)} - y)",                         # 6
-            font_size=MIN_FONT + 2,
-        )
-        eq_prev_a[0].set_color(RESULT_COLOR)
-        eq_prev_a[1].set_color(INK)
-        eq_prev_a[2].set_color(V_COLOR)
-        eq_prev_a[3].set_color(INK)
-        eq_prev_a[4].set_color(W_COLOR)
-        eq_prev_a[5].set_color(INK)
-        eq_prev_a[6].set_color(Y_COLOR)
-        eq_prev_a.move_to(np.array([0.0, -0.6, 0]))
-        eq_prev_a.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
-
-        # Frame 0 setup
-        self.add(title, network_group, eq_prev_a)
+        eq = MathTex(r"\frac{\partial C}{\partial a^{(L-1)}}", r"=", r"w^{(L)}", r"\cdot",
+                     r"\sigma'(z^{(L)})", r"\cdot", r"2(a^{(L)} - y)", font_size=F + 2)
+        eq[0].set_color(D_COL)
+        eq[2].set_color(A_COL)
+        eq[4].set_color(S_COL)
+        eq[6].set_color(D_COL)
+        eq.move_to(np.array([0, 0.1, 0]))
+        self.add(net, eq)
         self.wait(1.5)
 
-        # 4. Highlight the reused factors from layer L: \sigma'(z^{(L)}) \cdot 2(a^{(L)} - y)
-        reused_group = VGroup(eq_prev_a[4], eq_prev_a[5], eq_prev_a[6])
-        reused_brace = Brace(reused_group, DOWN, buff=0.1, color=HIGHLIGHT)
-        reused_lbl = MathTex(
-            r"\text{reused from layer } L",
-            font_size=MIN_FONT,
-            color=HIGHLIGHT,
-        ).next_to(reused_brace, DOWN, buff=0.12)
+        reused = VGroup(eq[4], eq[5], eq[6])
+        brace = Brace(reused, DOWN, buff=0.1, color=HIGHLIGHT)
+        r_lbl = tex(r"\text{reused from layer } L", HIGHLIGHT).next_to(brace, DOWN, buff=0.12)
+        self.play(Create(brace), FadeIn(r_lbl), run_time=1.0)
+        self.wait(1.5)
+        d_def = MathTex(r"\boldsymbol{\delta}^{(L)}", r"=", r"\frac{\partial C}{\partial z^{(L)}}", r"=",
+                        r"\sigma'(z^{(L)})", r"\cdot", r"2(a^{(L)} - y)", font_size=F)
+        d_def[0].set_color(D_COL)
+        d_def[2].set_color(D_COL)
+        d_def[4].set_color(S_COL)
+        d_def[6].set_color(D_COL)
+        d_def.move_to(np.array([0.0, -1.55, 0]))
+        self.play(FadeOut(r_lbl), run_time=0.4)
+        self.play(FadeIn(d_def), run_time=0.8)
+        self.wait(2.5)
 
-        self.play(Create(reused_brace), FadeIn(reused_lbl), run_time=1.2)
-        self.wait(1.2)
+        # Pull the reused product out as delta^{(L)}.
+        self.play(FadeOut(brace), FadeOut(d_def), FadeOut(eq), run_time=0.6)
+        eq_a = MathTex(r"\frac{\partial C}{\partial a^{(L-1)}}", r"=", r"w^{(L)}", r"\cdot",
+                       r"\boldsymbol{\delta}^{(L)}", font_size=F + 2)
+        eq_w = MathTex(r"\frac{\partial C}{\partial w^{(L)}}", r"=", r"a^{(L-1)}", r"\cdot",
+                       r"\boldsymbol{\delta}^{(L)}", font_size=F + 2)
+        for e, c in ((eq_a, A_COL), (eq_w, A_COL)):
+            e[0].set_color(D_COL)
+            e[2].set_color(c)
+            e[4].set_color(D_COL)
+        VGroup(eq_a, eq_w).arrange(DOWN, buff=0.55, aligned_edge=LEFT).move_to(np.array([0, -0.5, 0]))
+        eq_w.align_to(eq_a, LEFT)
+        self.play(FadeIn(eq_a), FadeIn(eq_w), run_time=0.8)
+        boxes = VGroup(SurroundingRectangle(eq_a[4], color=HIGHLIGHT, buff=0.1, stroke_width=3),
+                       SurroundingRectangle(eq_w[4], color=HIGHLIGHT, buff=0.1, stroke_width=3))
+        tw = tex(r"\text{one } \delta^{(L)}\text{, used twice}", HIGHLIGHT).move_to(np.array([0, -2.1, 0]))
+        self.play(Create(boxes), FadeIn(tw), run_time=0.8)
+        self.wait(2.5)
+        self.play(FadeOut(boxes), FadeOut(tw), run_time=0.4)
 
-        # 5. Travelling backward sweep highlight (right -> left)
-        # Curved highlight pulses sweeping backwards: C -> a^{(L)} -> a^{(L-1)} -> a^{(L-2)}
-        flash_c = SurroundingRectangle(box_c, color=HIGHLIGHT, buff=0.08, stroke_width=3)
-        self.play(Create(flash_c), run_time=0.35)
-        self.play(FadeOut(flash_c), run_time=0.25)
+        # Backward sweep along the chain.
+        cb = SurroundingRectangle(bc, color=HIGHLIGHT, buff=0.08, stroke_width=3)
+        self.play(Create(cb), run_time=0.3)
+        self.play(FadeOut(cb), run_time=0.2)
+        prev, pts = bc, [n_l, n_l1, n_l2]
+        for tgt in pts:
+            pulse = Arrow(prev.get_left(), tgt.get_right(), buff=0.08, color=HIGHLIGHT, stroke_width=5,
+                          max_tip_length_to_length_ratio=0.22)
+            fl = SurroundingRectangle(tgt, color=HIGHLIGHT, buff=0.08, stroke_width=3)
+            self.play(Create(pulse), run_time=0.35)
+            self.play(Create(fl), FadeOut(pulse), run_time=0.3)
+            self.play(FadeOut(fl), run_time=0.2)
+            prev = tgt
+        self.wait(0.3)
 
-        pulse_c_to_l = Arrow(box_c.get_left(), neuron_l.get_right(), buff=0.08, color=HIGHLIGHT, stroke_width=5, max_tip_length_to_length_ratio=0.22)
-        flash_l = SurroundingRectangle(neuron_l, color=HIGHLIGHT, buff=0.08, stroke_width=3)
-        self.play(Create(pulse_c_to_l), run_time=0.4)
-        self.play(Create(flash_l), FadeOut(pulse_c_to_l), run_time=0.35)
-        self.play(FadeOut(flash_l), run_time=0.25)
-
-        pulse_l_to_l1 = Arrow(neuron_l.get_left(), neuron_l1.get_right(), buff=0.08, color=HIGHLIGHT, stroke_width=5, max_tip_length_to_length_ratio=0.22)
-        flash_l1 = SurroundingRectangle(neuron_l1, color=HIGHLIGHT, buff=0.08, stroke_width=3)
-        self.play(Create(pulse_l_to_l1), run_time=0.4)
-        self.play(Create(flash_l1), FadeOut(pulse_l_to_l1), run_time=0.35)
-        self.play(FadeOut(flash_l1), run_time=0.25)
-
-        pulse_l1_to_l2 = Arrow(neuron_l1.get_left(), neuron_l2.get_right(), buff=0.08, color=HIGHLIGHT, stroke_width=5, max_tip_length_to_length_ratio=0.22)
-        flash_l2 = SurroundingRectangle(neuron_l2, color=HIGHLIGHT, buff=0.08, stroke_width=3)
-        self.play(Create(pulse_l1_to_l2), run_time=0.4)
-        self.play(Create(flash_l2), FadeOut(pulse_l1_to_l2), run_time=0.35)
-        self.play(FadeOut(flash_l2), run_time=0.25)
-        self.wait(0.6)
-
-        # 6. Apply to layer L-1's weights: the recursive chain rule
-        self.play(FadeOut(reused_brace), FadeOut(reused_lbl), FadeOut(eq_prev_a), run_time=0.6)
-
-        eq_prev_w = MathTex(
-            r"\frac{\partial C}{\partial w^{(L-1)}}",  # 0
-            r"=",                                      # 1
-            r"a^{(L-2)}",                              # 2
-            r"\cdot",                                  # 3
-            r"\sigma'(z^{(L-1)})",                     # 4
-            r"\cdot",                                  # 5
-            r"\frac{\partial C}{\partial a^{(L-1)}}",  # 6
-            font_size=MIN_FONT + 2,
-        )
-        eq_prev_w[0].set_color(RESULT_COLOR)
-        eq_prev_w[1].set_color(INK)
-        eq_prev_w[2].set_color(X_COLOR)
-        eq_prev_w[3].set_color(INK)
-        eq_prev_w[4].set_color(W_COLOR)
-        eq_prev_w[5].set_color(INK)
-        eq_prev_w[6].set_color(RESULT_COLOR)
-        eq_prev_w.move_to(np.array([0.0, -1.5, 0]))
-        eq_prev_w.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
-
-        box_final = SurroundingRectangle(eq_prev_w, color=RESULT_COLOR, buff=0.14, stroke_width=2.5)
-
-        self.play(Write(eq_prev_w), run_time=1.4)
-        self.play(FadeIn(box_final), run_time=0.6)
+        # Next layer back: delta^{(L)} reaches every earlier weight.
+        self.play(FadeOut(eq_a), FadeOut(eq_w), run_time=0.5)
+        e1 = MathTex(r"\frac{\partial C}{\partial w^{(L-1)}}", r"=", r"a^{(L-2)}", r"\cdot",
+                     r"\sigma'(z^{(L-1)})", r"\cdot", r"\frac{\partial C}{\partial a^{(L-1)}}", font_size=F)
+        e2 = MathTex(r"=", r"a^{(L-2)}", r"\cdot", r"\sigma'(z^{(L-1)})", r"\cdot", r"w^{(L)}", r"\cdot",
+                     r"\boldsymbol{\delta}^{(L)}", font_size=F)
+        e1[0].set_color(D_COL); e1[2].set_color(A_COL); e1[4].set_color(S_COL); e1[6].set_color(D_COL)
+        e2[1].set_color(A_COL); e2[3].set_color(S_COL); e2[5].set_color(A_COL); e2[7].set_color(D_COL)
+        e1.move_to(np.array([0, -0.3, 0]))
+        e2.next_to(e1, DOWN, buff=0.45).align_to(e1[1], LEFT)
+        fb = SurroundingRectangle(VGroup(e1, e2), color=D_COL, buff=0.2, stroke_width=2.5)
+        self.play(FadeIn(e1), run_time=0.8)
+        self.wait(1.0)
+        self.play(FadeIn(e2), FadeIn(fb), run_time=0.8)
         self.wait(3.0)
+
+
+def rounded(v, nd):
+    return f"{v:.{nd}f}"
+
+
+class TinyNetworkNumbers(Scene):
+    def construct(self):
+        a_prev, w, b, y = 0.5, 2.0, -0.5, 1.0
+
+        def forward(wv):
+            z = wv * a_prev + b
+            a = sigma(z)
+            return z, a, (a - y) ** 2
+
+        z, a, C = forward(w)
+        sp = a * (1 - a)
+        dCda = 2 * (a - y)
+        grad = a_prev * sp * dCda
+        z2, a2, C2 = forward(w + 0.01)
+        dC = C2 - C
+        f1 = lambda v: f"{v:.1f}"
+        f3 = lambda v: f"{v:.3f}"
+        f4 = lambda v: f"{v:.4f}"
+        f5 = lambda v: f"{v:.5f}"
+
+        yc = 1.1
+        b0 = box(np.array([-4.0, yc, 0]), 1.7, 0.8, A_COL)
+        t0 = tex(r"a^{(L-1)}", A_COL).move_to(b0)
+        bz = box(np.array([-1.2, yc, 0]), 1.1, 0.8, INK_DIM)
+        tz = tex(r"z", INK).move_to(bz)
+        ba = box(np.array([1.3, yc, 0]), 1.1, 0.8, A_COL)
+        ta = tex(r"a", A_COL).move_to(ba)
+        bc = box(np.array([3.9, yc, 0]), 1.1, 0.8, D_COL)
+        tc = tex(r"C", D_COL).move_to(bc)
+        e1 = edge(b0.get_right(), bz.get_left())
+        e2 = edge(bz.get_right(), ba.get_left())
+        e3 = edge(ba.get_right(), bc.get_left())
+        by = box(np.array([3.9, 2.3, 0]), 1.5, 0.7, A_COL)
+        ty = tex(rf"y={f1(y)}".replace(".0", ""), A_COL).move_to(by)
+        ey = Arrow(by.get_bottom(), bc.get_top(), buff=0.05, color=INK_DIM, stroke_width=3,
+                   max_tip_length_to_length_ratio=0.35)
+        bb = box(np.array([-0.9, 2.35, 0]), 2.0, 0.7, A_COL)
+        tb = tex(rf"b={f1(b)}", A_COL).move_to(bb)
+        eb = Arrow(np.array([-1.2, bb.get_bottom()[1], 0]), bz.get_top(), buff=0.05, color=INK_DIM,
+                   stroke_width=3, max_tip_length_to_length_ratio=0.35)
+        lw = tex(rf"w={f1(w)}".replace(".0", ""), A_COL).next_to(e1, UP, buff=0.12)
+        ls = tex(r"\sigma", S_COL).next_to(e2, UP, buff=0.12)
+        v0 = tex(f1(a_prev), A_COL).move_to(np.array([-4.0, 0.3, 0]))
+        vz = tex(f1(z), INK).move_to(np.array([-1.2, 0.3, 0]))
+        va = tex(f4(a), A_COL).move_to(np.array([1.3, 0.3, 0]))
+        vc = tex(f4(C), D_COL).move_to(np.array([3.9, 0.3, 0]))
+
+        self.add(b0, t0, bz, tz, ba, ta, bc, tc, e1, e2, e3, by, ty, ey, bb, tb, eb, lw, ls, v0)
+        self.wait(2.0)
+
+        def line(s, col=INK, yy=-1.0):
+            return tex(s, col).move_to(np.array([0, yy, 0]))
+
+        steps = [
+            (vz, line(rf"z = w\,a^{{(L-1)}} + b = 2({f1(a_prev)}) - 0.5 = {f1(z)}")),
+            (va, line(rf"a = \sigma(z) = \sigma({f1(z)}) = {f4(a)}")),
+            (vc, line(rf"C = (a-y)^2 = ({f4(a)}-1)^2 = {f4(C)}", D_COL)),
+        ]
+        cur = None
+        for v, ln in steps:
+            if cur is not None:
+                self.play(FadeOut(cur), run_time=0.3)
+            self.play(FadeIn(ln), FadeIn(v), run_time=0.7)
+            self.wait(1.5)
+            cur = ln
+        self.play(FadeOut(cur), FadeOut(VGroup(v0, vz, va, vc, lw, ls)), run_time=0.5)
+
+        # Backward pass: a local factor on each edge.
+        fr1 = tex(r"\frac{\partial z}{\partial w}", A_COL).next_to(e1, UP, buff=0.15)
+        fr2 = tex(r"\sigma'(z)", S_COL).next_to(e2, UP, buff=0.12)
+        fr3 = tex(r"\frac{\partial C}{\partial a}", D_COL).next_to(e3, UP, buff=0.15)
+        n1 = tex(f1(a_prev), A_COL).move_to(np.array([e1.get_center()[0], 0.55, 0]))
+        n2 = tex(f3(sp), S_COL).move_to(np.array([e2.get_center()[0], 0.55, 0]))
+        n3 = tex(f3(dCda), D_COL).move_to(np.array([e3.get_center()[0], 0.55, 0]))
+        for fr, n, col in ((fr1, n1, A_COL), (fr2, n2, S_COL), (fr3, n3, D_COL)):
+            self.play(FadeIn(fr), FadeIn(n), run_time=0.8)
+            self.wait(0.9)
+        # Spell out where 0.235 comes from, then multiply.
+        sp_line = line(rf"\sigma'(z) = a(1-a) = {f4(a)}\cdot{f4(1 - a)} = {f3(sp)}", S_COL, -0.9)
+        self.play(FadeIn(sp_line), run_time=0.6)
+        self.wait(1.5)
+        self.play(FadeOut(sp_line), run_time=0.3)
+        prod = line(rf"\frac{{\partial C}}{{\partial w}} = {f1(a_prev)}\cdot{f3(sp)}\cdot({f3(dCda)}) = {f4(grad)}",
+                    INK, -1.0)
+        pbox = SurroundingRectangle(prod, color=D_COL, buff=0.14, stroke_width=2.5)
+        self.play(FadeIn(prod), FadeIn(pbox), run_time=0.8)
+        self.wait(2.2)
+
+        # Numerical check.
+        self.play(FadeOut(VGroup(fr1, fr2, fr3, n1, n2, n3)), prod.animate.move_to(np.array([0, -0.5, 0])),
+                  pbox.animate.move_to(np.array([0, -0.5, 0])), run_time=0.6)
+        l1 = tex(rf"w:\; 2.00 \to 2.01 \qquad C:\; {f5(C)} \to {f5(C2)}", INK).move_to(np.array([0, -1.5, 0]))
+        l2 = tex(rf"\Delta C = {f5(dC)} \;\approx\; {f4(grad)}\times 0.01", D_COL).move_to(np.array([0, -2.35, 0]))
+        cbox = SurroundingRectangle(l2, color=D_COL, buff=0.14, stroke_width=2.5)
+        self.play(FadeIn(l1), run_time=0.8)
+        self.wait(1.5)
+        self.play(FadeIn(l2), FadeIn(cbox), run_time=0.8)
+        self.wait(3.0)
+
+
+class MatrixBackprop(Scene):
+    def construct(self):
+        a0 = np.array([1.0, 0.5])
+        W1 = np.array([[1.0, -1.0], [0.5, 1.0], [-1.0, 0.5]])
+        W2 = np.array([[2.0, -3.0, 1.0]])
+        y = 1.0
+        z1 = W1 @ a0
+        a1 = sigma(z1)
+        z2 = W2 @ a1
+        a2 = sigma(z2)
+        sp2 = a2 * (1 - a2)
+        sp1 = a1 * (1 - a1)
+        d2 = 2 * (a2 - y) * sp2                     # delta^(L), 1 entry
+        u = W2.T @ d2                               # W^T delta
+        d1 = u * sp1                                # delta^(L-1)
+        dW = np.outer(d1, a0)
+
+        f2 = lambda v: f"{v:.2f}"
+
+        def vec(vals, col, nd=2):
+            m = Matrix([[f"{v:.{nd}f}"] for v in np.ravel(vals)], v_buff=0.62, h_buff=1.0,
+                       bracket_h_buff=0.15, bracket_v_buff=0.15,
+                       element_to_mobject=MathTex, element_to_mobject_config={"font_size": F})
+            for e in m.get_entries():
+                e.set_color(col)
+            m.get_brackets().set_color(INK_DIM)
+            return m
+
+        def mat(vals, col, nd=2, hb=1.35):
+            rows = [[f"{v:.{nd}f}" for v in r] for r in np.atleast_2d(vals)]
+            m = Matrix(rows, v_buff=0.62, h_buff=hb, bracket_h_buff=0.15, bracket_v_buff=0.15,
+                       element_to_mobject=MathTex, element_to_mobject_config={"font_size": F})
+            for e in m.get_entries():
+                e.set_color(col)
+            m.get_brackets().set_color(INK_DIM)
+            return m
+
+        # ---- Stage 0: forward values (frame one) ----
+        c0 = vec(a0, A_COL).move_to(np.array([-3.5, -0.1, 0]))
+        c1 = vec(a1, A_COL).move_to(np.array([0.0, -0.1, 0]))
+        c2 = vec(a2, A_COL).move_to(np.array([3.5, -0.1, 0]))
+        l0 = tex(r"a^{(L-2)}", A_COL).next_to(c0, UP, buff=0.35)
+        l1 = tex(r"a^{(L-1)}", A_COL).next_to(c1, UP, buff=0.35)
+        l2 = tex(r"a^{(L)}", A_COL).next_to(c2, UP, buff=0.35)
+        ar1 = Arrow(c0.get_right() + RIGHT * 0.1, c1.get_left() + LEFT * 0.1, buff=0.05, color=INK_DIM,
+                    stroke_width=3, max_tip_length_to_length_ratio=0.2)
+        ar2 = Arrow(c1.get_right() + RIGHT * 0.1, c2.get_left() + LEFT * 0.1, buff=0.05, color=INK_DIM,
+                    stroke_width=3, max_tip_length_to_length_ratio=0.2)
+        wl1 = tex(r"W^{(L-1)}", A_COL).next_to(ar1, UP, buff=0.1)
+        wl2 = tex(r"W^{(L)}", A_COL).next_to(ar2, UP, buff=0.1)
+        yl = tex(rf"y = 1", A_COL).move_to(np.array([0, -2.1, 0]))
+        stage0 = VGroup(c0, c1, c2, l0, l1, l2, ar1, ar2, wl1, wl2, yl)
+        self.add(stage0)
+        self.wait(3.0)
+        self.play(FadeOut(stage0), run_time=0.5)
+
+        # header helper
+        # ---- Stage 1: delta^(L) ----
+        h1 = MathTex(r"\boldsymbol\delta^{(L)}", "=", r"\nabla_{\mathbf a} C", r"\odot", r"\sigma'(\mathbf z^{(L)})",
+                     font_size=F).move_to(np.array([0, 2.2, 0]))
+        h1[0].set_color(D_COL); h1[2].set_color(D_COL); h1[4].set_color(S_COL)
+        b1 = tex(rf"\boldsymbol\delta^{{(L)}} = 2(a^{{(L)}}-y)\,\sigma'(z^{{(L)}})", INK).move_to(np.array([0, 0.9, 0]))
+        b1b = tex(rf"= 2({f2(a2[0])}-1)\cdot {f2(sp2[0])} = {f2(d2[0])}", D_COL)
+        b1b.move_to(np.array([0, -0.3, 0]))
+        dbox = SurroundingRectangle(b1b, color=D_COL, buff=0.16, stroke_width=2.5)
+        self.play(FadeIn(h1), run_time=0.6)
+        self.play(FadeIn(b1), run_time=0.7)
+        self.wait(0.8)
+        self.play(FadeIn(b1b), FadeIn(dbox), run_time=0.7)
+        self.wait(1.8)
+        self.play(FadeOut(VGroup(b1, b1b, dbox, h1)), run_time=0.5)
+
+        # ---- Stage 2: step back through W^T ----
+        h2 = MathTex(r"\boldsymbol\delta^{(L-1)}", "=", r"\big(", r"W^{(L)\top}\boldsymbol\delta^{(L)}", r"\big)",
+                     r"\odot", r"\sigma'(\mathbf z^{(L-1)})", font_size=F).move_to(np.array([0, 2.2, 0]))
+        h2[0].set_color(D_COL); h2[3].set_color(D_COL); h2[6].set_color(S_COL)
+        h2[0].set_opacity(0.5); h2[6].set_opacity(0.5); h2[1].set_opacity(0.5); h2[5].set_opacity(0.5)
+        Wrow = mat(W2, A_COL, nd=0).move_to(np.array([-3.2, 0.1, 0]))
+        Wlab = tex(r"W^{(L)}", A_COL).next_to(Wrow, DOWN, buff=0.5)
+        dsc = vec(d2, D_COL).move_to(np.array([0.2, 0.1, 0]))
+        dlab = tex(r"\boldsymbol\delta^{(L)}", D_COL).next_to(dsc, DOWN, buff=0.5)
+        self.play(FadeIn(h2), FadeIn(Wrow), FadeIn(Wlab), FadeIn(dsc), FadeIn(dlab), run_time=0.8)
+        self.wait(1.4)
+        Wcol = vec(W2.T, A_COL).move_to(np.array([-3.2, 0.1, 0]))
+        Wlab_t = tex(r"W^{(L)\top}", A_COL).next_to(Wcol, DOWN, buff=0.5)
+        tr_note = tex(r"\text{transpose}", HIGHLIGHT).move_to(np.array([-3.2, 2.2 - 0.0, 0]))
+        tr_note.move_to(np.array([-3.2, -2.05, 0]))
+        self.play(ReplacementTransform(Wrow, Wcol), ReplacementTransform(Wlab, Wlab_t),
+                  FadeIn(tr_note), run_time=1.2)
+        self.wait(1.3)
+        self.play(FadeOut(tr_note), run_time=0.3)
+        eq_s = tex(r"\times", INK).move_to(np.array([-1.35, 0.1, 0]))
+        eq_e = tex(r"=", INK).move_to(np.array([1.75, 0.1, 0]))
+        ucol = vec(u, D_COL).move_to(np.array([3.5, 0.1, 0]))
+        ulab = tex(r"W^{(L)\top}\boldsymbol\delta^{(L)}", D_COL, size=F).next_to(ucol, DOWN, buff=0.5)
+        ulab.set_x(min(3.5, 5 - 0.15 - ulab.width / 2))
+        self.play(FadeIn(eq_s), FadeIn(eq_e), run_time=0.4)
+        self.play(FadeIn(ucol), FadeIn(ulab), run_time=0.8)
+        self.wait(1.6)
+
+        # ---- Stage 3: element-wise product ----
+        self.play(FadeOut(VGroup(Wcol, Wlab_t, dsc, dlab, eq_s, eq_e, ulab)), run_time=0.5)
+        h3 = MathTex(r"\boldsymbol\delta^{(L-1)}", "=", r"\big(", r"W^{(L)\top}\boldsymbol\delta^{(L)}", r"\big)",
+                     r"\odot", r"\sigma'(\mathbf z^{(L-1)})", font_size=F).move_to(np.array([0, 2.2, 0]))
+        h3[0].set_color(D_COL); h3[3].set_color(D_COL); h3[6].set_color(S_COL)
+        self.play(ReplacementTransform(h2, h3), run_time=0.4)
+        self.play(ucol.animate.move_to(np.array([-3.4, 0.1, 0])), run_time=0.7)
+        ulab2 = tex(r"W^{(L)\top}\boldsymbol\delta^{(L)}", D_COL).next_to(ucol, DOWN, buff=0.5)
+        ulab2.set_x(max(ucol.get_x(), -5 + 0.15 + ulab2.width / 2))
+        scol = vec(sp1, S_COL).move_to(np.array([0.2, 0.1, 0]))
+        slab = tex(r"\sigma'(\mathbf z^{(L-1)})", S_COL).next_to(scol, DOWN, buff=0.5)
+        dcol = vec(d1, D_COL).move_to(np.array([3.5, 0.1, 0]))
+        dcol_entries = dcol.get_entries()
+        hop = tex(r"\odot", INK).move_to(np.array([-1.6, 0.1, 0]))
+        heq = tex(r"=", INK).move_to(np.array([1.85, 0.1, 0]))
+        dlab2 = tex(r"\boldsymbol\delta^{(L-1)}", D_COL).next_to(dcol, DOWN, buff=0.5)
+        self.play(FadeIn(ulab2), FadeIn(hop), FadeIn(scol), FadeIn(slab), FadeIn(heq),
+                  FadeIn(dcol.get_brackets()), FadeIn(dlab2), run_time=0.8)
+        self.wait(0.6)
+        for i in range(3):
+            rect = SurroundingRectangle(VGroup(ucol.get_entries()[i], scol.get_entries()[i]),
+                                        color=HIGHLIGHT, buff=0.12, stroke_width=3)
+            self.play(Create(rect), run_time=0.3)
+            self.play(FadeIn(dcol_entries[i], shift=LEFT * 0.2), run_time=0.4)
+            self.play(FadeOut(rect), run_time=0.2)
+        self.wait(1.5)
+
+        # ---- Stage 4: outer product ----
+        self.play(FadeOut(VGroup(ucol, ulab2, hop, scol, slab, heq, dlab2)), run_time=0.5)
+        h4 = MathTex(r"\frac{\partial C}{\partial W^{(L-1)}}", "=", r"\boldsymbol\delta^{(L-1)}",
+                     r"\,\mathbf a^{(L-2)\top}", font_size=F).move_to(np.array([0, 2.15, 0]))
+        h4[0].set_color(D_COL); h4[2].set_color(D_COL); h4[3].set_color(A_COL)
+        self.play(FadeOut(h3), run_time=0.2)
+        self.play(FadeIn(h4), dcol.animate.move_to(np.array([-3.5, 0.0, 0])), run_time=0.7)
+        arow = mat(a0.reshape(1, 2), A_COL, nd=1, hb=1.0).move_to(np.array([-1.0, 0.0, 0]))
+        dlab3 = tex(r"\boldsymbol\delta^{(L-1)}", D_COL).next_to(dcol, DOWN, buff=0.5)
+        dlab3.set_x(max(dcol.get_x(), -5 + 0.15 + dlab3.width / 2))
+        alab = tex(r"\mathbf a^{(L-2)\top}", A_COL).next_to(arow, DOWN, buff=0.5)
+        # place the row at the vertical middle row of delta so the outer product reads as col x row
+        grid = mat(dW, D_COL, hb=1.25).move_to(np.array([3.2, 0.0, 0]))
+        geq = tex(r"=", INK).move_to(np.array([0.7, 0.0, 0]))
+        glab = tex(r"\frac{\partial C}{\partial W^{(L-1)}}", D_COL).next_to(grid, DOWN, buff=0.4)
+        self.play(FadeIn(arow), FadeIn(dlab3), FadeIn(alab), FadeIn(geq), FadeIn(grid.get_brackets()),
+                  FadeIn(glab), run_time=0.8)
+        self.wait(0.6)
+        gents = grid.get_entries()
+        for i in range(3):
+            for j in range(2):
+                r1 = SurroundingRectangle(dcol.get_entries()[i], color=HIGHLIGHT, buff=0.1, stroke_width=3)
+                r2 = SurroundingRectangle(arow.get_entries()[j], color=HIGHLIGHT, buff=0.1, stroke_width=3)
+                self.add(r1, r2)
+                self.play(FadeIn(gents[i * 2 + j], scale=1.2), run_time=0.35)
+                self.remove(r1, r2)
+        self.wait(2.5)
