@@ -1,0 +1,38 @@
+<!-- ============================================================
+     ACT 4 of 5. Convex functions. Budget: 15 min.
+     Source: built for this course (curvature.py: Convexity).
+     Goal: students state the chord definition and the Hessian test,
+     and know why convexity matters: every local minimum is global.
+     Block 4.4 owns convex optimisation problems.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 4 of 5</div>
+  <h1>Convex functions</h1>
+  <p class="act-sub">One bowl, no traps.</p>
+  <div class="act-time">15 min</div>
+</section>
+
+<section class="clip-slide">
+  <h2>The chord test</h2>
+  <video class="clip" src="assets/clips/Convexity.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Convex: every <span class="cr">chord</span> lies on or above the graph. One <span class="cy">chord below</span> is enough to fail.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / Tests and examples</div>
+  <h2>How to recognise one</h2>
+  <div class="beats two">
+    <div class="beat purpose"><h4>Test</h4><p>Twice differentiable \(f\) is convex exactly when \(H(\mathbf x)\) is positive semi-definite everywhere.</p></div>
+    <div class="beat purpose"><h4>Payoff</h4><p>Every local minimum is a global minimum, so gradient descent cannot get trapped.</p></div>
+  </div>
+  <table style="font-size:0.8em">
+    <thead><tr><th>loss</th><th>convex?</th></tr></thead>
+    <tbody>
+      <tr><td>linear regression, \(\lVert X\mathbf w - \mathbf y \rVert^2\)</td><td>yes: \(H = 2X^{\top}X\) is positive semi-definite</td></tr>
+      <tr><td>logistic regression, cross-entropy</td><td>yes</td></tr>
+      <tr><td>a neural network with a hidden layer</td><td>no: swapping two hidden units gives another minimum</td></tr>
+    </tbody>
+  </table>
+</section>

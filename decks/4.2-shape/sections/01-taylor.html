@@ -1,0 +1,44 @@
+<!-- ============================================================
+     ACT 1 of 5. Linearisation and Taylor series. Budget: 30 min.
+     Source: 3b1b EoC ch. 11 (chapter10.py: ConstructQuadratic
+     Approximation, MoreTerms, FactorialTerms, ApproximateNearNewPoint),
+     ported in taylor.py.
+     Goal: students build a Taylor polynomial by matching derivatives
+     and read f(a+h) ≈ f(a) + f'(a)h + ½f''(a)h², which Act 2 lifts
+     to many variables. Convergence and radius of convergence are cut.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 1 of 5</div>
+  <h1>Taylor series</h1>
+  <p class="act-sub">Approximate any smooth function by a polynomial, one derivative at a time.</p>
+  <div class="act-time">30 min</div>
+</section>
+
+<section class="clip-slide">
+  <h2>A parabola that hugs \(\cos x\)</h2>
+  <video class="clip" src="assets/clips/ConstructQuadratic.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Match the value, then the slope, then the curvature at 0.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>More terms, wider fit</h2>
+  <video class="clip" src="assets/clips/MoreTerms.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Each new term matches one more derivative and leaves the earlier ones alone.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Where the factorial comes from</h2>
+  <video class="clip" src="assets/clips/FactorialTerms.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Differentiating \(x^n\) \(n\) times leaves \(n!\), so each coefficient is divided by it.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Around any point</h2>
+  <video class="clip" src="assets/clips/ApproximateNearPoint.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">First order is the tangent line. Second order adds the curvature.</p>
+</section>

@@ -1,0 +1,11 @@
+{
+  "title": "The shape of a function · Mathematics for AI 4.2",
+  "sections": [
+    "00-open.html",
+    "01-taylor.html",
+    "02-hessian.html",
+    "03-critical.html",
+    "04-convex.html",
+    "05-recap.html"
+  ]
+}

@@ -1,0 +1,50 @@
+<!-- ============================================================
+     ACT 2 of 5. Many variables: the Hessian. Budget: 30 min.
+     Source: built for this course (curvature.py:
+     TangentPlaneAndBowl, HessianMatrix).
+     Goal: students write the second-order approximation with ∇f and
+     H, compute a Hessian by hand, and know H is symmetric (Day 2's
+     spectral theorem applies). Act 3 owns classification.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 2 of 5</div>
+  <h1>The Hessian</h1>
+  <p class="act-sub">The same Taylor step, with a vector for the slope and a matrix for the curvature.</p>
+  <div class="act-time">30 min</div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / One variable to many</div>
+  <h2>Second-order approximation</h2>
+  <div class="cols">
+    <div>$$f(a + h) \approx f(a) + f'(a)\,h + \tfrac12\,f''(a)\,h^2$$</div>
+    <div>$$f(\mathbf p + \mathbf h) \approx f(\mathbf p) + \nabla f^{\top}\mathbf h + \tfrac12\,\mathbf h^{\top} H\,\mathbf h$$</div>
+  </div>
+  $$H = \begin{bmatrix} \dfrac{\partial^2 f}{\partial x_1^2} & \cdots & \dfrac{\partial^2 f}{\partial x_1 \partial x_n} \\ \vdots & \ddots & \vdots \\ \dfrac{\partial^2 f}{\partial x_n \partial x_1} & \cdots & \dfrac{\partial^2 f}{\partial x_n^2} \end{bmatrix}$$
+  <p class="takeaway">For smooth \(f\) the mixed partials agree, so \(H\) is symmetric: real eigenvalues, orthogonal eigenvectors.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Plane, then bowl</h2>
+  <video class="clip" src="assets/clips/TangentPlaneAndBowl.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">The gradient gives the tangent plane. The Hessian bends it into the best-fitting quadratic.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Worked example</div>
+  <h2>\(f(x, y) = x^3 + 2xy - y^2\)</h2>
+  <div class="cols">
+    <div>$$\nabla f = \begin{bmatrix} 3x^2 + 2y \\ 2x - 2y \end{bmatrix}$$</div>
+    <div>$$H = \begin{bmatrix} 6x & 2 \\ 2 & -2 \end{bmatrix}$$</div>
+  </div>
+  <p class="takeaway">At \((1, 1)\): \(H = \begin{bmatrix} 6 & 2 \\ 2 & -2 \end{bmatrix}\). The two off-diagonal entries are equal, as promised.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Reading a Hessian</h2>
+  <video class="clip" src="assets/clips/HessianMatrix.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Along each eigenvector the function curves by the eigenvalue: up if positive, down if negative.</p>
+</section>
