@@ -1,0 +1,46 @@
+# Visual Kernel, SEE Matrix (YouTube playlist PLWhu9osGd2dB9uMG5gKBARmk73oHUUQZS).
+# 1.mp4 = 7Gtxd-ew4lk ch.1 part 1, 2.mp4 = wciU07gPqUE ch.1 part 2, 3.mp4 = mhy-ZKSARxI ch.2.
+# Download: yt-dlp -f 'bv*[height<=1080][ext=mp4]+ba[ext=m4a]' --merge-output-format mp4 -o '%(playlist_index)s.%(ext)s' <playlist>
+# Cut: shared/cut-footage.sh anim/footage-visual-kernel.tsv build/yt
+decks/2.1-matrices	VKVecArrow	1.mp4	40	54
+decks/2.1-matrices	VKManyArrows	1.mp4	87	96
+decks/2.1-matrices	VKDotEngine	1.mp4	143	150.5
+decks/2.1-matrices	VKComposeXZ	2.mp4	268.5	282.5
+decks/2.1-matrices	VKComposeZX	2.mp4	290	305
+decks/2.2-determinant	VKIdentity	1.mp4	205.5	215
+decks/2.2-determinant	VKScalar2	1.mp4	264	275
+decks/2.2-determinant	VKShearVsScalar	2.mp4	59	67.5
+decks/2.2-determinant	VKZero	1.mp4	857	863
+decks/2.2-determinant	VKInvScale	2.mp4	499.5	504
+decks/2.2-determinant	VKNonInvert	2.mp4	553	559
+decks/2.3-special	VKScalarHalf	1.mp4	302	307
+decks/2.3-special	VKScalar3D	1.mp4	405.5	412
+decks/2.3-special	VKOffOneY	1.mp4	436.5	443.5
+decks/2.3-special	VKOffOneX	1.mp4	445.5	452
+decks/2.3-special	VKReflectYaxis	1.mp4	538	546
+decks/2.3-special	VKReflectXaxis	1.mp4	549	556.5
+decks/2.3-special	VKReflectBoth	1.mp4	614.5	622.5
+decks/2.3-special	VKDiag2D	1.mp4	725	734
+decks/2.3-special	VKDiag3D	1.mp4	821	831
+decks/2.3-special	VKShear	2.mp4	19	30.5
+decks/2.3-special	VKShearDirs	2.mp4	41	50
+decks/2.3-special	VKShear3D	2.mp4	78.5	86.5
+decks/2.3-special	VKOrthoPerp	2.mp4	172.5	177
+decks/2.3-special	VKRotation2D	2.mp4	186	194
+decks/2.3-special	VKProjLine	2.mp4	371	379
+decks/2.3-special	VKProjVec21	2.mp4	399.5	411.5
+decks/2.3-special	VKProjPlane	2.mp4	381.5	388.5
+decks/2.3-special	VKSymmetric3x3	3.mp4	88.5	96
+decks/2.3-special	VKTransposeOrth	3.mp4	157.5	168.5
+decks/2.3-special	VKOffLine	3.mp4	345.5	351.5
+decks/2.3-special	VKEigenDots	3.mp4	384.5	395.5
+decks/2.3-special	VKEigenScale	3.mp4	446.5	453.8
+decks/2.4-eigen	VKSymPerp	3.mp4	533	545.5
+decks/2.4-eigen	VKEigsToBasis	3.mp4	556.5	566.5
+decks/2.4-eigen	VKQMapping	3.mp4	703.5	723.5
+decks/2.4-eigen	VKSpec2DFull	3.mp4	732.2	741
+decks/2.4-eigen	VKSpec2D	3.mp4	741.5	763.5
+decks/2.4-eigen	VKSpec3DFull	3.mp4	772.5	781.5
+decks/2.4-eigen	VKSpec3DRot1	3.mp4	782.5	791.5
+decks/2.4-eigen	VKSpec3DScale	3.mp4	793	812
+decks/2.4-eigen	VKSpec3DRot2	3.mp4	815	825

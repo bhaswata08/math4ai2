@@ -21,13 +21,15 @@ Edition. Dark theme.
       assets/clips/          rendered mp4 clips (and a last-frame png per clip)
     anim/<block>-<name>/     manim scene sources for that deck
     refs/3b1b/               upstream 3b1b/videos source, read only, mirrors upstream paths
+    anim/footage-*.tsv       third-party video segments used as clips (deck, name, video, start, end)
+    shared/cut-footage.sh    cuts those segments into decks/<deck>/assets/clips/ (videos not in repo)
 
 ## Who owns what
 
-Two agents work in this repo at once. Linear algebra (Days 1-3.2) owns
-`decks/1.*`, `decks/2.*`, `decks/3.1*`, `decks/3.2*` and the matching `anim/`
-folders. Calculus owns `decks/3.3*`, `decks/3.4*`, `decks/4.*` and the matching
-`anim/` folders. Everything under `shared/` is common: change it only with a
+Two agents work in this repo at once. Linear algebra owns `decks/1.*`,
+`decks/3.1*`, `decks/3.2*` and the matching `anim/` folders. The calculus agent
+owns `decks/2.*` (Day 2, matrices; reassigned 2026-10-22), `decks/3.3*`,
+`decks/3.4*`, `decks/4.*` and the matching `anim/` folders. Everything under `shared/` is common: change it only with a
 note in the commit message saying why, and never rename a token or class
 another deck uses.
 
