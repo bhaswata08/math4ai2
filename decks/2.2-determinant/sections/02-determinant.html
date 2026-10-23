@@ -4,6 +4,12 @@
      the four properties.
      ============================================================ -->
 
+<style>
+  .reveal .takeaway { font-size: 0.9em; }
+  .reveal .caption { font-size: 0.95em; }
+  .reveal .beat p { font-size: 1em; }
+</style>
+
 <section class="act-open">
   <div class="act-num">Act 2 of 6</div>
   <h1>The determinant</h1>
@@ -20,15 +26,15 @@
 
 <section class="clip-slide">
   <h2>Shear versus scale</h2>
-  <video class="clip" src="assets/clips/VKShearVsScalar.mp4"></video>
+  <video class="clip" src="assets/clips/ShearVsScale.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">The shear changes the shape and keeps the area. Scaling keeps the shape and changes the area.</p>
+  <p class="caption">The shear changes the shape and keeps the area at 1. Scaling by 2 keeps the shape and multiplies the area by 4.</p>
 </section>
 
 <section class="act-body">
   <div class="act-tag"><b>Act 2</b> / Idea</div>
   <h2>Determinant as an area factor</h2>
-  <p>The unit square has area 1. Apply \(A\). The area of the image is</p>
+  <p>The unit square has area 1. Apply \(A\). The image has area \(|\det A|\):</p>
   $$\det A = \text{signed area factor}$$
   <p>Every region is scaled by the same factor, whatever its shape.</p>
   <p class="takeaway">\(\det(2I) = 4\) and \(\det\begin{bmatrix}1&1\\0&1\end{bmatrix} = 1\).</p>
@@ -45,7 +51,7 @@
   <div class="act-tag"><b>Act 2</b> / 2×2</div>
   <h2>The 2×2 formula</h2>
   $$\det\begin{bmatrix}a&b\\c&d\end{bmatrix} = ad - bc$$
-  <p>Example: \(\det\begin{bmatrix}3&1\\0&2\end{bmatrix} = 3\cdot 2 - 1\cdot 0 = 6\).</p>
+  <p>Example: \(\det\begin{bmatrix}4&1\\2&3\end{bmatrix} = 4\cdot 3 - 1\cdot 2 = 10\).</p>
   <p class="takeaway">The next clip shows where \(ad - bc\) comes from.</p>
 </section>
 
@@ -53,7 +59,7 @@
   <h2>Why \(ad - bc\)</h2>
   <video class="clip" src="assets/clips/DetFormula.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">Box around the parallelogram, then cut away the corner pieces.</p>
+  <p class="caption">The box has area 25. Cut away the two green triangles, the two rose triangles and the two violet rectangles: 25 - 8 - 3 - 4 = 10.</p>
 </section>
 
 <section class="clip-slide">
@@ -86,6 +92,13 @@
   <p class="caption">The first matrix stretches the cube to volume 6. The second flattens it to a plane: volume 0.</p>
 </section>
 
+<section class="clip-slide">
+  <h2>Cofactor walk: a 3×3 determinant</h2>
+  <video class="clip" src="assets/clips/CofactorWalk.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Strike row 1 and one column, take the 2×2 determinant, multiply by the entry and the sign. Sum: 20 - 0 + (-2) = 18.</p>
+</section>
+
 <section class="act-body">
   <div class="act-tag"><b>Act 2</b> / 3×3</div>
   <h2>Cofactor expansion</h2>
@@ -116,8 +129,8 @@
 <section class="act-body">
   <div class="act-tag"><b>Act 2</b> / Check</div>
   <h2>\(\det(AB) = \det A\,\det B\)</h2>
-  $$A = \begin{bmatrix}1&2\\0&1\end{bmatrix},\; B = \begin{bmatrix}2&0\\1&3\end{bmatrix},\; AB = \begin{bmatrix}4&6\\1&3\end{bmatrix}$$
-  <p>\(\det A = 1\), \(\det B = 6\), \(\det AB = 12 - 6 = 6 = 1\cdot 6\).</p>
+  $$A = \begin{bmatrix}1&1\\0&2\end{bmatrix},\; B = \begin{bmatrix}2&0\\1&3\end{bmatrix},\; AB = \begin{bmatrix}3&3\\2&6\end{bmatrix}$$
+  <p>\(\det A = 2\), \(\det B = 6\), \(\det AB = 18 - 6 = 12 = 2\cdot 6\).</p>
 </section>
 
 <section class="act-body">

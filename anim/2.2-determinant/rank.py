@@ -20,9 +20,6 @@ class RankOutputs(Scene):
     def construct(self):
         plane = lin_plane(U)
         self.add(plane)
-        bottom = label_box(tag(r"\text{rank}=\text{dimension of the output (column space)}")
-                           .to_edge(DOWN, buff=0.2))
-        self.add(bottom)
 
         beats = [
             ([[1, 0.5], [0.5, 1]], 2),
@@ -79,7 +76,7 @@ class RankOutputs(Scene):
                 label_box(dep)
                 self.play(FadeIn(dep), run_time=0.5)
                 extra.append(dep)
-            self.wait(1.4)
+            self.wait(3.0)
             if n < len(beats) - 1:
                 self.play(FadeOut(VGroup(cloud, i_hat, j_hat, mat, rk, *extra)), run_time=0.5)
         self.wait(0.4)

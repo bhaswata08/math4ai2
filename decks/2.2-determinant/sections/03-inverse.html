@@ -20,9 +20,9 @@
 
 <section class="clip-slide">
   <h2>Scale up, scale down</h2>
-  <video class="clip" src="assets/clips/VKInvScale.mp4"></video>
+  <video class="clip" src="assets/clips/ScaleUndo.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">The inverse of scaling by 0.5 is scaling by 2.</p>
+  <p class="caption">\(A = 0.5I\) halves the picture. \(A^{-1} = 2I\) doubles it back, so \(A^{-1}A = I\).</p>
 </section>
 
 <section class="act-body">
@@ -50,16 +50,16 @@
 
 <section class="clip-slide">
   <h2>The zero matrix</h2>
-  <video class="clip" src="assets/clips/VKZero.mp4"></video>
+  <video class="clip" src="assets/clips/ZeroCollapse.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">The extreme case: every point lands on the origin.</p>
+  <p class="caption">The extreme case: the zero matrix sends every point to the origin.</p>
 </section>
 
 <section class="clip-slide">
   <h2>Squashing onto a line or plane</h2>
-  <video class="clip" src="assets/clips/VKNonInvert.mp4"></video>
+  <video class="clip" src="assets/clips/ThreeFlatteners.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">Each of these maps flattens space, so none has an inverse.</p>
+  <p class="caption">The cube is flattened to a plane, a line and a point. None of these maps has an inverse.</p>
 </section>
 
 <section class="act-body">
@@ -76,6 +76,13 @@
   <h2>Socks and shoes</h2>
   $$(AB)^{-1} = B^{-1}A^{-1}$$
   <p>Put on socks (\(B\)), then shoes (\(A\)). To undo, take off the shoes first, then the socks.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Solving is reading coordinates</h2>
+  <video class="clip" src="assets/clips/SolveAsCoordinates.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(\mathbf{x}\) says how much of each column of \(A\) it takes to reach \(\mathbf{b}\). \(A^{-1}\) straightens the grid and reads it off.</p>
 </section>
 
 <section class="act-body">
