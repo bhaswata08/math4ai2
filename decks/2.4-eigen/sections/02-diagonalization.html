@@ -10,6 +10,20 @@
   <div class="act-time">20 min</div>
 </section>
 
+<section class="clip-slide">
+  <h2>Composition and decomposition</h2>
+  <video class="clip" src="assets/clips/VKCompVsDecomp.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Multiplying many matrices into one is easy. Splitting one matrix back into simple moves is the hard direction.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Which simple moves make up \(M\)?</h2>
+  <video class="clip" src="assets/clips/VKRandomMDecomp.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Given \(M = A_3A_2A_1\), is each factor a scaling, a shear or a rotation? Eigenvectors answer this.</p>
+</section>
+
 <section class="act-body">
   <div class="act-tag"><b>Act 2</b> / Statement</div>
   <h2>\(A = PDP^{-1}\)</h2>
@@ -25,13 +39,13 @@
   <h2>Change basis, stretch, change back</h2>
   <video class="clip" src="assets/clips/EigenbasisChange.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">\(P^{-1}\) sends the eigenvectors to the axes, \(D\) stretches, \(P\) sends the axes back.</p>
+  <p class="caption">Follow \(\mathbf{x}=(3,0)\): \(P^{-1}\) gives its eigenbasis coordinates \((2,1)\), \(D\) stretches them to \((10,2)\), \(P\) returns \((12,6)=A\mathbf{x}\).</p>
 </section>
 
 <section class="act-body">
   <div class="act-tag"><b>Act 2</b> / Worked example</div>
   <h2>Our matrix, factored</h2>
-  $$\begin{bmatrix}4&1\\2&3\end{bmatrix} = \underbrace{\begin{bmatrix}1&1\\1&-2\end{bmatrix}}_{P}\underbrace{\begin{bmatrix}5&0\\0&2\end{bmatrix}}_{D}\underbrace{\tfrac13\begin{bmatrix}2&1\\1&-1\end{bmatrix}}_{P^{-1}}$$
+  $$\large\begin{bmatrix}4&1\\2&3\end{bmatrix} = \underbrace{\begin{bmatrix}1&1\\1&-2\end{bmatrix}}_{P}\underbrace{\begin{bmatrix}5&0\\0&2\end{bmatrix}}_{D}\underbrace{\tfrac13\begin{bmatrix}2&1\\1&-1\end{bmatrix}}_{P^{-1}}$$
   <p class="takeaway">Multiply it out once to see that it returns \(A\).</p>
 </section>
 
@@ -47,7 +61,7 @@
   <h2>Power iteration</h2>
   <video class="clip" src="assets/clips/PowerIteration.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">Multiply by \(A\) again and again, and any start swings onto the \(\lambda = 3\) direction.</p>
+  <p class="caption">Write \(\mathbf{x}_0=2\mathbf{v}_1+\mathbf{v}_2\). Each multiplication by \(A\) scales the \(\mathbf{v}_1\) part by 5 and the \(\mathbf{v}_2\) part by 2, so almost any start swings onto the \(\lambda = 5\) direction.</p>
 </section>
 
 <section class="act-body">
