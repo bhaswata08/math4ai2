@@ -1,0 +1,68 @@
+<!-- ============================================================
+     ACT 2 of 5. Diagonalization. Budget: 20 min.
+     Goal: A = P D P^-1, powers via D^k, power iteration.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 2 of 5</div>
+  <h1>Diagonalization</h1>
+  <p class="act-sub">Use the eigenvectors as the axes. In that basis the matrix is just scaling.</p>
+  <div class="act-time">20 min</div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Statement</div>
+  <h2>\(A = PDP^{-1}\)</h2>
+  <ul>
+    <li>\(P\): eigenvectors as columns</li>
+    <li>\(D\): eigenvalues on the diagonal, in the same order</li>
+    <li>Possible when \(A\) has \(n\) independent eigenvectors</li>
+  </ul>
+  <p class="takeaway">Read right to left: go to the eigenbasis, scale, come back.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Change basis, stretch, change back</h2>
+  <video class="clip" src="assets/clips/EigenbasisChange.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(P^{-1}\) sends the eigenvectors to the axes, \(D\) stretches, \(P\) sends the axes back.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Worked example</div>
+  <h2>Our matrix, factored</h2>
+  $$\begin{bmatrix}4&1\\2&3\end{bmatrix} = \underbrace{\begin{bmatrix}1&1\\1&-2\end{bmatrix}}_{P}\underbrace{\begin{bmatrix}5&0\\0&2\end{bmatrix}}_{D}\underbrace{\tfrac13\begin{bmatrix}2&1\\1&-1\end{bmatrix}}_{P^{-1}}$$
+  <p class="takeaway">Multiply it out once to see that it returns \(A\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Powers</div>
+  <h2>\(A^k = PD^kP^{-1}\)</h2>
+  <p>The inner \(P^{-1}P\) pairs cancel, so only \(D\) is repeated:</p>
+  $$D^k = \begin{bmatrix}5^k&0\\0&2^k\end{bmatrix}$$
+  <p class="fragment">Check \(k=3\): \(P\,\mathrm{diag}(125,8)\,P^{-1} = \begin{bmatrix}86&39\\78&47\end{bmatrix} = A^3\).</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Power iteration</h2>
+  <video class="clip" src="assets/clips/PowerIteration.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Multiply by \(A\) again and again, and any start swings onto the \(\lambda = 3\) direction.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Why it works</div>
+  <h2>The biggest eigenvalue wins</h2>
+  <p>Write \(\mathbf{x} = c_1\mathbf{v}_1 + c_2\mathbf{v}_2\). Then</p>
+  $$A^k\mathbf{x} = c_1\lambda_1^k\mathbf{v}_1 + c_2\lambda_2^k\mathbf{v}_2$$
+  <p class="takeaway">The term with the larger \(|\lambda|\) dominates, so the direction converges to \(\mathbf{v}_1\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Try it</div>
+  <h2>Powers</h2>
+  <ol class="practice">
+    <li>For \(\begin{bmatrix}2&1\\1&2\end{bmatrix}\), write \(P\) and \(D\) and find \(A^{10}\)'s eigenvalues. <span class="fragment">\(P=\begin{bmatrix}1&1\\1&-1\end{bmatrix}\), \(D=\mathrm{diag}(3,1)\); \(A^{10}\) has eigenvalues \(3^{10}=59049\) and \(1\)</span></li>
+    <li>Why can \(\begin{bmatrix}1&1\\0&1\end{bmatrix}\) not be diagonalized?</li>
+  </ol>
+</section>

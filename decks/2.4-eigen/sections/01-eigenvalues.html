@@ -1,0 +1,75 @@
+<!-- ============================================================
+     ACT 1 of 5. Computing eigenvalues. Budget: 25 min.
+     Goal: from Av = lambda v to det(A - lambda I) = 0, one worked 2x2
+     example with checks, and the 3x3 recipe.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 1 of 5</div>
+  <h1>Computing eigenvalues</h1>
+  <p class="act-sub">Most vectors turn when a matrix acts on them. A few only stretch.</p>
+  <div class="act-time">25 min</div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 1</b> / Definition</div>
+  <h2>An eigenvector keeps its line</h2>
+  $$A\,\mathbf{v} \;=\; \lambda\,\mathbf{v}, \qquad \mathbf{v} \neq \mathbf{0}$$
+  <p class="takeaway">\(\mathbf{v}\) is an <span class="cv">eigenvector</span>; the stretch factor \(\lambda\) is its <span class="cr">eigenvalue</span>.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 1</b> / Recipe</div>
+  <h2>Turn it into a determinant</h2>
+  $$A\mathbf{v} = \lambda\mathbf{v} \;\iff\; (A - \lambda I)\,\mathbf{v} = \mathbf{0}$$
+  <p>A nonzero \(\mathbf{v}\) is sent to zero, so \(A-\lambda I\) squashes space. That happens exactly when</p>
+  $$\det(A - \lambda I) = 0$$
+</section>
+
+<section class="clip-slide">
+  <h2>Hunting for \(\det = 0\)</h2>
+  <video class="clip" src="assets/clips/DetHitsZero.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Slide \(\lambda\). The parallelogram of \(A-\lambda I\) collapses exactly at the roots of \(p(\lambda)\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 1</b> / Worked example</div>
+  <h2>Eigenvalues of \(A = \begin{bmatrix}4&1\\2&3\end{bmatrix}\)</h2>
+  $$\det\!\begin{bmatrix}4-\lambda&1\\2&3-\lambda\end{bmatrix} = (4-\lambda)(3-\lambda) - 2 = \lambda^2 - 7\lambda + 10$$
+  <p class="fragment">\(\lambda^2 - 7\lambda + 10 = (\lambda-5)(\lambda-2) = 0\), so \(\lambda_1 = 5\) and \(\lambda_2 = 2\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 1</b> / Worked example</div>
+  <h2>Eigenvectors: the null space of \(A - \lambda I\)</h2>
+  <p>\(\lambda = 5\): \(\begin{bmatrix}-1&1\\2&-2\end{bmatrix}\mathbf{v}=\mathbf{0}\), so \(\mathbf{v}_1 = \begin{bmatrix}1\\1\end{bmatrix}\).</p>
+  <p>\(\lambda = 2\): \(\begin{bmatrix}2&1\\2&1\end{bmatrix}\mathbf{v}=\mathbf{0}\), so \(\mathbf{v}_2 = \begin{bmatrix}1\\-2\end{bmatrix}\).</p>
+  <p class="takeaway">Check: \(A\mathbf{v}_1 = (5,5) = 5\mathbf{v}_1\) and \(A\mathbf{v}_2 = (2,-4) = 2\mathbf{v}_2\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 1</b> / Two free checks</div>
+  <h2>Trace and determinant</h2>
+  $$\operatorname{tr}A = \lambda_1 + \lambda_2 \qquad \det A = \lambda_1\lambda_2$$
+  <p>Here \(4+3 = 7 = 5+2\) and \(4\cdot3 - 1\cdot2 = 10 = 5\cdot 2\).</p>
+  <p class="takeaway">Always run these two checks before trusting your eigenvalues.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 1</b> / Three by three</div>
+  <h2>Same recipe, bigger polynomial</h2>
+  <p>For an \(n \times n\) matrix, \(\det(A-\lambda I)\) is a degree-\(n\) polynomial in \(\lambda\).</p>
+  <p>For \(3\times3\) it is a cubic: find its roots, then solve \((A-\lambda I)\mathbf{v}=\mathbf{0}\) once per root.</p>
+  <p class="takeaway">Up to \(n\) eigenvalues, counted with repeats.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 1</b> / Try it</div>
+  <h2>By hand</h2>
+  <ol class="practice">
+    <li>\(\begin{bmatrix}2&1\\1&2\end{bmatrix}\): eigenvalues and eigenvectors. <span class="fragment">\(\lambda^2-4\lambda+3=0\), so \(\lambda=3\) with \((1,1)\) and \(\lambda=1\) with \((1,-1)\)</span></li>
+    <li>A \(2\times2\) matrix has trace 6 and determinant 8. What are its eigenvalues?</li>
+    <li>\(\begin{bmatrix}1&1\\0&1\end{bmatrix}\): how many independent eigenvectors does it have?</li>
+  </ol>
+</section>

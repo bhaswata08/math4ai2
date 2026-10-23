@@ -1,0 +1,11 @@
+{
+  "title": "Eigendecomposition · Mathematics for AI 2.4",
+  "sections": [
+    "00-open.html",
+    "01-eigenvalues.html",
+    "02-diagonalization.html",
+    "03-symmetric.html",
+    "04-ai.html",
+    "05-recap.html"
+  ]
+}
