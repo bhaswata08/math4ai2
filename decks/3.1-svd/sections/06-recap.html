@@ -1,0 +1,26 @@
+<!-- ============================================================
+     ACT 6 of 6. Recap and practice. Budget: 10 min.
+     House rule: worked answer for problem 1 only, never the rest.
+     ============================================================ -->
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 6</b> / Recap</div>
+  <h2>Everything in this block</h2>
+  <div class="beats two recap">
+    <div class="beat purpose"><h4>Factor</h4><p>Any \(A = U\Sigma V^T\): rotate, stretch (and change dimension), rotate.</p></div>
+    <div class="beat purpose"><h4>Compute</h4><p>\(\mathbf{v}_i\) and \(\sigma_i^2\) from \(A^TA\); then \(\mathbf{u}_i = A\mathbf{v}_i/\sigma_i\).</p></div>
+    <div class="beat purpose"><h4>Relate</h4><p>For symmetric PSD \(S\), the SVD is \(Q\Lambda Q^T\).</p></div>
+    <div class="beat purpose"><h4>Approximate</h4><p>\(A_k = \sum_{i\le k}\sigma_i\mathbf{u}_i\mathbf{v}_i^T\) is the best rank-\(k\) matrix.</p></div>
+  </div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 6</b> / Practice</div>
+  <h2>By hand</h2>
+  <ol class="practice">
+    <li>Find the SVD of \(\begin{bmatrix}3&0\\0&-2\end{bmatrix}\). <span class="fragment">\(A^TA = \mathrm{diag}(9, 4)\), so \(\sigma = 3, 2\) and \(V = I\). \(\mathbf{u}_1 = A\mathbf{e}_1/3 = (1, 0)\), \(\mathbf{u}_2 = A\mathbf{e}_2/2 = (0, -1)\). So \(U = \mathrm{diag}(1, -1)\), \(\Sigma = \mathrm{diag}(3, 2)\).</span></li>
+    <li>Find the singular values and the rank of \(\begin{bmatrix}1&1\\1&1\end{bmatrix}\).</li>
+    <li>A symmetric matrix has eigenvalues \(4\) and \(-1\). What are its singular values?</li>
+    <li>A grayscale image is \(1000 \times 800\). How many numbers does a rank-20 approximation store, and what fraction of the original is that?</li>
+  </ol>
+</section>

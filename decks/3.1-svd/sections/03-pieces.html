@@ -1,0 +1,134 @@
+<!-- ============================================================
+     ACT 3 of 6. Where U, Sigma and V come from. Budget: 25 min.
+     Goal: A^T A and A A^T are symmetric PSD; their eigenvectors are V
+     and U; sigma_i = sqrt(lambda_i). Worked 2x2 example by hand.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 3 of 6</div>
+  <h1>Where \(U\), \(\Sigma\) and \(V\) come from</h1>
+  <p class="act-sub">Turn any matrix into two symmetric ones, then use the spectral theorem.</p>
+  <div class="act-time">25 min</div>
+</section>
+
+<section class="clip-slide">
+  <h2>\(AA^T\): a \(2 \times 2\) symmetric matrix</h2>
+  <video class="clip" src="assets/clips/VKAAT.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(A = \begin{bmatrix}1&2&3\\4&5&6\end{bmatrix}\) is \(2\times3\). Times its transpose it gives \(AA^T = \begin{bmatrix}14&32\\32&77\end{bmatrix}\).</p>
+</section>
+
+<section class="clip-slide">
+  <h2>\(A^TA\): a \(3 \times 3\) symmetric matrix</h2>
+  <video class="clip" src="assets/clips/VKATA.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">The other order gives a \(3 \times 3\) matrix. Both products are symmetric, whatever \(A\) is.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>One matrix, two symmetric matrices</h2>
+  <video class="clip" src="assets/clips/VKThreeSym.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(AA^T\) is \(m \times m\) and \(A^TA\) is \(n \times n\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Why symmetric</div>
+  <h2>Two facts, one line each</h2>
+  <ul>
+    <li><b>Symmetric:</b> \((A^TA)^T = A^T (A^T)^T = A^TA\).</li>
+    <li><b>Positive semi-definite:</b> \(\mathbf{x}^TA^TA\,\mathbf{x} = \|A\mathbf{x}\|^2 \ge 0\).</li>
+  </ul>
+  <p>So the spectral theorem applies: real eigenvalues \(\lambda_i \ge 0\) and perpendicular eigenvectors.</p>
+  <p class="takeaway">\(A^TA\) and \(AA^T\) share their nonzero eigenvalues.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Their eigenvectors</h2>
+  <video class="clip" src="assets/clips/VKSLSRBuild.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Call them \(S_L = AA^T\) and \(S_R = A^TA\). Eigenvectors <span class="cr">\(\mathbf{u}_1, \mathbf{u}_2\)</span> of \(S_L\), <span class="cv">\(\mathbf{v}_1, \mathbf{v}_2, \mathbf{v}_3\)</span> of \(S_R\).</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Left and right singular vectors</h2>
+  <video class="clip" src="assets/clips/VKSingVecLabels.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">The <span class="cr">\(\mathbf{u}_i\)</span> are the left singular vectors of \(A\), the <span class="cv">\(\mathbf{v}_i\)</span> the right singular vectors.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Order the eigenvalues</h2>
+  <video class="clip" src="assets/clips/VKLambdaOrder.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Sort from largest to smallest. For our \(A\): \(90.40\), \(0.60\), and a third one equal to 0 that only \(S_R\) has.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Singular values</h2>
+  <video class="clip" src="assets/clips/VKSigmaDef.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(\sigma_i = \sqrt{\lambda_i}\). For our \(A\): \(\sigma_1 = 9.51\), \(\sigma_2 = 0.77\).</p>
+</section>
+
+<section class="clip-slide">
+  <h2>The three factors</h2>
+  <video class="clip" src="assets/clips/VKFormulaDissect.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(U\) orthogonal, \(\Sigma\) rectangular diagonal, \(V^T\) orthogonal.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>The shapes of \(U\), \(\Sigma\), \(V^T\)</h2>
+  <video class="clip" src="assets/clips/SVDShapes2x3.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(A\) is \(2 \times 3\). The columns of <span class="cr">\(U\)</span> are eigenvectors of \(AA^T\), \(\Sigma\) is \(2 \times 3\) (the dimension eraser, with stretches), the rows of <span class="cv">\(V^T\)</span> are eigenvectors of \(A^TA\).</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Any shape works the same way</h2>
+  <video class="clip" src="assets/clips/SVDShapes4x2.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">A \(4 \times 2\) matrix: \(U\) is \(4 \times 4\), \(\Sigma\) is \(4 \times 2\), \(V^T\) is \(2 \times 2\). \(\Sigma\) always has the shape of \(A\); its zero rows add dimensions.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Recipe</div>
+  <h2>Computing an SVD by hand</h2>
+  <ol>
+    <li>Form \(A^TA\). Find its eigenvalues \(\lambda_1 \ge \lambda_2 \ge \dots \ge 0\).</li>
+    <li>\(\sigma_i = \sqrt{\lambda_i}\). The unit eigenvectors are the <span class="cv">\(\mathbf{v}_i\)</span>.</li>
+    <li>\(\mathbf{u}_i = A\mathbf{v}_i / \sigma_i\) for every \(\sigma_i > 0\).</li>
+  </ol>
+  <p class="takeaway">Step 3 saves a second eigenproblem, and it fixes the signs of the \(\mathbf{u}_i\) to match the \(\mathbf{v}_i\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Worked example</div>
+  <h2>\(A = \begin{bmatrix}3&0\\4&5\end{bmatrix}\)</h2>
+  <ol>
+    <li>\(A^TA = \begin{bmatrix}25&20\\20&25\end{bmatrix}\). Trace 50, determinant 225, so <span class="fragment">\(\lambda = 45,\ 5\).</span></li>
+    <li class="fragment">\(\sigma_1 = \sqrt{45} = 3\sqrt5\), \(\sigma_2 = \sqrt5\). Eigenvectors <span class="cv">\(\mathbf{v}_1 = \tfrac{1}{\sqrt2}(1, 1)\)</span>, <span class="cv">\(\mathbf{v}_2 = \tfrac{1}{\sqrt2}(-1, 1)\)</span>.</li>
+    <li class="fragment"><span class="cr">\(\mathbf{u}_1 = \dfrac{A\mathbf{v}_1}{3\sqrt5} = \tfrac{1}{\sqrt{10}}(1, 3)\)</span>, <span class="cr">\(\mathbf{u}_2 = \dfrac{A\mathbf{v}_2}{\sqrt5} = \tfrac{1}{\sqrt{10}}(-3, 1)\)</span>.</li>
+  </ol>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Worked example</div>
+  <h2>Put it together</h2>
+  <div class="eq-big">\(\begin{bmatrix}3&0\\4&5\end{bmatrix} = \dfrac{1}{\sqrt{10}}\begin{bmatrix}1&-3\\3&1\end{bmatrix}\begin{bmatrix}3\sqrt5&0\\0&\sqrt5\end{bmatrix}\dfrac{1}{\sqrt2}\begin{bmatrix}1&1\\-1&1\end{bmatrix}\)</div>
+  <p>Check one entry: row 1 of \(U\Sigma\) is \(\tfrac{1}{\sqrt{10}}(3\sqrt5,\ -3\sqrt5)\). Times column 1 of \(V^T\), \(\tfrac{1}{\sqrt2}(1, -1)\), gives \(\tfrac{6\sqrt5}{\sqrt{20}} = 3\).</p>
+  <p class="takeaway">\(A\) is not symmetric, yet both \(U\) and \(V\) are rotations.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Properties</div>
+  <h2>What the SVD tells you</h2>
+  <ul>
+    <li><b>Rank</b> = the number of nonzero \(\sigma_i\).</li>
+    <li><b>Largest stretch:</b> \(\max_{\|\mathbf{x}\|=1}\|A\mathbf{x}\| = \sigma_1\), reached at \(\mathbf{x} = \mathbf{v}_1\).</li>
+    <li><b>Inverse</b> (square, all \(\sigma_i > 0\)): \(A^{-1} = V\Sigma^{-1}U^T\).</li>
+    <li><b>Symmetric PSD \(S\):</b> the SVD is the spectral decomposition, \(U = V = Q\) and \(\Sigma = \Lambda\).</li>
+    <li><b>Symmetric with a negative \(\lambda\):</b> \(\sigma = |\lambda|\), and the sign moves into \(U\).</li>
+  </ul>
+</section>

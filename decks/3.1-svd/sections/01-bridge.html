@@ -1,0 +1,57 @@
+<!-- ============================================================
+     ACT 1 of 6. From spectral to singular. Budget: 10 min.
+     Goal: recall S = Q Lambda Q^T, see that it needs a square symmetric
+     matrix, and state that the SVD has no such restriction.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 1 of 6</div>
+  <h1>From spectral to singular</h1>
+  <p class="act-sub">Block 2.4 factored symmetric matrices. Now we factor every matrix.</p>
+  <div class="act-time">10 min</div>
+</section>
+
+<section class="clip-slide">
+  <h2>Two moves we already know</h2>
+  <video class="clip" src="assets/clips/VKRecapDiag.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">A diagonal matrix stretches each axis by its own factor. An orthogonal matrix only rotates.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 1</b> / Recap</div>
+  <h2>The spectral decomposition</h2>
+  <p>A real symmetric matrix \(S\) factors as</p>
+  <div class="eq-big">\(S = Q\,\Lambda\,Q^{T}\)</div>
+  <ul>
+    <li>\(Q^T\) rotates the eigenvectors onto the axes</li>
+    <li>\(\Lambda\) stretches each axis by its eigenvalue</li>
+    <li>\(Q\) rotates back</li>
+  </ul>
+  <p class="takeaway">The catch: \(S\) must be <span class="cr">square</span> and <span class="cr">symmetric</span>.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 1</b> / The catch</div>
+  <h2>Most matrices are neither</h2>
+  <ul>
+    <li>A weight matrix of shape \(512 \times 768\) is not square.</li>
+    <li>A data matrix with 10,000 rows and 20 columns is not square.</li>
+    <li>\(\begin{bmatrix}3&0\\4&5\end{bmatrix}\) is square but not symmetric. Its eigenvectors are not perpendicular.</li>
+  </ul>
+  <p class="takeaway">We want a rotate, stretch, rotate picture that works for all of them.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Any shape</h2>
+  <video class="clip" src="assets/clips/VKAnyShape.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Square, wide, tall: the SVD puts no condition on symmetry, dimension or rank.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>\(A = U\,\Sigma\,V^T\)</h2>
+  <video class="clip" src="assets/clips/VKFormulaHL.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Two different rotations, <span class="cv">\(V^T\)</span> and <span class="cr">\(U\)</span>, with a stretch \(\Sigma\) between them.</p>
+</section>

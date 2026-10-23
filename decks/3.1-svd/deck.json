@@ -1,0 +1,12 @@
+{
+  "title": "Singular value decomposition · Mathematics for AI 3.1",
+  "sections": [
+    "00-open.html",
+    "01-bridge.html",
+    "02-rectangular.html",
+    "03-pieces.html",
+    "04-geometry.html",
+    "05-lowrank.html",
+    "06-recap.html"
+  ]
+}

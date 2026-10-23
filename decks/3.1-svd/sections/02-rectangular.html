@@ -1,0 +1,89 @@
+<!-- ============================================================
+     ACT 2 of 6. Matrices that change dimension. Budget: 15 min.
+     Goal: an m x n matrix maps R^n to R^m; the "dimension eraser"
+     and "dimension adder" are the rectangular piece of Sigma.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 2 of 6</div>
+  <h1>Matrices that change dimension</h1>
+  <p class="act-sub">A rectangular matrix takes vectors from one space to a space of a different size.</p>
+  <div class="act-time">15 min</div>
+</section>
+
+<section class="clip-slide">
+  <h2>From \(\mathbb{R}^3\) to \(\mathbb{R}^2\)</h2>
+  <video class="clip" src="assets/clips/VKWhichMatrix.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Which matrix connects a vector with 3 entries to a vector with 2? One with 2 rows and 3 columns.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Three numbers in, two numbers out</h2>
+  <video class="clip" src="assets/clips/VKMap3to2.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(\begin{bmatrix}3&-2&1\\2&1&-1\end{bmatrix}\begin{bmatrix}1\\2\\3\end{bmatrix} = \begin{bmatrix}2\\1\end{bmatrix}\): one dot product per row.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Shapes</div>
+  <h2>An \(m \times n\) matrix maps \(\mathbb{R}^n \to \mathbb{R}^m\)</h2>
+  <ul>
+    <li>Columns count the inputs: \(n\).</li>
+    <li>Rows count the outputs: \(m\).</li>
+    <li>A linear layer \(\mathbf{y} = W\mathbf{x}\) with \(W\) of shape \(256 \times 784\) maps a 784-pixel image to 256 features.</li>
+  </ul>
+  <p class="takeaway">Wide matrices lose a dimension. Tall matrices add one.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Flatten a cube</h2>
+  <video class="clip" src="assets/clips/VKCubeFlatten.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">A \(2 \times 3\) matrix pushes the whole cube down onto a plane.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>The dimension eraser</h2>
+  <video class="clip" src="assets/clips/VKEraserAlg.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(\begin{bmatrix}1&0&0\\0&1&0\end{bmatrix}\) keeps \(x\) and \(y\) and drops \(z\).</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Every vector drops onto the plane</h2>
+  <video class="clip" src="assets/clips/VKEraser3D.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\((x, y, z) \mapsto (x, y)\). The height is lost and cannot be recovered.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>The dimension adder</h2>
+  <video class="clip" src="assets/clips/VKAdderAlg.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(\begin{bmatrix}1&0\\0&1\\0&0\end{bmatrix}\) puts a 2D vector into 3D with \(z = 0\).</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Erase, then stretch</h2>
+  <video class="clip" src="assets/clips/VKCompoundAlg.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(\begin{bmatrix}4&0\\0&2\end{bmatrix}\begin{bmatrix}1&0&0\\0&1&0\end{bmatrix} = \begin{bmatrix}4&0&0\\0&2&0\end{bmatrix}\): a rectangular diagonal matrix.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>A cylinder, step by step</h2>
+  <video class="clip" src="assets/clips/EraseThenStretch.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Erase the height: a disc. Stretch \(x\) by 4 and \(y\) by 2: an ellipse. The combined matrix does both at once.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Check</div>
+  <h2>Rectangular diagonal matrices</h2>
+  <ol class="practice">
+    <li>What does \(\begin{bmatrix}3&0&0\\0&0.5&0\end{bmatrix}\) do to \((x, y, z)\)? <span class="fragment">\((3x,\ 0.5y)\): drop \(z\), stretch \(x\) by 3, shrink \(y\) by half.</span></li>
+    <li>Write the \(3 \times 2\) matrix that stretches \(x\) by 2, \(y\) by 5 and places the result in 3D.</li>
+  </ol>
+  <p class="takeaway">This is the shape \(\Sigma\) will have: a stretch on the diagonal, padded with zeros.</p>
+</section>
