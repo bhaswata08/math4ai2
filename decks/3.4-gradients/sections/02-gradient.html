@@ -1,7 +1,7 @@
 <!-- ============================================================
      ACT 2 of 5. The gradient. Budget: 25 min.
      Source: built for this course (gradient.py: GradientOnSurface,
-     GradientField).
+     PerpToContours, WorkedGradient).
      Goal: students stack partials into the gradient and read it:
      direction = uphill, length = steepness, perpendicular to contours.
      Act 3 owns the directional derivative and the proof that the
@@ -18,31 +18,43 @@
 <section class="act-body">
   <div class="act-tag"><b>Act 2</b> / Definition</div>
   <h2>One partial per input</h2>
-  $$\nabla f(\mathbf{x}) = \begin{bmatrix} \partial f/\partial x_1 \\ \partial f/\partial x_2 \\ \vdots \\ \partial f/\partial x_n \end{bmatrix}$$
-  <p class="takeaway">Input: \(n\) numbers. Output: one number. The <span class="cr">gradient</span> is a vector in the input space.</p>
+  <div style="font-size:1.35em">$$\nabla f(\mathbf{x}) = \begin{bmatrix} \partial f/\partial x_1 \\ \partial f/\partial x_2 \\ \vdots \\ \partial f/\partial x_n \end{bmatrix}$$</div>
+  <div class="beats" style="font-size:1.1em">
+    <div class="beat purpose"><h4>Each entry</h4><p>\(\partial f/\partial x_i\): the slope of \(f\) along axis \(i\).</p></div>
+    <div class="beat purpose"><h4>One vector</h4><p>Same length as \(\mathbf{x}\), so it lives in the input space.</p></div>
+    <div class="beat purpose"><h4>How to read it</h4><p>Direction: uphill. Length: steepness.</p></div>
+  </div>
+  <p class="takeaway" style="font-size:0.95em">Input: \(n\) numbers. Output: one number. The <span class="cr">gradient</span> is a vector in the input space.</p>
 </section>
 
 <section class="clip-slide">
   <h2>On the surface</h2>
   <video class="clip" src="assets/clips/GradientOnSurface.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">The <span class="cx">\(x\)</span> and <span class="cy">\(y\)</span> partials add up to <span class="cr">\(\nabla f\)</span>, which points uphill.</p>
+  <p class="caption">Same surface as the next example. The <span class="cx">\(x\)</span> and <span class="cy">\(y\)</span> partials, drawn from \(p\), add up to <span class="cr">\(\nabla f\)</span>, which points uphill.</p>
 </section>
 
 <section class="clip-slide">
   <h2>On the map</h2>
-  <video class="clip" src="assets/clips/GradientField.mp4"></video>
+  <video class="clip" src="assets/clips/PerpToContours.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">Each <span class="cr">arrow</span> crosses its contour at a right angle. Dense contours, long arrows.</p>
+  <p class="caption">Each <span class="cr">arrow</span> crosses its contour at a right angle. Where contours are tight the arrow is long: \(|\nabla f| = 4\) at \((2,0)\), \(8\) at \((0,1)\).</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Slice twice, then stack</h2>
+  <video class="clip" src="assets/clips/WorkedGradient.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(f = x^2 + 3xy\) at \((1,2)\): the slice \(y=2\) has slope <span class="cx">8</span>, the slice \(x=1\) has slope <span class="cy">3</span>. Stacked: <span class="cr">\(\nabla f = (8, 3)\)</span>.</p>
 </section>
 
 <section class="act-body">
   <div class="act-tag"><b>Act 2</b> / Worked example</div>
   <h2>\(f(x, y) = x^2 + 3xy\) at \((1, 2)\)</h2>
-  <div class="cols">
-    <div>$$\frac{\partial f}{\partial x} = 2x + 3y = 8$$</div>
-    <div>$$\frac{\partial f}{\partial y} = 3x = 3$$</div>
+  <div class="cols" style="font-size:1.1em">
+    <div style="text-align:center">$$\frac{\partial f}{\partial x} = 2x + 3y = \color{#8bd17c}{8}$$</div>
+    <div style="text-align:center">$$\frac{\partial f}{\partial y} = 3x = \color{#e8798a}{3}$$</div>
   </div>
-  $$\nabla f(1, 2) = \begin{bmatrix} 8 \\ 3 \end{bmatrix}, \qquad |\nabla f| = \sqrt{73} \approx 8.54$$
-  <p class="takeaway">Walk in direction \((8, 3)\) to climb fastest; the climb rate there is about 8.54 per unit step.</p>
+  <div style="text-align:center;font-size:1.25em">$$\nabla f(1, 2) = \begin{bmatrix} 8 \\ 3 \end{bmatrix}, \qquad |\nabla f| = \sqrt{73} \approx 8.54$$</div>
+  <p class="takeaway" style="font-size:0.95em">Walk in direction \((8, 3)\) to climb fastest; the climb rate there is about 8.54 per unit step.</p>
 </section>

@@ -6,19 +6,19 @@
 <section class="act-body">
   <div class="act-tag"><b>Act 5</b> / Recap</div>
   <h2>Everything in this block</h2>
-  <div class="beats two recap">
+  <div class="beats two recap" style="font-size:1.15em">
     <div class="beat purpose"><h4>Stretch</h4><p>\(f'(x)\) is how much \(f\) stretches the line near \(x\). Negative means a flip.</p></div>
     <div class="beat purpose"><h4>Gradient</h4><p>\(\nabla f\): all partials in one vector. Points uphill, length is steepness.</p></div>
     <div class="beat purpose"><h4>Directional</h4><p>\(D_{\mathbf u} f = \nabla f \cdot \mathbf u\). Steepest along \(\nabla f\), zero along contours.</p></div>
     <div class="beat purpose"><h4>Jacobian</h4><p>\(J\): the matrix a map looks like up close. \(\det J\) scales area.</p></div>
   </div>
-  <p class="takeaway">Tomorrow: chain Jacobians together, and you have <b>backpropagation</b>.</p>
+  <p class="takeaway" style="font-size:0.95em">Tomorrow: chain Jacobians together, and you have <b>backpropagation</b>.</p>
 </section>
 
 <section class="act-body">
   <div class="act-tag"><b>Act 5</b> / Practice</div>
   <h2>By hand</h2>
-  <ol class="practice">
+  <ol class="practice" style="font-size:1.2em">
     <li>\(\nabla\big(x^2 y^3\big)\) at \((1, 1)\) <span class="fragment">\(= (2xy^3,\ 3x^2y^2) = (2, 3)\)</span></li>
     <li>For \(f(x, y) = x^2 + y^2\), find \(D_{\mathbf u} f\) at \((1, 1)\) with \(\mathbf u = (1, -1)/\sqrt 2\). Explain the answer from the contour picture.</li>
     <li>The Jacobian of \(F(x, y) = (x^2 - y,\ xy)\), and \(\det J\) at \((1, 2)\).</li>
