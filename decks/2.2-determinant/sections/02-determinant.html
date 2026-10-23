@@ -1,0 +1,131 @@
+<!-- ============================================================
+     ACT 2 of 6. Determinant. Budget: 30 min.
+     Goal: det as signed area/volume factor; 2x2 and 3x3 computation;
+     the four properties.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 2 of 6</div>
+  <h1>The determinant</h1>
+  <p class="act-sub">One number: how much the map scales area, or volume.</p>
+  <div class="act-time">30 min</div>
+</section>
+
+<section class="clip-slide">
+  <h2>Scale by 2: area times 4</h2>
+  <video class="clip" src="assets/clips/VKScalar2.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(2I\) doubles both sides, so every region covers 4 times the area.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Shear versus scale</h2>
+  <video class="clip" src="assets/clips/VKShearVsScalar.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">The shear changes the shape and keeps the area. Scaling keeps the shape and changes the area.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Idea</div>
+  <h2>Determinant as an area factor</h2>
+  <p>The unit square has area 1. Apply \(A\). The area of the image is</p>
+  $$\det A = \text{signed area factor}$$
+  <p>Every region is scaled by the same factor, whatever its shape.</p>
+  <p class="takeaway">\(\det(2I) = 4\) and \(\det\begin{bmatrix}1&1\\0&1\end{bmatrix} = 1\).</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Every area times 6</h2>
+  <video class="clip" src="assets/clips/DetArea.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">For \(\begin{bmatrix}3&1\\0&2\end{bmatrix}\) the unit square becomes a parallelogram of area 6, and so does everything else.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / 2×2</div>
+  <h2>The 2×2 formula</h2>
+  $$\det\begin{bmatrix}a&b\\c&d\end{bmatrix} = ad - bc$$
+  <p>Example: \(\det\begin{bmatrix}3&1\\0&2\end{bmatrix} = 3\cdot 2 - 1\cdot 0 = 6\).</p>
+  <p class="takeaway">The next clip shows where \(ad - bc\) comes from.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Why \(ad - bc\)</h2>
+  <video class="clip" src="assets/clips/DetFormula.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Box around the parallelogram, then cut away the corner pieces.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>A negative determinant</h2>
+  <video class="clip" src="assets/clips/DetNegative.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(\begin{bmatrix}3&0\\0&-1\end{bmatrix}\) flips the picture over: area times 3, orientation reversed.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Sign</div>
+  <h2>Size and sign</h2>
+  <div class="beats two">
+    <div class="beat purpose"><h4>\(|\det A|\)</h4><p>How much areas (or volumes) are scaled.</p></div>
+    <div class="beat purpose"><h4>Sign of \(\det A\)</h4><p>Negative means the map flips orientation, like a mirror.</p></div>
+  </div>
+</section>
+
+<section class="clip-slide">
+  <h2>Determinant zero</h2>
+  <video class="clip" src="assets/clips/DetZero.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(\begin{bmatrix}2&1\\4&2\end{bmatrix}\) has \(\det = 2\cdot2 - 1\cdot4 = 0\). The plane collapses onto the line \(y = 2x\).</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Volume in 3D</h2>
+  <video class="clip" src="assets/clips/Det3D.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">The first matrix stretches the cube to volume 6. The second flattens it to a plane: volume 0.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / 3×3</div>
+  <h2>Cofactor expansion</h2>
+  <p>Walk along the first row. Each entry multiplies the determinant of what is left after deleting its row and column. Signs alternate \(+\,-\,+\).</p>
+  $$\det A = a_{11}M_{11} - a_{12}M_{12} + a_{13}M_{13}$$
+  <p>\(M_{1j}\) is the 2×2 determinant left after deleting row 1 and column \(j\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Worked example</div>
+  <h2>A 3×3 determinant</h2>
+  $$\det\begin{bmatrix}2&0&1\\1&3&2\\1&1&4\end{bmatrix} = 2\begin{vmatrix}3&2\\1&4\end{vmatrix} - 0\begin{vmatrix}1&2\\1&4\end{vmatrix} + 1\begin{vmatrix}1&3\\1&1\end{vmatrix}$$
+  <p class="fragment">\(= 2(12-2) - 0 + 1(1-3) = 20 - 2 = 18\)</p>
+  <p class="takeaway">A zero entry kills its whole term. Expand along the row or column with the most zeros.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Properties</div>
+  <h2>Four rules</h2>
+  <div class="beats two">
+    <div class="beat purpose"><h4>Products</h4><p>\(\det(AB) = \det A\,\det B\). Scale factors multiply.</p></div>
+    <div class="beat purpose"><h4>Transpose</h4><p>\(\det(A^{\mathsf T}) = \det A\).</p></div>
+    <div class="beat purpose"><h4>Scalar</h4><p>\(\det(cA) = c^{n}\det A\) for \(n\times n\). Check: \(\det(2I_2) = 4\).</p></div>
+    <div class="beat purpose"><h4>Inverse</h4><p>\(\det(A^{-1}) = 1/\det A\), when \(A^{-1}\) exists.</p></div>
+  </div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Check</div>
+  <h2>\(\det(AB) = \det A\,\det B\)</h2>
+  $$A = \begin{bmatrix}1&2\\0&1\end{bmatrix},\; B = \begin{bmatrix}2&0\\1&3\end{bmatrix},\; AB = \begin{bmatrix}4&6\\1&3\end{bmatrix}$$
+  <p>\(\det A = 1\), \(\det B = 6\), \(\det AB = 12 - 6 = 6 = 1\cdot 6\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Try it</div>
+  <h2>Determinants by hand</h2>
+  <ol class="practice">
+    <li>\(\det\begin{bmatrix}2&-1\\3&4\end{bmatrix}\) <span class="fragment">\(= 2\cdot4 - (-1)\cdot3 = 8 + 3 = 11\)</span></li>
+    <li>\(\det\begin{bmatrix}1&2&0\\0&1&3\\4&0&1\end{bmatrix}\)</li>
+    <li>If \(A\) is 3×3 with \(\det A = 5\), what is \(\det(2A)\)?</li>
+  </ol>
+</section>

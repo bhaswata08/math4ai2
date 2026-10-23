@@ -1,0 +1,71 @@
+<!-- ============================================================
+     ACT 4 of 6. Rank. Budget: 20 min.
+     Goal: rank as dimension of the column space; link to invertibility;
+     rank-nullity; LoRA.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 4 of 6</div>
+  <h1>Rank</h1>
+  <p class="act-sub">How many dimensions survive the map.</p>
+  <div class="act-time">20 min</div>
+</section>
+
+<section class="clip-slide">
+  <h2>Rank is the dimension of the output</h2>
+  <video class="clip" src="assets/clips/RankOutputs.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">The plane stays a plane (rank 2), collapses to a line (rank 1), then to a point (rank 0).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / Definition</div>
+  <h2>Column space and rank</h2>
+  <p>The <b>column space</b> is every output \(A\mathbf{x}\): all combinations of the columns of \(A\).</p>
+  $$\operatorname{rank} A = \dim(\text{column space}) = \text{number of independent columns}$$
+  <p>This is the span and independence of Blocks 1.3 and 1.4, applied to the columns.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / Example</div>
+  <h2>A rank-2 matrix</h2>
+  $$A = \begin{bmatrix}1&0&1\\0&1&1\\1&1&2\end{bmatrix}$$
+  <p>The third column is the sum of the first two, so only two columns are independent. Rank 2, and \(\det A = 0\): the flat cube from the volume clip.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / Square matrices</div>
+  <h2>Three questions, one answer</h2>
+  <p>For an \(n\times n\) matrix \(A\), these are equivalent:</p>
+  <ul>
+    <li>\(A\) is invertible</li>
+    <li>\(\operatorname{rank} A = n\) (full rank)</li>
+    <li>\(\det A \neq 0\)</li>
+  </ul>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / Rank–nullity</div>
+  <h2>What is lost</h2>
+  $$n = \operatorname{rank} A + \dim(\text{null space})$$
+  <p>The null space holds every input that \(A\) sends to \(\mathbf{0}\). For the matrix above, \(A(1,1,-1)^{\mathsf T} = \mathbf{0}\), so the null space is a line: \(3 = 2 + 1\).</p>
+  <p class="takeaway">What survives plus what vanishes always adds up to the input dimension.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / In AI</div>
+  <h2>Low-rank updates: LoRA</h2>
+  <p>Fine-tuning a layer \(W \in \mathbb{R}^{d\times d}\) by learning a change \(\Delta W\) directly costs \(d^2\) numbers. LoRA restricts the change to low rank:</p>
+  $$\Delta W = BA,\quad B \in \mathbb{R}^{d\times r},\; A \in \mathbb{R}^{r\times d},\; r \ll d$$
+  <p>That is \(2dr\) numbers. For \(d = 4096\) and \(r = 8\): about 65 thousand instead of 16.8 million.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / Try it</div>
+  <h2>Rank by inspection</h2>
+  <ol class="practice">
+    <li>\(\begin{bmatrix}1&2\\2&4\end{bmatrix}\): rank? <span class="fragment">Column 2 is 2 times column 1, so rank 1. Also \(\det = 4-4 = 0\).</span></li>
+    <li>\(\begin{bmatrix}1&2&3\\2&4&6\\1&0&1\end{bmatrix}\): rank?</li>
+    <li>A 5×3 matrix has rank 3. What is the dimension of its null space?</li>
+  </ol>
+</section>
