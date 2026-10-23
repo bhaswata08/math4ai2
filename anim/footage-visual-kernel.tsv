@@ -2,11 +2,6 @@
 # 1.mp4 = 7Gtxd-ew4lk ch.1 part 1, 2.mp4 = wciU07gPqUE ch.1 part 2, 3.mp4 = mhy-ZKSARxI ch.2.
 # Download: yt-dlp -f 'bv*[height<=1080][ext=mp4]+ba[ext=m4a]' --merge-output-format mp4 -o '%(playlist_index)s.%(ext)s' <playlist>
 # Cut: shared/cut-footage.sh anim/footage-visual-kernel.tsv build/yt
-decks/2.1-matrices	VKVecArrow	1.mp4	40	54
-decks/2.1-matrices	VKManyArrows	1.mp4	87	96
-decks/2.1-matrices	VKDotEngine	1.mp4	143	150.5
-decks/2.1-matrices	VKComposeXZ	2.mp4	268.5	282.5
-decks/2.1-matrices	VKComposeZX	2.mp4	290	305
 decks/2.2-determinant	VKIdentity	1.mp4	205.5	215
 decks/2.2-determinant	VKScalar2	1.mp4	264	275
 decks/2.2-determinant	VKShearVsScalar	2.mp4	59	67.5

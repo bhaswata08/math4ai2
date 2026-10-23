@@ -58,4 +58,4 @@ class Hadamard(Scene):
         self.play(FadeIn(g2), run_time=0.8)
         self.wait(0.6)
         run(self, M2, H2, R2)
-        self.wait(1.5)
+        self.wait(2.5)

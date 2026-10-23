@@ -10,13 +10,13 @@ from shared.anim.linmap import *
 class AffineMap(Scene):
     def construct(self):
         U = 0.7
-        A = m2(1.5, 0, 0.5, 1)
+        A = m2(1, 1, 0, 1)
         plane = lin_plane(U)
         dots = dot_cloud((-1, 1), (-0.75, 0.75), step=0.125)
         fm = f_marker(0.55)
         fm.set_fill(INK, opacity=0.15)
         org = Dot(ORIGIN, radius=0.1, color=HIGHLIGHT)
-        mat = matrix_tex([[1.5, 0], [0.5, 1]], col_colors=(None, None))
+        mat = matrix_tex([[1, 1], [0, 1]], col_colors=(None, None))
         mat.to_corner(UL, buff=0.25)
         label_box(mat)
         eq0 = label_box(MathTex(r"y=Ax", font_size=MIN_FONT).to_corner(UR, buff=0.25))
@@ -31,10 +31,17 @@ class AffineMap(Scene):
         self.wait(1)
 
         b = np.array([2 * U, 1 * U, 0.0])
+        ghost = dots.copy().set_opacity(0.25)
+        ghost_f = fm.copy().set_opacity(0.2)
+        self.add(ghost, ghost_f)
+        self.bring_to_front(dots, fm, org)
         barrow = Arrow(ORIGIN, b, buff=0, color=RESULT_COLOR, stroke_width=6,
                        max_tip_length_to_length_ratio=0.25, tip_length=0.18)
         self.play(Transform(eq0, eq1), FadeOut(cap0))
-        self.play(GrowArrow(barrow), run_time=0.8)
+        lb = label_box(MathTex(r"\mathbf b=(2,1)", font_size=MIN_FONT, color=RESULT_COLOR))
+        lb.move_to([0.8, 1.9, 0])
+        self.play(GrowArrow(barrow), FadeIn(lb), run_time=0.8)
+        self.wait(1)
         self.play(shift_dots(dots, (2 * U, 1 * U)), fm.animate.shift(b), org.animate.shift(b),
                   run_time=2.5)
         self.bring_to_front(barrow, org)
