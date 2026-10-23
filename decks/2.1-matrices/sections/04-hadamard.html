@@ -1,0 +1,35 @@
+<!-- ============================================================
+     ACT 4 of 6. Hadamard product. Budget: 8 min.
+     Goal: students compute A (.) B and know it is not a composition.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 4 of 6</div>
+  <h1>The Hadamard product</h1>
+  <p class="act-sub">Multiply matching entries. A different operation with the same look.</p>
+  <div class="act-time">8 min</div>
+</section>
+
+<section class="clip-slide">
+  <h2>Entry times entry</h2>
+  <video class="clip" src="assets/clips/Hadamard.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption"><span class="cr">\((A \odot B)_{ij} = a_{ij}\,b_{ij}\)</span>. Both matrices have the same shape. A 0-1 matrix works as a mask.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / Compare</div>
+  <h2>Not a composition</h2>
+  <p>\(A \odot B\) does not mean "one map after another". It has no picture as moving the plane.</p>
+  <p>It is commutative: \(A \odot B = B \odot A\). The matrix product is not.</p>
+  <p class="takeaway">In AI: dropout masks, attention masks, and the gates in LSTM and GRU cells.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / Try it</div>
+  <h2>Mask a row</h2>
+  <ol class="practice">
+    <li>\(\begin{bmatrix} 1 & 0 & 1 \end{bmatrix} \odot \begin{bmatrix} 7 & 8 & 9 \end{bmatrix}\) <span class="fragment">\(= \begin{bmatrix} 7 & 0 & 9 \end{bmatrix}\)</span></li>
+    <li>Which mask keeps only the middle entry of a row of three?</li>
+  </ol>
+</section>

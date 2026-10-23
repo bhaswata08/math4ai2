@@ -1,0 +1,43 @@
+<!-- ============================================================
+     ACT 5 of 6. Affine maps. Budget: 10 min.
+     Goal: students see a bias move the origin, so the map is not
+     linear, and write an affine map as one matrix.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 5 of 6</div>
+  <h1>Affine maps</h1>
+  <p class="act-sub">Add a shift after the matrix. The origin no longer stays put.</p>
+  <div class="act-time">10 min</div>
+</section>
+
+<section class="clip-slide">
+  <h2>Matrix, then shift</h2>
+  <video class="clip" src="assets/clips/AffineMap.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">With \(\mathbf{y} = A\mathbf{x}\) the origin stays. With <span class="cr">\(+\,\mathbf{b}\)</span> it moves to \(\mathbf{b}\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / Definition</div>
+  <h2>Affine is not linear</h2>
+  $$\mathbf{y} = A\mathbf{x} + \mathbf{b} \qquad A\mathbf{0} + \mathbf{b} = \mathbf{b} \neq \mathbf{0}$$
+  <p>A linear map must send \(\mathbf{0}\) to \(\mathbf{0}\). With \(\mathbf{b} \neq \mathbf{0}\) this one does not.</p>
+  <p class="takeaway">A dense layer is affine, then a nonlinearity: \(\sigma(W\mathbf{x} + \mathbf{b})\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / One matrix</div>
+  <h2>Homogeneous coordinates</h2>
+  $$\begin{bmatrix} A & \mathbf{b} \\ \mathbf{0}^\top & 1 \end{bmatrix}\begin{bmatrix} \mathbf{x} \\ 1 \end{bmatrix} = \begin{bmatrix} A\mathbf{x} + \mathbf{b} \\ 1 \end{bmatrix}$$
+  <p>Append a 1 to the input. The shift becomes part of one bigger matrix.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / Try it</div>
+  <h2>Shift as a matrix</h2>
+  <ol class="practice">
+    <li>Write \(\mathbf{y} = 2\mathbf{x} + 3\) for \(\mathbf{x} \in \mathbb{R}\) as a \(2 \times 2\) matrix acting on \((x, 1)\). <span class="fragment">\(\begin{bmatrix} 2 & 3 \\ 0 & 1 \end{bmatrix}\begin{bmatrix} x \\ 1 \end{bmatrix} = \begin{bmatrix} 2x + 3 \\ 1 \end{bmatrix}\)</span></li>
+    <li>Is \(\mathbf{x} \mapsto A\mathbf{x} + \mathbf{b}\) linear when \(\mathbf{b} = \mathbf{0}\)?</li>
+  </ol>
+</section>

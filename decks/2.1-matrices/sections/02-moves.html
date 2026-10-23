@@ -1,0 +1,82 @@
+<!-- ============================================================
+     ACT 2 of 6. A matrix moves vectors. Budget: 25 min.
+     Source: Visual Kernel, SEE Matrix ch.1; 3b1b EoLA ch.3.
+     Goal: students compute Av as a mix of columns, and know what
+     "linear" means for the grid.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 2 of 6</div>
+  <h1>A matrix moves vectors</h1>
+  <p class="act-sub">Feed in a vector, get a vector out. Do it to every point at once.</p>
+  <div class="act-time">25 min</div>
+</section>
+
+<section class="clip-slide">
+  <h2>One vector in, one vector out</h2>
+  <video class="clip" src="assets/clips/VKVecArrow.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">The matrix takes the arrow \(\mathbf{v}\) and returns a new arrow \(A\mathbf{v}\).</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Now every vector</h2>
+  <video class="clip" src="assets/clips/VKManyArrows.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Each arrow is moved by the same matrix. Watch the whole fan turn and stretch.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>The dot engine</h2>
+  <video class="clip" src="assets/clips/VKDotEngine.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Draw each vector as a dot. The matrix sends every dot \(\mathbf{p}\) to \(A\mathbf{p}\).</p>
+</section>
+
+<section class="clip-slide">
+  <h2>With real numbers</h2>
+  <video class="clip" src="assets/clips/DotEngine.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">For \(\begin{bmatrix} 1 & 2 \\ 0 & 1 \end{bmatrix}\), the point \((1, 2)\) lands on \((5, 2)\).</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Columns are where \(\hat\imath\) and \(\hat\jmath\) land</h2>
+  <video class="clip" src="assets/clips/BasisColumns.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption"><span class="cx">Column 1</span> is the new \(\hat\imath\). <span class="cy">Column 2</span> is the new \(\hat\jmath\).</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Mix the columns</h2>
+  <video class="clip" src="assets/clips/ColumnsCombine.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(\mathbf{v} = 1\hat\imath + 2\hat\jmath\) becomes <span class="cx">1 &middot; col&#8321;</span> + <span class="cy">2 &middot; col&#8322;</span>.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Formula</div>
+  <h2>\(A\mathbf{v}\) is a mix of columns</h2>
+  $$\begin{bmatrix} a & b \\ c & d \end{bmatrix}\begin{bmatrix} x \\ y \end{bmatrix}
+  = x\,\color{#8bd17c}{\begin{bmatrix} a \\ c \end{bmatrix}} + y\,\color{#e8798a}{\begin{bmatrix} b \\ d \end{bmatrix}}$$
+  <p>The entries of \(\mathbf{v}\) are the <b>amounts</b> of each column.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Linear</div>
+  <h2>What "linear" means</h2>
+  $$T(\mathbf{u} + \mathbf{v}) = T(\mathbf{u}) + T(\mathbf{v}) \qquad T(c\,\mathbf{v}) = c\,T(\mathbf{v})$$
+  <p>In the picture: grid lines stay <b>straight</b>, stay <b>parallel</b>, stay <b>evenly spaced</b>, and the <b>origin stays put</b>.</p>
+  <p class="takeaway">Every matrix is a linear map, and every linear map of the plane is a matrix.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Try it</div>
+  <h2>By columns</h2>
+  <p>Let \(A = \begin{bmatrix} 2 & -1 \\ 1 & 1 \end{bmatrix}\). Compute \(A\mathbf{v}\) as a mix of columns.</p>
+  <ol class="practice">
+    <li>\(\mathbf{v} = (3, 1)\) <span class="fragment">\(= 3\begin{bmatrix} 2 \\ 1 \end{bmatrix} + 1\begin{bmatrix} -1 \\ 1 \end{bmatrix} = \begin{bmatrix} 5 \\ 4 \end{bmatrix}\)</span></li>
+    <li>\(\mathbf{v} = (0, 2)\)</li>
+    <li>\(\mathbf{v} = (-1, 3)\)</li>
+  </ol>
+</section>

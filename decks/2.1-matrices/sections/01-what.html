@@ -1,0 +1,53 @@
+<!-- ============================================================
+     ACT 1 of 6. What is a matrix. Budget: 15 min.
+     Goal: students read shapes and entries, add and scale matrices,
+     transpose, and see where a weight matrix sits in a network.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 1 of 6</div>
+  <h1>What is a matrix</h1>
+  <p class="act-sub">A rectangle of numbers with a shape and an address for every entry.</p>
+  <div class="act-time">15 min</div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 1</b> / Definition</div>
+  <h2>An \(m \times n\) matrix</h2>
+  $$A = \begin{bmatrix} a_{11} & a_{12} & a_{13} \\ a_{21} & a_{22} & a_{23} \end{bmatrix} \in \mathbb{R}^{2 \times 3}$$
+  <p>\(m\) rows, \(n\) columns. Entry \(a_{ij}\) sits in <span class="cx">row \(i\)</span>, <span class="cy">column \(j\)</span>.</p>
+  <p class="takeaway">Shape is rows first, then columns.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 1</b> / Add and scale</div>
+  <h2>Entry by entry</h2>
+  $$\begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix} + \begin{bmatrix} 5 & 0 \\ 1 & 1 \end{bmatrix} = \begin{bmatrix} 6 & 2 \\ 4 & 5 \end{bmatrix}
+  \qquad
+  3\begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix} = \begin{bmatrix} 3 & 6 \\ 9 & 12 \end{bmatrix}$$
+  <p>Addition needs <b>the same shape</b>. Scaling multiplies every entry.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Transpose</h2>
+  <video class="clip" src="assets/clips/TransposeFlip.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Rows become columns: <span class="cx">\((A^\top)_{ij} = a_{ji}\)</span>. A \(2 \times 3\) matrix becomes \(3 \times 2\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 1</b> / Transpose rules</div>
+  <h2>Two rules to remember</h2>
+  $$(A^\top)^\top = A \qquad\qquad (AB)^\top = B^\top A^\top$$
+  <p>Flip twice and you are back. A transposed product <b>reverses the order</b>.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 1</b> / In AI</div>
+  <h2>Where matrices live in a network</h2>
+  <div class="beats two recap">
+    <div class="beat purpose"><h4>Weights</h4><p>A layer with \(n\) inputs and \(m\) outputs has a weight matrix \(W\) of shape \(m \times n\).</p></div>
+    <div class="beat purpose"><h4>Batches</h4><p>A batch of data is \(X \in \mathbb{R}^{\text{batch} \times \text{features}}\): one row per example.</p></div>
+  </div>
+  <p class="takeaway">A matrix is both a table of numbers and, next, a machine that moves vectors.</p>
+</section>

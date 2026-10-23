@@ -1,0 +1,87 @@
+<!-- ============================================================
+     ACT 3 of 6. Multiplication is composition. Budget: 20 min.
+     Source: 3b1b EoLA ch.4; Visual Kernel, SEE Matrix ch.1.
+     Goal: AB means B first then A; compute a 2x2 product; know the
+     shape rule and the algebra of products.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 3 of 6</div>
+  <h1>Multiplication is composition</h1>
+  <p class="act-sub">A product of matrices is one map done after another.</p>
+  <div class="act-time">20 min</div>
+</section>
+
+<section class="clip-slide">
+  <h2>Shear, then rotate</h2>
+  <video class="clip" src="assets/clips/ComposeMaps.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Apply \(S\) first, then \(R\). The single matrix that does both is \(RS\). Swap them and the result differs.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Order</div>
+  <h2>\(AB\) means "\(B\) first, then \(A\)"</h2>
+  $$(AB)\,\mathbf{v} = A\,(B\,\mathbf{v})$$
+  <p>Read the product <b>right to left</b>, the way you read \(f(g(x))\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Rule</div>
+  <h2>Row times column</h2>
+  $$\begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}\begin{bmatrix} 0 & 1 \\ 1 & 5 \end{bmatrix}
+  = \begin{bmatrix} 1\cdot 0 + 2\cdot 1 & 1\cdot 1 + 2\cdot 5 \\ 3\cdot 0 + 4\cdot 1 & 3\cdot 1 + 4\cdot 5 \end{bmatrix}
+  = \begin{bmatrix} 2 & 11 \\ 4 & 23 \end{bmatrix}$$
+  <p>Entry \((i, j)\) is <b>row \(i\) of the left matrix</b> dotted with <b>column \(j\) of the right</b>.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Shapes</div>
+  <h2>The shape rule</h2>
+  $$(m \times \color{#8bd17c}{n})\,(\color{#8bd17c}{n} \times p) = (m \times p)$$
+  <p>The inner sizes must match, and then they disappear.</p>
+  <p class="takeaway">A \(3\times 2\) times a \(2\times 4\) is fine. Reverse them and it is undefined.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Rotate about \(x\), then about \(z\)</h2>
+  <video class="clip" src="assets/clips/VKComposeXZ.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">60° about \(x\), then 45° about \(z\). The panels read like the product \(C = R_z R_x\): right to left.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Same rotations, \(z\) first</h2>
+  <video class="clip" src="assets/clips/VKComposeZX.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">The cube ends in a different place. <b>Order matters.</b></p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Properties</div>
+  <h2>What holds, what does not</h2>
+  <ul>
+    <li>Associative: \((AB)C = A(BC)\)</li>
+    <li>Distributive: \(A(B + C) = AB + AC\)</li>
+    <li>Identity: \(AI = IA = A\)</li>
+    <li><b>Not</b> commutative: usually \(AB \neq BA\)</li>
+  </ul>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / In AI</div>
+  <h2>Stacked linear layers collapse</h2>
+  $$W_3\,(W_2\,(W_1\,\mathbf{x})) = (W_3 W_2 W_1)\,\mathbf{x}$$
+  <p>Without an activation between them, three layers are one matrix.</p>
+  <p class="takeaway">Nonlinearities are what make depth worth having.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Try it</div>
+  <h2>Multiply</h2>
+  <ol class="practice">
+    <li>\(\begin{bmatrix} 1 & 2 \\ 0 & 1 \end{bmatrix}\begin{bmatrix} 2 & 0 \\ 1 & 1 \end{bmatrix}\) <span class="fragment">\(= \begin{bmatrix} 4 & 2 \\ 1 & 1 \end{bmatrix}\)</span></li>
+    <li>The same two matrices in the other order. Is the answer equal?</li>
+    <li>Can you multiply a \(2 \times 3\) matrix by a \(2 \times 3\) matrix? Why not?</li>
+  </ol>
+</section>

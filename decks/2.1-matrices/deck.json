@@ -1,0 +1,12 @@
+{
+  "title": "Matrices as linear maps · Mathematics for AI 2.1",
+  "sections": [
+    "00-open.html",
+    "01-what.html",
+    "02-moves.html",
+    "03-compose.html",
+    "04-hadamard.html",
+    "05-affine.html",
+    "06-recap.html"
+  ]
+}
