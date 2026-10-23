@@ -1,0 +1,33 @@
+<!-- ============================================================
+     ACT 2 of 6. The learning rate. Budget: 15 min.
+     Source: built for this course (descent.py: LearningRates).
+     Goal: students predict crawl / converge / diverge for L = w²,
+     and state the stability limit η < 2/L'' for a quadratic,
+     which links back to the Hessian in Block 4.2.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 2 of 6</div>
+  <h1>The learning rate</h1>
+  <p class="act-sub">Too small wastes time. Too large never arrives.</p>
+  <div class="act-time">15 min</div>
+</section>
+
+<section class="clip-slide">
+  <h2>Three learning rates on \(L(w) = w^2\)</h2>
+  <video class="clip" src="assets/clips/LearningRates.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(\eta = 0.05\) crawls, \(\eta = 0.3\) converges, \(\eta = 1.05\) overshoots further every step.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Why 1.05 diverges</div>
+  <h2>Each step multiplies \(w\) by a constant</h2>
+  $$w_{k+1} = w_k - \eta \cdot 2w_k = (1 - 2\eta)\,w_k$$
+  <div class="beats">
+    <div class="beat purpose"><h4>Shrinks</h4><p>\(0 &lt; \eta &lt; 0.5\): factor in \((0, 1)\): shrinks without crossing zero.</p></div>
+    <div class="beat purpose"><h4>Flips, shrinks</h4><p>\(0.5 &lt; \eta &lt; 1\): factor in \((-1, 0)\): flips sign but still shrinks.</p></div>
+    <div class="beat purpose"><h4>Grows</h4><p>\(\eta &gt; 1\): \(|1 - 2\eta| &gt; 1\): every step grows. At 1.05 the factor is \(-1.1\).</p></div>
+  </div>
+  <p class="takeaway">In general, for a quadratic bowl the limit is \(\eta &lt; 2/\lambda_{\max}\), where \(\lambda_{\max}\) is the largest eigenvalue of the Hessian.</p>
+</section>

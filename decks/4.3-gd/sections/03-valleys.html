@@ -1,0 +1,28 @@
+<!-- ============================================================
+     ACT 3 of 6. Narrow valleys. Budget: 15 min.
+     Source: built for this course (descent.py: Descent2D).
+     Goal: students see the zig-zag and tie it to unequal Hessian
+     eigenvalues: one learning rate cannot suit both directions.
+     Momentum and Adam are named only, not taught.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 3 of 6</div>
+  <h1>Narrow valleys</h1>
+  <p class="act-sub">When the bowl is stretched, the steepest direction is not the way to the bottom.</p>
+  <div class="act-time">15 min</div>
+</section>
+
+<section class="clip-slide">
+  <h2>Zig-zag</h2>
+  <video class="clip" src="assets/clips/Descent2D.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(L = \tfrac12 w_1^2 + 4w_2^2\): steep across the valley, shallow along it.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / What the Hessian says</div>
+  <h2>One step size, two curvatures</h2>
+  $$H = \begin{bmatrix} 1 & 0 \\ 0 & 8 \end{bmatrix} \qquad \kappa = \frac{\lambda_{\max}}{\lambda_{\min}} = 8$$
+  <p class="takeaway">\(\eta\) must stay below \(2/8\) to avoid blowing up across the valley, which makes progress along it slow. The larger \(\kappa\), the worse the zig-zag. Momentum and Adam are designed to fix exactly this.</p>
+</section>

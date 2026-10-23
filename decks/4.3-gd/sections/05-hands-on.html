@@ -1,0 +1,46 @@
+<!-- ============================================================
+     ACT 5 of 6. Hands-on. Budget: 30 min.
+     Goal: students implement the three variants on the same
+     least-squares loss in NumPy and reproduce the LossCurves plot.
+     The skeleton below is complete except for the update line.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 5 of 6</div>
+  <h1>Hands-on</h1>
+  <p class="act-sub">Three optimisers, one loss, one plot.</p>
+  <div class="act-time">30 min</div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / Skeleton</div>
+  <h2>Linear regression with NumPy</h2>
+<pre class="mono" style="font-size:0.62em; line-height:1.4"><code>rng = np.random.default_rng(0)
+X = np.c_[rng.uniform(-2, 2, 64), np.ones(64)]   # feature, bias
+y = X @ np.array([1.5, -0.5]) + rng.normal(0, 0.3, 64)
+
+def grad(w, idx):                    # gradient of mean squared error
+    Xb, yb = X[idx], y[idx]
+    return 2 * Xb.T @ (Xb @ w - yb) / len(idx)
+
+def train(batch_size, eta=0.1, epochs=20):
+    w, losses = np.zeros(2), []
+    for _ in range(epochs):
+        order = rng.permutation(64)
+        for start in range(0, 64, batch_size):
+            idx = order[start:start + batch_size]
+            w = ...                  # your update here
+            losses.append(np.mean((X @ w - y) ** 2))
+    return w, losses</code></pre>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / Tasks</div>
+  <h2>Run and compare</h2>
+  <ol class="practice">
+    <li>Fill in the update. Train with batch sizes 64, 16 and 1.</li>
+    <li>Plot loss against update number, then against examples processed. Do your plots match the clip?</li>
+    <li>Raise \(\eta\) until batch training diverges. Compare with \(2/\lambda_{\max}\) of \(H = \tfrac{2}{N}X^{\top}X\).</li>
+    <li>Stochastic training never settles. Try \(\eta_k = \eta_0/(1 + k/100)\) and describe the difference.</li>
+  </ol>
+</section>

@@ -1,0 +1,31 @@
+<!-- ============================================================
+     ACT 1 of 6. The algorithm. Budget: 15 min.
+     Source: built for this course (descent.py: Descent1D).
+     Goal: students run w ← w − η L'(w) by hand and see why steps
+     shrink near a minimum on their own.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 1 of 6</div>
+  <h1>Walk downhill</h1>
+  <p class="act-sub">The slope says which way is up. Step the other way.</p>
+  <div class="act-time">15 min</div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 1</b> / The update</div>
+  <h2>One line of maths</h2>
+  $$\mathbf w_{k+1} = \mathbf w_k - \eta\,\nabla L(\mathbf w_k)$$
+  <div class="beats">
+    <div class="beat purpose"><h4>Weights</h4><p>\(\mathbf w\): every parameter of the model, as one vector.</p></div>
+    <div class="beat purpose"><h4>Gradient</h4><p>\(\nabla L\): from backpropagation, Block 4.1.</p></div>
+    <div class="beat purpose"><h4>Learning rate</h4><p>\(\eta\): how far to trust the slope. Chosen by you.</p></div>
+  </div>
+</section>
+
+<section class="clip-slide">
+  <h2>In one dimension</h2>
+  <video class="clip" src="assets/clips/Descent1D.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">The step is \(\eta\) times the <span class="cr">slope</span>, so steps shrink by themselves as the ground flattens.</p>
+</section>

@@ -1,0 +1,12 @@
+{
+  "title": "Gradient descent · Mathematics for AI 4.3",
+  "sections": [
+    "00-open.html",
+    "01-algorithm.html",
+    "02-learning-rate.html",
+    "03-valleys.html",
+    "04-stochastic.html",
+    "05-hands-on.html",
+    "06-recap.html"
+  ]
+}

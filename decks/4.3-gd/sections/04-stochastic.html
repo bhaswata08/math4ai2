@@ -1,0 +1,54 @@
+<!-- ============================================================
+     ACT 4 of 6. Batch, mini-batch, stochastic. Budget: 25 min.
+     Source: built for this course (descent.py: BatchVsSGD,
+     LossCurves), on a fixed-seed linear regression with N = 64.
+     Goal: students say what each variant averages over, read the
+     noise in the paths, and compare cost per update vs per epoch.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 4 of 6</div>
+  <h1>Batch, mini-batch, stochastic</h1>
+  <p class="act-sub">The full gradient is an average over the data. You do not have to compute all of it.</p>
+  <div class="act-time">25 min</div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / The loss is an average</div>
+  <h2>Estimate the gradient from a sample</h2>
+  $$\nabla L(\mathbf w) = \frac1N \sum_{i=1}^{N} \nabla \ell_i(\mathbf w) \;\approx\; \frac1B \sum_{i \in \text{batch}} \nabla \ell_i(\mathbf w)$$
+  <div class="beats">
+    <div class="beat purpose"><h4>Batch</h4><p>\(B = N\). The exact gradient, one update per pass over the data.</p></div>
+    <div class="beat purpose"><h4>Mini-batch</h4><p>\(B\) of 16 to 512. A good estimate, many updates per pass.</p></div>
+    <div class="beat purpose"><h4>Stochastic</h4><p>\(B = 1\). A noisy estimate, \(N\) updates per pass.</p></div>
+  </div>
+</section>
+
+<section class="clip-slide">
+  <h2>Same start, three paths</h2>
+  <video class="clip" src="assets/clips/BatchVsSGD.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Linear regression on 64 points. Smaller batches give noisier steps toward the same minimum.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Per update, or per unit of work</h2>
+  <video class="clip" src="assets/clips/LossCurves.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Per update, batch wins. Per data point processed, the cheap noisy steps win.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / Comparison</div>
+  <h2>Which one to use</h2>
+  <table style="font-size:0.8em">
+    <thead><tr><th></th><th>batch</th><th>mini-batch</th><th>stochastic</th></tr></thead>
+    <tbody>
+      <tr><td>gradient per update</td><td>exact</td><td>estimate</td><td>very noisy</td></tr>
+      <tr><td>updates per epoch</td><td>1</td><td>\(N/B\)</td><td>\(N\)</td></tr>
+      <tr><td>memory</td><td>all data</td><td>one batch</td><td>one example</td></tr>
+      <tr><td>hardware use</td><td>good, if it fits</td><td>best on a GPU</td><td>poor</td></tr>
+      <tr><td>in practice</td><td>small data, convex problems</td><td>almost all deep learning</td><td>online learning</td></tr>
+    </tbody>
+  </table>
+</section>
