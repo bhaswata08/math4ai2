@@ -1,0 +1,45 @@
+<!-- ============================================================
+     ACT 4 of 4. Course review. Budget: 35 min.
+     Goal: one map of the four days, then mixed practice that needs
+     ideas from more than one day. Owns no new material.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 4 of 4</div>
+  <h1>Course review</h1>
+  <p class="act-sub">Four days, one thread: data as vectors, models as maps, training as descent.</p>
+  <div class="act-time">35 min</div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / The map</div>
+  <h2>How the four days connect</h2>
+  <div class="beats two recap">
+    <div class="beat purpose"><h4>Day 1: vectors</h4><p>Data points, dot products, norms, span, basis. The space a model lives in.</p></div>
+    <div class="beat purpose"><h4>Day 2: matrices</h4><p>Linear maps, determinant, rank, eigenvectors. What a layer does to space.</p></div>
+    <div class="beat purpose"><h4>Day 3: structure and change</h4><p>SVD and PCA find structure. Derivatives, gradients and Jacobians measure change.</p></div>
+    <div class="beat purpose"><h4>Day 4: optimisation</h4><p>Backprop computes the gradient, the Hessian reads the shape, descent walks downhill.</p></div>
+  </div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / One training step</div>
+  <h2>Every idea in one line of code</h2>
+  $$\mathbf w \leftarrow \mathbf w - \eta\,\frac1B\sum_{i \in \text{batch}} \nabla_{\mathbf w}\,\ell\big(\sigma(W\mathbf x_i + \mathbf b),\ y_i\big)$$
+  <div class="beats">
+    <div class="beat purpose"><h4>Days 1–2</h4><p>\(W\mathbf x_i + \mathbf b\): vectors and an affine map.</p></div>
+    <div class="beat purpose"><h4>Day 3</h4><p>\(\nabla_{\mathbf w}\): partial derivatives, the Jacobian, the chain rule.</p></div>
+    <div class="beat purpose"><h4>Day 4</h4><p>Backpropagation, a learning rate, a mini-batch.</p></div>
+  </div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / Mixed practice</div>
+  <h2>Problems that cross days</h2>
+  <ol class="practice">
+    <li>Minimise \(\lVert A\mathbf x - \mathbf b\rVert^2\): set the gradient to zero. <span class="fragment">\(A^{\top}A\,\mathbf x = A^{\top}\mathbf b\), the normal equations</span></li>
+    <li>Show that the Hessian of \(\lVert A\mathbf x - \mathbf b\rVert^2\) is \(2A^{\top}A\), and that it is positive semi-definite. What does that say about the problem?</li>
+    <li>Maximise \(\mathbf w^{\top}\Sigma\mathbf w\) with \(\lVert\mathbf w\rVert = 1\) for \(\Sigma = \begin{bmatrix} 3 &amp; 1 \\ 1 &amp; 3 \end{bmatrix}\). Which Day 3 method have you just done?</li>
+    <li>For \(L(\mathbf w) = \mathbf w^{\top}\Sigma\mathbf w\), what is the largest stable learning rate for gradient descent?</li>
+  </ol>
+</section>

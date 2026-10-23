@@ -1,0 +1,10 @@
+{
+  "title": "Constrained and convex optimisation · Mathematics for AI 4.4",
+  "sections": [
+    "00-open.html",
+    "01-constraints.html",
+    "02-lagrange.html",
+    "03-convex.html",
+    "04-review.html"
+  ]
+}

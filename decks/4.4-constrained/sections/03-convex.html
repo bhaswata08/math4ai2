@@ -1,0 +1,46 @@
+<!-- ============================================================
+     ACT 3 of 4. Convex optimisation. Budget: 20 min.
+     Source: built for this course (lagrange.py: ConvexVsNot).
+     Goal: students recognise a convex problem (convex objective,
+     convex feasible set) and know its guarantee. Builds on Block
+     4.2 Act 4 (convex functions).
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 3 of 4</div>
+  <h1>Convex optimisation</h1>
+  <p class="act-sub">The class of problems where "found a minimum" means "found the minimum".</p>
+  <div class="act-time">20 min</div>
+</section>
+
+<section class="clip-slide">
+  <h2>Three starts, one answer</h2>
+  <video class="clip" src="assets/clips/ConvexVsNot.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">On a convex function every start ends at the same minimum. Without convexity, the start decides.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Definition</div>
+  <h2>A convex problem</h2>
+  $$\min_{\mathbf x}\; f(\mathbf x) \quad \text{s.t.}\quad g_i(\mathbf x) \le 0,\quad A\mathbf x = \mathbf b$$
+  <div class="beats two">
+    <div class="beat purpose"><h4>Requirements</h4><p>\(f\) and every \(g_i\) convex; equality constraints affine. Then the feasible set is convex.</p></div>
+    <div class="beat purpose"><h4>Guarantee</h4><p>Every local minimum is global, and solvers find it reliably. Inequalities are handled by the KKT conditions, the generalisation of Lagrange.</p></div>
+  </div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Examples</div>
+  <h2>Convex or not</h2>
+  <table style="font-size:0.8em">
+    <thead><tr><th>problem</th><th>convex?</th></tr></thead>
+    <tbody>
+      <tr><td>least squares, ridge regression</td><td>yes</td></tr>
+      <tr><td>logistic regression</td><td>yes</td></tr>
+      <tr><td>support vector machine</td><td>yes</td></tr>
+      <tr><td>lasso (\(\ell_1\) penalty)</td><td>yes, though not differentiable everywhere</td></tr>
+      <tr><td>training a deep network</td><td>no, yet gradient descent works well in practice</td></tr>
+    </tbody>
+  </table>
+</section>
