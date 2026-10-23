@@ -17,7 +17,7 @@
   <div class="act-tag"><b>Act 4</b> / The loss is an average</div>
   <h2>Estimate the gradient from a sample</h2>
   $$\nabla L(\mathbf w) = \frac1N \sum_{i=1}^{N} \nabla \ell_i(\mathbf w) \;\approx\; \frac1B \sum_{i \in \text{batch}} \nabla \ell_i(\mathbf w)$$
-  <div class="beats">
+  <div class="beats" style="font-size:1.35em;margin-top:1.2em">
     <div class="beat purpose"><h4>Batch</h4><p>\(B = N\). The exact gradient, one update per pass over the data.</p></div>
     <div class="beat purpose"><h4>Mini-batch</h4><p>\(B\) of 16 to 512. A good estimate, many updates per pass.</p></div>
     <div class="beat purpose"><h4>Stochastic</h4><p>\(B = 1\). A noisy estimate, \(N\) updates per pass.</p></div>
@@ -25,23 +25,30 @@
 </section>
 
 <section class="clip-slide">
+  <h2>A mini-batch gradient is a noisy estimate</h2>
+  <video class="clip" src="assets/clips/WhyNoise.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">One point gives a gradient that can point almost anywhere. The average over 8 points lands close to the full gradient: unbiased, with less noise for more compute.</p>
+</section>
+
+<section class="clip-slide">
   <h2>Same start, three paths</h2>
   <video class="clip" src="assets/clips/BatchVsSGD.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">Linear regression on 64 points. Smaller batches give noisier steps toward the same minimum.</p>
+  <p class="caption">Linear regression on 64 points, same step size. Smaller batches give noisier steps toward the minimum, but more updates per epoch.</p>
 </section>
 
 <section class="clip-slide">
   <h2>Per update, or per unit of work</h2>
   <video class="clip" src="assets/clips/LossCurves.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">Per update, batch wins. Per data point processed, the cheap noisy steps win.</p>
+  <p class="caption">An epoch is one pass over the data. Dividing updates by updates per epoch puts the three runs on equal work.</p>
 </section>
 
 <section class="act-body">
   <div class="act-tag"><b>Act 4</b> / Comparison</div>
   <h2>Which one to use</h2>
-  <table style="font-size:0.8em">
+  <table style="font-size:1.05em">
     <thead><tr><th></th><th>batch</th><th>mini-batch</th><th>stochastic</th></tr></thead>
     <tbody>
       <tr><td>gradient per update</td><td>exact</td><td>estimate</td><td>very noisy</td></tr>
@@ -51,4 +58,11 @@
       <tr><td>in practice</td><td>small data, convex problems</td><td>almost all deep learning</td><td>online learning</td></tr>
     </tbody>
   </table>
+</section>
+
+<section class="clip-slide">
+  <h2>Shrink the step to settle</h2>
+  <video class="clip" src="assets/clips/NoiseBallSchedule.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">A constant \(\eta\) keeps SGD circling the minimum in a noise ball. With \(\eta_k = \eta_0/(1 + k/50)\) the ball shrinks and SGD settles.</p>
 </section>

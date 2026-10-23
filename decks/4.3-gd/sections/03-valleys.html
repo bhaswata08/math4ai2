@@ -1,6 +1,6 @@
 <!-- ============================================================
      ACT 3 of 6. Narrow valleys. Budget: 15 min.
-     Source: built for this course (descent.py: Descent2D).
+     Source: built for this course (valley.py: ValleyThreeRates, MomentumVsPlain).
      Goal: students see the zig-zag and tie it to unequal Hessian
      eigenvalues: one learning rate cannot suit both directions.
      Momentum and Adam are named only, not taught.
@@ -15,14 +15,28 @@
 
 <section class="clip-slide">
   <h2>Zig-zag</h2>
-  <video class="clip" src="assets/clips/Descent2D.mp4"></video>
+  <video class="clip" src="assets/clips/ValleyThreeRates.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">\(L = \tfrac12 w_1^2 + 4w_2^2\): steep across the valley, shallow along it.</p>
+  <p class="caption">\(L = \tfrac12 w_1^2 + 4w_2^2\). Along \(w_1\) each step multiplies by \(1-\eta\), across \(w_2\) by \(1-8\eta\). Small \(\eta\) crawls, \(0.22\) zig-zags, \(0.27\) blows up across the valley.</p>
 </section>
 
 <section class="act-body">
   <div class="act-tag"><b>Act 3</b> / What the Hessian says</div>
   <h2>One step size, two curvatures</h2>
-  $$H = \begin{bmatrix} 1 & 0 \\ 0 & 8 \end{bmatrix} \qquad \kappa = \frac{\lambda_{\max}}{\lambda_{\min}} = 8$$
-  <p class="takeaway">\(\eta\) must stay below \(2/8\) to avoid blowing up across the valley, which makes progress along it slow. The larger \(\kappa\), the worse the zig-zag. Momentum and Adam are designed to fix exactly this.</p>
+  <div style="font-size:1.4em; margin:0.4em 0 0.8em">$$H = \begin{bmatrix} 1 & 0 \\ 0 & 8 \end{bmatrix} \qquad \kappa = \frac{\lambda_{\max}}{\lambda_{\min}} = 8$$</div>
+  <p class="takeaway" style="font-size:1.2em">\(\eta\) must stay below \(2/\lambda_{\max} = 2/8 = 0.25\) to avoid blowing up across the valley, which makes progress along it slow. At \(\eta = 0.22\) the across-factor is \(-0.76\): still shrinking, but with a visible wobble. The larger \(\kappa\), the worse the zig-zag.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Momentum: let the zig-zags cancel</h2>
+  <div class="clip-row">
+    <video class="clip" src="assets/clips/MomentumVsPlain.mp4"></video>
+    <span class="fragment clip-play"></span>
+    <div>
+      <div style="font-size:0.9em">$$v \leftarrow \beta\,v - \eta\,\nabla L(\mathbf w)$$
+      $$\mathbf w \leftarrow \mathbf w + v$$</div>
+      <p style="margin-top:0.8em; font-size:0.8em; color:var(--ink-dim)">Kicks across the valley alternate in sign and cancel. Kicks along it keep their sign and add up.</p>
+    </div>
+  </div>
+  <p class="caption">Same \(\eta = 0.22\): plain GD needs 15 steps, momentum (\(\beta = 0.3\)) needs 8 to reach \(|\mathbf w| &lt; 0.1\).</p>
 </section>
