@@ -1,0 +1,64 @@
+<!-- ============================================================
+     ACT 7 of 7. Eigenvectors, the intuition. Budget: 15 min.
+     Source: Visual Kernel SEE Matrix ch.2; 3b1b EoLA ch.14.
+     Goal: A v = lambda v. Block 2.4 does the algebra.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 7 of 7</div>
+  <h1>Eigenvectors: the intuition</h1>
+  <p class="act-sub">Most vectors get turned. A few do not.</p>
+  <div class="act-time">15 min</div>
+</section>
+
+<section class="clip-slide">
+  <h2>A matrix usually knocks a vector off its line</h2>
+  <video class="clip" src="assets/clips/VKOffLine.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(\begin{bmatrix}1.5&0.7\\0.6&0.8\end{bmatrix}\): the dotted line is where the vector started. It ends elsewhere.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Some directions stay on their line</h2>
+  <video class="clip" src="assets/clips/VKEigenDots.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Dots on the two special lines slide along them. They stretch but do not turn.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>The stretch is the eigenvalue</h2>
+  <video class="clip" src="assets/clips/VKEigenScale.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">One vector is stretched by 2.7, the other shrinks to 0.6. Each stays on its own line.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 7</b> / Definition</div>
+  <h2>\(Av=\lambda v\)</h2>
+  $$A\,\underbrace{v}_{\text{eigenvector}}=\underbrace{\lambda}_{\text{eigenvalue}}\,v$$
+  <ul>
+    <li>\(v\neq0\) keeps its line. \(\lambda\) is the stretch along that line.</li>
+    <li>\(\lambda<0\) flips \(v\) to the other side; \(\lambda=0\) crushes it to the origin.</li>
+  </ul>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 7</b> / Read them off</div>
+  <h2>Special matrices, special eigenvectors</h2>
+  <div class="beats">
+    <div class="beat purpose"><h4>Diagonal</h4><p>The eigenvectors are the axes. The eigenvalues are the diagonal entries.</p></div>
+    <div class="beat purpose"><h4>Projection</h4><p>\(\lambda=1\) along the line (kept). \(\lambda=0\) across it (crushed).</p></div>
+    <div class="beat breaks"><h4>Rotation</h4><p>A 2D rotation by an angle other than 0 or 180 degrees turns every vector. It has no real eigenvectors.</p></div>
+  </div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 7</b> / Try it</div>
+  <h2>Find the lines that stay put</h2>
+  <ol class="practice">
+    <li>\(\begin{bmatrix}3&0\\0&-2\end{bmatrix}\) <span class="fragment">The axes. \(\lambda=3\) along \(x\); \(\lambda=-2\) along \(y\), which also flips it.</span></li>
+    <li>\(P=\begin{bmatrix}0.2&0.4\\0.4&0.8\end{bmatrix}\): which vector has \(Pv=v\)? Which has \(Pv=0\)?</li>
+    <li>Does a 90 degree rotation have a real eigenvector? Why not?</li>
+  </ol>
+  <p class="takeaway">Next block: compute eigenvalues exactly, and use them to take a matrix apart.</p>
+</section>

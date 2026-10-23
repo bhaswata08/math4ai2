@@ -1,0 +1,14 @@
+{
+  "title": "Special matrices · Mathematics for AI 2.3",
+  "sections": [
+    "00-open.html",
+    "01-scaling.html",
+    "02-orthogonal.html",
+    "03-projection.html",
+    "04-symmetric.html",
+    "05-definite.html",
+    "06-family.html",
+    "07-eigen.html",
+    "08-recap.html"
+  ]
+}

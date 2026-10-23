@@ -1,0 +1,69 @@
+<!-- ============================================================
+     ACT 5 of 7. Positive (semi-)definite. Budget: 15 min.
+     Clips QuadraticForms and PDAngle are Manim, made for this course.
+     Goal: x^T A x > 0 for all x != 0; the angle between x and Ax
+     stays under 90 degrees; 2x2 test; X^T X is PSD.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 5 of 7</div>
+  <h1>Positive definite</h1>
+  <p class="act-sub">Symmetric matrices that curve upward in every direction.</p>
+  <div class="act-time">15 min</div>
+</section>
+
+<section class="clip-slide">
+  <h2>A matrix draws a surface</h2>
+  <video class="clip" src="assets/clips/QuadraticForms.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">The height is \(z = x^TAx\). A bowl, a trough, a saddle.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / Definition</div>
+  <h2>Three kinds of symmetric matrix</h2>
+  <table style="font-size:0.85em">
+    <thead><tr><th>Name</th><th>Condition</th><th>Surface</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td>Positive definite (PD)</td><td>\(x^TAx>0\) for all \(x\neq 0\)</td><td>bowl</td><td>\(\mathrm{diag}(2,1)\)</td></tr>
+      <tr><td>Positive semi-definite (PSD)</td><td>\(x^TAx\ge 0\) for all \(x\)</td><td>trough</td><td>\(\mathrm{diag}(1,0)\)</td></tr>
+      <tr><td>Indefinite</td><td>both signs occur</td><td>saddle</td><td>\(\mathrm{diag}(1,-1)\)</td></tr>
+    </tbody>
+  </table>
+  <p class="takeaway">For \(\mathrm{diag}(2,1)\): \(x^TAx = 2x^2 + y^2\), which is zero only at the origin.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>The angle test</h2>
+  <video class="clip" src="assets/clips/PDAngle.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(x^TAx = \|x\|\,\|Ax\|\cos\theta\). Positive definite means \(Ax\) never turns more than 90 degrees from \(x\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / Testing</div>
+  <h2>A quick test for a symmetric 2×2</h2>
+  $$A=\begin{bmatrix}a&b\\b&c\end{bmatrix}\ \text{is PD}\iff a>0\ \text{and}\ \det A=ac-b^2>0$$
+  <p>Check: \(\begin{bmatrix}2&1\\1&2\end{bmatrix}\) has \(a=2>0\) and \(\det=3>0\), so it is PD. \(\begin{bmatrix}1&0\\0&-1\end{bmatrix}\) has \(\det=-1\), so it is not.</p>
+  <p class="takeaway">The test applies to symmetric matrices only.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / Always PSD</div>
+  <h2>\(X^TX\) is never negative</h2>
+  $$x^T(X^TX)x=(Xx)^T(Xx)=\|Xx\|^2\ \ge 0$$
+  <div class="beats two">
+    <div class="beat anchor"><h4>Covariance</h4><p>Built as \(X^TX\) (centred data), so it is PSD. A variance cannot be negative.</p></div>
+    <div class="beat anchor"><h4>Hessian (Day 4)</h4><p>At a strict minimum the Hessian is positive definite: the loss curves up in every direction.</p></div>
+  </div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / Try it</div>
+  <h2>Definite or not?</h2>
+  <ol class="practice">
+    <li>\(\begin{bmatrix}3&1\\1&2\end{bmatrix}\) <span class="fragment">\(a=3>0\), \(\det=6-1=5>0\): positive definite.</span></li>
+    <li>\(\begin{bmatrix}1&2\\2&1\end{bmatrix}\)</li>
+    <li>\(\begin{bmatrix}1&1\\1&1\end{bmatrix}\)</li>
+  </ol>
+</section>

@@ -1,0 +1,63 @@
+<!-- ============================================================
+     ACT 6 of 7. Family tree. Budget: 5 min.
+     One HTML/CSS diagram, no images. Claims checked:
+       invertible ⊂ square; symmetric ⊂ square;
+       orthogonal ⊂ invertible (Q^-1 = Q^T exists);
+       diagonal ⊂ symmetric; PD ⊂ PSD ⊂ symmetric;
+       PD = PSD and invertible (so PD ⊂ invertible too);
+       orthogonal projection uu^T is symmetric, PSD, singular;
+       I is diagonal, orthogonal and PD.
+     Boxes side by side may overlap (I, reflections).
+     ============================================================ -->
+
+<style>
+  .reveal .ft { border: 2px solid var(--rule); border-radius: 12px; padding: 0.45em 0.6em; line-height: 1.25; }
+  .reveal .ft-root { font-size: 0.82em; }
+  .reveal .ft .ft { font-size: 1em; }
+  .reveal .ft .ft-t { font-weight: 600; color: var(--ink); display: block; margin-bottom: 0.3em; }
+  .reveal .ft .ft-s { color: var(--ink-dim); font-weight: 400; }
+  .reveal .ft-root { background: var(--bg-sunken); }
+  .reveal .ft-row { display: grid; grid-template-columns: 1fr 2.1fr; gap: 0.7em; align-items: stretch; }
+  .reveal .ft-inv { border-color: var(--v); }
+  .reveal .ft-sym { border-color: var(--w); }
+  .reveal .ft-inv > .ft-t { color: var(--v); }
+  .reveal .ft-sym > .ft-t { color: var(--w); }
+  .reveal .ft-orth { border-color: var(--v); background: var(--bg-raised); margin-top: 0.5em; }
+  .reveal .ft-inner { display: grid; grid-template-columns: 1fr 2fr; gap: 0.6em; align-items: stretch; }
+  .reveal .ft-diag { border-color: var(--x); background: var(--bg-raised); }
+  .reveal .ft-psd { border-color: var(--accent); background: var(--bg-raised); }
+  .reveal .ft-psd > .ft-t { color: var(--accent); }
+  .reveal .ft-psd-in { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6em; }
+  .reveal .ft-pd { border-color: var(--accent); background: var(--accent-soft); }
+  .reveal .ft-proj { border-color: var(--result); background: var(--bg-sunken); }
+  .reveal .ft-proj > .ft-t { color: var(--result); }
+  .reveal .ft-note { font-size: 0.6em; color: var(--ink-dim); margin: 0.6em 0 0 0; line-height: 1.4; }
+</style>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 6</b> / Family tree</div>
+  <h2>How the special matrices fit together</h2>
+  <div class="ft ft-root">
+    <span class="ft-t">Square matrices <span class="ft-s">\(n\times n\)</span></span>
+    <div class="ft-row">
+      <div class="ft ft-inv">
+        <span class="ft-t">Invertible <span class="ft-s">\(\det\neq0\)</span></span>
+        <div class="ft ft-orth"><span class="ft-t">Orthogonal</span>\(Q^{-1}=Q^T\), \(\det=\pm1\)</div>
+      </div>
+      <div class="ft ft-sym">
+        <span class="ft-t">Symmetric <span class="ft-s">\(A=A^T\)</span></span>
+        <div class="ft-inner">
+          <div class="ft ft-diag"><span class="ft-t">Diagonal</span>scale each axis</div>
+          <div class="ft ft-psd">
+            <span class="ft-t">Positive semi-definite <span class="ft-s">\(x^TAx\ge0\)</span></span>
+            <div class="ft-psd-in">
+              <div class="ft ft-pd"><span class="ft-t">Positive definite</span>\(x^TAx>0\): PSD and invertible</div>
+              <div class="ft ft-proj"><span class="ft-t">Projections</span>\(P=uu^T\), \(\det=0\)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="ft-note">The identity \(I\) is diagonal, orthogonal and positive definite. Boxes side by side can still overlap: reflections such as \(\mathrm{diag}(-1,1)\) are orthogonal and symmetric. Every positive definite matrix is also invertible.</p>
+</section>
