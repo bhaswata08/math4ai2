@@ -1,0 +1,11 @@
+{
+  "title": "Gradients · Mathematics for AI 3.4",
+  "sections": [
+    "00-open.html",
+    "01-stretch.html",
+    "02-gradient.html",
+    "03-directional.html",
+    "04-jacobian.html",
+    "05-recap.html"
+  ]
+}

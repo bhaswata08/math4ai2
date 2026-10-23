@@ -1,0 +1,49 @@
+<!-- ============================================================
+     ACT 4 of 5. The Jacobian. Budget: 25 min.
+     Source: built for this course (jacobian.py: NonlinearWarp,
+     ZoomLocallyLinear, JacobianColumns).
+     Goal: students build the Jacobian of F: R^n -> R^m, read it as the
+     linear map F looks like when zoomed in (Act 1's stretch, in 2D),
+     and read det J as local area scaling.
+     Block 4.1 owns the four-case table and matrix derivatives.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 4 of 5</div>
+  <h1>The Jacobian</h1>
+  <p class="act-sub">Many inputs, many outputs. Up close, the map is a matrix.</p>
+  <div class="act-time">25 min</div>
+</section>
+
+<section class="clip-slide">
+  <h2>A map that bends space</h2>
+  <video class="clip" src="assets/clips/NonlinearWarp.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(F(x, y) = \big(x + \tfrac12\sin y,\ y + \tfrac12\sin x\big)\). Grid lines curve, so no single matrix does this.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Zoom in</h2>
+  <video class="clip" src="assets/clips/ZoomLocallyLinear.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Near one point the grid stays straight and evenly spaced: a linear map, just like the stretch in Act 1.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Its columns</h2>
+  <video class="clip" src="assets/clips/JacobianColumns.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Column 1 is where a small <span class="cx">\(x\)</span>-step lands, column 2 where a small <span class="cy">\(y\)</span>-step lands.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / In general</div>
+  <h2>\(F: \mathbb{R}^n \to \mathbb{R}^m\)</h2>
+  $$J = \begin{bmatrix} \partial F_1/\partial x_1 & \cdots & \partial F_1/\partial x_n \\ \vdots & \ddots & \vdots \\ \partial F_m/\partial x_1 & \cdots & \partial F_m/\partial x_n \end{bmatrix} \in \mathbb{R}^{m \times n}$$
+  <div class="beats">
+    <div class="beat purpose"><h4>A row</h4><p>Row \(i\) is the gradient of output \(F_i\), laid flat.</p></div>
+    <div class="beat purpose"><h4>A column</h4><p>Column \(j\): how every output moves when input \(x_j\) is nudged.</p></div>
+    <div class="beat purpose"><h4>One output</h4><p>With \(m = 1\) there is one row: the Jacobian is \(\nabla f^{\top}\).</p></div>
+  </div>
+  <p class="takeaway">\(F(\mathbf{x} + d\mathbf{x}) \approx F(\mathbf{x}) + J\,d\mathbf{x}\): the same nudge rule as Act 1 of Block 3.3, with a matrix as the rate.</p>
+</section>

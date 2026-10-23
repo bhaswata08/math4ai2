@@ -1,0 +1,48 @@
+<!-- ============================================================
+     ACT 2 of 5. The gradient. Budget: 25 min.
+     Source: built for this course (gradient.py: GradientOnSurface,
+     GradientField).
+     Goal: students stack partials into the gradient and read it:
+     direction = uphill, length = steepness, perpendicular to contours.
+     Act 3 owns the directional derivative and the proof that the
+     gradient is the steepest direction.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 2 of 5</div>
+  <h1>The gradient</h1>
+  <p class="act-sub">Stack the partial derivatives into one vector. It points uphill.</p>
+  <div class="act-time">25 min</div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Definition</div>
+  <h2>One partial per input</h2>
+  $$\nabla f(\mathbf{x}) = \begin{bmatrix} \partial f/\partial x_1 \\ \partial f/\partial x_2 \\ \vdots \\ \partial f/\partial x_n \end{bmatrix}$$
+  <p class="takeaway">Input: \(n\) numbers. Output: one number. The <span class="cr">gradient</span> is a vector in the input space.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>On the surface</h2>
+  <video class="clip" src="assets/clips/GradientOnSurface.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">The <span class="cx">\(x\)</span> and <span class="cy">\(y\)</span> partials add up to <span class="cr">\(\nabla f\)</span>, which points uphill.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>On the map</h2>
+  <video class="clip" src="assets/clips/GradientField.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Each <span class="cr">arrow</span> crosses its contour at a right angle. Dense contours, long arrows.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Worked example</div>
+  <h2>\(f(x, y) = x^2 + 3xy\) at \((1, 2)\)</h2>
+  <div class="cols">
+    <div>$$\frac{\partial f}{\partial x} = 2x + 3y = 8$$</div>
+    <div>$$\frac{\partial f}{\partial y} = 3x = 3$$</div>
+  </div>
+  $$\nabla f(1, 2) = \begin{bmatrix} 8 \\ 3 \end{bmatrix}, \qquad |\nabla f| = \sqrt{73} \approx 8.54$$
+  <p class="takeaway">Walk in direction \((8, 3)\) to climb fastest; the climb rate there is about 8.54 per unit step.</p>
+</section>
