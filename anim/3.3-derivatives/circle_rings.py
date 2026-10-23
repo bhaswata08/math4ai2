@@ -102,11 +102,11 @@ class CircleArea(Scene):
         ).move_to(circle_center)
         circle.set_z_index(1)
 
-        # 1. Circle appears with rotating radius line
-        self.play(Create(radius_line), Write(r_label), run_time=1.0)
+        # 1. Frame one already shows the disc and its radius; the radius sweeps once
+        self.add(circle, radius_line, r_label)
+        self.wait(1.0)
         self.play(
             Rotate(radius_line, 2 * np.pi - 0.001, about_point=circle_center),
-            Create(circle),
             run_time=2.0,
         )
         self.wait(0.5)
@@ -150,7 +150,7 @@ class CircleArea(Scene):
 
         rings = VGroup(*ring_list)
 
-        dr_label = MathTex(r"dr = 0.5", font_size=MIN_FONT + 2, color=Y_COLOR)
+        dr_label = MathTex(r"dr = 0.5", font_size=MIN_FONT + 2, color=X_COLOR)
         dr_label.next_to(area_q, DOWN, buff=0.6)
 
         # Rings fanning in with lagged animation
@@ -169,7 +169,10 @@ class CircleArea(Scene):
             run_time=1.8,
         )
         self.bring_to_front(radius_line, r_label)
-        self.wait(1.5)
+        self.wait(0.8)
+        # end on one highlighted ring
+        self.play(ring_list[4].animate.set_fill(RESULT_COLOR, 0.85), run_time=0.8)
+        self.wait(2.0)
 
 
 class UnwrapRing(Scene):
@@ -217,7 +220,6 @@ class UnwrapRing(Scene):
             fill_color=RESULT_COLOR,
             fill_opacity=0.8,
         )
-        self.play(FadeIn(isolated_ring), run_time=0.8)
 
         # r label placed along radius line inside, deep in interior
         r_end = c_pos + r_val * (np.cos(np.pi / 4) * RIGHT + np.sin(np.pi / 4) * UP)
@@ -232,19 +234,13 @@ class UnwrapRing(Scene):
             buff=0.05,
             stroke_width=3,
             max_tip_length_to_length_ratio=0.25,
-            color=Y_COLOR,
+            color=X_COLOR,
         )
-        dr_label = MathTex("dr", font_size=MIN_FONT, color=Y_COLOR)
+        dr_label = MathTex("dr", font_size=MIN_FONT, color=X_COLOR)
         dr_label.next_to(dr_arrow.get_start(), RIGHT, buff=0.1)
 
-        self.play(
-            Create(r_line),
-            Write(r_label),
-            Create(dr_arrow),
-            Write(dr_label),
-            run_time=1.2,
-        )
-        self.wait(0.8)
+        self.add(isolated_ring, r_line, r_label, dr_arrow, dr_label)
+        self.wait(2.0)
 
         # Clear ring labels before unrolling
         self.play(
@@ -286,7 +282,7 @@ class UnwrapRing(Scene):
         top_label.next_to(top_brace, UP, buff=0.08)
 
         side_brace = Brace(rect_approx, LEFT, buff=0.08)
-        side_label = MathTex("dr", font_size=MIN_FONT, color=Y_COLOR)
+        side_label = MathTex("dr", font_size=MIN_FONT, color=X_COLOR)
         side_label.next_to(side_brace, LEFT, buff=0.08)
 
         self.play(
@@ -303,7 +299,7 @@ class UnwrapRing(Scene):
         formula[0].set_color(RESULT_COLOR)
         formula[1].set_color(INK)
         formula[2].set_color(INK)
-        formula[4].set_color(Y_COLOR)
+        formula[4].set_color(X_COLOR)
         formula.move_to(DOWN * 2.15)
 
         self.play(Write(formula), run_time=1.2)
@@ -313,117 +309,78 @@ class UnwrapRing(Scene):
 class ShrinkDr(Scene):
     def construct(self):
         r_val = 1.0
-        W = 2 * np.pi * r_val  # approx 6.283
-        strip_center = UP * 1.05
+        W = 2 * np.pi * r_val
+        strip_center = UP * 1.1
+        tracker = ValueTracker(0.4)
 
-        # Continuous ValueTracker for dr
-        tracker = ValueTracker(0.38)
-
-        # Continuously updated rectangle
         rect = always_redraw(
             lambda: Rectangle(
-                width=W,
-                height=tracker.get_value(),
-                stroke_color=RESULT_COLOR,
-                stroke_width=2,
-                fill_color=RESULT_COLOR,
-                fill_opacity=0.6,
+                width=W, height=tracker.get_value(),
+                stroke_color=RESULT_COLOR, stroke_width=2,
+                fill_color=RESULT_COLOR, fill_opacity=0.6,
             ).move_to(strip_center)
         )
-
-        # Continuously updated mismatch ears (error term: INK_FAINT fill)
         ears = always_redraw(
             lambda: get_mismatch_ears(
-                r=r_val,
-                dr=tracker.get_value(),
-                center=strip_center,
-                fill_color=INK_FAINT,
-                fill_opacity=0.45,
+                r=r_val, dr=tracker.get_value(), center=strip_center,
+                fill_color=Y_COLOR, fill_opacity=0.85,
             )
         )
-
-        # Fixed top width brace = 2*pi*r
         top_br = always_redraw(lambda: Brace(rect, UP, buff=0.10))
         top_lbl = always_redraw(
             lambda: MathTex(r"2\pi r", font_size=MIN_FONT, color=INK).next_to(top_br, UP, buff=0.08)
         )
 
-        # Non-overlapping readouts:
-        # Line 1: dr readout at y = -0.15
-        dr_readout = always_redraw(
-            lambda: MathTex(
-                f"dr = {tracker.get_value():.2f}",
-                font_size=MIN_FONT,
-                color=Y_COLOR,
-            ).move_to(DOWN * 0.15)
-        )
+        def rows(dr, prev_err=None):
+            err = np.pi * dr ** 2
+            strip = 2 * np.pi * r_val * dr
+            g = VGroup(
+                MathTex(rf"dr = {dr:.2f}", font_size=MIN_FONT, color=X_COLOR),
+                MathTex(rf"\text{{error}} = \pi\,dr^2 = {err:.3f}", font_size=MIN_FONT, color=Y_COLOR),
+                MathTex(rf"\text{{strip}} = 2\pi r\,dr = {strip:.3f}", font_size=MIN_FONT, color=RESULT_COLOR),
+            ).arrange(DOWN, aligned_edge=LEFT, buff=0.28)
+            g.move_to(np.array([-1.4, -0.65, 0.0]))
+            g.to_edge(LEFT, buff=0.5)
+            return g
 
-        # Line 2: relative error readout at y = -1.15
-        err_label = MathTex(r"\frac{\text{error}}{\text{strip area}} \approx", font_size=MIN_FONT, color=INK)
-        err_label.move_to(LEFT * 0.55 + DOWN * 1.15)
-
-        err_num = DecimalNumber(
-            tracker.get_value() / (2 * r_val),
-            num_decimal_places=2,
-            font_size=MIN_FONT,
-            color=RESULT_COLOR,
-        )
-        err_num.add_updater(lambda d: d.set_value(tracker.get_value() / (2 * r_val)))
-        err_num.add_updater(lambda d: d.next_to(err_label, RIGHT, buff=0.22))
-
-        # 1. Initial display at dr = 0.38
-        self.play(
-            FadeIn(rect),
-            FadeIn(ears),
-            Create(top_br),
-            Write(top_lbl),
-            FadeIn(dr_readout),
-            FadeIn(err_label),
-            FadeIn(err_num),
-            run_time=1.5,
-        )
-
-        # Momentary highlight flash of the mismatch ears
-        flash_ears = get_mismatch_ears(
-            r=r_val,
-            dr=0.38,
-            center=strip_center,
-            fill_color=HIGHLIGHT,
-            fill_opacity=0.8,
-        )
-        self.play(FadeIn(flash_ears), run_time=0.4)
-        self.play(FadeOut(flash_ears), run_time=0.4)
-        self.wait(1.0)
-
-        # 2. ValueTracker continuously shrinks dr from 0.38 to 0.04
-        self.play(
-            tracker.animate.set_value(0.04),
-            run_time=5.0,
-            rate_func=linear,
-        )
+        self.add(rect, ears, top_br, top_lbl)
+        cur = rows(0.4)
+        self.add(cur)
+        legend = MathTex(r"\text{error} = \text{the two rose corners}", font_size=MIN_FONT, color=Y_COLOR)
+        legend.move_to(DOWN * 2.45)
+        self.wait(2.0)
+        self.play(FadeIn(legend), run_time=0.8)
         self.wait(1.5)
+        self.play(FadeOut(legend), run_time=0.4)
 
-        # 3. Fade out strip and readout for final derivative formula
-        self.play(
-            FadeOut(rect),
-            FadeOut(ears),
-            FadeOut(top_br),
-            FadeOut(top_lbl),
-            FadeOut(dr_readout),
-            FadeOut(err_label),
-            FadeOut(err_num),
-            run_time=1.0,
-        )
+        prev = 0.4
+        for dr in (0.2, 0.1, 0.05):
+            self.play(FadeOut(cur), run_time=0.3)
+            self.play(tracker.animate.set_value(dr), run_time=1.2)
+            cur = rows(dr)
+            ratio = (np.pi * prev ** 2) / (np.pi * dr ** 2)
+            note = MathTex(rf"dr \div 2 \Rightarrow \text{{error}} \div {ratio:.0f}", font_size=MIN_FONT, color=INK)
+            note.move_to(np.array([2.6, -2.45, 0.0])) if False else note.move_to(DOWN * 2.45)
+            self.play(FadeIn(cur), FadeIn(note), run_time=0.6)
+            self.wait(2.0)
+            self.play(FadeOut(note), run_time=0.3)
+            prev = dr
 
-        # Big, centered derivative formula
+        # the error per unit of dr goes to zero
+        per = MathTex(rf"\text{{error}}/dr = \pi\,dr = {np.pi * prev:.2f} \to 0", font_size=MIN_FONT, color=Y_COLOR)
+        per.move_to(DOWN * 2.35)
+        self.play(FadeIn(per), run_time=0.8)
+        self.wait(2.2)
+
+        self.play(*[FadeOut(m) for m in (rect, ears, top_br, top_lbl, cur, per)], run_time=0.8)
         deriv_formula = MathTex(r"\frac{dA}{dr}", r"=", r"2\pi r", font_size=MIN_FONT + 14)
         deriv_formula[0].set_color(RESULT_COLOR)
         deriv_formula[1].set_color(INK)
         deriv_formula[2].set_color(RESULT_COLOR)
-        deriv_formula.move_to(ORIGIN + UP * 0.45)
-
+        deriv_formula.move_to(UP * 0.3)
         caption = MathTex(r"\text{circumference} = \text{derivative of area}", font_size=MIN_FONT, color=INK_DIM)
         caption.next_to(deriv_formula, DOWN, buff=0.55)
-
-        self.play(Write(deriv_formula), FadeIn(caption), run_time=1.5)
+        self.play(Write(deriv_formula), run_time=1.2)
+        self.wait(0.6)
+        self.play(FadeIn(caption), run_time=0.8)
         self.wait(2.5)

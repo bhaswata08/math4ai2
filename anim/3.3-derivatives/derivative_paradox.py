@@ -291,13 +291,13 @@ class TwoTimes(Scene):
         formula.set_color_by_tex(r"s", V_COLOR)
 
         sub_lbl = MathTex(
-            r"\text{average speed over } dt",
+            rf"\text{{average}} = {s2 - s1:.1f}/{t2 - t1:g} = {(s2 - s1) / (t2 - t1):.1f}\ \text{{m/s}}",
             font_size=MIN_FONT,
             color=RESULT_COLOR,
         )
 
         formula_group = VGroup(formula, sub_lbl).arrange(DOWN, buff=0.20)
-        formula_group.move_to(LEFT * 0.2 + UP * 1.90)
+        formula_group.move_to(RIGHT * 0.2 + UP * 1.90)
         formula_group.add_background_rectangle(color=BG, opacity=0.85, buff=0.10)
 
         self.play(FadeIn(formula_group), run_time=1.2)
@@ -450,7 +450,7 @@ class ShrinkDt(Scene):
             run_time=6.0,
             rate_func=linear,
         )
-        self.wait(1.0)
+        self.wait(2.0)
 
         # 3. Flash highlight on the settled ratio
         flash_box = SurroundingRectangle(row_ratio, color=HIGHLIGHT, buff=0.08, stroke_width=2.5)
@@ -459,7 +459,7 @@ class ShrinkDt(Scene):
 
         # 4. Reveal settled conclusion
         self.play(FadeIn(settle_note), run_time=1.0)
-        self.wait(2.0)
+        self.wait(3.0)
 
 
 class SecantToTangent(Scene):

@@ -45,10 +45,24 @@
   <p class="caption">The derivative is the slope of the tangent line, and it changes with \(t\).</p>
 </section>
 
+<section class="clip-slide">
+  <h2>Speed is a function of time</h2>
+  <video class="clip" src="assets/clips/SpeedGraph.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">The slope of \(s(t)\), tracked moment by moment, draws the <span class="cr">speed \(v(t)\)</span>.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Zoom in on a curve</h2>
+  <video class="clip" src="assets/clips/ZoomIn.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Zoom in far enough and the curve is its tangent line: <span class="cr">\(df \approx f'(x)\,dx\)</span>, with an error of order \(dx^2\).</p>
+</section>
+
 <section class="act-body">
   <div class="act-tag"><b>Act 2</b> / Definition</div>
   <h2>The derivative</h2>
-  $$\frac{df}{dx}(x) \;=\; \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}$$
+  <div class="eq-big">$$\frac{df}{dx}(x) \;=\; \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}$$</div>
   <p class="takeaway">Read it as: <span class="cr">output change</span> per unit of <span class="cx">input change</span>, for very small changes.</p>
 </section>
 
@@ -57,6 +71,13 @@
   <video class="clip" src="assets/clips/TCubed.mp4"></video>
   <span class="fragment clip-play"></span>
   <p class="caption">Every term with a leftover <span class="cx">\(dt\)</span> vanishes. What survives is <span class="cr">\(3t^2\)</span>.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>When the limit fails: \(|x|\) at 0</h2>
+  <video class="clip" src="assets/clips/NoTangent.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">The slope from the right is \(+1\), from the left \(-1\). No single limit, so no tangent.</p>
 </section>
 
 <section class="act-body">

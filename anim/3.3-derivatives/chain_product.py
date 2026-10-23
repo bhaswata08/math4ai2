@@ -346,213 +346,81 @@ class ProductAsArea(Scene):
 
 
 class ChainRuleLines(Scene):
+    """h = x^2, g = sin h at x = 1, with real nudges and real numbers."""
+
     def construct(self):
-        # 1. Three horizontal number lines labelled x, h = x^2, g(h) = sin(h)
-        # Centered at x = -0.35, length 4.4 units; right arrows and labels comfortably within frame (x < 4.1)
-        line_x_center = -0.35
-        line_length = 4.4
+        x0 = 1.0
+        h = lambda x: x * x
+        g = lambda x: np.sin(x * x)
+        fac_h = 2 * x0                    # dh/dx
+        fac_g = np.cos(h(x0))             # dg/dh
 
-        line1 = NumberLine(
-            x_range=[0, 2.0, 0.5],
-            length=line_length,
-            color=INK_DIM,
-            stroke_width=2.5,
-            include_numbers=False,
-            include_ticks=True,
-        ).move_to(RIGHT * line_x_center + UP * 1.85)
+        ys = [1.85, 0.4, -1.05]
+        x_start = -3.0
+        base = 1.5                        # screen length of dx (x per-unit scale changes per pass)
 
-        line2 = NumberLine(
-            x_range=[0, 3.0, 0.5],
-            length=line_length,
-            color=INK_DIM,
-            stroke_width=2.5,
-            include_numbers=False,
-            include_ticks=True,
-        ).move_to(RIGHT * line_x_center + UP * 0.60)
+        dxt = ValueTracker(0.1)
 
-        # Widen line 3 range to [-1.0, 1.5] so d sin dot and interval never run off the end
-        line3 = NumberLine(
-            x_range=[-1.0, 1.5, 0.5],
-            length=line_length,
-            color=INK_DIM,
-            stroke_width=2.5,
-            include_numbers=False,
-            include_ticks=True,
-        ).move_to(RIGHT * line_x_center + DOWN * 0.65)
+        def k():
+            return base / dxt.get_value()
 
-        # Labels on the left: level with their lines, right-aligned in one single column
-        col_x = -2.85
-        lbl_line1 = MathTex(r"x", color=X_COLOR, font_size=MIN_FONT).move_to(
-            np.array([col_x, line1.get_y(), 0]), aligned_edge=RIGHT
-        )
-        lbl_line2 = MathTex(r"h = x^2", color=W_COLOR, font_size=MIN_FONT).move_to(
-            np.array([col_x, line2.get_y(), 0]), aligned_edge=RIGHT
-        )
-        lbl_line3 = MathTex(r"g = \sin(h)", color=RESULT_COLOR, font_size=MIN_FONT).move_to(
-            np.array([col_x, line3.get_y(), 0]), aligned_edge=RIGHT
-        )
+        def seg(i, d_fn, color):
+            def build():
+                dx = dxt.get_value()
+                length = k() * d_fn(dx)
+                return Line(np.array([x_start, ys[i], 0]), np.array([x_start + length, ys[i], 0]),
+                            color=color, stroke_width=8)
+            return always_redraw(build)
 
-        for lbl in [lbl_line1, lbl_line2, lbl_line3]:
-            lbl.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
+        lines = VGroup(*[Line(np.array([-3.0, y, 0]), np.array([0.2, y, 0]), color=INK_FAINT, stroke_width=2.5)
+                         for y in ys])
+        dots = VGroup(*[Dot(np.array([x_start, y, 0]), color=INK, radius=0.08).set_z_index(3) for y in ys])
+        s1 = seg(0, lambda d: d, X_COLOR)
+        s2 = seg(1, lambda d: h(x0 + d) - h(x0), W_COLOR)
+        s3 = seg(2, lambda d: g(x0 + d) - g(x0), RESULT_COLOR)
 
-        # ValueTracker for x: sweep keeps dot and interval well inside all lines
-        x_init = 0.75
-        dx_val = 0.10
-        tracker = ValueTracker(x_init)
+        def lab(tex, color, y):
+            m = MathTex(tex, font_size=MIN_FONT, color=color)
+            m.move_to(np.array([-3.0, y + 0.45, 0]), aligned_edge=LEFT)
+            return m
+        l1 = lab(r"x = 1", X_COLOR, ys[0])
+        l2 = lab(rf"h = x^2 = {h(x0):g}", W_COLOR, ys[1])
+        l3 = lab(rf"g = \sin h = {g(x0):.3f}", V_COLOR, ys[2])
 
-        # Dynamic dots on the three lines
-        dot1 = always_redraw(
-            lambda: Dot(line1.n2p(tracker.get_value()), color=X_COLOR, radius=0.08)
-        )
-        dot2 = always_redraw(
-            lambda: Dot(line2.n2p(tracker.get_value() ** 2), color=W_COLOR, radius=0.08)
-        )
-        dot3 = always_redraw(
-            lambda: Dot(line3.n2p(np.sin(tracker.get_value() ** 2)), color=RESULT_COLOR, radius=0.08)
-        )
+        def readout(i, tex_fn, color):
+            def build():
+                m = MathTex(tex_fn(dxt.get_value()), font_size=MIN_FONT, color=color)
+                m.move_to(np.array([1.6, ys[i], 0]), aligned_edge=LEFT)
+                return m
+            return always_redraw(build)
+        r1 = readout(0, lambda d: rf"dx = {d:g}", X_COLOR)
+        r2 = readout(1, lambda d: rf"dh = {h(x0 + d) - h(x0):.4g}", W_COLOR)
+        r3 = readout(2, lambda d: rf"dg = {g(x0 + d) - g(x0):.4g}", RESULT_COLOR)
 
-        # Dynamic intervals on each line
-        int1 = always_redraw(
-            lambda: Line(
-                line1.n2p(tracker.get_value()),
-                line1.n2p(tracker.get_value() + dx_val),
-                color=X_COLOR,
-                stroke_width=6,
-            )
-        )
-        int2 = always_redraw(
-            lambda: Line(
-                line2.n2p(tracker.get_value() ** 2),
-                line2.n2p((tracker.get_value() + dx_val) ** 2),
-                color=W_COLOR,
-                stroke_width=6,
-            )
-        )
-        int3 = always_redraw(
-            lambda: Line(
-                line3.n2p(np.sin(tracker.get_value() ** 2)),
-                line3.n2p(np.sin((tracker.get_value() + dx_val) ** 2)),
-                color=RESULT_COLOR,
-                stroke_width=6,
-            )
-        )
+        a1 = MathTex(rf"\downarrow\ \times 2x = {fac_h:g}", font_size=MIN_FONT, color=W_COLOR).move_to(np.array([2.9, (ys[0] + ys[1]) / 2, 0]))
+        a2 = MathTex(rf"\downarrow\ \times \cos h = {fac_g:.3f}", font_size=MIN_FONT, color=RESULT_COLOR).move_to(np.array([2.9, (ys[1] + ys[2]) / 2, 0]))
 
-        # Dynamic interval tags directly above the moving intervals
-        lbl_int1 = always_redraw(
-            lambda: MathTex(r"dx", color=X_COLOR, font_size=MIN_FONT)
-            .next_to(line1.n2p(tracker.get_value() + dx_val / 2), UP, buff=0.14)
-            .add_background_rectangle(color=BG, opacity=0.85, buff=0.06)
-        )
-        lbl_int2 = always_redraw(
-            lambda: MathTex(r"d(x^2)", color=W_COLOR, font_size=MIN_FONT)
-            .next_to(line2.n2p(tracker.get_value() ** 2 + dx_val), UP, buff=0.14)
-            .add_background_rectangle(color=BG, opacity=0.85, buff=0.06)
-        )
-        lbl_int3 = always_redraw(
-            lambda: MathTex(r"d\sin", color=RESULT_COLOR, font_size=MIN_FONT)
-            .next_to(line3.n2p(np.sin(tracker.get_value() ** 2)), UP, buff=0.14)
-            .add_background_rectangle(color=BG, opacity=0.85, buff=0.06)
-        )
+        ratio = always_redraw(lambda: MathTex(
+            rf"dg/dx = {(g(x0 + dxt.get_value()) - g(x0)) / dxt.get_value():.4f}",
+            font_size=MIN_FONT, color=RESULT_COLOR).move_to(np.array([-4.6, -2.3, 0]), aligned_edge=LEFT))
+        zoom = always_redraw(lambda: MathTex(
+            rf"\text{{zoom}}\ \times {0.1 / dxt.get_value():.0f}", font_size=MIN_FONT, color=INK_DIM
+        ).move_to(np.array([3.3, -2.3, 0])))
 
-        # Curved mapping arrows on the right side connecting the lines (positioned safely, x < 4.1)
-        right_x = line1.get_right()[0] + 0.30
-        arr_1_to_2 = CurvedArrow(
-            np.array([right_x, 1.75, 0]),
-            np.array([right_x, 0.70, 0]),
-            angle=-np.pi / 2,
-            color=W_COLOR,
-            stroke_width=2.5,
-        )
-        lbl_arr1 = MathTex(r"\times 2x", color=W_COLOR, font_size=MIN_FONT).next_to(
-            arr_1_to_2, RIGHT, buff=0.10
-        )
-
-        arr_2_to_3 = CurvedArrow(
-            np.array([right_x, 0.50, 0]),
-            np.array([right_x, -0.55, 0]),
-            angle=-np.pi / 2,
-            color=RESULT_COLOR,
-            stroke_width=2.5,
-        )
-        lbl_arr2 = MathTex(r"\times \cos(x^2)", color=RESULT_COLOR, font_size=MIN_FONT).next_to(
-            arr_2_to_3, RIGHT, buff=0.10
-        )
-
-        # Readout text for line 2 and line 3 relationships
-        readout2 = always_redraw(
-            lambda: MathTex(
-                r"d(x^2) = 2x\,dx",
-                color=W_COLOR,
-                font_size=MIN_FONT,
-            ).move_to(LEFT * 0.80 + UP * 0.12)
-            .add_background_rectangle(color=BG, opacity=0.85, buff=0.06)
-        )
-
-        readout3 = always_redraw(
-            lambda: MathTex(
-                r"d\sin = \cos(x^2)\,d(x^2)",
-                color=RESULT_COLOR,
-                font_size=MIN_FONT,
-            ).move_to(LEFT * 0.80 + DOWN * 1.15)
-            .add_background_rectangle(color=BG, opacity=0.85, buff=0.06)
-        )
-
-        # Frame 0 setup
-        self.add(
-            line1,
-            line2,
-            line3,
-            lbl_line1,
-            lbl_line2,
-            lbl_line3,
-            dot1,
-            dot2,
-            dot3,
-            int1,
-            int2,
-            int3,
-            lbl_int1,
-            lbl_int2,
-            lbl_int3,
-            arr_1_to_2,
-            lbl_arr1,
-            arr_2_to_3,
-            lbl_arr2,
-            readout2,
-            readout3,
-        )
-        self.wait(1.0)
-
-        # 2. Animate x moving with the intervals updating (staying well inside lines)
-        self.play(
-            tracker.animate.set_value(1.15),
-            run_time=3.5,
-            rate_func=linear,
-        )
-        self.wait(0.8)
-
-        self.play(
-            tracker.animate.set_value(1.00),
-            run_time=2.5,
-            rate_func=smooth,
-        )
-        self.wait(1.0)
-
-        # 3. End on the final derivative formula at the bottom (clear of readout3 with buff >= 0.3)
-        final_deriv = MathTex(
-            r"\frac{d}{dx}\sin(x^2)", r"=", r"\cos(x^2)", r"\cdot", r"2x", font_size=MIN_FONT + 2
-        )
-        final_deriv[0].set_color(RESULT_COLOR)
-        final_deriv[2].set_color(RESULT_COLOR)
-        final_deriv[4].set_color(W_COLOR)
-        final_deriv.move_to(DOWN * 2.10)
-        final_deriv.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
-
-        final_box = SurroundingRectangle(final_deriv, color=RESULT_COLOR, buff=0.12, stroke_width=2)
-
-        self.play(Write(final_deriv), run_time=1.0)
-        self.play(FadeIn(final_box), run_time=0.6)
+        self.add(lines, dots, s1, s2, s3, l1, l2, l3, r1, r2, r3, ratio, zoom)
         self.wait(2.0)
+        self.play(FadeIn(a1), run_time=0.8)
+        self.wait(1.5)
+        self.play(FadeIn(a2), run_time=0.8)
+        self.wait(2.0)
+        for v in (0.01, 0.001):
+            self.play(dxt.animate.set_value(v), run_time=2.0)
+            self.wait(1.8)
+        final = MathTex(rf"2 \cdot {fac_g:.3f} = {fac_h * fac_g:.4f}", font_size=MIN_FONT, color=RESULT_COLOR)
+        final.move_to(np.array([1.9, -2.3, 0]))
+        self.play(FadeOut(zoom), run_time=0.4)
+        self.play(FadeIn(final), run_time=0.8)
+        self.wait(2.5)
 
 
 class ChainRuleGeneral(Scene):

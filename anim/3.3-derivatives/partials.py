@@ -4,14 +4,14 @@ from shared.anim.house import *
 
 
 def get_base_surface_and_axes():
-    """Builds the 3D axes, axis labels, and checkerboard surface z = f(x, y) = x^2 y - y^2/2."""
+    """Builds the 3D axes, axis labels, and checkerboard surface z = f(x, y) = x^2 y + sin y."""
     axes = ThreeDAxes(
         x_range=[-0.5, 2.0, 1.0],
         y_range=[-0.4, 1.6, 1.0],
-        z_range=[-0.8, 2.5, 1.0],
-        x_length=2.8,
-        y_length=2.3,
-        z_length=2.5,
+        z_range=[-1.0, 3.5, 1.0],
+        x_length=3.0,
+        y_length=2.5,
+        z_length=3.0,
         axis_config={
             "stroke_color": INK_DIM,
             "stroke_width": 1.5,
@@ -21,7 +21,7 @@ def get_base_surface_and_axes():
     )
     # Shift axes in 3D to ensure the surface stays strictly clear of the formula cards
     v_shift = np.array([0.85 * np.cos(-55 * DEGREES), -0.85 * np.sin(-55 * DEGREES), 0.0])
-    axes.shift(v_shift)
+    axes.shift(v_shift + 0.2 * np.array([np.cos(-55 * DEGREES), -np.sin(-55 * DEGREES), 0.0]) * 2)
     axes.x_axis.set_color(X_COLOR)
     axes.y_axis.set_color(Y_COLOR)
     axes.z_axis.set_color(INK_DIM)
@@ -37,13 +37,13 @@ def get_base_surface_and_axes():
     label_f.move_to(axes.c2p(0, 0, 2.7))
 
     def f(x, y):
-        return (x ** 2) * y - 0.5 * (y ** 2)
+        return (x ** 2) * y + np.sin(y)
 
-    # Surface z = f(x, y) over domain x in [-1.15, 1.45], y in [-0.6, 1.35]
+    # Surface z = f(x, y) over domain x in [-1.0, 1.5], y in [-0.3, 1.1]
     surface = Surface(
         lambda u, v: axes.c2p(u, v, f(u, v)),
-        u_range=[-1.15, 1.45],
-        v_range=[-0.6, 1.35],
+        u_range=[-1.0, 1.5],
+        v_range=[-0.3, 1.1],
         resolution=(16, 16),
         stroke_color=V_COLOR,
         stroke_width=0.4,
@@ -74,10 +74,10 @@ class PartialX(ThreeDScene):
 
         # Slicing plane y = y0 in X_COLOR tint
         plane_corners = [
-            axes.c2p(-1.15, y0, -0.4),
-            axes.c2p(1.45, y0, -0.4),
-            axes.c2p(1.45, y0, 1.1),
-            axes.c2p(-1.15, y0, 1.1),
+            axes.c2p(-1.0, y0, -0.9),
+            axes.c2p(1.5, y0, -0.9),
+            axes.c2p(1.5, y0, 2.6),
+            axes.c2p(-1.0, y0, 2.6),
         ]
         slice_plane = Polygon(
             *plane_corners,
@@ -91,7 +91,7 @@ class PartialX(ThreeDScene):
         # Intersection curve z = f(x, y0) along plane
         curve_x = axes.plot_parametric_curve(
             lambda t: np.array([t, y0, f(t, y0)]),
-            t_range=[-1.15, 1.45],
+            t_range=[-1.0, 1.5],
             color=X_COLOR,
             stroke_width=6,
         )
@@ -111,7 +111,7 @@ class PartialX(ThreeDScene):
 
         # --- Fixed-in-frame Cards ---
         # Card 1: Function and evaluation point
-        c1_a = MathTex(r"f(x, y) = x^2 y - y^2/2", font_size=MIN_FONT, color=V_COLOR)
+        c1_a = MathTex(r"f(x, y) = x^2 y + \sin y", font_size=MIN_FONT, color=V_COLOR)
         c1_b = MathTex(r"\text{at } (1, 0.5)", font_size=MIN_FONT, color=INK_DIM)
         c1 = VGroup(c1_a, c1_b).arrange(DOWN, aligned_edge=LEFT, buff=0.04)
         c1.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
@@ -123,7 +123,7 @@ class PartialX(ThreeDScene):
         c2.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
 
         # Card 3: Formula and computed value
-        c3 = MathTex(r"\frac{\partial f}{\partial x}", r"=", r"2xy", r"=", r"1", font_size=MIN_FONT)
+        c3 = MathTex(r"\frac{\partial f}{\partial x}", r"=", r"2xy", r"=", f"{df_dx:.1f}", font_size=MIN_FONT)
         c3[0].set_color(X_COLOR)
         c3[1:4].set_color(INK)
         c3[4].set_color(RESULT_COLOR)
@@ -184,10 +184,10 @@ class PartialY(ThreeDScene):
 
         # Slicing plane x = x0 in Y_COLOR tint
         plane_corners = [
-            axes.c2p(x0, -0.6, -0.85),
-            axes.c2p(x0, 1.35, -0.85),
-            axes.c2p(x0, 1.35, 0.7),
-            axes.c2p(x0, -0.6, 0.7),
+            axes.c2p(x0, -0.3, -0.95),
+            axes.c2p(x0, 1.1, -0.95),
+            axes.c2p(x0, 1.1, 2.3),
+            axes.c2p(x0, -0.3, 2.3),
         ]
         slice_plane = Polygon(
             *plane_corners,
@@ -201,13 +201,13 @@ class PartialY(ThreeDScene):
         # Intersection curve z = f(x0, y) along plane
         curve_y = axes.plot_parametric_curve(
             lambda t: np.array([x0, t, f(x0, t)]),
-            t_range=[-0.6, 1.35],
+            t_range=[-0.3, 1.1],
             color=Y_COLOR,
             stroke_width=6,
         )
 
-        # Tangent line along y at (x0, y0, z0): df/dy = x^2 - y = 0.5
-        df_dy = (x0 ** 2) - y0
+        # Tangent line along y: df/dy = x^2 + cos y
+        df_dy = (x0 ** 2) + np.cos(y0)
         L = 0.55
         tangent_y = Line(
             axes.c2p(x0, y0 - L, z0 - L * df_dy),
@@ -230,7 +230,7 @@ class PartialY(ThreeDScene):
 
         # --- Fixed-in-frame Cards ---
         # Card 1: Function and evaluation point
-        c1_a = MathTex(r"f(x, y) = x^2 y - y^2/2", font_size=MIN_FONT, color=V_COLOR)
+        c1_a = MathTex(r"f(x, y) = x^2 y + \sin y", font_size=MIN_FONT, color=V_COLOR)
         c1_b = MathTex(r"\text{at } (1, 0.5)", font_size=MIN_FONT, color=INK_DIM)
         c1 = VGroup(c1_a, c1_b).arrange(DOWN, aligned_edge=LEFT, buff=0.04)
         c1.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
@@ -242,7 +242,7 @@ class PartialY(ThreeDScene):
         c2.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
 
         # Card 3: Formula and computed value
-        c3 = MathTex(r"\frac{\partial f}{\partial y}", r"=", r"x^2 - y", r"=", r"0.5", font_size=MIN_FONT)
+        c3 = MathTex(r"\frac{\partial f}{\partial y}", r"=", r"x^2 + \cos y", r"=", f"{df_dy:.2f}", font_size=MIN_FONT)
         c3[0].set_color(Y_COLOR)
         c3[1:4].set_color(INK)
         c3[4].set_color(RESULT_COLOR)

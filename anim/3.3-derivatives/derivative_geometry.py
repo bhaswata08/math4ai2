@@ -347,109 +347,6 @@ class NudgeCube(ThreeDScene):
         self.wait(2.2)
 
 
-class PowerRule(Scene):
-    def construct(self):
-        title = MathTex(r"\text{Power rule pattern}", font_size=MIN_FONT + 4, color=RESULT_COLOR)
-        title.to_edge(UP, buff=0.45)
-
-        # Rows showing pattern
-        r1 = MathTex(r"x^2", r"\;\longrightarrow\;", r"2x", font_size=MIN_FONT + 2)
-        r1[0].set_color(V_COLOR)
-        r1[1].set_color(INK_DIM)
-        r1[2].set_color(RESULT_COLOR)
-
-        r2 = MathTex(r"x^3", r"\;\longrightarrow\;", r"3x^2", font_size=MIN_FONT + 2)
-        r2[0].set_color(V_COLOR)
-        r2[1].set_color(INK_DIM)
-        r2[2].set_color(RESULT_COLOR)
-
-        r3 = MathTex(r"x^4", r"\;\longrightarrow\;", r"4x^3", font_size=MIN_FONT + 2)
-        r3[0].set_color(V_COLOR)
-        r3[1].set_color(INK_DIM)
-        r3[2].set_color(RESULT_COLOR)
-
-        rn = MathTex(r"x^n", r"\;\longrightarrow\;", r"n x^{n-1}", font_size=MIN_FONT + 6)
-        rn[0].set_color(V_COLOR)
-        rn[1].set_color(INK_DIM)
-        rn[2].set_color(RESULT_COLOR)
-
-        pattern_group = VGroup(r1, r2, r3, rn).arrange(DOWN, buff=0.42).move_to(DOWN * 0.25)
-
-        # Frame 0: title and r1 visible
-        self.add(title, r1)
-        self.wait(0.8)
-
-        self.play(FadeIn(r2), run_time=0.8)
-        self.play(FadeIn(r3), run_time=0.8)
-        self.play(FadeIn(rn), run_time=1.0)
-        self.wait(1.5)
-
-        # Transition to algebra
-        self.play(
-            FadeOut(pattern_group),
-            FadeOut(title),
-            run_time=0.8,
-        )
-
-        alg_title = MathTex(r"\text{Nudge } (x+dx)^n", font_size=MIN_FONT + 2, color=INK)
-        alg_title.to_edge(UP, buff=0.45)
-        self.play(FadeIn(alg_title), run_time=0.6)
-
-        # Step 1: product of n factors
-        step1 = MathTex(
-            r"(x+dx)^n", r"=", r"(x+dx)(x+dx)\cdots(x+dx)",
-            font_size=MIN_FONT,
-        ).move_to(UP * 0.95)
-        step1.set_color_by_tex(r"(x+dx)^n", INK)
-
-        n_tag = MathTex(r"n\text{ factors multiplied}", font_size=MIN_FONT, color=INK_DIM)
-        n_tag.next_to(step1, DOWN, buff=0.25)
-
-        self.play(Write(step1), FadeIn(n_tag), run_time=1.5)
-        self.wait(1.0)
-
-        # Expansion lines with higher-order dx^2 terms dimmed
-        step2_a = MathTex(r"(x+dx)^n = x^n + n x^{n-1} dx", font_size=MIN_FONT)
-        step2_a.set_color_by_tex(r"(x+dx)^n", INK)
-        step2_a.set_color_by_tex(r"x^n", V_COLOR)
-        step2_a.set_color_by_tex(r"n x^{n-1} dx", RESULT_COLOR)
-
-        step2_b = MathTex(r"+ (\text{terms with } dx^2 \text{ or more})", font_size=MIN_FONT, color=INK_FAINT)
-        step2_group = VGroup(step2_a, step2_b).arrange(DOWN, buff=0.18)
-
-        step3 = MathTex(
-            r"\frac{(x+dx)^n - x^n}{dx} = n x^{n-1} + (\text{terms with } dx)",
-            font_size=MIN_FONT,
-        )
-        step3.set_color_by_tex(r"n x^{n-1}", RESULT_COLOR)
-        step3.set_color_by_tex(r"(\text{terms with } dx)", INK_FAINT)
-
-        final_deriv = MathTex(
-            r"\frac{d(x^n)}{dx} = n x^{n-1}",
-            font_size=MIN_FONT + 8,
-            color=RESULT_COLOR,
-        )
-
-        col = VGroup(step2_group, step3, final_deriv).arrange(DOWN, buff=0.38)
-        col.move_to(DOWN * 0.25)
-        if col.get_bottom()[1] < -2.4:
-            col.scale_to_fit_height(3.3).move_to(DOWN * 0.25)
-
-        self.play(
-            FadeOut(n_tag),
-            FadeOut(step1),
-            FadeIn(step2_group),
-            run_time=1.4,
-        )
-        self.wait(1.2)
-
-        self.play(Write(step3), run_time=1.5)
-        self.wait(1.2)
-
-        self.play(Write(final_deriv), run_time=1.4)
-        self.wait(2.5)
-
-
 class OneOverX(Scene):
     def construct(self):
         # Scale: u = 1.9
@@ -621,134 +518,105 @@ class OneOverX(Scene):
 
 class SineSlope(Scene):
     def construct(self):
-        # Scale: Unit circle on left
-        R = 1.85
-        C = np.array([-2.4, -0.25, 0.0])
-
-        h_axis = Line(C + 2.3 * LEFT, C + 2.3 * RIGHT, stroke_color=GRID, stroke_width=2)
-        v_axis = Line(C + 2.2 * DOWN, C + 2.2 * UP, stroke_color=GRID, stroke_width=2)
-
-        circle = Circle(
-            radius=R,
-            stroke_color=V_COLOR,
-            stroke_width=2.5,
-        ).move_to(C)
-
-        title = MathTex(r"f(\theta) = \sin\theta", font_size=MIN_FONT + 4, color=V_COLOR)
-        title.to_corner(UP + LEFT, buff=0.35)
-
+        R = 1.6
+        C = np.array([-2.9, -0.45, 0.0])
         theta = 52.0 * np.pi / 180.0
-        cos_t = np.cos(theta)
-        sin_t = np.sin(theta)
+        cos_t, sin_t = np.cos(theta), np.sin(theta)
 
+        h_axis = Line(C + 1.85 * LEFT, C + 1.85 * RIGHT, stroke_color=GRID, stroke_width=2)
+        v_axis = Line(C + 1.85 * DOWN, C + 2.0 * UP, stroke_color=GRID, stroke_width=2)
+        circle = Circle(radius=R, stroke_color=V_COLOR, stroke_width=2.5).move_to(C)
         P = C + R * np.array([cos_t, sin_t, 0.0])
         P_drop = np.array([P[0], C[1], 0.0])
+        radial = Line(C, P, stroke_color=INK, stroke_width=2.5)
+        arc_th = Arc(radius=0.5, start_angle=0.0, angle=theta, arc_center=C, color=INK)
+        th_lbl = MathTex(r"\theta", font_size=MIN_FONT, color=INK).move_to(
+            C + 0.9 * np.array([np.cos(theta / 2), np.sin(theta / 2) - 0.05, 0]))
+        sin_seg = Line(P_drop, P, stroke_color=RESULT_COLOR, stroke_width=3.5)
+        sin_lbl = MathTex(r"\sin\theta", font_size=MIN_FONT, color=RESULT_COLOR).next_to(sin_seg, RIGHT, buff=0.1)
+        cos_seg = Line(C, P_drop, stroke_color=INK_DIM, stroke_width=3.5)
+        dot_P = Dot(P, color=INK, radius=0.07)
 
-        radial_line = Line(C, P, stroke_color=INK, stroke_width=2.5)
-        angle_arc = Arc(radius=0.55, start_angle=0.0, angle=theta, arc_center=C, color=INK)
-        theta_lbl = MathTex(r"\theta", font_size=MIN_FONT, color=INK)
-        theta_lbl.move_to(C + 0.82 * np.array([np.cos(theta / 2), np.sin(theta / 2), 0.0]))
-        theta_lbl.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
+        # magnifier square on the circle, shrinks while the panel zooms
+        PW, PH = 4.2, 4.0
+        PC = np.array([2.75, 0.0, 0.0])
+        Pp = np.array([PC[0] + 0.7, -0.45, 0.0])     # where P sits in the panel
+        m = ValueTracker(3.0)
 
-        sin_seg = Line(P_drop, P, stroke_color=V_COLOR, stroke_width=3.5)
-        # Put sin theta label on the right side of the vertical segment to avoid radius line crossing
-        sin_lbl = MathTex(r"\sin\theta", font_size=MIN_FONT, color=V_COLOR)
-        sin_lbl.next_to(sin_seg, RIGHT, buff=0.12)
-        sin_lbl.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
+        def mag_box():
+            side = 2.0 / m.get_value()
+            return Square(side_length=side, stroke_color=HIGHLIGHT, stroke_width=2.5).move_to(P)
+        mag = always_redraw(mag_box)
 
-        # Frame 0: circle, axes, radial line, sine segment visible
-        self.add(h_axis, v_axis, circle, title, radial_line, angle_arc, theta_lbl, sin_seg, sin_lbl)
-        self.wait(1.0)
+        panel_box = Rectangle(width=PW, height=PH, stroke_color=INK_FAINT, stroke_width=2).move_to(PC)
 
-        # Nudge theta by dtheta = 0.26 rad (~15 deg) so arc and small triangle are clearly visible on circle
-        dtheta = 0.26
-        cos_tdt = np.cos(theta + dtheta)
-        sin_tdt = np.sin(theta + dtheta)
-        Q = C + R * np.array([cos_tdt, sin_tdt, 0.0])
-        K_circle = np.array([Q[0], P[1], 0.0])
+        def inside(pt):
+            return abs(pt[0] - PC[0]) <= PW / 2 and abs(pt[1] - PC[1]) <= PH / 2
 
-        dtheta_arc = Arc(radius=R, start_angle=theta, angle=dtheta, arc_center=C, stroke_color=X_COLOR, stroke_width=4.5)
-        dtheta_lbl = MathTex(r"d\theta", font_size=MIN_FONT, color=X_COLOR)
-        dtheta_lbl.next_to(dtheta_arc.point_from_proportion(0.5), UR, buff=0.10)
-        dtheta_lbl.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
+        def panel_pt(phi):
+            mm = m.get_value()
+            return Pp + mm * R * np.array([np.cos(phi) - cos_t, np.sin(phi) - sin_t, 0.0])
 
-        # Small differential triangle on the circle itself
-        small_vert_leg = Line(K_circle, Q, stroke_color=RESULT_COLOR, stroke_width=3.0)
-        small_horiz_leg = DashedLine(P, K_circle, stroke_color=INK_DIM, stroke_width=2.0)
+        def curve():
+            mm = m.get_value()
+            span = 6.0 / (R * mm)
+            pts = [panel_pt(phi) for phi in np.linspace(theta - span, theta + span, 500)]
+            pts = [q for q in pts if inside(q)]
+            mob = VMobject(stroke_color=V_COLOR, stroke_width=5)
+            mob.set_points_as_corners(pts if len(pts) > 1 else [Pp, Pp + 0.01 * RIGHT])
+            return mob
+        curve_m = always_redraw(curve)
+        P_in = Dot(Pp, color=INK, radius=0.08)
+        zoom_lbl = always_redraw(lambda: MathTex(
+            rf"\times {m.get_value():.0f}", font_size=MIN_FONT, color=INK_DIM
+        ).move_to(np.array([PC[0] + PW / 2 - 0.65, PC[1] + PH / 2 - 0.4, 0])))
 
-        self.play(
-            Create(dtheta_arc),
-            Write(dtheta_lbl),
-            Create(small_vert_leg),
-            Create(small_horiz_leg),
-            run_time=1.5,
-        )
+        self.add(h_axis, v_axis, circle, radial, arc_th, th_lbl, sin_seg, sin_lbl, cos_seg, dot_P, mag)
+        self.wait(1.5)
+        self.play(FadeIn(panel_box), FadeIn(curve_m), FadeIn(P_in), FadeIn(zoom_lbl), run_time=1.0)
+        self.wait(1.2)
+        self.play(m.animate.set_value(40.0), run_time=4.0, rate_func=smooth)
+        self.wait(1.5)
+
+        # a nudge dtheta whose arc is 1.2 long on screen
+        L_scr = 1.4
+        dth = L_scr / (m.get_value() * R)
+        Q = panel_pt(theta + dth)
+        K = np.array([Q[0], Pp[1], 0.0])
+        hyp = Line(Pp, Q, stroke_color=X_COLOR, stroke_width=5)
+        vleg = Line(K, Q, stroke_color=RESULT_COLOR, stroke_width=4)
+        hleg = DashedLine(Pp, K, stroke_color=INK_DIM, stroke_width=2.5)
+        dth_lbl = MathTex(r"d\theta", font_size=MIN_FONT, color=X_COLOR).move_to(
+            (Pp + Q) / 2 + np.array([0.45, 0.4, 0]))
+        dsin_lbl = MathTex(r"d(\sin\theta)", font_size=MIN_FONT, color=RESULT_COLOR)
+        dsin_lbl.next_to(vleg, LEFT, buff=0.12)
+        ang = Arc(radius=0.4, start_angle=-np.pi / 2, angle=theta, arc_center=Q, color=INK)
+        ang_lbl = MathTex(r"\theta", font_size=MIN_FONT, color=INK).move_to(
+            Q + 0.75 * np.array([np.cos(-np.pi / 2 + theta / 2), np.sin(-np.pi / 2 + theta / 2), 0]))
+        self.play(Create(hyp), FadeIn(dth_lbl), run_time=1.2)
         self.wait(0.8)
-
-        # Right side: Zoomed differential triangle
-        tri_center = np.array([2.4, 0.75, 0.0])
-        hyp_len = 2.0
-        # Tangent vector direction from B to T: [-sin_t, cos_t, 0]
-        T_pt = tri_center + (hyp_len / 2.0) * np.array([-sin_t, cos_t, 0.0])
-        B_pt = tri_center - (hyp_len / 2.0) * np.array([-sin_t, cos_t, 0.0])
-        Corner_pt = np.array([T_pt[0], B_pt[1], 0.0])
-
-        hyp_line = Line(B_pt, T_pt, stroke_color=X_COLOR, stroke_width=3.5)
-        hyp_lbl = MathTex(r"d\theta", font_size=MIN_FONT, color=X_COLOR)
-        hyp_lbl.next_to(hyp_line.get_center(), UR, buff=0.10)
-        hyp_lbl.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
-
-        vert_leg = Line(Corner_pt, T_pt, stroke_color=RESULT_COLOR, stroke_width=3.5)
-        vert_lbl = MathTex(r"d(\sin\theta)", font_size=MIN_FONT, color=RESULT_COLOR)
-        vert_lbl.next_to(vert_leg, LEFT, buff=0.10)
-        vert_lbl.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
-
-        horiz_leg = DashedLine(B_pt, Corner_pt, stroke_color=INK_DIM, stroke_width=2.0)
-
-        # Angle theta inside triangle at top vertex T
-        tri_arc = Arc(
-            radius=0.45,
-            start_angle=-np.pi / 2,
-            angle=theta,
-            arc_center=T_pt,
-            color=INK,
-        )
-        tri_theta_lbl = MathTex(r"\theta", font_size=MIN_FONT, color=INK)
-        tri_theta_lbl.next_to(tri_arc, DOWN, buff=0.06).shift(RIGHT * 0.12)
-        tri_theta_lbl.add_background_rectangle(color=BG, opacity=0.85, buff=0.06)
-
-        callout_title = MathTex(r"\text{zoomed in}", font_size=MIN_FONT, color=INK_DIM)
-        callout_title.move_to(np.array([2.4, 2.05, 0.0]))
-
-        self.play(FadeIn(callout_title), run_time=0.6)
-        self.play(
-            Create(hyp_line),
-            Write(hyp_lbl),
-            Create(vert_leg),
-            Write(vert_lbl),
-            Create(horiz_leg),
-            Create(tri_arc),
-            Write(tri_theta_lbl),
-            run_time=1.8,
-        )
+        self.play(Create(vleg), Create(hleg), FadeIn(dsin_lbl), run_time=1.2)
+        self.wait(1.0)
+        self.play(Create(ang), FadeIn(ang_lbl), run_time=0.8)
         self.wait(1.0)
 
-        # Ratio and final derivative
-        ratio_eq = MathTex(
-            r"\cos\theta = \frac{d(\sin\theta)}{d\theta}",
-            font_size=MIN_FONT + 2,
-            color=INK,
-        ).move_to(np.array([2.4, -0.90, 0.0]))
-        ratio_eq.set_color_by_tex(r"d(\sin\theta)", RESULT_COLOR)
-        ratio_eq.set_color_by_tex(r"d\theta", X_COLOR)
+        # similar triangles: the radius triangle has the same angle theta
+        cos_lbl = MathTex(r"\cos\theta", font_size=MIN_FONT, color=INK_DIM).next_to(cos_seg, DOWN, buff=0.12)
+        hyp_big = MathTex(r"1", font_size=MIN_FONT, color=INK).move_to(
+            C + 0.5 * R * np.array([cos_t, sin_t, 0]) + 0.3 * np.array([-sin_t, cos_t, 0]))
+        flash1 = Arc(radius=0.5, start_angle=0.0, angle=theta, arc_center=C, color=HIGHLIGHT, stroke_width=5)
+        flash2 = Arc(radius=0.4, start_angle=-np.pi / 2, angle=theta, arc_center=Q, color=HIGHLIGHT, stroke_width=5)
+        self.play(FadeIn(cos_lbl), FadeIn(hyp_big), run_time=0.8)
+        self.play(Create(flash1), Create(flash2), run_time=0.8)
+        self.wait(1.5)
+        self.play(FadeOut(flash1), FadeOut(flash2), run_time=0.4)
 
-        deriv_final = MathTex(
-            r"\frac{d(\sin\theta)}{d\theta} = \cos\theta",
-            font_size=MIN_FONT + 8,
-            color=RESULT_COLOR,
-        ).move_to(np.array([2.4, -0.90, 0.0]))
-
-        self.play(Write(ratio_eq), run_time=1.2)
-        self.wait(1.0)
-        self.play(TransformMatchingTex(ratio_eq, deriv_final), run_time=1.2)
-        self.wait(2.2)
+        ratio = MathTex(r"\frac{d(\sin\theta)}{d\theta} = \frac{\cos\theta}{1}", font_size=MIN_FONT, color=INK)
+        ratio.set_color_by_tex(r"d(\sin\theta)", RESULT_COLOR)
+        ratio.set_color_by_tex(r"d\theta", X_COLOR)
+        grp = VGroup(panel_box, curve_m, P_in, zoom_lbl, hyp, vleg, hleg, dth_lbl, dsin_lbl, ang, ang_lbl)
+        self.play(FadeOut(grp), run_time=0.7)
+        final = MathTex(r"\frac{d(\sin\theta)}{d\theta} = \cos\theta", font_size=MIN_FONT + 8, color=RESULT_COLOR)
+        final.move_to(np.array([2.6, 0.3, 0.0]))
+        self.play(Write(final), run_time=1.2)
+        self.wait(2.5)
