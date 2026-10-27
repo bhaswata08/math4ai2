@@ -26,13 +26,13 @@ Edition. Dark theme.
 
 ## Who owns what
 
-Several agents work in this repo at once. Linear algebra owns `decks/1.*`,
-`decks/3.2*` and the matching `anim/` folders. The calculus agent
+Several agents work in this repo at once. Linear algebra owns `decks/1.*`
+and the matching `anim/` folders. The calculus agent
 owns `decks/2.*` (Day 2, matrices; reassigned 2026-10-22), `decks/3.3*`,
 `decks/3.4*`, `decks/4.*` and the matching `anim/` folders. The SVD agent
 (assigned 2026-10-23) owns `decks/3.1*`, `anim/3.1*` and the spectral
 decomposition slides in `decks/2.4-eigen/sections/03-symmetric.html`; tell the
-calculus agent before touching any other 2.x file. Everything under `shared/` is common: change it only with a
+calculus agent before touching any other 2.x file. The SVD agent also owns `decks/3.2*` and `anim/3.2*` (PCA, reassigned 2026-10-27). Everything under `shared/` is common: change it only with a
 note in the commit message saying why, and never rename a token or class
 another deck uses.
 

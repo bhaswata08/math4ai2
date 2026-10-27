@@ -1,0 +1,64 @@
+<!-- ============================================================
+     ACT 7 of 9. Eigenfaces, applications, limits. Budget: 12 min.
+     Goal: Khapra 6.7 practical example on Olivetti faces; where PCA
+     is used in ML; what it cannot do.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 7 of 9</div>
+  <h1>Eigenfaces</h1>
+  <p class="act-sub">A face image is a point in \(\mathbb R^{4096}\), and about fifty directions are enough to describe it.</p>
+  <div class="act-time">12 min</div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 7</b> / Setup</div>
+  <h2>A face is a vector</h2>
+  <ul>
+    <li>A \(64 \times 64\) grey image, read row by row, is a vector \(\mathbf x_i \in \mathbb R^{4096}\).</li>
+    <li>400 images of 40 people: \(X\) is \(400 \times 4096\). Subtract the mean face \(\boldsymbol\mu\).</li>
+    <li>Principal directions \(\mathbf p_j \in \mathbb R^{4096}\) come from the SVD, since \(n \gg m\).</li>
+    <li>Reshape each \(\mathbf p_j\) back to \(64 \times 64\) and look at it.</li>
+  </ul>
+</section>
+
+<section class="clip-slide">
+  <h2>The principal directions look like faces</h2>
+  <video class="clip" src="assets/clips/Eigenfaces.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">The mean face and the leading eigenvectors of \(C\), each reshaped to an image. Early ones capture lighting and overall shape, later ones finer detail.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Rebuilding one face</h2>
+  <video class="clip" src="assets/clips/FaceReconstruction.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(\hat{\mathbf x} = \boldsymbol\mu + \sum_{j\le k}\alpha_j\mathbf p_j\) with \(\alpha_j = (\mathbf x - \boldsymbol\mu)^T\mathbf p_j\). \(k\) numbers replace 4096.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 7</b> / The numbers</div>
+  <h2>How much each \(k\) keeps</h2>
+  <table style="font-size:0.85em">
+    <thead><tr><th>\(k\)</th><th>1</th><th>10</th><th>50</th><th>100</th><th>200</th></tr></thead>
+    <tbody>
+      <tr><td>explained variance</td><td class="num">23.8%</td><td class="num">65.6%</td><td class="num">87.4%</td><td class="num">93.5%</td><td class="num">97.9%</td></tr>
+      <tr><td>numbers per face</td><td class="num">1</td><td class="num">10</td><td class="num">50</td><td class="num">100</td><td class="num">200</td></tr>
+    </tbody>
+  </table>
+  <ul>
+    <li>66 components reach 90%: a 62× smaller description than 4096 pixels.</li>
+    <li>Recognition: compare two faces by their \(\alpha\) vectors, not by their pixels.</li>
+  </ul>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 7</b> / Uses and limits</div>
+  <h2>Where PCA is used, and where it fails</h2>
+  <div class="beats two recap">
+    <div class="beat purpose"><h4>Compress features</h4><p>Fewer, uncorrelated inputs for a downstream model. Fewer parameters, less overfitting.</p></div>
+    <div class="beat purpose"><h4>Visualise</h4><p>Project 768-dimensional embeddings onto \(\mathbf p_1, \mathbf p_2\) to look at clusters.</p></div>
+    <div class="beat purpose"><h4>Denoise, whiten</h4><p>Drop the small-\(\lambda\) directions. Divide each score by \(\sqrt{\lambda_j}\) to get unit variance in every direction.</p></div>
+    <div class="beat breaks"><h4>Limits</h4><p>Only linear subspaces. Variance is not the same as usefulness for a label. Sensitive to feature scale and to outliers.</p></div>
+  </div>
+</section>

@@ -1,0 +1,27 @@
+<!-- ============================================================
+     ACT 9 of 9. Recap and practice. Budget: 8 min.
+     House rule: worked answer for problem 1 only, never the rest.
+     ============================================================ -->
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 9</b> / Recap</div>
+  <h2>Everything in this block</h2>
+  <div class="beats two recap">
+    <div class="beat purpose"><h4>Change basis</h4><p>Centred \(X\), orthonormal \(P\): \(\hat X = XP\), and \(\hat C = P^TCP\) with \(C = \tfrac1m X^TX\).</p></div>
+    <div class="beat purpose"><h4>Three interpretations</h4><p>Decorrelate, least reconstruction error, most variance. All three give the eigenvectors of \(C\).</p></div>
+    <div class="beat purpose"><h4>Keep \(k\)</h4><p>Variance along \(\mathbf p_j\) is \(\lambda_j\). Keep the \(k\) largest; the loss is the sum of the rest.</p></div>
+    <div class="beat purpose"><h4>By SVD</h4><p>\(X = U\Sigma V^T\): \(P = V\), \(\lambda_j = \sigma_j^2/m\), scores \(U\Sigma\).</p></div>
+  </div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 9</b> / Practice</div>
+  <h2>By hand</h2>
+  <ol class="practice" style="font-size:0.9em">
+    <li>For the points \((3, 3), (-3, -3), (1, -1), (-1, 1)\), find \(C\), the principal directions, the 1D scores \(X\mathbf p_1\), and the share of variance kept. <span class="fragment" style="display:block">\(X^TX = \begin{bmatrix}20&16\\16&20\end{bmatrix}\), so \(C = \begin{bmatrix}5&4\\4&5\end{bmatrix}\), with \(\lambda_1 = 9\), \(\mathbf p_1 = \tfrac{1}{\sqrt2}(1, 1)\) and \(\lambda_2 = 1\), \(\mathbf p_2 = \tfrac{1}{\sqrt2}(1, -1)\). Scores \(X\mathbf p_1 = (3\sqrt2, -3\sqrt2, 0, 0)\). Kept: \(9/10 = 90\%\).</span></li>
+    <li>\(C = \begin{bmatrix}5&2\\2&2\end{bmatrix}\). Find \(\lambda_1, \lambda_2\), \(\mathbf p_1\), and the variance kept with \(k = 1\).</li>
+    <li>Points \((1, 2), (-1, -2), (3, 6), (-3, -6)\). What is \(\lambda_2\), and why?</li>
+    <li>Why must the data be centred before computing \(C = \tfrac1m X^TX\)?</li>
+    <li>The SVD of a centred \(X\) (\(m = 50\)) has \(\sigma_1 = 10\), \(\sigma_2 = 5\). What are \(\lambda_1, \lambda_2\), and what share does \(k = 1\) keep?</li>
+  </ol>
+</section>

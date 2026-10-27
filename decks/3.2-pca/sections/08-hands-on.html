@@ -1,0 +1,57 @@
+<!-- ============================================================
+     ACT 8 of 9. Hands-on. Budget: 25 min.
+     Goal: students run PCA on sklearn's digits (1797 x 64) by
+     eigendecomposition and by SVD, reproduce the DigitsScatter
+     plot, choose k, reconstruct images. Skeleton is complete
+     except two lines. Worked answer for task 1 only.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 8 of 9</div>
+  <h1>Hands-on</h1>
+  <p class="act-sub">PCA on 1797 handwritten digits in NumPy: two lines to fill in, then one plot.</p>
+  <div class="act-time">25 min</div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 8</b> / Skeleton</div>
+  <h2>Digits in NumPy</h2>
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:1.2em; align-items:start">
+<pre class="mono" style="font-size:0.8em; line-height:1.45; margin:0"><code>import numpy as np
+from sklearn.datasets import load_digits
+
+d = load_digits()
+X, y = d.data, d.target   # (1797, 64), 0..16
+mu = X.mean(axis=0)
+Xc = X - mu
+m = len(Xc)</code></pre>
+<pre class="mono" style="font-size:0.8em; line-height:1.45; margin:0"><code>C = ...                   # 64 x 64
+lam, P = np.linalg.eigh(C)  # ascending!
+order = ...               # descending
+lam, P = lam[order], P[:, order]
+
+Z = Xc @ P[:, :2]         # (1797, 2)
+print(lam[:2].sum() / lam.sum())</code></pre>
+</div>
+  <p class="cdim" style="margin-top:0.8em; font-size:0.8em">Each image is \(8 \times 8\), flattened to a vector in \(\mathbb R^{64}\). <code>eigh</code> is for symmetric matrices and returns eigenvalues in ascending order.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>What you should get</h2>
+  <video class="clip" src="assets/clips/DigitsScatter.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">The first two scores of every image, shown for three digit classes. The first two components keep about 28.5% of the variance, yet the classes already separate.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 8</b> / Tasks</div>
+  <h2>Run and compare</h2>
+  <ol class="practice">
+    <li>Fill in <code>C</code> and <code>order</code>. Plot <code>Z</code> coloured by <code>y</code>.
+      <div class="fragment mono" style="font-size:0.8em; margin-top:0.3em; color:var(--result)"><code>C = Xc.T @ Xc / m<br>order = np.argsort(lam)[::-1]</code></div></li>
+    <li>Repeat with <code>np.linalg.svd(Xc, full_matrices=False)</code>. Check that <code>S**2 / m</code> matches <code>lam</code>, and that <code>Vt[:2]</code> matches <code>P[:, :2].T</code> up to sign.</li>
+    <li>Find the smallest \(k\) that reaches 90% explained variance.</li>
+    <li>Reconstruct image 0 with \(k = 5, 20, 40\) and display each one as \(8 \times 8\).</li>
+    <li>Compare <code>Z</code> with <code>sklearn.decomposition.PCA(2).fit_transform(X)</code>. What differs, and why?</li>
+  </ol>
+</section>

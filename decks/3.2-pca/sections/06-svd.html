@@ -1,0 +1,76 @@
+<!-- ============================================================
+     ACT 6 of 9. PCA through the SVD. Budget: 12 min.
+     Goal: X = U Sigma V^T gives C = V (Sigma^2/m) V^T; P = V,
+     lambda = sigma^2/m, scores XV = U Sigma. Why libraries use the
+     SVD: conditioning, and the XX^T trick when n >> m (Khapra 6.7).
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 6 of 9</div>
+  <h1>PCA through the SVD</h1>
+  <p class="act-sub">The SVD of the data matrix contains everything PCA needs, and you never have to form \(X^TX\).</p>
+  <div class="act-time">12 min</div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 6</b> / The link</div>
+  <h2>From \(X = U\Sigma V^T\) to \(C\)</h2>
+  <p>Take the SVD of the centred data matrix (Block 3.1): \(X = U\Sigma V^T\), with \(U\) of size \(m\times m\), \(\Sigma\) of size \(m\times n\), \(V\) of size \(n\times n\).</p>
+  <p>$$C = \frac1m X^TX = \frac1m V\Sigma^TU^TU\Sigma V^T = V\,\frac{\Sigma^T\Sigma}{m}\,V^T$$</p>
+  <ul>
+    <li>This has the form \(Q\Lambda Q^T\): it is the spectral decomposition of \(C\).</li>
+    <li>Principal directions: \(\mathbf p_j = \mathbf v_j\), the right singular vectors.</li>
+    <li>Eigenvalues: \(\lambda_j = \sigma_j^2/m\), already in decreasing order.</li>
+    <li>Scores: \(\hat X = XV = U\Sigma\). Column \(j\) is \(\sigma_j\mathbf u_j\).</li>
+  </ul>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 6</b> / Example</div>
+  <h2>The four points, by SVD</h2>
+  <div class="cols" style="align-items:center">
+    <div>
+      <p>$$X^TX = \begin{bmatrix}10&6\\6&10\end{bmatrix}: \ \sigma_1^2 = 16,\ \sigma_2^2 = 4$$</p>
+      <p>\(\sigma_1 = 4,\ \sigma_2 = 2\)<br>\(\lambda_1 = 16/4 = 4,\ \lambda_2 = 4/4 = 1\) ✓</p>
+    </div>
+    <div>
+      <p>\(\mathbf v_1 = \tfrac1{\sqrt2}(1, 1)\), so</p>
+      <p>$$\mathbf u_1 = \frac{X\mathbf v_1}{\sigma_1} = \frac{1}{\sqrt2}\begin{bmatrix}1\\-1\\0\\0\end{bmatrix}, \quad \sigma_1\mathbf u_1 = \begin{bmatrix}2\sqrt2\\-2\sqrt2\\0\\0\end{bmatrix}$$</p>
+    </div>
+  </div>
+  <p class="takeaway">\(\sigma_1\mathbf u_1\) is exactly the first column of \(\hat X = XP\) from Act 3.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 6</b> / In practice</div>
+  <h2>Why libraries use the SVD</h2>
+  <div class="beats two recap">
+    <div class="beat purpose"><h4>More accurate</h4><p>Multiplying \(X^TX\) out loses precision in the small components. The SVD works on \(X\) directly.</p></div>
+    <div class="beat purpose"><h4>Cheaper when \(n \gg m\)</h4><p>Faces: 400 images of 4096 pixels. \(C\) would be \(4096 \times 4096\). The SVD of the \(400 \times 4096\) matrix \(X\) gives the same directions without ever building it.</p></div>
+  </div>
+  <p class="takeaway">In code, PCA is almost always "centre, then SVD".</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 6</b> / Code</div>
+  <h2>Two routes, one answer</h2>
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:1.2em; align-items:start">
+<pre class="mono" style="font-size:0.8em; line-height:1.45; margin:0"><code># eigendecomposition
+Xc = X - X.mean(axis=0)
+C = Xc.T @ Xc / len(Xc)
+lam, P = np.linalg.eigh(C)
+order = np.argsort(lam)[::-1]
+lam, P = lam[order], P[:, order]
+Z = Xc @ P[:, :k]</code></pre>
+<pre class="mono" style="font-size:0.8em; line-height:1.45; margin:0"><code># SVD
+Xc = X - X.mean(axis=0)
+U, S, Vt = np.linalg.svd(
+    Xc, full_matrices=False)
+lam = S**2 / len(Xc)
+P = Vt.T
+Z = U[:, :k] * S[:k]</code></pre>
+</div>
+  <ul>
+    <li>Each column of \(P\) is fixed only up to sign: \(\mathbf p_j\) and \(-\mathbf p_j\) are both unit eigenvectors. Two libraries can return opposite signs.</li>
+  </ul>
+</section>

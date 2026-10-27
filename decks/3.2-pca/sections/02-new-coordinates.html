@@ -1,0 +1,79 @@
+<!-- ============================================================
+     ACT 2 of 9. Data in a new basis. Budget: 15 min.
+     Goal: X-hat = XP; centred stays centred; C = X^T X / m.
+     Khapra CS7015 6.4, second half (the lemmas).
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 2 of 9</div>
+  <h1>Data in a new basis</h1>
+  <p class="act-sub">Every new coordinate is a dot product, so one matrix product rewrites the whole dataset.</p>
+  <div class="act-time">15 min</div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Setup</div>
+  <h2>The data matrix</h2>
+  <div class="eq-big">$$X = \begin{bmatrix} \text{—}\ \mathbf x_1^T\ \text{—} \\ \vdots \\ \text{—}\ \mathbf x_m^T\ \text{—} \end{bmatrix} \in \mathbb R^{m \times n}$$</div>
+  <ul>
+    <li>\(m\) data points (rows), \(n\) features (columns).</li>
+    <li><b>Centre</b> every column: subtract its mean, so \(\sum_i \mathbf x_i = \mathbf 0\). This step is assumed from here on.</li>
+    <li>If the features are in different units (cm and km, rupees and years), also divide each column by its standard deviation. Otherwise the column with the largest numbers dominates.</li>
+    <li>New basis: \(P = [\,\mathbf p_1 \cdots \mathbf p_n\,]\) with orthonormal columns, so \(P^TP = I\).</li>
+  </ul>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Coordinates</div>
+  <h2>Coordinates are dot products</h2>
+  <p>Write a point in the new basis, then take the dot product of both sides with \(\mathbf p_k\):</p>
+  <p>$$\mathbf x_i = \sum_{j=1}^{n} \alpha_{ij}\,\mathbf p_j \quad\Longrightarrow\quad \mathbf x_i^T\mathbf p_k = \sum_{j} \alpha_{ij}\,\underbrace{\mathbf p_j^T\mathbf p_k}_{1 \text{ if } j=k,\ 0 \text{ otherwise}} = \alpha_{ik}$$</p>
+  <ul>
+    <li>All \(n\) coordinates of one point: \([\alpha_{i1} \cdots \alpha_{in}] = \mathbf x_i^T P\), a \(1 \times n\) row.</li>
+    <li>Stack the \(m\) rows:</li>
+  </ul>
+  <div class="eq-big">$$\underset{m\times n}{\hat X} = \underset{m\times n}{X}\ \underset{n\times n}{P}$$</div>
+  <p class="cdim">Each new column is a mix of centred columns, so \(\hat X\) is centred too.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>One point, then all of them</h2>
+  <video class="clip" src="assets/clips/CoordinatesXP.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Coordinate \(\alpha_{ij}\) is the length of the shadow of \(\mathbf x_i\) on \(\mathbf p_j\). Row \(i\) of \(XP\) holds all of them.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Covariance</div>
+  <h2>The covariance matrix</h2>
+  <p>$$C_{jk} = \frac1m \sum_{i=1}^{m} (x_{ij} - \mu_j)(x_{ik} - \mu_k) \;\overset{\boldsymbol\mu = \mathbf 0}{=}\; \frac1m\,(\text{column } j)\cdot(\text{column } k)$$</p>
+  <div class="eq-big">$$C = \tfrac1m X^TX \in \mathbb R^{n \times n}$$</div>
+  <ul>
+    <li>Diagonal: \(C_{jj}\) is the variance of feature \(j\). Off-diagonal: covariance of features \(j\) and \(k\).</li>
+    <li>Symmetric: \(C^T = \tfrac1m X^T X = C\).</li>
+    <li class="cdim">np.cov divides by \(m - 1\). Same eigenvectors, eigenvalues scaled by \(m/(m-1)\).</li>
+  </ul>
+</section>
+
+<section class="clip-slide">
+  <h2>The sign of a covariance</h2>
+  <video class="clip" src="assets/clips/CovarianceSigns.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Points in quadrants I and III add a positive product, II and IV a negative one. Here the positives win: \(C_{12} = 1.5\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Example</div>
+  <h2>Four points, by hand</h2>
+  <div class="cols" style="align-items:center">
+    <div>
+      <p>$$X = \begin{bmatrix}2&2\\-2&-2\\1&-1\\-1&1\end{bmatrix}$$</p>
+      <p class="cdim">Column sums are 0: already centred. \(m = 4\).</p>
+    </div>
+    <div>
+      <p>$$X^TX = \begin{bmatrix}4+4+1+1 & 4+4-1-1\\ \cdot & 4+4+1+1\end{bmatrix} = \begin{bmatrix}10&6\\6&10\end{bmatrix}$$</p>
+      <p>$$C = \tfrac14 X^TX = \begin{bmatrix}2.5&1.5\\1.5&2.5\end{bmatrix}$$</p>
+    </div>
+  </div>
+  <p class="takeaway">Both features have variance 2.5, and they move together (covariance 1.5). This example carries through the rest of the block.</p>
+</section>

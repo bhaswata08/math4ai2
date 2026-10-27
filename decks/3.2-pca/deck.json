@@ -1,0 +1,15 @@
+{
+  "title": "Principal component analysis · Mathematics for AI 3.2",
+  "sections": [
+    "00-open.html",
+    "01-basis.html",
+    "02-new-coordinates.html",
+    "03-decorrelate.html",
+    "04-reconstruction.html",
+    "05-variance.html",
+    "06-svd.html",
+    "07-eigenfaces.html",
+    "08-hands-on.html",
+    "09-recap.html"
+  ]
+}

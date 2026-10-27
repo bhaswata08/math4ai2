@@ -1,0 +1,69 @@
+<!-- ============================================================
+     ACT 3 of 9. Interpretation 1: decorrelate. Budget: 12 min.
+     Goal: covariance in the new basis is P^T C P; asking for zero
+     off-diagonal means diagonalising C; spectral theorem gives
+     P = eigenvectors of C. Khapra CS7015 6.4, end.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 3 of 9</div>
+  <h1>Interpretation 1: decorrelate</h1>
+  <p class="act-sub">Ask for new coordinates with zero covariance, and the eigenvectors of \(C\) are the answer.</p>
+  <div class="act-time">12 min</div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / New covariance</div>
+  <h2>Covariance in the new basis</h2>
+  <p>\(\hat X = XP\) is centred, so its covariance matrix is</p>
+  <p>$$\hat C = \frac1m \hat X^T\hat X = \frac1m (XP)^T(XP) = P^T\Big(\frac1m X^TX\Big)P = P^T C\,P$$</p>
+  <ul>
+    <li>\(\hat C_{jk}\) is the covariance between new coordinates \(j\) and \(k\).</li>
+    <li>Goal "no redundancy": \(\hat C_{jk} = 0\) for every \(j \ne k\).</li>
+  </ul>
+  <p class="takeaway">We need an orthonormal \(P\) that makes \(P^TCP\) <b>diagonal</b>.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / The answer</div>
+  <h2>Diagonalise \(C\)</h2>
+  <p>\(C\) is real and symmetric, so by the spectral theorem (Block 2.4)</p>
+  <div class="eq-big">$$C = Q\Lambda Q^T, \qquad Q^TQ = I, \qquad \Lambda = \mathrm{diag}(\lambda_1, \dots, \lambda_n)$$</div>
+  <ul>
+    <li>Choose \(P = Q\): then \(P^TCP = Q^TQ\,\Lambda\,Q^TQ = \Lambda\). Every covariance is 0.</li>
+    <li>The principal directions are the <b>eigenvectors of \(C\)</b>, which are also the eigenvectors of \(X^TX\).</li>
+    <li>\(\hat C_{jj} = \lambda_j\): the variance of new coordinate \(j\) is the \(j\)-th eigenvalue.</li>
+  </ul>
+</section>
+
+<section class="clip-slide">
+  <h2>Rotate until the covariance vanishes</h2>
+  <video class="clip" src="assets/clips/Decorrelate.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">The off-diagonal entry of \(P^TCP\) changes as the basis turns. It reaches 0 exactly at the eigenvectors, where \(\hat C = \mathrm{diag}(4, 0.25)\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Example</div>
+  <h2>The four points, decorrelated</h2>
+  <div class="cols" style="align-items:center">
+    <div>
+      <p>$$\det(C - \lambda I) = (2.5 - \lambda)^2 - 1.5^2 = 0$$</p>
+      <p>\(\lambda_1 = 4\), \(\mathbf p_1 = \tfrac{1}{\sqrt2}(1, 1)\)<br>\(\lambda_2 = 1\), \(\mathbf p_2 = \tfrac{1}{\sqrt2}(1, -1)\)</p>
+    </div>
+    <div>
+      <p>$$\hat X = XP = \begin{bmatrix}2\sqrt2&0\\-2\sqrt2&0\\0&\sqrt2\\0&-\sqrt2\end{bmatrix}$$</p>
+      <p>$$\hat C = \tfrac14\hat X^T\hat X = \begin{bmatrix}4&0\\0&1\end{bmatrix}$$</p>
+    </div>
+  </div>
+  <p class="takeaway">In the new coordinates the two features are uncorrelated, and the first holds \(4/5 = 80\%\) of the variance.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Open question</div>
+  <h2>Which directions do we keep?</h2>
+  <ul>
+    <li>Interpretation 1 fixes the basis, but it treats every eigenvector the same.</li>
+    <li>We still have to choose which \(k\) of the \(n\) directions to keep. Intuition says keep the large \(\lambda_j\). Act 4 shows why.</li>
+  </ul>
+</section>

@@ -1,0 +1,33 @@
+<!-- ============================================================
+     ACT 0. Title, credits and outcomes. Budget: 3 min.
+     Goal: students know what they can do at the end of the block.
+     ============================================================ -->
+
+<section class="title-slide">
+  <div class="kicker">Mathematics for AI · Day 3 · Block 3.2</div>
+  <h1>Principal component analysis</h1>
+  <p class="lede">Pick the orthonormal basis that fits the data best, then drop the directions that carry almost nothing.</p>
+  <p class="byline">Presented by<br><b>Bhaswata Choudhury</b>, Design Engineer<br>C-DAC Bangalore, AI-Team</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Block 3.2</b> / Credits</div>
+  <h2>Credits</h2>
+  <ul class="credits">
+    <li><b>Storyline and derivations</b> follow Mitesh M. Khapra, CS7015 Deep Learning (IIT Madras, NPTEL), Lecture 6, modules 6.2–6.7: PCA and its three interpretations, eigenfaces.</li>
+    <li><b>Faces</b> from the Olivetti faces database, AT&amp;T Laboratories Cambridge, loaded through scikit-learn.</li>
+    <li><b>Digits</b> from the UCI optical recognition of handwritten digits dataset (E. Alpaydin, C. Kaynak), loaded through scikit-learn.</li>
+    <li><b>Built with</b> Manim Community Edition, reveal.js and KaTeX.</li>
+  </ul>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Block 3.2</b> / Outcomes</div>
+  <h2>After this block you can</h2>
+  <ol class="practice">
+    <li>Write a dataset in a new orthonormal basis as \(\hat X = XP\) and compute its covariance matrix</li>
+    <li>Explain PCA three ways: decorrelate, lose the least, keep the most variance</li>
+    <li>Compute principal components from the eigenvectors of \(C\) or from the SVD of \(X\)</li>
+    <li>Choose \(k\) from the eigenvalues, and run PCA on a real dataset in NumPy</li>
+  </ol>
+</section>

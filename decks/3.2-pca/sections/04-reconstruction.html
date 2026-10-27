@@ -1,0 +1,73 @@
+<!-- ============================================================
+     ACT 4 of 9. Lose the least, keep the most. Budget: 18 min.
+     Goal: interpretations 2 and 3 (Khapra CS7015 6.5, 6.6) told
+     simply: Pythagoras splits each point into a kept part and a
+     lost part with a fixed total; variance along p is p^T C p;
+     in the eigenbasis that is a blend of the eigenvalues, so the
+     top eigenvector wins.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 4 of 9</div>
+  <h1>Lose the least, keep the most</h1>
+  <p class="act-sub">Interpretations 2 and 3: the smallest reconstruction error and the largest variance turn out to be the same goal.</p>
+  <div class="act-time">18 min</div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / The question</div>
+  <h2>Keep one direction. Which one?</h2>
+  <ul>
+    <li>Keep only the coordinate along a unit vector \(\mathbf p\): each point \(\mathbf x_i\) becomes its shadow \((\mathbf x_i^T\mathbf p)\,\mathbf p\).</li>
+    <li><b>Interpretation 2:</b> choose \(\mathbf p\) so the shadows are as close as possible to the points (small reconstruction error).</li>
+    <li><b>Interpretation 3:</b> choose \(\mathbf p\) so the shadows are as spread out as possible (large variance).</li>
+  </ul>
+  <p class="takeaway">These look like two different goals. Pythagoras shows they are the same one.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / Pythagoras</div>
+  <h2>Kept plus lost is fixed</h2>
+  <p>The shadow and the leftover are at a right angle, so for every point</p>
+  <div class="eq-big">$$\|\mathbf x_i\|^2 = \underbrace{(\mathbf x_i^T\mathbf p)^2}_{\text{kept}} + \underbrace{\|\mathbf x_i - (\mathbf x_i^T\mathbf p)\,\mathbf p\|^2}_{\text{lost}}$$</div>
+  <ul>
+    <li>Add over all points: the left side depends only on the data, not on \(\mathbf p\).</li>
+    <li>So making the lost part small is the same as making the kept part large.</li>
+  </ul>
+</section>
+
+<section class="clip-slide">
+  <h2>Captured plus lost is constant</h2>
+  <video class="clip" src="assets/clips/CapturedVsLost.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">As \(\mathbf p\) turns, the <span class="cr">captured</span> variance and the <span class="cw">lost</span> squared distances trade off, but always add to \(4.25\). The best direction is \(\mathbf p_1\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / Variance along \(\mathbf p\)</div>
+  <h2>The kept variance is \(\mathbf p^TC\mathbf p\)</h2>
+  <p>$$\frac1m\sum_{i}(\mathbf x_i^T\mathbf p)^2 = \frac1m\|X\mathbf p\|^2 = \mathbf p^T\Big(\frac1m X^TX\Big)\mathbf p = \mathbf p^TC\,\mathbf p$$</p>
+  <ul>
+    <li>If \(\mathbf p\) is an eigenvector, \(C\mathbf p = \lambda\mathbf p\), so the kept variance is exactly \(\lambda\).</li>
+    <li>Each eigenvalue is the variance of the data along its eigenvector.</li>
+  </ul>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / Why the top eigenvector</div>
+  <h2>Any direction is a blend</h2>
+  <p>Write \(\mathbf p\) in the eigenvector basis: \(\mathbf p = c_1\mathbf p_1 + c_2\mathbf p_2\), with \(c_1^2 + c_2^2 = 1\). Then</p>
+  <div class="eq-big">$$\mathbf p^TC\mathbf p = \lambda_1 c_1^2 + \lambda_2 c_2^2$$</div>
+  <ul>
+    <li>This is a weighted average of \(\lambda_1\) and \(\lambda_2\). It is largest when all the weight is on \(\lambda_1\), that is, at \(\mathbf p = \mathbf p_1\).</li>
+    <li>Our data: any direction keeps between \(0.25\) and \(4\). \(\mathbf p_1\) keeps \(4\) and loses \(0.25\).</li>
+    <li>The same holds in \(n\) dimensions. To keep \(k\) directions, take the eigenvectors of the \(k\) largest eigenvalues. The loss is the sum of the eigenvalues you drop.</li>
+  </ul>
+</section>
+
+<section class="clip-slide">
+  <h2>Keep one direction</h2>
+  <video class="clip" src="assets/clips/KeepTopK.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Drop <span class="cw">\(\mathbf p_2\)</span>: each point becomes one number \(\alpha_{i1}\). The column \(X\mathbf p_1\) keeps \(4/4.25 = 94\%\) of the variance.</p>
+</section>

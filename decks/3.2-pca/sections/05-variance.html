@@ -1,0 +1,56 @@
+<!-- ============================================================
+     ACT 5 of 9. PCA in one recipe. Budget: 10 min.
+     Goal: the three interpretations agree; the recipe; choosing k;
+     the 3D picture. Khapra CS7015 6.6 part 2.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 5 of 9</div>
+  <h1>PCA in one recipe</h1>
+  <p class="act-sub">Three ways of asking the question, and every one of them gives the eigenvectors of \(C\).</p>
+  <div class="act-time">10 min</div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / Summary</div>
+  <h2>Three questions, one answer</h2>
+  <table style="font-size:0.85em">
+    <thead><tr><th>interpretation</th><th>asks for</th><th>answer</th></tr></thead>
+    <tbody>
+      <tr><td>1. decorrelate</td><td>no covariance between new coordinates</td><td>eigenvectors of \(C\)</td></tr>
+      <tr><td>2. reconstruct</td><td>shadows close to the points</td><td>drop the smallest \(\lambda\)</td></tr>
+      <tr><td>3. variance</td><td>shadows spread out</td><td>keep the largest \(\lambda\)</td></tr>
+    </tbody>
+  </table>
+  <p class="takeaway">The <b>principal components</b> are the eigenvectors of \(C\), sorted from the largest eigenvalue down.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / Recipe</div>
+  <h2>PCA, step by step</h2>
+  <ol class="practice">
+    <li>Centre each column (and standardise if the units differ).</li>
+    <li>Covariance: \(C = \tfrac1m X^TX\), size \(n \times n\).</li>
+    <li>Eigenvectors and eigenvalues of \(C\), sorted so \(\lambda_1 \ge \dots \ge \lambda_n\).</li>
+    <li>Keep the first \(k\) eigenvectors: \(P_k\), size \(n \times k\).</li>
+    <li>New data: \(\hat X_k = XP_k\), size \(m \times k\).</li>
+  </ol>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / Choosing \(k\)</div>
+  <h2>How many components?</h2>
+  <div class="eq-big">$$\text{share kept} = \frac{\lambda_1 + \dots + \lambda_k}{\lambda_1 + \dots + \lambda_n}$$</div>
+  <ul>
+    <li>Pick the smallest \(k\) that keeps 90% or 95%.</li>
+    <li>Or plot the eigenvalues and cut where the curve flattens.</li>
+    <li>Or try a few values of \(k\) and keep the one that works best downstream.</li>
+  </ul>
+</section>
+
+<section class="clip-slide">
+  <h2>Three dimensions down to two</h2>
+  <video class="clip" src="assets/clips/ThreeToTwo.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Keep the plane of <span class="cr">\(\mathbf p_1\)</span> and <span class="cw">\(\mathbf p_2\)</span>, drop \(\mathbf p_3\). Each point moves to its shadow on that plane.</p>
+</section>
