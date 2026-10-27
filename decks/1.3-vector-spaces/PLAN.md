@@ -16,7 +16,7 @@ vectors î, ĵ" here, as the scalars-on-basis reading of coordinates.
 | 2 | Linear combinations | 20 | LinearCombinationVary | `combo` (drag v and w, sliders a and b; shows a v + b w) |
 | 3 | Span | 25 | SpanAsDots, SpanLine, Span3D | `span` (drag v and w; their span shaded: plane, line or point) |
 | 4 | Linear independence | 20 | ThirdVector3D, LinearDependence | |
-| 5 | Vector spaces and subspaces | 20 | SubspaceTest, PolynomialSpace, PolynomialCoordinates, ExpFromPolynomials, PolynomialSubspace | |
+| 5 | Vector spaces and subspaces (Strang 18.06 L5; polynomial bonus at the end) | 20 | QuadrantTest, LineFromVector, SubspaceTest; bonus: PolynomialSpace, PolynomialCoordinates, ExpFromPolynomials, PolynomialSubspace | |
 | 6 | Recap and practice | 7 | | |
 
 ## Clip specs
@@ -28,6 +28,8 @@ vectors î, ĵ" here, as the scalars-on-basis reading of coordinates.
 - Span3D (authored, ThreeDScene; upstream used separate 3D renders): two vectors in 3D, their span is a plane through the origin, camera rotates slowly.
 - ThirdVector3D (authored, ThreeDScene): add a third vector. On the plane: span unchanged (dependent). Off the plane: span becomes all of 3D space (independent).
 - LinearDependence (from LinearDependentEquations / AlternateDefOfLinearlyDependent): u = a v + b w means u is redundant; equivalently a v + b w + c u = 0 with not all of a, b, c zero; independent means only a = b = c = 0 works.
+- QuadrantTest (authored, `strang.py`, after Strang 18.06 L5): quarter plane x, y ≥ 0; v + w stays inside, −1·v leaves; not a vector space.
+- LineFromVector (authored, `strang.py`): c·v sweeps c from 1 to 2.4, 0, −2.4 and traces the whole line through 0.
 - SubspaceTest (authored): a line through the origin: add two vectors on it, still on it; scale, still on it: a subspace. A line not through the origin: the sum leaves the line, and 0 times a vector is not on it: not a subspace.
 - PolynomialSpace, PolynomialCoordinates, ExpFromPolynomials, PolynomialSubspace (authored, `polynomials.py`, after Quantum Sense "Why do we need a Hilbert Space?" 2:00-5:12, no bra-ket): polynomials add and scale; 1, x, x², … as building blocks with a coefficient list as coordinates; partial sums of e^x term by term beside the graph; nested boxes all functions ⊃ polynomials ⊃ degree ≤ 2, partial sums as dots that pile up at the polynomial wall with e^x just outside.
 

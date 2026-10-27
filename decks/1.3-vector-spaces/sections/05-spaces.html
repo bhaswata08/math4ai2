@@ -1,22 +1,57 @@
 <!-- ============================================================
      ACT 5 of 6. Vector spaces and subspaces. Budget: 20 min.
-     Source: authored for this course (SubspaceTest); idea of abstract
-     vector spaces from 3b1b EoLA ch. 16.
-     Goal: students name what a vector space must allow, see that
-     polynomials, functions and weight vectors qualify, and test
-     whether a set through the origin or off it is a subspace.
+     Source: storyline of Gilbert Strang, MIT 18.06 lecture 5 (second
+     half): R^n, closed under combinations, the quarter plane that fails,
+     a line through 0, the list of subspaces of R^2 and R^3. Clips
+     authored for this course. Bonus at the end: polynomials as vectors,
+     rebuilt after Quantum Sense ch. 3, in plain notation.
+     Goal: students say what a vector space and a subspace are, list the
+     subspaces of R^2 and R^3, and test a set by adding and scaling.
      Basis and dimension are Block 1.4.
      ============================================================ -->
 
 <section class="act-open">
   <div class="act-num">Act 5 of 6</div>
   <h1>Vector spaces and subspaces</h1>
-  <p class="act-sub">What the objects are does not matter. What you can do with them does.</p>
+  <p class="act-sub">A space is a set of vectors you can add and scale without ever leaving it.</p>
   <div class="act-time">20 min</div>
 </section>
 
 <section class="act-body">
-  <div class="act-tag"><b>Act 5</b> / Three rules</div>
+  <div class="act-tag"><b>Act 5</b> / The spaces we know</div>
+  <h2>\(\mathbb{R}^2\), \(\mathbb{R}^3\), \(\mathbb{R}^n\)</h2>
+  <div class="views" style="grid-template-columns:repeat(2, 1fr)">
+    <div class="view">
+      <h4>\(\mathbb{R}^2\): the whole plane</h4>
+      <svg viewBox="0 0 240 190" aria-label="the plane with the vectors (3, 2), (pi, e) and the origin">
+        <defs>
+          <marker id="m5r" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 z" fill="#6fd0c0"/></marker>
+          <marker id="m5s" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 z" fill="#c792ea"/></marker>
+        </defs>
+        <rect x="10" y="10" width="220" height="170" fill="#6fd0c0" fill-opacity="0.08"/>
+        <line x1="10" y1="140" x2="230" y2="140" stroke="#a7b0be" stroke-width="2"/>
+        <line x1="60" y1="10" x2="60" y2="180" stroke="#a7b0be" stroke-width="2"/>
+        <line x1="60" y1="140" x2="150" y2="80" stroke="#6fd0c0" stroke-width="5" marker-end="url(#m5r)"/>
+        <line x1="60" y1="140" x2="154" y2="58" stroke="#c792ea" stroke-width="5" marker-end="url(#m5s)"/>
+        <circle cx="60" cy="140" r="7" fill="#ffd166"/>
+      </svg>
+      <div class="who" style="font-size:0.68em">\(\textcolor{#6fd0c0}{(3, 2)}\), \(\textcolor{#c792ea}{(\pi, e)}\), \(\textcolor{#ffd166}{(0, 0)}\), …</div>
+    </div>
+    <div class="view">
+      <h4 style="text-transform:none">\(\mathbb{R}^3\), \(\mathbb{R}^n\)</h4>
+      <div style="height:190px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.4em;font-size:0.8em">
+        <div>\(\mathbb{R}^3\): all vectors with 3 real numbers</div>
+        <div>\((3, 2, 0)\) lives in \(\mathbb{R}^3\), not \(\mathbb{R}^2\)</div>
+        <div>\(\mathbb{R}^n\): all vectors with \(n\) real numbers</div>
+      </div>
+      <div class="who" style="font-size:0.68em">An embedding with 768 numbers lives in \(\mathbb{R}^{768}\)</div>
+    </div>
+  </div>
+  <p class="takeaway">Add any two, scale by any number: you are still in \(\mathbb{R}^n\). That is what makes it a <b>vector space</b>.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / The rule</div>
   <h2>What a vector space must allow</h2>
   <div class="views">
     <div class="view">
@@ -56,14 +91,116 @@
         <circle cx="120" cy="95" r="22" fill="#ffd166" fill-opacity="0.25"/>
         <circle cx="120" cy="95" r="9" fill="#ffd166"/>
       </svg>
-      <div class="who" style="font-size:0.68em">\(\vec 0\) is inside</div>
+      <div class="who" style="font-size:0.68em">\(0\,\vec v = \vec 0\), so \(\vec 0\) is always inside</div>
     </div>
   </div>
-  <p class="takeaway">A <b>vector space</b> is any collection where adding and scaling never leave it, and the zero vector is in it.</p>
+  <p class="takeaway">In one line: every <b>linear combination</b> \(c\,\vec v + d\,\vec w\) stays inside.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Part of a space can fail</h2>
+  <video class="clip" src="assets/clips/QuadrantTest.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Adding never leaves the quarter plane, but \(-1\cdot\vec v\) does. It is not closed under scaling, so it is not a vector space.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>One vector brings its whole line</h2>
+  <video class="clip" src="assets/clips/LineFromVector.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">A <b>subspace</b> is a vector space inside another one. Once \(\vec v\) is in, every \(c\,\vec v\) is in, \(\vec 0\) and \(-\vec v\) included: the whole line through \(\vec 0\).</p>
+</section>
+
+<section class="clip-slide">
+  <h2>The line must pass through 0</h2>
+  <video class="clip" src="assets/clips/SubspaceTest.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">A line through the origin passes the test. A line that misses the origin fails: its sum leaves the line, and \(0\cdot\vec v\) is not on it.</p>
 </section>
 
 <section class="act-body">
-  <div class="act-tag"><b>Act 5</b> / Beyond arrows</div>
+  <div class="act-tag"><b>Act 5</b> / Subspaces</div>
+  <h2>Every subspace of \(\mathbb{R}^3\)</h2>
+  <div class="views" style="grid-template-columns:repeat(4, 1fr)">
+    <div class="view">
+      <h4>All of \(\mathbb{R}^3\)</h4>
+      <svg viewBox="0 0 240 190" aria-label="all of 3D space">
+        <rect x="10" y="10" width="220" height="170" fill="#f0a35e" fill-opacity="0.15"/>
+        <line x1="120" y1="100" x2="120" y2="20" stroke="#a7b0be" stroke-width="2"/>
+        <line x1="120" y1="100" x2="220" y2="100" stroke="#a7b0be" stroke-width="2"/>
+        <line x1="120" y1="100" x2="50" y2="160" stroke="#a7b0be" stroke-width="2"/>
+        <circle cx="120" cy="100" r="7" fill="#ffd166"/>
+      </svg>
+    </div>
+    <div class="view">
+      <h4>Plane through 0</h4>
+      <svg viewBox="0 0 240 190" aria-label="a plane through the origin in 3D">
+        <polygon points="25,150 175,150 225,50 75,50" fill="#f0a35e" fill-opacity="0.2" stroke="#f0a35e" stroke-dasharray="6 6" stroke-width="2"/>
+        <circle cx="125" cy="100" r="7" fill="#ffd166"/>
+      </svg>
+    </div>
+    <div class="view">
+      <h4>Line through 0</h4>
+      <svg viewBox="0 0 240 190" aria-label="a line through the origin">
+        <line x1="20" y1="150" x2="220" y2="40" stroke="#f0a35e" stroke-opacity="0.7" stroke-width="10"/>
+        <circle cx="120" cy="95" r="7" fill="#ffd166"/>
+      </svg>
+    </div>
+    <div class="view">
+      <h4>Just 0</h4>
+      <svg viewBox="0 0 240 190" aria-label="the origin alone">
+        <circle cx="120" cy="95" r="9" fill="#ffd166"/>
+      </svg>
+    </div>
+  </div>
+  <p class="takeaway">In \(\mathbb{R}^2\) the list is shorter: all of \(\mathbb{R}^2\), lines through 0, and 0 alone. The <b>span of any vectors</b> is always one of these.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / Check</div>
+  <h2>Subspace of \(\mathbb{R}^2\), or not?</h2>
+  <div class="views">
+    <div class="view">
+      <h4>The x-axis</h4>
+      <svg viewBox="0 0 240 150" aria-label="the x-axis">
+        <line x1="120" y1="10" x2="120" y2="140" stroke="#a7b0be" stroke-opacity="0.4" stroke-width="2"/>
+        <line x1="10" y1="75" x2="230" y2="75" stroke="#f0a35e" stroke-width="8"/>
+        <circle cx="120" cy="75" r="7" fill="#ffd166"/>
+      </svg>
+      <div class="who fragment" style="font-size:0.68em;color:#ffd166">Subspace: \((a, 0) + (b, 0) = (a + b, 0)\)</div>
+    </div>
+    <div class="view">
+      <h4>Both axes</h4>
+      <svg viewBox="0 0 240 150" aria-label="the x-axis and the y-axis together">
+        <line x1="120" y1="10" x2="120" y2="140" stroke="#f0a35e" stroke-width="8"/>
+        <line x1="10" y1="75" x2="230" y2="75" stroke="#f0a35e" stroke-width="8"/>
+        <circle cx="120" cy="75" r="7" fill="#ffd166"/>
+      </svg>
+      <div class="who fragment" style="font-size:0.68em;color:#ff6b6b">Not: \((1, 0) + (0, 1) = (1, 1)\) is off both axes</div>
+    </div>
+    <div class="view">
+      <h4>Just 0</h4>
+      <svg viewBox="0 0 240 150" aria-label="the origin alone">
+        <line x1="120" y1="10" x2="120" y2="140" stroke="#a7b0be" stroke-opacity="0.4" stroke-width="2"/>
+        <line x1="10" y1="75" x2="230" y2="75" stroke="#a7b0be" stroke-opacity="0.4" stroke-width="2"/>
+        <circle cx="120" cy="75" r="9" fill="#ffd166"/>
+      </svg>
+      <div class="who fragment" style="font-size:0.68em;color:#ffd166">Subspace: \(\vec 0 + \vec 0 = \vec 0\), \(c\,\vec 0 = \vec 0\)</div>
+    </div>
+  </div>
+  <p class="takeaway">The test is always the same: add two, scale one, and see whether you are still inside.</p>
+</section>
+
+<!-- Bonus. Polynomials as vectors, after Quantum Sense ch. 3. -->
+
+<section class="act-open">
+  <div class="act-num">Act 5 · Bonus</div>
+  <h1>Vectors that are not arrows</h1>
+  <p class="act-sub">Anything you can add and scale is a vector. Polynomials, for one.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Bonus</b> / Beyond arrows</div>
   <h2>Other things that add and scale</h2>
   <div class="views">
     <div class="view">
@@ -115,45 +252,6 @@
 </section>
 
 <section class="clip-slide">
-  <h2>Is this set a subspace?</h2>
-  <video class="clip" src="assets/clips/SubspaceTest.mp4"></video>
-  <span class="fragment clip-play"></span>
-  <p class="caption">A line through the origin passes the test. A line that misses the origin fails: its sum leaves the line, and \(0\cdot\vec v\) is not on it.</p>
-</section>
-
-<section class="act-body">
-  <div class="act-tag"><b>Act 5</b> / Subspaces</div>
-  <h2>A vector space inside a vector space</h2>
-  <div class="views">
-    <div class="view">
-      <h4>Plane through 0</h4>
-      <svg viewBox="0 0 240 190" aria-label="a plane through the origin in 3D">
-        <polygon points="25,150 175,150 225,50 75,50" fill="#f0a35e" fill-opacity="0.2" stroke="#f0a35e" stroke-dasharray="6 6" stroke-width="2"/>
-        <circle cx="125" cy="100" r="7" fill="#ffd166"/>
-      </svg>
-      <div class="who" style="font-size:0.68em;color:#ffd166">A subspace of \(\mathbb{R}^3\)</div>
-    </div>
-    <div class="view">
-      <h4>Line through 0</h4>
-      <svg viewBox="0 0 240 190" aria-label="a line through the origin">
-        <line x1="20" y1="150" x2="220" y2="40" stroke="#f0a35e" stroke-opacity="0.7" stroke-width="10"/>
-        <circle cx="120" cy="95" r="7" fill="#ffd166"/>
-      </svg>
-      <div class="who" style="font-size:0.68em;color:#ffd166">A subspace of \(\mathbb{R}^3\)</div>
-    </div>
-    <div class="view" style="border-top-color:var(--warn)">
-      <h4 style="color:var(--warn)">Plane missing 0</h4>
-      <svg viewBox="0 0 240 190" aria-label="a plane that does not pass through the origin">
-        <polygon points="25,100 175,100 225,20 75,20" fill="#ff6b6b" fill-opacity="0.15" stroke="#ff6b6b" stroke-dasharray="6 6" stroke-width="2"/>
-        <circle cx="125" cy="150" r="7" fill="#ffd166"/>
-      </svg>
-      <div class="who" style="font-size:0.68em;color:#ff6b6b">Not a subspace: no zero vector</div>
-    </div>
-  </div>
-  <p class="takeaway">The <b>span of any vectors is a subspace</b>, and a subspace is itself a vector space.</p>
-</section>
-
-<section class="clip-slide">
   <h2>Adding building blocks one at a time</h2>
   <video class="clip" src="assets/clips/ExpFromPolynomials.mp4"></video>
   <span class="fragment clip-play"></span>
@@ -165,36 +263,4 @@
   <video class="clip" src="assets/clips/PolynomialSubspace.mp4"></video>
   <span class="fragment clip-play"></span>
   <p class="caption">Each box is a subspace of the next. Every step stays inside the polynomials; only the endless sum \(e^x\) lands outside.</p>
-</section>
-
-<section class="act-body">
-  <div class="act-tag"><b>Act 5</b> / Check</div>
-  <h2>Subspace of the polynomials, or not?</h2>
-  <div class="views">
-    <div class="view">
-      <h4>Degree \(\le 2\)</h4>
-      <div style="height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:0.8em">
-        <div>\(\textcolor{#6fd0c0}{(1 + x^2)} + \textcolor{#c792ea}{(2 - x^2)} = \textcolor{#f0a35e}{3}\)</div>
-        <div>\(5\,(1 + x^2) = \textcolor{#f0a35e}{5 + 5x^2}\)</div>
-      </div>
-      <div class="who fragment" style="font-size:0.68em;color:#ffd166">Subspace: the degree never goes up</div>
-    </div>
-    <div class="view">
-      <h4 style="text-transform:none">\(p(0) = 0\)</h4>
-      <div style="height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:0.8em">
-        <div>\(\textcolor{#6fd0c0}{x} + \textcolor{#c792ea}{(x^3 - 2x)} = \textcolor{#f0a35e}{x^3 - x}\)</div>
-        <div>\(0\) at \(x = 0\) still</div>
-      </div>
-      <div class="who fragment" style="font-size:0.68em;color:#ffd166">Subspace: \(0 + 0 = 0\), \(c \cdot 0 = 0\)</div>
-    </div>
-    <div class="view" style="border-top-color:var(--warn)">
-      <h4 style="color:var(--warn);text-transform:none">\(p(0) = 1\)</h4>
-      <div style="height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:0.8em">
-        <div>\(\textcolor{#6fd0c0}{(1 + x)} + \textcolor{#c792ea}{(1 - x)} = \textcolor{#f0a35e}{2}\)</div>
-        <div>\(2\) at \(x = 0\): left the set</div>
-      </div>
-      <div class="who fragment" style="font-size:0.68em;color:#ff6b6b">Not a subspace: no zero polynomial</div>
-    </div>
-  </div>
-  <p class="takeaway">Same test as for lines and planes: adding and scaling must stay inside, and \(0\) must be inside.</p>
 </section>
