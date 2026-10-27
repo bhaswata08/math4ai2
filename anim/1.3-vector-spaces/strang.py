@@ -107,3 +107,58 @@ class LineFromVector(Scene):
         note.to_corner(DR, buff=0.3).add_background_rectangle(color=BG, opacity=0.9, buff=0.1)
         self.play(FadeIn(note))
         self.wait(2.5)
+
+
+class SpaceAndSubspace(Scene):
+    """Vector space: the plane, where sums and multiples stay in the plane.
+    Subspace: a line through 0 inside it, where they stay on the line."""
+
+    def construct(self):
+        plane = house_plane()
+        r2 = tag(r"\mathbb{R}^2", V_COLOR, [4.0, -2.3, 0], ORIGIN)
+        self.add(plane, r2)
+        self.wait(1.5)
+
+        def header(text):
+            h = Tex(text, font_size=MIN_FONT, color=INK).to_edge(UP, buff=0.15)
+            return h.add_background_rectangle(color=BG, opacity=0.9, buff=0.1)
+
+        # Vector space: the whole plane.
+        head = header(r"\textbf{Vector space}: sums and multiples stay inside")
+        v, w = np.array([1.6, -0.6]), np.array([-0.6, 1.3])
+        va, wa = arrow(v, V_COLOR), arrow(w, W_COLOR)
+        vl = tag(r"\vec v", V_COLOR, va.get_end(), DR)
+        wl = tag(r"\vec w", W_COLOR, wa.get_end(), LEFT)
+        self.play(FadeIn(head), GrowArrow(va), GrowArrow(wa), FadeIn(vl), FadeIn(wl))
+        sa = arrow(v + w, RESULT_COLOR)
+        sl = tag(r"\vec v + \vec w", RESULT_COLOR, sa.get_end(), RIGHT)
+        self.play(GrowArrow(sa), FadeIn(sl))
+        ma = arrow(-1.4 * v, RESULT_COLOR)
+        ml = tag(r"-1.4\,\vec v", RESULT_COLOR, ma.get_end(), UP)
+        self.play(GrowArrow(ma), FadeIn(ml))
+        self.play(Indicate(r2, color=HIGHLIGHT))
+        self.wait(1.5)
+
+        # Subspace: a line through 0, inside the plane.
+        d = np.array([2.0, 1.0])
+        line = Line([*(-2.6 * d), 0], [*(2.6 * d), 0], color=X_COLOR, stroke_width=7)
+        line_lab = tag(r"\text{line through } \vec 0", X_COLOR, [-3.4, -0.35, 0], ORIGIN)
+        head2 = header(r"\textbf{Subspace}: a vector space inside a vector space")
+        self.play(FadeOut(VGroup(va, wa, vl, wl, sa, sl, ma, ml)), Create(line), FadeIn(line_lab),
+                  Transform(head, head2))
+        a, b = 0.6 * d, 0.9 * d
+        aa, ba = arrow(a, V_COLOR), arrow(b, W_COLOR)
+        al = tag(r"\vec a", V_COLOR, aa.get_end(), UP)
+        bl = tag(r"\vec b", W_COLOR, ba.get_end(), UP)
+        self.play(GrowArrow(ba), FadeIn(bl))
+        self.play(GrowArrow(aa), FadeIn(al))
+        b_moved = ba.copy().shift([*a, 0])
+        self.play(TransformFromCopy(ba, b_moved), FadeOut(bl))
+        ca = arrow(a + b, RESULT_COLOR)
+        cl = tag(r"\vec a + \vec b", RESULT_COLOR, ca.get_end(), UP)
+        self.play(GrowArrow(ca), FadeIn(cl), FadeOut(b_moved))
+        na = arrow(-1.5 * a, RESULT_COLOR)
+        nl = tag(r"-1.5\,\vec a", RESULT_COLOR, na.get_end() + RIGHT * 0.6, DOWN)
+        self.play(GrowArrow(na), FadeIn(nl))
+        self.play(Indicate(line, color=HIGHLIGHT, scale_factor=1.0))
+        self.wait(3)
