@@ -3,8 +3,8 @@
      Source: storyline of Gilbert Strang, MIT 18.06 lecture 5 (second
      half): R^n, closed under combinations, the quarter plane that fails,
      a line through 0, the list of subspaces of R^2 and R^3. Clips
-     authored for this course. Bonus at the end: polynomials as vectors,
-     rebuilt after Quantum Sense ch. 3, in plain notation.
+     authored for this course. The Quantum Sense polynomial bonus is
+     commented out at the end of this file.
      Goal: students say what a vector space and a subspace are, list the
      subspaces of R^2 and R^3, and test a set by adding and scaling.
      Basis and dimension are Block 1.4.
@@ -156,6 +156,13 @@
   <p class="takeaway">In \(\mathbb{R}^2\) the list is shorter: all of \(\mathbb{R}^2\), lines through 0, and 0 alone. The <b>span of any vectors</b> is always one of these.</p>
 </section>
 
+<section class="clip-slide">
+  <h2>Vector space and subspace</h2>
+  <video class="clip" src="assets/clips/SpaceAndSubspace.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">In the plane, sums and multiples always stay in the plane: a vector space. On a line through \(\vec 0\) they stay on the line: a subspace.</p>
+</section>
+
 <section class="act-body">
   <div class="act-tag"><b>Act 5</b> / Check</div>
   <h2>Subspace of \(\mathbb{R}^2\), or not?</h2>
@@ -191,23 +198,8 @@
   <p class="takeaway">The test is always the same: add two, scale one, and see whether you are still inside.</p>
 </section>
 
-<!-- Bonus. Polynomials as vectors, after Quantum Sense ch. 3. -->
-
-<section class="act-open">
-  <div class="act-num">Act 5 · Bonus</div>
-  <h1>Vectors that are not arrows</h1>
-  <p class="act-sub">The two ideas once more with arrows, then the same ideas without them.</p>
-</section>
-
-<section class="clip-slide">
-  <h2>Vector space and subspace</h2>
-  <video class="clip" src="assets/clips/SpaceAndSubspace.mp4"></video>
-  <span class="fragment clip-play"></span>
-  <p class="caption">In the plane, sums and multiples always stay in the plane: a vector space. On a line through \(\vec 0\) they stay on the line: a subspace.</p>
-</section>
-
 <section class="act-body">
-  <div class="act-tag"><b>Bonus</b> / Beyond arrows</div>
+  <div class="act-tag"><b>Act 5</b> / Beyond arrows</div>
   <h2>Other things that add and scale</h2>
   <div class="views">
     <div class="view">
@@ -244,7 +236,14 @@
   <p class="src">illustrative values</p>
 </section>
 
-<!-- Commented out on request: polynomial-as-vector slides.
+<!-- Commented out: Quantum Sense bonus (polynomials as vectors, e^x as a limit
+     that leaves the polynomials). Judged likely to confuse at this point.
+<section class="act-open">
+  <div class="act-num">Act 5 · Bonus</div>
+  <h1>Vectors that are not arrows</h1>
+  <p class="act-sub">The two ideas once more with arrows, then the same ideas without them.</p>
+</section>
+
 <section class="clip-slide">
   <h2>Polynomials are vectors</h2>
   <video class="clip" src="assets/clips/PolynomialSpace.mp4"></video>
@@ -258,7 +257,6 @@
   <span class="fragment clip-play"></span>
   <p class="caption">\(1, x, x^2, \dots\) play the part of \(\hat\imath\) and \(\hat\jmath\). Every polynomial is a linear combination of a few of them, and its scalars are its coordinates.</p>
 </section>
--->
 
 <section class="clip-slide">
   <h2>Adding building blocks one at a time</h2>
@@ -273,3 +271,4 @@
   <span class="fragment clip-play"></span>
   <p class="caption">Each box is a subspace of the next. Every step stays inside the polynomials; only the endless sum \(e^x\) lands outside.</p>
 </section>
+-->
