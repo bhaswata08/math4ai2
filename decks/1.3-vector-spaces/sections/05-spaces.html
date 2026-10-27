@@ -101,6 +101,20 @@
 </section>
 
 <section class="clip-slide">
+  <h2>Polynomials are vectors</h2>
+  <video class="clip" src="assets/clips/PolynomialSpace.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Add two polynomials, or scale one, and you get a polynomial again. The zero polynomial is the zero vector. That is all a vector space asks.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Coordinates of a polynomial</h2>
+  <video class="clip" src="assets/clips/PolynomialCoordinates.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(1, x, x^2, \dots\) play the part of \(\hat\imath\) and \(\hat\jmath\). Every polynomial is a linear combination of a few of them, and its scalars are its coordinates.</p>
+</section>
+
+<section class="clip-slide">
   <h2>Is this set a subspace?</h2>
   <video class="clip" src="assets/clips/SubspaceTest.mp4"></video>
   <span class="fragment clip-play"></span>
@@ -137,4 +151,50 @@
     </div>
   </div>
   <p class="takeaway">The <b>span of any vectors is a subspace</b>, and a subspace is itself a vector space.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Adding building blocks one at a time</h2>
+  <video class="clip" src="assets/clips/ExpFromPolynomials.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Each step adds one more block, so each step is a polynomial. Step by step the curves close in on \(e^x\).</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Spaces inside spaces</h2>
+  <video class="clip" src="assets/clips/PolynomialSubspace.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Each box is a subspace of the next. Every step stays inside the polynomials; only the endless sum \(e^x\) lands outside.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / Check</div>
+  <h2>Subspace of the polynomials, or not?</h2>
+  <div class="views">
+    <div class="view">
+      <h4>Degree \(\le 2\)</h4>
+      <div style="height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:0.8em">
+        <div>\(\textcolor{#6fd0c0}{(1 + x^2)} + \textcolor{#c792ea}{(2 - x^2)} = \textcolor{#f0a35e}{3}\)</div>
+        <div>\(5\,(1 + x^2) = \textcolor{#f0a35e}{5 + 5x^2}\)</div>
+      </div>
+      <div class="who fragment" style="font-size:0.68em;color:#ffd166">Subspace: the degree never goes up</div>
+    </div>
+    <div class="view">
+      <h4 style="text-transform:none">\(p(0) = 0\)</h4>
+      <div style="height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:0.8em">
+        <div>\(\textcolor{#6fd0c0}{x} + \textcolor{#c792ea}{(x^3 - 2x)} = \textcolor{#f0a35e}{x^3 - x}\)</div>
+        <div>\(0\) at \(x = 0\) still</div>
+      </div>
+      <div class="who fragment" style="font-size:0.68em;color:#ffd166">Subspace: \(0 + 0 = 0\), \(c \cdot 0 = 0\)</div>
+    </div>
+    <div class="view" style="border-top-color:var(--warn)">
+      <h4 style="color:var(--warn);text-transform:none">\(p(0) = 1\)</h4>
+      <div style="height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:0.8em">
+        <div>\(\textcolor{#6fd0c0}{(1 + x)} + \textcolor{#c792ea}{(1 - x)} = \textcolor{#f0a35e}{2}\)</div>
+        <div>\(2\) at \(x = 0\): left the set</div>
+      </div>
+      <div class="who fragment" style="font-size:0.68em;color:#ff6b6b">Not a subspace: no zero polynomial</div>
+    </div>
+  </div>
+  <p class="takeaway">Same test as for lines and planes: adding and scaling must stay inside, and \(0\) must be inside.</p>
 </section>
