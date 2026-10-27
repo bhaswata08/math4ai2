@@ -78,11 +78,30 @@
 </section>
 
 <section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Reading a covariance</div>
+  <h2>Is a covariance of 6.8 big?</h2>
+  <p>Hard to say. Its size depends on the units and on how spread out each variable is.</p>
+  <table style="font-size:0.85em">
+    <thead><tr><th>same people, heights in</th><th>covariance of height and weight</th><th>correlation</th></tr></thead>
+    <tbody>
+      <tr><td>metres</td><td class="num">0.84</td><td class="num">0.7</td></tr>
+      <tr><td>centimetres</td><td class="num">84</td><td class="num">0.7</td></tr>
+    </tbody>
+  </table>
+  <ul>
+    <li>Nothing about the people changed, yet the covariance grew 100 times.</li>
+    <li>So you cannot compare covariances across datasets unless they use the same units.</li>
+    <li>Covariance is good for the <b>direction</b> of a relationship (its sign), not for comparing the <b>strength</b> of different relationships.</li>
+  </ul>
+  <p class="cdim" style="font-size:0.75em">Illustrative values: height spread 0.12 m, weight spread 10 kg, correlation 0.7.</p>
+</section>
+
+<section class="act-body">
   <div class="act-tag"><b>Act 2</b> / Correlation</div>
   <h2>Covariance gives the direction, correlation the strength</h2>
   <div class="eq-big">$$\rho_{xy} = \frac{\mathrm{Cov}(x,y)}{\sqrt{\mathrm{Var}(x)}\,\sqrt{\mathrm{Var}(y)}} \in [-1, 1]$$</div>
   <ul>
-    <li>Covariance changes if you change units (cm to m). Correlation does not.</li>
+    <li>Dividing by both spreads cancels the units and squashes the covariance into \([-1, 1]\). Metres or centimetres, \(\rho\) stays 0.7.</li>
     <li>\(\rho = 1\): a rising straight line. \(\rho = -1\): a falling one. \(\rho \approx 0\): no linear trend.</li>
     <li>Correlation is not causation: a third variable can drive both.</li>
   </ul>
