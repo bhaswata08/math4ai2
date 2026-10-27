@@ -44,6 +44,24 @@
   <p class="caption">Coordinate \(\alpha_{ij}\) is the length of the shadow of \(\mathbf x_i\) on \(\mathbf p_j\). Row \(i\) of \(XP\) holds all of them.</p>
 </section>
 
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Moving together</div>
+  <h2>Do two things move together?</h2>
+  <table style="font-size:0.85em">
+    <thead><tr><th>Logan, first term</th><th>week 1</th><th>week 2</th><th>week 3</th></tr></thead>
+    <tbody>
+      <tr><td>hours studied</td><td class="num">2</td><td class="num">5</td><td class="num">6</td></tr>
+      <tr><td>quiz score</td><td class="num">70</td><td class="num">90</td><td class="num">95</td></tr>
+      <tr><td>hours of sleep</td><td class="num">8</td><td class="num">7</td><td class="num">6.5</td></tr>
+    </tbody>
+  </table>
+  <ul>
+    <li>More studying, higher scores: the two rise together. <span class="cr">Positive</span> covariance.</li>
+    <li>More studying, less sleep: one rises as the other falls. <span class="cw">Negative</span> covariance.</li>
+    <li>No pattern: covariance near 0. In real data with millions of rows the pattern is not visible by eye, so we need a number.</li>
+  </ul>
+</section>
+
 <section class="clip-slide">
   <h2>Variance: spread around the mean</h2>
   <video class="clip" src="assets/clips/Variance1D.mp4"></video>
@@ -66,21 +84,26 @@
 </section>
 
 <section class="act-body">
-  <div class="act-tag"><b>Act 2</b> / Covariance matrix</div>
-  <h2>All the variances and covariances in one matrix</h2>
-  <div class="eq-big">$$C = \begin{bmatrix}\mathrm{Cov}(x,x) & \mathrm{Cov}(x,y)\\ \mathrm{Cov}(y,x) & \mathrm{Cov}(y,y)\end{bmatrix} = \begin{bmatrix}\mathrm{Var}(x) & \mathrm{Cov}(x,y)\\ \mathrm{Cov}(x,y) & \mathrm{Var}(y)\end{bmatrix}$$</div>
-  <ul>
-    <li>A variable's covariance with itself is its variance, so the diagonal holds the variances.</li>
-    <li>\(\mathrm{Cov}(x,y) = \mathrm{Cov}(y,x)\), so \(C\) is symmetric.</li>
-    <li>With \(n\) features, \(C\) is \(n \times n\). For centred data the whole matrix is one product: \(C = \tfrac1m X^TX\).</li>
-    <li class="cdim">np.cov divides by \(m - 1\). Same eigenvectors, eigenvalues scaled by \(m/(m-1)\).</li>
-  </ul>
+  <div class="act-tag"><b>Act 2</b> / By hand</div>
+  <h2>A covariance by hand</h2>
+  <table style="font-size:0.8em">
+    <thead><tr><th>\(a\)</th><th>\(b\)</th><th>\(a - \bar a\)</th><th>\(b - \bar b\)</th><th>product</th></tr></thead>
+    <tbody>
+      <tr><td class="num">2</td><td class="num">1</td><td class="num">−4</td><td class="num">−3.4</td><td class="num">13.6</td></tr>
+      <tr><td class="num">4</td><td class="num">3</td><td class="num">−2</td><td class="num">−1.4</td><td class="num">2.8</td></tr>
+      <tr><td class="num">6</td><td class="num">4</td><td class="num">0</td><td class="num">−0.4</td><td class="num">0</td></tr>
+      <tr><td class="num">8</td><td class="num">6</td><td class="num">2</td><td class="num">1.6</td><td class="num">3.2</td></tr>
+      <tr><td class="num">10</td><td class="num">8</td><td class="num">4</td><td class="num">3.6</td><td class="num">14.4</td></tr>
+    </tbody>
+  </table>
+  <p>\(\bar a = 6\), \(\bar b = 4.4\). No product is negative: \(a\) and \(b\) are always on the same side of their means.</p>
+  <p class="takeaway">\(\mathrm{Cov}(a, b) = \tfrac15(13.6 + 2.8 + 0 + 3.2 + 14.4) = 6.8\). Positive: they rise and fall together.</p>
 </section>
 
 <section class="act-body">
   <div class="act-tag"><b>Act 2</b> / Reading a covariance</div>
   <h2>Is a covariance of 6.8 big?</h2>
-  <p>Hard to say. Its size depends on the units and on how spread out each variable is.</p>
+  <p>Hard to say. Its size depends on the units and on how spread out each variable is. Multiply every \(a\) by 5 and every \(b\) by 7: the covariance becomes \(35 \times 6.8 = 238\), for exactly the same relationship.</p>
   <table style="font-size:0.85em">
     <thead><tr><th>same people, heights in</th><th>covariance of height and weight</th><th>correlation</th></tr></thead>
     <tbody>
@@ -98,11 +121,32 @@
 
 <section class="act-body">
   <div class="act-tag"><b>Act 2</b> / Correlation</div>
-  <h2>Covariance gives the direction, correlation the strength</h2>
-  <div class="eq-big">$$\rho_{xy} = \frac{\mathrm{Cov}(x,y)}{\sqrt{\mathrm{Var}(x)}\,\sqrt{\mathrm{Var}(y)}} \in [-1, 1]$$</div>
+  <h2>Correlation: the average product of z-scores</h2>
+  <ol class="practice" style="font-size:0.9em">
+    <li>Subtract the mean: removes each variable's baseline.</li>
+    <li>Divide by the standard deviation: removes its units and its spread. The results are <b>z-scores</b>, distances from the mean in standard units.</li>
+    <li>Multiply the paired z-scores and average them.</li>
+  </ol>
+  <div class="eq-big">$$\rho_{ab} = \frac1m\sum_i \frac{a_i - \bar a}{\sigma_a}\cdot\frac{b_i - \bar b}{\sigma_b} = \frac{\mathrm{Cov}(a, b)}{\sigma_a\,\sigma_b}$$</div>
+  <p>Our example: \(\sigma_a = 2.83\), \(\sigma_b = 2.42\), so \(\rho = 6.8 / (2.83 \times 2.42) = 0.99\). Scaling \(a\) by 5 and \(b\) by 7 leaves \(\rho\) at 0.99.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Reading a correlation</div>
+  <h2>Reading \(\rho\) between \(-1\) and \(1\)</h2>
+  <table style="font-size:0.85em">
+    <thead><tr><th>value</th><th>meaning</th></tr></thead>
+    <tbody>
+      <tr><td class="num">+1</td><td>perfect match: a rising straight line</td></tr>
+      <tr><td class="num">0.9</td><td>strong</td></tr>
+      <tr><td class="num">0.5</td><td>moderate</td></tr>
+      <tr><td class="num">0.1</td><td>weak, but maybe not nothing</td></tr>
+      <tr><td class="num">0</td><td>no linear relationship</td></tr>
+      <tr><td class="num">−1</td><td>perfect opposition: a falling straight line</td></tr>
+    </tbody>
+  </table>
   <ul>
-    <li>Dividing by both spreads cancels the units and squashes the covariance into \([-1, 1]\). Metres or centimetres, \(\rho\) stays 0.7.</li>
-    <li>\(\rho = 1\): a rising straight line. \(\rho = -1\): a falling one. \(\rho \approx 0\): no linear trend.</li>
+    <li>\(\rho\) says how reliably two variables move in the same direction. It does not say how much one changes, and not why.</li>
     <li>Correlation is not causation: a third variable can drive both.</li>
   </ul>
 </section>
@@ -112,6 +156,29 @@
   <video class="clip" src="assets/clips/CovarianceMorph.mp4"></video>
   <span class="fragment clip-play"></span>
   <p class="caption">The same points rearranged: flat, a rising line, a noisy cloud, a falling line, a blob. Covariance follows the direction; \(\rho\) measures how close the points are to a line.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Covariance matrix</div>
+  <h2>All the variances and covariances in one matrix</h2>
+  <div class="eq-big">$$C = \begin{bmatrix}\mathrm{Cov}(x,x) & \mathrm{Cov}(x,y)\\ \mathrm{Cov}(y,x) & \mathrm{Cov}(y,y)\end{bmatrix} = \begin{bmatrix}\mathrm{Var}(x) & \mathrm{Cov}(x,y)\\ \mathrm{Cov}(x,y) & \mathrm{Var}(y)\end{bmatrix}$$</div>
+  <ul>
+    <li>A variable's covariance with itself is its variance, so the diagonal holds the variances.</li>
+    <li>\(\mathrm{Cov}(x,y) = \mathrm{Cov}(y,x)\), so \(C\) is symmetric.</li>
+    <li>With \(n\) features, \(C\) is \(n \times n\). For centred data the whole matrix is one product: \(C = \tfrac1m X^TX\).</li>
+    <li class="cdim">np.cov divides by \(m - 1\). Same eigenvectors, eigenvalues scaled by \(m/(m-1)\).</li>
+  </ul>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Uses</div>
+  <h2>Where covariance is used</h2>
+  <div class="beats two recap">
+    <div class="beat purpose"><h4>Finance</h4><p>Daily returns of Google and Meta rise together; the S&amp;P 500 and a volatility index move opposite. Mixing assets with low covariance spreads risk.</p></div>
+    <div class="beat purpose"><h4>Engineering</h4><p>Quantities that interact, such as temperature and pressure in a gas, vary together. Their covariance goes into the model.</p></div>
+    <div class="beat purpose"><h4>Machine learning</h4><p>Which features move together, and which are redundant. PCA is built entirely on this.</p></div>
+    <div class="beat purpose"><h4>Standardised data</h4><p>Turn every column into z-scores and the covariance matrix becomes the correlation matrix. PCA on it treats all units alike.</p></div>
+  </div>
 </section>
 
 <section class="act-body">
