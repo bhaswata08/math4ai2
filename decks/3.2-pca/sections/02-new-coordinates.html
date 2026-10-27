@@ -1,6 +1,7 @@
 <!-- ============================================================
-     ACT 2 of 9. Data in a new basis. Budget: 15 min.
-     Goal: X-hat = XP; centred stays centred; C = X^T X / m.
+     ACT 2 of 9. Data in a new basis. Budget: 20 min.
+     Goal: X-hat = XP; variance, covariance (Normalized Nerd's
+     rectangles), the covariance matrix, correlation; C = X^T X / m.
      Khapra CS7015 6.4, second half (the lemmas).
      ============================================================ -->
 
@@ -8,7 +9,7 @@
   <div class="act-num">Act 2 of 9</div>
   <h1>Data in a new basis</h1>
   <p class="act-sub">Every new coordinate is a dot product, so one matrix product rewrites the whole dataset.</p>
-  <div class="act-time">15 min</div>
+  <div class="act-time">20 min</div>
 </section>
 
 <section class="act-body">
@@ -43,23 +44,55 @@
   <p class="caption">Coordinate \(\alpha_{ij}\) is the length of the shadow of \(\mathbf x_i\) on \(\mathbf p_j\). Row \(i\) of \(XP\) holds all of them.</p>
 </section>
 
+<section class="clip-slide">
+  <h2>Variance: spread around the mean</h2>
+  <video class="clip" src="assets/clips/Variance1D.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Each distance from the mean, squared, is a square. Variance is the average square: \(\mathrm{Var}(x) = \tfrac1m\sum_i (x_i - \bar x)^2\).</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Two variances miss the trend</h2>
+  <video class="clip" src="assets/clips/TwoVariances.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Mirror the points: \(\mathrm{Var}(x)\) and \(\mathrm{Var}(y)\) stay the same, but the trend reverses. We need a number that sees how \(x\) and \(y\) move together.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Covariance: one rectangle per point</h2>
+  <video class="clip" src="assets/clips/CovarianceRectangles.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\((x_i - \bar x)(y_i - \bar y)\) is the signed area of the rectangle from the mean to the point. <span class="cr">Positive</span> above-right and below-left, <span class="cw">negative</span> in the other two corners.</p>
+</section>
+
 <section class="act-body">
-  <div class="act-tag"><b>Act 2</b> / Covariance</div>
-  <h2>The covariance matrix</h2>
-  <p>$$C_{jk} = \frac1m \sum_{i=1}^{m} (x_{ij} - \mu_j)(x_{ik} - \mu_k) \;\overset{\boldsymbol\mu = \mathbf 0}{=}\; \frac1m\,(\text{column } j)\cdot(\text{column } k)$$</p>
-  <div class="eq-big">$$C = \tfrac1m X^TX \in \mathbb R^{n \times n}$$</div>
+  <div class="act-tag"><b>Act 2</b> / Covariance matrix</div>
+  <h2>All the variances and covariances in one matrix</h2>
+  <div class="eq-big">$$C = \begin{bmatrix}\mathrm{Cov}(x,x) & \mathrm{Cov}(x,y)\\ \mathrm{Cov}(y,x) & \mathrm{Cov}(y,y)\end{bmatrix} = \begin{bmatrix}\mathrm{Var}(x) & \mathrm{Cov}(x,y)\\ \mathrm{Cov}(x,y) & \mathrm{Var}(y)\end{bmatrix}$$</div>
   <ul>
-    <li>Diagonal: \(C_{jj}\) is the variance of feature \(j\). Off-diagonal: covariance of features \(j\) and \(k\).</li>
-    <li>Symmetric: \(C^T = \tfrac1m X^T X = C\).</li>
+    <li>A variable's covariance with itself is its variance, so the diagonal holds the variances.</li>
+    <li>\(\mathrm{Cov}(x,y) = \mathrm{Cov}(y,x)\), so \(C\) is symmetric.</li>
+    <li>With \(n\) features, \(C\) is \(n \times n\). For centred data the whole matrix is one product: \(C = \tfrac1m X^TX\).</li>
     <li class="cdim">np.cov divides by \(m - 1\). Same eigenvectors, eigenvalues scaled by \(m/(m-1)\).</li>
   </ul>
 </section>
 
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Correlation</div>
+  <h2>Covariance gives the direction, correlation the strength</h2>
+  <div class="eq-big">$$\rho_{xy} = \frac{\mathrm{Cov}(x,y)}{\sqrt{\mathrm{Var}(x)}\,\sqrt{\mathrm{Var}(y)}} \in [-1, 1]$$</div>
+  <ul>
+    <li>Covariance changes if you change units (cm to m). Correlation does not.</li>
+    <li>\(\rho = 1\): a rising straight line. \(\rho = -1\): a falling one. \(\rho \approx 0\): no linear trend.</li>
+    <li>Correlation is not causation: a third variable can drive both.</li>
+  </ul>
+</section>
+
 <section class="clip-slide">
-  <h2>The sign of a covariance</h2>
-  <video class="clip" src="assets/clips/CovarianceSigns.mp4"></video>
+  <h2>Move the points, watch the numbers</h2>
+  <video class="clip" src="assets/clips/CovarianceMorph.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">Points in quadrants I and III add a positive product, II and IV a negative one. Here the positives win: \(C_{12} = 1.5\).</p>
+  <p class="caption">The same points rearranged: flat, a rising line, a noisy cloud, a falling line, a blob. Covariance follows the direction; \(\rho\) measures how close the points are to a line.</p>
 </section>
 
 <section class="act-body">
