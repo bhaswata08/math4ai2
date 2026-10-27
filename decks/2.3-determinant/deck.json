@@ -1,0 +1,11 @@
+{
+  "title": "Determinant, rank, trace \u00b7 Mathematics for AI 2.3",
+  "sections": [
+    "00-open.html",
+    "01-determinant.html",
+    "02-invertible.html",
+    "03-rank.html",
+    "04-trace.html",
+    "05-recap.html"
+  ]
+}

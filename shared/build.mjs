@@ -48,11 +48,22 @@ let slides = '';
 for (const file of cfg.sections) {
   slides += `\n<!-- ===== ${file} ===== -->\n` + (await readFile(join(DECK, 'sections', file), 'utf8'));
 }
+// Drop author comments (and commented-out slides) so their clips are not inlined.
+slides = slides.replace(/<!--(?! =====)[\s\S]*?-->/g, '');
 const media = [...new Set([...slides.matchAll(/(?:src|poster)="((?:assets|\.\.\/\.\.\/shared\/assets)\/[^"]+)"/g)].map((m) => m[1]))];
 for (const src of media) slides = slides.split(`"${src}"`).join(`"${await dataUri(join(DECK, src))}"`);
 
+// The chalkboard plugin finds its images (chalk cursors, sponge, board texture)
+// next to its own script URL. An inline script has no URL, so inline them.
+async function inlineJs(rel) {
+  let js = await readFile(join(ROOT, rel), 'utf8');
+  const imgs = [...new Set([...js.matchAll(/path \+ '(img\/[\w-]+\.png)'/g)].map((m) => m[1]))];
+  for (const img of imgs) js = js.split(`path + '${img}'`).join(JSON.stringify(await dataUri(join(ROOT, dirname(rel), img))));
+  return js;
+}
+
 const scripts = [];
-for (const rel of manifest.js) scripts.push(script(await readFile(join(ROOT, rel), 'utf8')));
+for (const rel of manifest.js) scripts.push(script(await inlineJs(rel)));
 for (const rel of cfg.scripts ?? []) scripts.push(script(await readFile(join(DECK, rel), 'utf8')));
 scripts.push(script(`window.DECK = ${JSON.stringify(cfg)};`));
 scripts.push(script(await readFile(join(ROOT, manifest.boot), 'utf8')));

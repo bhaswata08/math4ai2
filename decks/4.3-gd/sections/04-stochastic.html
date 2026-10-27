@@ -10,12 +10,12 @@
   <div class="act-num">Act 4 of 6</div>
   <h1>Batch, mini-batch, stochastic</h1>
   <p class="act-sub">The full gradient is an average over the data. You do not have to compute all of it.</p>
-  <div class="act-time">25 min</div>
 </section>
 
 <section class="act-body">
   <div class="act-tag"><b>Act 4</b> / The loss is an average</div>
   <h2>Estimate the gradient from a sample</h2>
+  <p style="font-size:0.85em; margin:0">Training data is \(\{(\mathbf x_i, y_i)\}_{i=1}^{N}\). \(\ell_i(\mathbf w)\) is the loss on example \(i\), and \(L = \tfrac1N\sum_i \ell_i\) is the average. A batch is a random subset of \(B\) examples. Its average gradient estimates the full one, and on average equals \(\nabla L\).</p>
   $$\nabla L(\mathbf w) = \frac1N \sum_{i=1}^{N} \nabla \ell_i(\mathbf w) \;\approx\; \frac1B \sum_{i \in \text{batch}} \nabla \ell_i(\mathbf w)$$
   <div class="beats" style="font-size:1.35em;margin-top:1.2em">
     <div class="beat purpose"><h4>Batch</h4><p>\(B = N\). The exact gradient, one update per pass over the data.</p></div>

@@ -9,14 +9,13 @@
   <div class="act-num">Act 3 of 6</div>
   <h1>Multiplication is composition</h1>
   <p class="act-sub">A product of matrices is one map done after another.</p>
-  <div class="act-time">20 min</div>
 </section>
 
 <section class="clip-slide">
   <h2>Shear, then rotate</h2>
   <video class="clip" src="assets/clips/ComposeMaps.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">Apply \(S\) first, then \(R\). The single matrix that does both is \(RS\). Swap them and the result differs.</p>
+  <p class="caption">First \(S = \begin{bmatrix} 1 & 1 \\ 0 & 1 \end{bmatrix}\), then \(R = \begin{bmatrix} 0 & -1 \\ 1 & 0 \end{bmatrix}\): one map \(RS = \begin{bmatrix} 0 & -1 \\ 1 & 1 \end{bmatrix}\). The other order gives \(SR = \begin{bmatrix} 1 & -1 \\ 1 & 0 \end{bmatrix}\).</p>
 </section>
 
 <section class="act-body">
@@ -66,6 +65,20 @@
     <li>Identity: \(AI = IA = A\)</li>
     <li><b>Not</b> commutative: usually \(AB \neq BA\)</li>
   </ul>
+</section>
+
+<section class="clip-slide">
+  <h2>Two turns in 3D</h2>
+  <video class="clip" src="assets/clips/VKComposeXZ.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Let \(A\) turn the cube 60&deg; about the \(x\)-axis and \(B\) turn it 45&deg; about the \(z\)-axis. Doing \(A\) first, then \(B\), lands exactly on the single matrix \(BA\) (left).</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Same two turns, other order</h2>
+  <video class="clip" src="assets/clips/VKComposeZX.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Now \(B\) first, then \(A\). The cube ends up facing a different way from \(BA\) on the left, so \(AB \neq BA\).</p>
 </section>
 
 <section class="act-body">

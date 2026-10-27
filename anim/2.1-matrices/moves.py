@@ -44,7 +44,7 @@ class ManyArrows(Scene):
     def construct(self):
         U = 0.8
         A = np.array([[1.0, 2.0], [0.0, 1.0]])
-        bg = lin_plane(U).fade(0.65)
+        bg = ghost_plane(U)
         grid = lin_plane(U)
         mat = matrix_tex([[1, 2], [0, 1]], col_colors=(None, None))
         mat.to_corner(UL, buff=0.25)

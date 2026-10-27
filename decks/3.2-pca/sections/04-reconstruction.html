@@ -11,7 +11,6 @@
   <div class="act-num">Act 4 of 9</div>
   <h1>Lose the least, keep the most</h1>
   <p class="act-sub">Interpretations 2 and 3: the smallest reconstruction error and the largest variance turn out to be the same goal.</p>
-  <div class="act-time">18 min</div>
 </section>
 
 <section class="act-body">
@@ -60,7 +59,7 @@
   <div class="eq-big">$$\mathbf p^TC\mathbf p = \lambda_1 c_1^2 + \lambda_2 c_2^2$$</div>
   <ul>
     <li>This is a weighted average of \(\lambda_1\) and \(\lambda_2\). It is largest when all the weight is on \(\lambda_1\), that is, at \(\mathbf p = \mathbf p_1\).</li>
-    <li>Our data: any direction keeps between \(0.25\) and \(4\). \(\mathbf p_1\) keeps \(4\) and loses \(0.25\).</li>
+    <li>For the 40-point cloud, \(C = \begin{bmatrix}3.25&1.5\\1.5&1\end{bmatrix}\) has \(\lambda_1 = 4\), \(\lambda_2 = 0.25\): any direction keeps between \(0.25\) and \(4\). \(\mathbf p_1\) keeps \(4\) and loses \(0.25\).</li>
     <li>The same holds in \(n\) dimensions. To keep \(k\) directions, take the eigenvectors of the \(k\) largest eigenvalues. The loss is the sum of the eigenvalues you drop.</li>
   </ul>
 </section>
@@ -69,5 +68,5 @@
   <h2>Keep one direction</h2>
   <video class="clip" src="assets/clips/KeepTopK.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">Drop <span class="cw">\(\mathbf p_2\)</span>: each point becomes one number \(\alpha_{i1}\). The column \(X\mathbf p_1\) keeps \(4/4.25 = 94\%\) of the variance.</p>
+  <p class="caption">The 40-point cloud: drop <span class="cw">\(\mathbf p_2\)</span>, and each point becomes one number \(\alpha_{i1}\). The column \(X\mathbf p_1\) keeps \(4/4.25 = 94\%\) of the variance.</p>
 </section>

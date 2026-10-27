@@ -11,7 +11,6 @@
   <div class="act-num">Act 3 of 4</div>
   <h1>Convex optimisation</h1>
   <p class="act-sub">The class of problems where "found a minimum" means "found the minimum".</p>
-  <div class="act-time">20 min</div>
 </section>
 
 <section class="clip-slide">
@@ -46,10 +45,11 @@
   <div class="act-tag"><b>Act 3</b> / Definition</div>
   <h2>A convex problem</h2>
   <div class="eq-big">$$\min_{\mathbf x}\; f(\mathbf x) \quad \text{s.t.}\quad g_i(\mathbf x) \le 0,\quad A\mathbf x = \mathbf b$$</div>
-  <div class="beats two" style="font-size:1.25em">
-    <div class="beat purpose"><h4>Requirements</h4><p>\(f\) and every \(g_i\) convex; equality constraints affine. Then the feasible set is convex.</p></div>
-    <div class="beat purpose"><h4>Guarantee</h4><p>Every local minimum is global, and solvers find it reliably. Inequalities are handled by the KKT conditions, the generalisation of Lagrange.</p></div>
+  <div class="beats two" style="font-size:1.15em">
+    <div class="beat purpose"><h4>Terms</h4><p>\(f\) is the objective. Each \(g_i\) is an inequality constraint. \(A\mathbf x = \mathbf b\) is a set of linear equality constraints. The feasible set is \(C = \{\mathbf x \mid g_i(\mathbf x) \le 0,\ A\mathbf x = \mathbf b\}\).</p></div>
+    <div class="beat purpose"><h4>Requirements</h4><p>\(f\) and every \(g_i\) convex. Then \(C\) is convex.</p></div>
   </div>
+  <p class="takeaway" style="font-size:1em">Payoff: every local minimum is a global minimum, and solvers find it reliably.</p>
 </section>
 
 <section class="act-body">
@@ -58,15 +58,15 @@
   <div class="clip-row" style="grid-template-columns:1.8fr 1fr">
     <video class="clip" src="assets/clips/ActiveVsInactive.mp4"></video>
     <div style="font-size:0.9em">
-      <p>Minimise \(f\) over the disc \(g \le 0\).</p>
+      <p>Minimise \(f(\mathbf x) = \lVert\mathbf x - \mathbf c\rVert^2\) (squared distance to a centre \(\mathbf c\)) subject to \(g(\mathbf x) = \lVert\mathbf x\rVert^2 - 1 \le 0\): the unit disc. Set \(\mathcal L = f + \lambda g\).</p>
       <ul>
-        <li><span class="cr">Centre outside:</span> optimum on the boundary: <b>active</b>, \(\lambda &gt; 0\)</li>
+        <li><span class="cr">Centre outside:</span> optimum on the boundary, \(g = 0\): <b>active</b>, \(\lambda &gt; 0\)</li>
         <li><span class="cr">Centre inside:</span> free minimum: <b>inactive</b>, \(\lambda = 0\)</li>
       </ul>
     </div>
   </div>
   <span class="fragment clip-play"></span>
-  <p class="takeaway" style="font-size:1.1em">KKT in one line: \(\nabla f + \lambda\nabla g = 0,\ \lambda \ge 0,\ \lambda\,g = 0\). Either the constraint binds (\(g = 0\)) or its multiplier is zero. This is complementary slackness.</p>
+  <p class="takeaway" style="font-size:0.85em">KKT: \(\nabla f + \lambda\nabla g = 0,\ \lambda \ge 0,\ \lambda\,g = 0\). Either the constraint binds (\(g = 0\)) or \(\lambda = 0\). Act 2 maximised with \(\mathcal L = f - \lambda(g - c)\); here we minimise, so the sign flips.</p>
 </section>
 
 <section class="act-body">

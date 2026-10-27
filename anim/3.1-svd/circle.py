@@ -216,6 +216,10 @@ class SingularPairs(MovingCameraScene):
         FR[0] = frame
         plane = lin_plane(SC)
         fix_strokes(plane)
+        # The camera zooms, so keep the faint grid as thin as fix_strokes keeps the plane.
+        ghost_grid = ghost_plane(SC)
+        ghost_grid.add_updater(lambda m: m.set_stroke(width=KK()))
+        ghost_grid.update(0)
         tr = ValueTracker(0)
 
         def M_now():
@@ -245,7 +249,7 @@ class SingularPairs(MovingCameraScene):
         mark0.add_updater(lambda m: m.set_stroke(width=3 * KK()))
         mark0.update(0)
         cap1 = pin(frame, corner_label(frame, r"\text{perpendicular in}"))
-        self.add(plane, circ, arr, lv1, lv2, mark0, cap1)
+        self.add(ghost_grid, plane, circ, arr, lv1, lv2, mark0, cap1)
         self.wait(1.4)
 
         cap2 = pin(frame, corner_label(frame, r"\text{apply }A"))

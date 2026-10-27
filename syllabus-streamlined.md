@@ -54,23 +54,30 @@ Each topic appears once. Later blocks build only on earlier ones.
 - Hadamard (element-wise) product
 - Affine maps: linear map plus translation
 
-### Block 2.2 — Determinant, inverse, rank
+### Block 2.2 — Special matrices
+
+Follows the order of Visual Kernel's "SEE Matrix" videos.
 
 - Identity matrix
-- Determinant: how a map scales area and volume
+- Scalar, one-axis scaling, reflection and diagonal matrices; the zero matrix
+- Shear
+- Orthogonal matrices and rotations
+- Projection
 - Invertible matrices and the inverse
+- Symmetric, positive definite and positive semi-definite matrices
+- How the matrix types relate (one family-tree diagram)
+
+### Block 2.3 — Determinant, rank, trace
+
+- Determinant: how a map scales area and volume
+- The determinant decides invertibility; the 2×2 inverse
 - Rank and its link to linear independence
 - Trace
 
-### Block 2.3 — Special matrices
-
-- Symmetric, diagonal, orthogonal matrices
-- Positive definite and positive semi-definite matrices
-- How the matrix types relate (one family-tree diagram)
-- Eigenvalues and eigenvectors: concept and intuition
-
 ### Block 2.4 — Eigendecomposition
 
+- Composition and decomposition
+- Eigenvalues and eigenvectors: concept and intuition
 - Computing eigenvalues and eigenvectors
 - Diagonalization
 - Eigenvectors of symmetric matrices

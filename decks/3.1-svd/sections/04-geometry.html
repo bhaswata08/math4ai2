@@ -8,7 +8,6 @@
   <div class="act-num">Act 4 of 6</div>
   <h1>Rotate, stretch, rotate</h1>
   <p class="act-sub">Read \(U\Sigma V^T\) from right to left and watch each factor move space.</p>
-  <div class="act-time">20 min</div>
 </section>
 
 <section class="clip-slide">
@@ -39,9 +38,10 @@
 <section class="act-body">
   <div class="act-tag"><b>Act 4</b> / 3D to 2D</div>
   <h2>Example: a \(2 \times 3\) matrix</h2>
-  <div class="eq-big">\(A = \begin{bmatrix}3&2&2\\2&3&-2\end{bmatrix}\)</div>
-  <p>\(AA^T = \begin{bmatrix}17&8\\8&17\end{bmatrix}\) has eigenvalues 25 and 9, so \(\sigma_1 = 5\) and \(\sigma_2 = 3\).</p>
-  <p>\(U\) rotates by 45 degrees. \(V^T\) is a \(3 \times 3\) rotation. \(\Sigma = \begin{bmatrix}5&0&0\\0&3&0\end{bmatrix}\).</p>
+  <div class="eq-big">\(A = \begin{bmatrix}3&2&2\\2&3&-2\end{bmatrix} \qquad AA^T = \begin{bmatrix}17&8\\8&17\end{bmatrix}\)</div>
+  <p>The characteristic equation is \((17-\lambda)^2 - 64 = 0\), so \(\lambda = 25,\ 9\).</p>
+  <p class="fragment">\((AA^T - \lambda I)\mathbf{u} = 0\) gives <span class="cr">\(\mathbf{u}_1 = \tfrac{1}{\sqrt2}(1,1)\)</span> for 25 and <span class="cr">\(\mathbf{u}_2 = \tfrac{1}{\sqrt2}(1,-1)\)</span> for 9. \(U\) rotates by 45 degrees.</p>
+  <p class="fragment">\(\sigma_i = \sqrt{\lambda_i} = 5,\ 3\), so \(\Sigma = \begin{bmatrix}5&0&0\\0&3&0\end{bmatrix}\). The \(\mathbf{v}_i = A^T\mathbf{u}_i/\sigma_i\) are the first two rows of the \(3 \times 3\) rotation \(V^T\).</p>
 </section>
 
 <section class="clip-slide">
@@ -97,6 +97,7 @@
   <div class="act-tag"><b>Act 4</b> / 2D to 3D</div>
   <h2>Example: a \(3 \times 2\) matrix</h2>
   <div class="eq-big">\(A = \begin{bmatrix}2&1\\3&1\\0&1.8\end{bmatrix}\)</div>
+  <p>\(A^TA = \begin{bmatrix}13&5\\5&5.24\end{bmatrix}\): trace 18.24, determinant 43.12, so \(\lambda^2 - 18.24\lambda + 43.12 = 0\) and \(\lambda \approx 15.45,\ 2.79\).</p>
   <p>\(\sigma_1 = 3.93\), \(\sigma_2 = 1.67\). \(\Sigma = \begin{bmatrix}3.93&0\\0&1.67\\0&0\end{bmatrix}\) is a dimension adder with stretches.</p>
 </section>
 

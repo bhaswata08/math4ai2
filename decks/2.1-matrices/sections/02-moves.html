@@ -9,7 +9,6 @@
   <div class="act-num">Act 2 of 6</div>
   <h1>A matrix moves vectors</h1>
   <p class="act-sub">Feed in a vector, get a vector out. Do it to every point at once.</p>
-  <div class="act-time">25 min</div>
 </section>
 
 <section class="clip-slide">
@@ -44,27 +43,31 @@
   <h2>Mix the columns</h2>
   <video class="clip" src="assets/clips/ColumnsCombine.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">\(\mathbf{v} = 1\hat\imath + 2\hat\jmath\) becomes <span class="cx">1 &middot; col&#8321;</span> + <span class="cy">2 &middot; col&#8322;</span>.</p>
+  <p class="caption">For \(A = \begin{bmatrix} 2 & -1 \\ 1 & 1 \end{bmatrix}\): <span class="cx">\(1\cdot(2,1)\)</span> + <span class="cy">\(2\cdot(-1,1)\)</span> = \((0,3)\).</p>
 </section>
 
 <section class="clip-slide">
   <h2>The amounts scale the columns</h2>
   <video class="clip" src="assets/clips/ColumnMixFormula.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">For \(\mathbf{v} = (2, 3)\): <span class="cx">2 &middot; col&#8321;</span> + <span class="cy">3 &middot; col&#8322;</span> lands on \((1, 5)\).</p>
+  <p class="caption">For \(A = \begin{bmatrix} 2 & -1 \\ 1 & 1 \end{bmatrix}\) and \(\mathbf{v} = (2,3)\): <span class="cx">\(2\cdot(2,1)\)</span> + <span class="cy">\(3\cdot(-1,1)\)</span> = \((1,5)\).</p>
 </section>
 
 <section class="act-body">
   <div class="act-tag"><b>Act 2</b> / Formula</div>
   <h2>\(A\mathbf{v}\) is a mix of columns</h2>
-  $$\begin{bmatrix} a & b \\ c & d \end{bmatrix}\begin{bmatrix} x \\ y \end{bmatrix}
-  = x\,\color{#8bd17c}{\begin{bmatrix} a \\ c \end{bmatrix}} + y\,\color{#e8798a}{\begin{bmatrix} b \\ d \end{bmatrix}}$$
-  <p>The entries of \(\mathbf{v}\) are the <b>amounts</b> of each column.</p>
+  <p>Write \(\mathbf{v} = x\,\hat\imath + y\,\hat\jmath\). Then</p>
+  $$A\mathbf{v} = A(x\,\hat\imath + y\,\hat\jmath) = x\,(A\hat\imath) + y\,(A\hat\jmath)$$
+  <p class="fragment">\(A\hat\imath\) is column 1 and \(A\hat\jmath\) is column 2, so</p>
+  <p class="fragment">$$\begin{bmatrix} a & b \\ c & d \end{bmatrix}\begin{bmatrix} x \\ y \end{bmatrix}
+  = x\,\color{#8bd17c}{\begin{bmatrix} a \\ c \end{bmatrix}} + y\,\color{#e8798a}{\begin{bmatrix} b \\ d \end{bmatrix}}$$</p>
+  <p class="fragment">The entries of \(\mathbf{v}\) are the <b>amounts</b> of each column.</p>
 </section>
 
 <section class="act-body">
   <div class="act-tag"><b>Act 2</b> / Linear</div>
   <h2>What "linear" means</h2>
+  <p>Let \(T\) send vectors to vectors, e.g. \(T(\mathbf{v}) = A\mathbf{v}\). \(T\) is linear when</p>
   $$T(\mathbf{u} + \mathbf{v}) = T(\mathbf{u}) + T(\mathbf{v}) \qquad T(c\,\mathbf{v}) = c\,T(\mathbf{v})$$
   <p>In the picture: grid lines stay <b>straight</b>, stay <b>parallel</b>, stay <b>evenly spaced</b>, and the <b>origin stays put</b>.</p>
   <p class="takeaway">Every matrix is a linear map, and every linear map of the plane is a matrix.</p>

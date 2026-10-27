@@ -10,7 +10,6 @@
   <div class="act-num">Act 3 of 5</div>
   <h1>Minima, maxima, saddles</h1>
   <p class="act-sub">Where the gradient vanishes, the Hessian decides what you are standing on.</p>
-  <div class="act-time">20 min</div>
 </section>
 
 <section class="clip-slide">
@@ -24,7 +23,19 @@
   <h2>One function, two flat points</h2>
   <video class="clip" src="assets/clips/CriticalPointsNumbers.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">For \(f = x^3 + 2xy - y^2\), \(\nabla f = 0\) at \((0,0)\) and \((-\tfrac23,-\tfrac23)\). Eigenvalues \(1.24, -3.24\): saddle. \(-0.76, -5.24\): maximum.</p>
+  <p class="caption">\(\partial f/\partial y = 2x - 2y = 0\) gives \(y = x\); \(\partial f/\partial x = x(3x+2) = 0\) gives \(x = 0\) or \(-\tfrac23\). At \((0,0)\): \(\lambda = -1 \pm \sqrt5\) (\(1.24, -3.24\)), mixed signs, saddle. At \((-\tfrac23,-\tfrac23)\): \(\lambda = -3 \pm \sqrt5\) (\(-0.76, -5.24\)), both negative, maximum.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Worked example</div>
+  <h2>Solve \(\nabla f = \mathbf 0\)</h2>
+  <div style="font-size:1.2em">$$f = x^3 + 2xy - y^2 \qquad \nabla f = \begin{bmatrix} 3x^2 + 2y \\ 2x - 2y \end{bmatrix} = \mathbf 0$$</div>
+  <ol class="practice" style="font-size:1.05em">
+    <li class="fragment">\(2x - 2y = 0 \Rightarrow y = x\).</li>
+    <li class="fragment">\(3x^2 + 2x = x(3x + 2) = 0 \Rightarrow x = 0\) or \(x = -\tfrac23\).</li>
+    <li class="fragment">\(H(0,0) = \begin{bmatrix} 0 & 2 \\ 2 & -2 \end{bmatrix}\), \(\lambda = -1 \pm \sqrt5\) (\(1.24, -3.24\)): saddle.</li>
+    <li class="fragment">\(H(-\tfrac23,-\tfrac23) = \begin{bmatrix} -4 & 2 \\ 2 & -2 \end{bmatrix}\), \(\lambda = -3 \pm \sqrt5\) (\(-0.76, -5.24\)): maximum.</li>
+  </ol>
 </section>
 
 <section class="act-body">

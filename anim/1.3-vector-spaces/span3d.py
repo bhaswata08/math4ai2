@@ -106,7 +106,7 @@ class Span3D(ThreeDScene):
 
 class ThirdVector3D(ThreeDScene):
     def construct(self):
-        self.set_camera_orientation(phi=68 * DEGREES, theta=-50 * DEGREES)
+        self.set_camera_orientation(phi=76 * DEGREES, theta=-50 * DEGREES, zoom=0.64)
 
         axes = ThreeDAxes(
             x_range=[-4, 4, 1],
@@ -208,8 +208,11 @@ class ThirdVector3D(ThreeDScene):
         )
         self.wait(3.0)
 
-        # Case 2: u moves off the plane (points up into 3D)
-        u_off_coords = np.array([0.2, 0.4, 2.1])
+        # Case 2: u leaves the plane. It points mostly along the plane's
+        # normal, so the gap between u and the plane reads from every angle.
+        normal = np.cross(v_coords, w_coords)
+        normal /= np.linalg.norm(normal)
+        u_off_coords = 0.25 * v_coords + 1.8 * normal
         u_off_arrow = Arrow3D(
             start=ORIGIN,
             end=u_off_coords,
@@ -219,9 +222,11 @@ class ThirdVector3D(ThreeDScene):
             resolution=8,
             color=HIGHLIGHT,
         )
+        foot = u_off_coords - np.dot(u_off_coords, normal) * normal
+        drop = DashedLine(u_off_coords, foot, color=HIGHLIGHT, stroke_width=2.5)
 
         case2_text = Tex(
-            r"$\vec{u}$ off the plane: span is all of $\mathbb{R}^3$",
+            r"$\vec{u}$ off the plane: a new direction",
             font_size=MIN_FONT,
             color=HIGHLIGHT,
         )
@@ -231,11 +236,47 @@ class ThirdVector3D(ThreeDScene):
         self.play(
             Transform(u_arrow, u_off_arrow),
             FadeOut(case1_text),
-            FadeIn(case2_text, shift=0.1 * DOWN),
             run_time=2.0,
         )
         self.add_fixed_in_frame_mobjects(case2_text)
-        self.wait(3.5)
+        self.play(FadeIn(case2_text, shift=0.1 * DOWN), Create(drop), run_time=1.2)
+        self.wait(2.0)
+
+        # Slide copies of the plane along u, above and below. Together with
+        # the edges they sweep out, they fill a solid block of space.
+        steps = [0.2, 0.4, 0.6, 0.8]
+        layers = []
+        for k in steps:
+            for sign in (1, -1):
+                layer = span_plane.copy()
+                layer.set_fill(opacity=0.12).set_stroke(opacity=0.6, width=1.5)
+                layer.shift(sign * k * u_off_coords)
+                layers.append(layer)
+        edges = VGroup(*[
+            Line(p - 0.8 * u_off_coords, p + 0.8 * u_off_coords, color=RESULT_COLOR, stroke_width=2.0)
+            for p in (p1, p2, p3, p4)
+        ])
+
+        case3_text = Tex(
+            r"Planes slid along $\vec{u}$ fill all of $\mathbb{R}^3$",
+            font_size=MIN_FONT,
+            color=HIGHLIGHT,
+        )
+        case3_text.to_edge(DOWN, buff=0.35)
+        case3_text.add_background_rectangle(color=BG, opacity=0.9, buff=0.1)
+
+        self.play(FadeOut(drop), FadeOut(case2_text), run_time=0.6)
+        self.add_fixed_in_frame_mobjects(case3_text)
+        self.play(
+            LaggedStart(
+                *[TransformFromCopy(span_plane, layer) for layer in layers],
+                lag_ratio=0.3,
+            ),
+            Create(edges),
+            FadeIn(case3_text, shift=0.1 * DOWN),
+            run_time=4.0,
+        )
+        self.wait(4.0)
 
         self.stop_ambient_camera_rotation()
         self.wait(1.0)

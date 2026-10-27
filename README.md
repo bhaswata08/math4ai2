@@ -7,7 +7,7 @@ Edition. Dark theme.
 ## Layout
 
     flake.nix, flake.lock    pinned dev shell: manim (tests skipped, see flake), node, ffmpeg, chromium
-    package.json             reveal.js, katex, fonts (vendored through node_modules, no CDN)
+    package.json             reveal.js, chalkboard plugin, katex, fonts (vendored through node_modules, no CDN)
     shared/
       css/custom.css         theme tokens and slide archetypes, shared by every deck
       js/                    deck loader, video playback, interactive figures
@@ -93,6 +93,18 @@ Interactive figures: `<div data-fig="name">` in a section, and a deck script
 (listed under `scripts` in deck.json) that calls `Figures.register(name, mount)`.
 `shared/js/plane.js` gives a coordinate plane with arrows, dashed segments,
 KaTeX labels and draggable handles. Colours come from `role('v')` etc.
+
+Annotation (reveal.js-plugins chalkboard, set up in `shared/js/deck.js`): `C`
+draws on the slide, `B` opens a blank chalkboard, `X`/`Y` change colour, `DEL`
+clears the current slide, `D` downloads the drawings as JSON. `B` no longer
+blacks out the screen; `.` still does. Drawings persist across a reload in the
+same browser tab.
+
+On a tablet with no keyboard, tap the small pen tab on the left edge. It opens
+a toolbar with previous, next, pen, board and clear; turning the pen or board
+off closes it again. Use the toolbar's previous and next while the pen is on,
+because the drawing layer takes swipes and covers reveal's arrows. Closed, the
+tab sits in the margin strip the slide never reaches, so it hides nothing.
 
 ## House rules for content
 

@@ -9,7 +9,6 @@
   <div class="act-num">Act 3 of 9</div>
   <h1>Interpretation 1: decorrelate</h1>
   <p class="act-sub">Ask for new coordinates with zero covariance, and the eigenvectors of \(C\) are the answer.</p>
-  <div class="act-time">12 min</div>
 </section>
 
 <section class="act-body">
@@ -48,22 +47,14 @@
   <h2>The four points, decorrelated</h2>
   <div class="cols" style="align-items:center">
     <div>
-      <p>$$\det(C - \lambda I) = (2.5 - \lambda)^2 - 1.5^2 = 0$$</p>
-      <p>\(\lambda_1 = 4\), \(\mathbf p_1 = \tfrac{1}{\sqrt2}(1, 1)\)<br>\(\lambda_2 = 1\), \(\mathbf p_2 = \tfrac{1}{\sqrt2}(1, -1)\)</p>
+      <p>$$(2.5 - \lambda)^2 = 1.5^2 \Rightarrow 2.5 - \lambda = \pm 1.5 \Rightarrow \lambda = 4,\ 1$$</p>
+      <p>\(C - 4I = \begin{bmatrix}-1.5&1.5\\1.5&-1.5\end{bmatrix}\), so \(\mathbf p_1 \propto (1, 1)\).<br>\(C - I = \begin{bmatrix}1.5&1.5\\1.5&1.5\end{bmatrix}\), so \(\mathbf p_2 \propto (1, -1)\).</p>
+      <p>Unit length: \(\mathbf p_1 = \tfrac{1}{\sqrt2}(1, 1)\), \(\mathbf p_2 = \tfrac{1}{\sqrt2}(1, -1)\).</p>
     </div>
-    <div>
+    <div class="fragment">
       <p>$$\hat X = XP = \begin{bmatrix}2\sqrt2&0\\-2\sqrt2&0\\0&\sqrt2\\0&-\sqrt2\end{bmatrix}$$</p>
       <p>$$\hat C = \tfrac14\hat X^T\hat X = \begin{bmatrix}4&0\\0&1\end{bmatrix}$$</p>
     </div>
   </div>
-  <p class="takeaway">In the new coordinates the two features are uncorrelated, and the first holds \(4/5 = 80\%\) of the variance.</p>
-</section>
-
-<section class="act-body">
-  <div class="act-tag"><b>Act 3</b> / Open question</div>
-  <h2>Which directions do we keep?</h2>
-  <ul>
-    <li>Interpretation 1 fixes the basis, but it treats every eigenvector the same.</li>
-    <li>We still have to choose which \(k\) of the \(n\) directions to keep. Intuition says keep the large \(\lambda_j\). Act 4 shows why.</li>
-  </ul>
+  <p class="takeaway fragment">In the new coordinates the two features are uncorrelated, and the first holds \(4/5 = 80\%\) of the variance.</p>
 </section>

@@ -11,7 +11,6 @@
   <div class="act-num">Act 3 of 5</div>
   <h1>Backpropagation</h1>
   <p class="act-sub">The chain rule from Day 3, applied to a network, from the loss backwards.</p>
-  <div class="act-time">35 min</div>
 </section>
 
 <section class="clip-slide">
@@ -32,7 +31,7 @@
   <h2>Three local factors</h2>
   <video class="clip" src="assets/clips/ChainRuleProduct.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">Multiply the factors along the path: the chain rule from Block 3.3.</p>
+  <p class="caption">With \(C = (a^{(L)}-y)^2\): \(\dfrac{\partial C}{\partial w^{(L)}} = \dfrac{\partial C}{\partial a^{(L)}}\cdot\dfrac{\partial a^{(L)}}{\partial z^{(L)}}\cdot\dfrac{\partial z^{(L)}}{\partial w^{(L)}}\) \(= 2(a^{(L)}-y)\cdot\sigma'(z^{(L)})\cdot a^{(L-1)}\).</p>
 </section>
 
 <section class="clip-slide">
@@ -52,8 +51,9 @@
 <section class="act-body">
   <div class="act-tag"><b>Act 3</b> / With many neurons</div>
   <h2>The same equations, in matrix form</h2>
-  $$\boldsymbol\delta^{(L)} = \nabla_{\mathbf a} C \odot \sigma'(\mathbf z^{(L)}) \qquad \boldsymbol\delta^{(l)} = \big(W^{(l+1)\top}\boldsymbol\delta^{(l+1)}\big) \odot \sigma'(\mathbf z^{(l)})$$
-  $$\frac{\partial C}{\partial W^{(l)}} = \boldsymbol\delta^{(l)}\,\mathbf a^{(l-1)\top} \qquad \frac{\partial C}{\partial \mathbf b^{(l)}} = \boldsymbol\delta^{(l)}$$
+  <p style="font-size:0.95em">Layer \(l\) computes \(\mathbf z^{(l)} = W^{(l)}\mathbf a^{(l-1)} + \mathbf b^{(l)}\) and \(\mathbf a^{(l)} = \sigma(\mathbf z^{(l)})\). Define the error \(\boldsymbol\delta^{(l)} := \partial C/\partial \mathbf z^{(l)}\). Then:</p>
+  <div class="fragment">$$\boldsymbol\delta^{(L)} = \nabla_{\mathbf a} C \odot \sigma'(\mathbf z^{(L)}) \qquad \boldsymbol\delta^{(l)} = \big(W^{(l+1)\top}\boldsymbol\delta^{(l+1)}\big) \odot \sigma'(\mathbf z^{(l)})$$</div>
+  <div class="fragment">$$\frac{\partial C}{\partial W^{(l)}} = \boldsymbol\delta^{(l)}\,\mathbf a^{(l-1)\top} \qquad \frac{\partial C}{\partial \mathbf b^{(l)}} = \boldsymbol\delta^{(l)}$$</div>
   <p class="takeaway">\(\odot\) is the Hadamard product from Block 2.1. The transpose is Act 2's \(W^{\top}\boldsymbol\delta\).</p>
 </section>
 

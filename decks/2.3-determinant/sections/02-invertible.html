@@ -1,0 +1,57 @@
+<!-- ============================================================
+     ACT 2 of 5. Inverse. Budget: 20 min.
+     Goal: inverse = undo; exists iff det != 0; 2x2 formula;
+     (AB)^-1; solve rather than inv.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 2 of 5</div>
+  <h1>The determinant and the inverse</h1>
+  <p class="act-sub">One number says whether a map can be undone, and gives the 2×2 inverse.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / 2×2</div>
+  <h2>Inverse of a 2×2</h2>
+  $$\begin{bmatrix}a&b\\c&d\end{bmatrix}^{-1} = \frac{1}{ad-bc}\begin{bmatrix}d&-b\\-c&a\end{bmatrix}$$
+  <p>Swap \(a\) and \(d\), negate \(b\) and \(c\), divide by the determinant.</p>
+  <p class="fragment">Check, needing \(ad - bc \ne 0\): \(\tfrac{1}{ad-bc}\begin{bmatrix}d&-b\\-c&a\end{bmatrix}\begin{bmatrix}a&b\\c&d\end{bmatrix} = \tfrac{1}{ad-bc}\begin{bmatrix}ad-bc&0\\0&ad-bc\end{bmatrix} = I\).</p>
+  <p class="fragment">\(\begin{bmatrix}3&1\\2&2\end{bmatrix}^{-1} = \tfrac14\begin{bmatrix}2&-1\\-2&3\end{bmatrix}\), since \(\det = 6 - 2 = 4\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Singular</div>
+  <h2>The determinant decides</h2>
+  <div class="beats two">
+    <div class="beat purpose"><h4>\(\det A \ne 0\)</h4><p>Invertible. Areas are scaled, never flattened to 0.</p></div>
+    <div class="beat purpose"><h4>\(\det A = 0\)</h4><p>Singular. Areas go to 0: the squashing of Block 2.2.</p></div>
+  </div>
+</section>
+
+<!-- Commented out: the step-counting idea did not land.
+<section class="clip-slide">
+  <h2>Solving is reading coordinates</h2>
+  <video class="clip" src="assets/clips/SolveAsCoordinates.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(A\mathbf{x} = x_1\mathbf{a}_1 + x_2\mathbf{a}_2\), so solving asks how many steps along each column reach \(\mathbf{b}\): here 1 and 2. \(A^{-1}\) straightens the slanted grid and \(\mathbf{b}\) lands on \(\mathbf{x} = (1,2)\).</p>
+</section>
+-->
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Solving</div>
+  <h2>Solving \(A\mathbf{x} = \mathbf{b}\)</h2>
+  <p>With \(A = \begin{bmatrix}3&1\\2&2\end{bmatrix}\) and \(\mathbf{b} = \begin{bmatrix}5\\6\end{bmatrix}\):</p>
+  $$\mathbf{x} = A^{-1}\mathbf{b} = \tfrac14\begin{bmatrix}2&-1\\-2&3\end{bmatrix}\begin{bmatrix}5\\6\end{bmatrix} = \begin{bmatrix}1\\2\end{bmatrix}$$
+  <p>Check: \(3 + 2 = 5\) and \(2 + 4 = 6\).</p>
+  <p class="takeaway">In code, call <span class="mono">np.linalg.solve(A, b)</span>. Do not form <span class="mono">inv(A)</span>: it is slower and less accurate.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Try it</div>
+  <h2>Inverses by hand</h2>
+  <ol class="practice">
+    <li>Invert \(\begin{bmatrix}2&1\\5&3\end{bmatrix}\) <span class="fragment">\(\det = 6-5 = 1\), so \(A^{-1} = \begin{bmatrix}3&-1\\-5&2\end{bmatrix}\)</span></li>
+    <li>Does \(\begin{bmatrix}1&2\\3&6\end{bmatrix}\) have an inverse? Why?</li>
+    <li>Solve \(\begin{bmatrix}1&2\\3&4\end{bmatrix}\mathbf{x} = \begin{bmatrix}1\\1\end{bmatrix}\).</li>
+  </ol>
+</section>

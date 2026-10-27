@@ -9,7 +9,6 @@
   <div class="act-num">Act 2 of 4</div>
   <h1>Lagrange multipliers</h1>
   <p class="act-sub">Turn "parallel gradients" into equations you can solve.</p>
-  <div class="act-time">25 min</div>
 </section>
 
 <section class="clip-slide">
@@ -22,8 +21,10 @@
 <section class="act-body">
   <div class="act-tag"><b>Act 2</b> / The recipe</div>
   <h2>Maximise \(f(\mathbf x)\) subject to \(g(\mathbf x) = c\)</h2>
-  <div style="font-size:1.25em">$$\mathcal L(\mathbf x, \lambda) = f(\mathbf x) - \lambda\,\big(g(\mathbf x) - c\big)$$</div>
-  <div style="font-size:1.25em">$$\nabla_{\mathbf x}\mathcal L = \mathbf 0,\qquad \frac{\partial \mathcal L}{\partial \lambda} = 0$$</div>
+  <p style="font-size:0.85em; margin:0">\(f\) is the objective, \(g(\mathbf x) = c\) the constraint, and \(\lambda\) the multiplier, one number per constraint.</p>
+  <div style="font-size:1.15em">$$\mathcal L(\mathbf x, \lambda) = f(\mathbf x) - \lambda\,\big(g(\mathbf x) - c\big)$$</div>
+  <div style="font-size:1.15em">$$\nabla_{\mathbf x}\mathcal L = \nabla f - \lambda\nabla g = \mathbf 0 \;\Rightarrow\; \nabla f = \lambda\nabla g$$
+  $$\frac{\partial \mathcal L}{\partial \lambda} = -(g - c) = 0 \;\Rightarrow\; g = c$$</div>
   <p class="takeaway" style="font-size:0.95em">Solve, then compare \(f\) at every solution: the equations find minima and maxima alike.</p>
 </section>
 
@@ -49,9 +50,9 @@
 <section class="act-body">
   <div class="act-tag"><b>Act 2</b> / Where this shows up</div>
   <h2>Constraints in machine learning</h2>
-  <div class="beats" style="font-size:1.3em;margin-top:1em">
-    <div class="beat purpose"><h4>PCA</h4><p>Maximise \(\mathbf w^{\top}\Sigma\mathbf w\) with \(\lVert\mathbf w\rVert = 1\). The Lagrange condition is \(\Sigma\mathbf w = \lambda\mathbf w\): an eigenvector (Block 3.2).</p></div>
-    <div class="beat purpose"><h4>SVM</h4><p>Maximise the margin subject to every point being classified correctly.</p></div>
-    <div class="beat purpose"><h4>Probabilities</h4><p>Maximum entropy subject to \(\sum_i p_i = 1\) and a fixed expected score gives the softmax (Gibbs) form.</p></div>
-  </div>
+  <p style="font-size:0.9em; margin:0">PCA: maximise \(\mathbf w^{\top}\Sigma\mathbf w\) with \(\lVert\mathbf w\rVert = 1\), where \(\Sigma\) is the covariance matrix (Block 3.2).</p>
+  <div style="font-size:1.1em">$$\mathcal L = \mathbf w^{\top}\Sigma\mathbf w - \lambda(\mathbf w^{\top}\mathbf w - 1)$$
+  $$\nabla\mathcal L = 2\Sigma\mathbf w - 2\lambda\mathbf w = \mathbf 0 \;\Rightarrow\; \Sigma\mathbf w = \lambda\mathbf w$$</div>
+  <p style="font-size:0.9em; margin:0">So \(\mathbf w\) is an eigenvector of \(\Sigma\), and the maximum picks the top one (Block 3.2).</p>
+  <p class="takeaway" style="font-size:0.85em">The same tool: the support vector machine (maximise the margin subject to correct classification), and the softmax (maximum entropy subject to probabilities summing to 1).</p>
 </section>

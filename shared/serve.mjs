@@ -1,12 +1,15 @@
 // Static server for editing decks.
 //   node shared/serve.mjs [port]      then open http://localhost:8000/decks/<deck>/
 // Serves the repo root, because decks load ../../node_modules and ../../shared.
+// Live reload: the server watches decks/ and shared/ and tells every open
+// editing view over /__reload (server-sent events) to reload. Reveal keeps the
+// slide and fragment in the URL hash, so the page comes back where it was.
 // Supports Range requests: Chrome needs them to seek inside an mp4, and the
 // clip player seeks to rewind and to park a clip on its last frame.
 
 import { createServer } from 'node:http';
-import { readFile, stat } from 'node:fs/promises';
-import { createReadStream } from 'node:fs';
+import { readFile, readdir, stat } from 'node:fs/promises';
+import { createReadStream, watch } from 'node:fs';
 import { extname, join, normalize, dirname } from 'node:path';
 
 const ROOT = dirname(import.meta.dirname);
@@ -27,7 +30,47 @@ const TYPES = {
   '.ttf': 'font/ttf',
 };
 
+// Built decks (deck.html) and editor temp files never trigger a reload.
+const IGNORE = /(^|[/\\])(deck\.html|\.#.*|.*~|.*\.sw[px]|4913)$/;
+const clients = new Set();
+let timer;
+// Watch every directory on its own, not with { recursive: true }. On Linux the
+// recursive watcher follows each file's inode, so a file saved by writing a
+// temp copy and renaming it over the original (sed -i, many editors) drops
+// out of the watch for good. A directory watch reports any child by name.
+const watched = new Set();
+function watchDir(dir) {
+  if (watched.has(dir)) return;
+  watched.add(dir);
+  watch(dir, (_event, name) => {
+    if (!name || IGNORE.test(name)) return;
+    const path = join(dir, name);
+    // A new subdirectory needs its own watch.
+    stat(path).then((s) => s.isDirectory() && watchTree(path), () => {});
+    // Editors write a file in several steps; wait for them to settle.
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      console.log(`changed ${path.slice(ROOT.length + 1)}, reloading ${clients.size} page(s)`);
+      for (const res of clients) res.write('data: reload\n\n');
+    }, 100);
+  }).on('error', () => watched.delete(dir));
+}
+async function watchTree(dir) {
+  watchDir(dir);
+  for (const entry of await readdir(dir, { withFileTypes: true })) {
+    if (entry.isDirectory()) await watchTree(join(dir, entry.name));
+  }
+}
+for (const dir of ['decks', 'shared']) await watchTree(join(ROOT, dir));
+
 createServer(async (req, res) => {
+  if (req.url === '/__reload') {
+    res.writeHead(200, { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-store', Connection: 'keep-alive' });
+    res.write(': connected\n\n');
+    clients.add(res);
+    req.on('close', () => clients.delete(res));
+    return;
+  }
   let path = decodeURIComponent(req.url.split(/[?#]/)[0]);
   if (path.endsWith('/')) path += 'index.html';
   const file = join(ROOT, normalize(path).replace(/^(\.\.[/\\])+/, ''));

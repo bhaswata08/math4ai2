@@ -1,0 +1,50 @@
+<!-- ============================================================
+     ACT 4 of 9. Projection. Budget: 8 min.
+     Source: Visual Kernel SEE Matrix ch.1 part 2 (projection).
+     Goal: P = u u^T for unit u; P^2 = P; rank 1; det 0.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 4 of 9</div>
+  <h1>Projection</h1>
+  <p class="act-sub">Drop everything onto a line or a plane.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Squash the plane onto a line</h2>
+  <video class="clip" src="assets/clips/VKProjLine.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(\begin{bmatrix}0.2&0.4\\0.4&0.8\end{bmatrix}\): every dot lands on the blue line.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>One vector, its closest point</h2>
+  <video class="clip" src="assets/clips/VKProjVec21.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">The dashed drop from \(\begin{bmatrix}2\\1\end{bmatrix}\) meets the line at a right angle. The matrix does the same.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Project a cube onto a plane</h2>
+  <video class="clip" src="assets/clips/VKProjPlane.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(\mathrm{diag}(1,1,0)\) deletes the height. The cube becomes a flat square.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Where \(P=uu^T\) comes from</h2>
+  <video class="clip" src="assets/clips/ProjectionBuild.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Let \(u\) be a unit vector (\(\|u\|=1\)). The foot of the drop is \(p=(u\cdot x)\,u\). Regroup it as \((uu^T)x\). Projecting again changes nothing; many inputs share one \(p\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / The formula</div>
+  <h2>Projection onto a unit vector</h2>
+  $$P = uu^T,\qquad \|u\|=1$$
+  <p>For \(u = \tfrac{1}{\sqrt5}\begin{bmatrix}1\\2\end{bmatrix}\): \(\;P=\tfrac15\begin{bmatrix}1&2\\2&4\end{bmatrix}=\begin{bmatrix}0.2&0.4\\0.4&0.8\end{bmatrix}\), the matrix in the clip.</p>
+  <p>Projecting twice changes nothing, because \(u^Tu=\|u\|^2=1\):</p>
+  $$P^2=(uu^T)(uu^T)=u\,(u^Tu)\,u^T=u\cdot 1\cdot u^T=P$$
+  <p class="fragment">The columns of \(P\) are \(u_1u\) and \(u_2u\), both multiples of \(u\). So every output lies on the line through \(u\): the plane is squashed, and \(P\) cannot be undone (Act 5), and many inputs share one output.</p>
+  <p class="takeaway">A projection destroys information, so there is no way back.</p>
+</section>

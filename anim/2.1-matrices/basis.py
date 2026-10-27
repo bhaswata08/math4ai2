@@ -13,7 +13,7 @@ class BasisColumns(Scene):
     def construct(self):
         U = 0.8
         A = np.array([[2.0, -1.0], [1.0, 1.0]])
-        bg = lin_plane(U).fade(0.65)
+        bg = ghost_plane(U)
         grid = lin_plane(U)
         mat = matrix_tex([[2, -1], [1, 1]])
         mat.to_corner(UL, buff=0.25)
@@ -49,7 +49,7 @@ class ColumnsCombine(Scene):
     def construct(self):
         U = 0.8
         A = np.array([[2.0, -1.0], [1.0, 1.0]])
-        bg = lin_plane(U).fade(0.65)
+        bg = ghost_plane(U)
         grid = lin_plane(U)
         mat = matrix_tex([[2, -1], [1, 1]])
         mat.to_corner(UL, buff=0.25)

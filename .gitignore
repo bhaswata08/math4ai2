@@ -3,3 +3,4 @@ media/
 build/
 decks/*/deck.html
 __pycache__/
+site/

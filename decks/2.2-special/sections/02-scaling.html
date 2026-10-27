@@ -1,0 +1,153 @@
+<!-- ============================================================
+     ACT 2 of 9. Scaling, reflection, shear. Budget: 25 min.
+     Source: Visual Kernel SEE Matrix ch.1 (parts 1 and 2).
+     Goal: students read a diagonal matrix as "scale each axis",
+     a negative entry as a flip, and a shear as area-preserving.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 2 of 9</div>
+  <h1>Scaling, reflection, shear</h1>
+  <p class="act-sub">Three moves that cover most of the matrices you will meet.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>A scalar matrix shrinks everything</h2>
+  <video class="clip" src="assets/clips/VKScalarHalf.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(\begin{bmatrix}0.5&0\\0&0.5\end{bmatrix}\) pulls every dot halfway to the origin.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>The same idea in 3D</h2>
+  <video class="clip" src="assets/clips/VKScalar3D.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(2I\) doubles every length. The cube keeps its shape and grows.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Scale one axis only</h2>
+  <video class="clip" src="assets/clips/VKOffOneY.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(\begin{bmatrix}1&0\\0&3\end{bmatrix}\): watch the dots move along <span class="cy">y</span>. The <span class="cx">x</span> coordinate never changes.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Squeeze along x</h2>
+  <video class="clip" src="assets/clips/VKOffOneX.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(\begin{bmatrix}0.5&0\\0&1\end{bmatrix}\): an entry below 1 squeezes that axis.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Flip across the y-axis</h2>
+  <video class="clip" src="assets/clips/VKReflectYaxis.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(\begin{bmatrix}-1&0\\0&1\end{bmatrix}\): the sign of <span class="cx">x</span> flips, so the rectangle jumps to the left.</p>
+</section>
+
+
+<section class="clip-slide">
+  <h2>Flip across the x-axis</h2>
+  <video class="clip" src="assets/clips/VKReflectXaxis.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(\begin{bmatrix}1&0\\0&-1\end{bmatrix}\): now the sign of <span class="cy">y</span> flips.</p>
+</section>
+
+
+<section class="clip-slide">
+  <h2>Flip both signs</h2>
+  <video class="clip" src="assets/clips/VKReflectBoth.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(-I\) reflects through the origin. In 2D this is the same as a half turn.</p>
+</section>
+
+
+<section class="clip-slide">
+  <h2>Diagonal: each axis gets its own factor</h2>
+  <video class="clip" src="assets/clips/VKDiag2D.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(\begin{bmatrix}3&0\\0&2\end{bmatrix}\) stretches <span class="cx">x</span> by 3 and <span class="cy">y</span> by 2.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Diagonal in 3D</h2>
+  <video class="clip" src="assets/clips/VKDiag3D.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(\mathrm{diag}(3,\,2,\,0.5)\) turns the cube into a box: longer, wider, flatter.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Diagonal</div>
+  <h2>A diagonal matrix is a stack of one-axis scalings</h2>
+  $$\begin{bmatrix}3&0\\0&2\end{bmatrix}\begin{bmatrix}x\\y\end{bmatrix}=\begin{bmatrix}3x\\2y\end{bmatrix}
+  \qquad
+  \begin{bmatrix}3&0\\0&2\end{bmatrix}=\begin{bmatrix}3&0\\0&1\end{bmatrix}\begin{bmatrix}1&0\\0&2\end{bmatrix}$$
+  <p>Each coordinate is scaled on its own, so the order of the factors does not matter.</p>
+  <p class="takeaway">Each axis scales on its own, so every area scales by \(3\cdot 2 = 6\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Negative entries</div>
+  <h2>A negative diagonal entry reflects</h2>
+  $$\begin{bmatrix}-2.5&0\\0&0.6\end{bmatrix}=
+  \underbrace{\begin{bmatrix}-1&0\\0&1\end{bmatrix}}_{\text{reflect}}
+  \underbrace{\begin{bmatrix}1&0\\0&0.6\end{bmatrix}}_{\text{scale } y}
+  \underbrace{\begin{bmatrix}2.5&0\\0&1\end{bmatrix}}_{\text{scale } x}$$
+  <p class="takeaway">Read a diagonal matrix entry by entry: size is the stretch, sign is the flip.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>The zero matrix</h2>
+  <video class="clip" src="assets/clips/ZeroCollapse.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Scale every axis by 0: the zero matrix sends every point to the origin.</p>
+</section>
+
+
+<section class="clip-slide">
+  <h2>A shear slants the plane</h2>
+  <video class="clip" src="assets/clips/VKShear.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(\begin{bmatrix}1&1\\0&1\end{bmatrix}\): the top moves right, the bottom moves left, the rectangle becomes a parallelogram.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Four shears</h2>
+  <video class="clip" src="assets/clips/ShearFour.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">One off-diagonal entry, either sign, in either position: four ways to slant. The area stays 1 every time.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>A shear in 3D</h2>
+  <video class="clip" src="assets/clips/VKShear3D.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Layers of the cube slide past each other, parallel to a plane.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Shear keeps area</div>
+  <h2>Slanting does not change the area</h2>
+  <div class="cols">
+    <div>
+      <p>The base of the rectangle stays the same. The height stays the same. Only the sides lean.</p>
+      $$\text{area} = \text{base}\times\text{height} = 1\times 1 = 1$$
+    </div>
+    <div>
+      <p><b>Scalar:</b> shape kept, area changed.</p>
+      <p><b>Shear:</b> shape changed, area kept.</p>
+    </div>
+  </div>
+  <p class="takeaway">Scaling and reflection are diagonal. A shear has a single off-diagonal entry and ones on the diagonal.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Try it</div>
+  <h2>Name the move</h2>
+  <ol class="practice">
+    <li>\(\begin{bmatrix}-1&0\\0&-1\end{bmatrix}\) <span class="fragment">Flips both signs: a half turn about the origin.</span></li>
+    <li>\(\begin{bmatrix}4&0\\0&-0.5\end{bmatrix}\)</li>
+    <li>\(\begin{bmatrix}1&0\\-2&1\end{bmatrix}\)</li>
+  </ol>
+</section>

@@ -6,6 +6,13 @@
 // inlining everything, so the shipped deck.html never runs this file.
 (async () => {
   const ROOT = '../../';
+  // Live reload from shared/serve.mjs. The URL hash holds the slide, so the
+  // reload lands on the same one. Skipped in headless Chrome: the open
+  // connection stalls --virtual-time-budget and shared/shot.sh never returns.
+  if (!navigator.userAgent.includes('HeadlessChrome')) {
+    new EventSource('/__reload').onmessage = () => location.reload();
+  }
+
   const manifest = await (await fetch(ROOT + 'shared/manifest.json')).json();
   window.DECK = await (await fetch('deck.json')).json();
 

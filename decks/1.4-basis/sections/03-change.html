@@ -13,14 +13,13 @@
   <div class="act-num">Act 3 of 5</div>
   <h1>Changing basis</h1>
   <p class="act-sub">Jennifer and we describe the same arrows with different numbers.</p>
-  <div class="act-time">35 min</div>
 </section>
 
 <section class="clip-slide">
   <h2>Jennifer's grid</h2>
   <video class="clip" src="assets/clips/JennysGrid.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">Same origin, different grid lines. Her first steps are \(\vec b_1 = [2, 1]\) and \(\vec b_2 = [-1, 1]\).</p>
+  <p class="caption">Different grid lines. Her first steps are \(\vec b_1 = [2, 1]\) and \(\vec b_2 = [-1, 1]\). The only point we agree on is the origin \([0, 0]\): we both get it by scaling our basis vectors by 0.</p>
 </section>
 
 <section class="clip-slide">
@@ -61,6 +60,16 @@
 </section>
 
 <section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / We will come back to this</div>
+  <h2>Both translations are a matrix</h2>
+  <div class="eq-big">
+    $$\begin{bmatrix} \textcolor{#6fd0c0}{2} & \textcolor{#c792ea}{-1} \\ \textcolor{#6fd0c0}{1} & \textcolor{#c792ea}{1} \end{bmatrix}\begin{bmatrix} -1 \\ 2 \end{bmatrix} = \textcolor{#f0a35e}{\begin{bmatrix} -4 \\ 1 \end{bmatrix}}$$
+  </div>
+  <p class="caption">Put her basis vectors in as columns. This matrix turns her numbers into ours, and its inverse turns ours into hers.</p>
+  <p class="takeaway">We revisit this properly with matrices, as the <b>change-of-basis matrix</b>.</p>
+</section>
+
+<section class="act-body">
   <div class="act-tag"><b>Act 3</b> / Try it</div>
   <h2>Drag the basis, drag the target</h2>
   <div class="clip-row" data-fig="basis">
@@ -76,14 +85,59 @@
 <section class="act-body">
   <div class="act-tag"><b>Act 3</b> / A better basis</div>
   <h2>Orthonormal: coordinates are dot products</h2>
-  <div class="eq-big">
-    $$\vec x = (\vec x\cdot\textcolor{#6fd0c0}{\vec u_1})\,\textcolor{#6fd0c0}{\vec u_1} + (\vec x\cdot\textcolor{#c792ea}{\vec u_2})\,\textcolor{#c792ea}{\vec u_2}$$
+  <div class="cols wide-left" style="align-items:center">
+    <div style="font-size:0.9em">
+      <p style="font-size:0.8em" class="cdim">Let \(\textcolor{#6fd0c0}{\vec u_1}, \textcolor{#c792ea}{\vec u_2}\) be an orthonormal basis: unit length and at right angles,</p>
+      $$\textcolor{#6fd0c0}{\vec u_1}\cdot\textcolor{#6fd0c0}{\vec u_1} = \textcolor{#c792ea}{\vec u_2}\cdot\textcolor{#c792ea}{\vec u_2} = 1,\qquad \textcolor{#6fd0c0}{\vec u_1}\cdot\textcolor{#c792ea}{\vec u_2} = 0$$
+      <p style="font-size:0.8em" class="cdim">Being a basis, they can build any \(\vec x\):</p>
+      $$\vec x = c_1\textcolor{#6fd0c0}{\vec u_1} + c_2\textcolor{#c792ea}{\vec u_2}$$
+      <p style="font-size:0.8em" class="cdim">Dot both sides with \(\textcolor{#6fd0c0}{\vec u_1}\), then with \(\textcolor{#c792ea}{\vec u_2}\):</p>
+      $$\begin{aligned} \vec x\cdot\textcolor{#6fd0c0}{\vec u_1} &= c_1\underbrace{\textcolor{#6fd0c0}{\vec u_1}\cdot\textcolor{#6fd0c0}{\vec u_1}}_{1} + c_2\underbrace{\textcolor{#c792ea}{\vec u_2}\cdot\textcolor{#6fd0c0}{\vec u_1}}_{0} = c_1 \\ \vec x\cdot\textcolor{#c792ea}{\vec u_2} &= c_1\underbrace{\textcolor{#6fd0c0}{\vec u_1}\cdot\textcolor{#c792ea}{\vec u_2}}_{0} + c_2\underbrace{\textcolor{#c792ea}{\vec u_2}\cdot\textcolor{#c792ea}{\vec u_2}}_{1} = c_2 \end{aligned}$$
+    </div>
+    <svg viewBox="20 40 460 410" aria-label="x projected onto the u1 line and the u2 line; the feet of the perpendiculars are at 3.4 along u1 and minus 1.2 along u2">
+      <defs>
+        <marker id="m3u1" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 z" fill="#6fd0c0"/></marker>
+        <marker id="m3u2" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 z" fill="#c792ea"/></marker>
+        <marker id="m3x" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 z" fill="#f0a35e"/></marker>
+      </defs>
+      <!-- 80 px per unit, origin at (150, 330) -->
+      <line x1="78" y1="426" x2="352" y2="61" stroke="#6fd0c0" stroke-opacity="0.35" stroke-width="2"/>
+      <line x1="291" y1="436" x2="54" y2="258" stroke="#c792ea" stroke-opacity="0.35" stroke-width="2"/>
+      <line x1="150" y1="330" x2="313.2" y2="112.4" stroke="#6fd0c0" stroke-opacity="0.55" stroke-width="10"/>
+      <line x1="150" y1="330" x2="226.8" y2="387.6" stroke="#c792ea" stroke-opacity="0.55" stroke-width="10"/>
+      <line x1="390" y1="170" x2="313.2" y2="112.4" stroke="#a7b0be" stroke-width="2" stroke-dasharray="7 6"/>
+      <line x1="390" y1="170" x2="226.8" y2="387.6" stroke="#a7b0be" stroke-width="2" stroke-dasharray="7 6"/>
+      <polyline points="304.8,123.6 316,132 324.4,120.8" fill="none" stroke="#a7b0be" stroke-width="2"/>
+      <polyline points="215.6,379.2 224,368 235.2,376.4" fill="none" stroke="#a7b0be" stroke-width="2"/>
+      <line x1="150" y1="330" x2="198" y2="266" stroke="#6fd0c0" stroke-width="5" marker-end="url(#m3u1)"/>
+      <line x1="150" y1="330" x2="86" y2="282" stroke="#c792ea" stroke-width="5" marker-end="url(#m3u2)"/>
+      <line x1="150" y1="330" x2="390" y2="170" stroke="#f0a35e" stroke-width="5" marker-end="url(#m3x)"/>
+      <circle cx="150" cy="330" r="5" fill="#a7b0be"/>
+      <g font-family="Inter" font-size="28">
+        <text x="398" y="168" fill="#f0a35e" font-style="italic">x</text>
+        <text x="146" y="268" fill="#6fd0c0"><tspan font-style="italic">u</tspan><tspan font-size="19" dy="6">1</tspan></text>
+        <text x="62" y="322" fill="#c792ea"><tspan font-style="italic">u</tspan><tspan font-size="19" dy="6">2</tspan></text>
+        <text x="248" y="104" fill="#6fd0c0">3.4</text>
+        <text x="150" y="420" fill="#c792ea">−1.2</text>
+      </g>
+    </svg>
   </div>
-  <p class="caption">With \(\vec u_1 = [0.6, 0.8]\), \(\vec u_2 = [-0.8, 0.6]\) and \(\vec x = [3, 2]\): no equations to solve.</p>
+  <p class="takeaway">Substituting back into \(\vec x = c_1\textcolor{#6fd0c0}{\vec u_1} + c_2\textcolor{#c792ea}{\vec u_2}\): \(\vec x = (\vec x\cdot\textcolor{#6fd0c0}{\vec u_1})\,\textcolor{#6fd0c0}{\vec u_1} + (\vec x\cdot\textcolor{#c792ea}{\vec u_2})\,\textcolor{#c792ea}{\vec u_2}\). <b>No equations to solve.</b></p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / A better basis</div>
+  <h2>The same \(\vec x = [3, 2]\), two dot products</h2>
   <div class="eq-big">
-    $$\vec x\cdot\vec u_1 = 1.8 + 1.6 = \textcolor{#f0a35e}{3.4},\qquad \vec x\cdot\vec u_2 = -2.4 + 1.2 = \textcolor{#f0a35e}{-1.2}$$
+    $$\textcolor{#6fd0c0}{\vec u_1 = \begin{bmatrix} 0.6 \\ 0.8 \end{bmatrix}},\qquad \textcolor{#c792ea}{\vec u_2 = \begin{bmatrix} -0.8 \\ 0.6 \end{bmatrix}}$$
   </div>
-  <p class="caption">Check: \(3.4[0.6, 0.8] - 1.2[-0.8, 0.6] = [2.04 + 0.96,\ 2.72 - 0.72] = [3, 2]\).</p>
+  <div class="eq-big">
+    $$\begin{aligned} c_1 &= \vec x\cdot\textcolor{#6fd0c0}{\vec u_1} = 3(0.6) + 2(0.8) = \textcolor{#f0a35e}{3.4} \\ c_2 &= \vec x\cdot\textcolor{#c792ea}{\vec u_2} = 3(-0.8) + 2(0.6) = \textcolor{#f0a35e}{-1.2} \end{aligned}$$
+  </div>
+  <div class="eq-big">
+    $$\text{Check: }\ \textcolor{#f0a35e}{3.4}\textcolor{#6fd0c0}{\begin{bmatrix} 0.6 \\ 0.8 \end{bmatrix}} \textcolor{#f0a35e}{-\,1.2}\textcolor{#c792ea}{\begin{bmatrix} -0.8 \\ 0.6 \end{bmatrix}} = \begin{bmatrix} 2.04 + 0.96 \\ 2.72 - 0.72 \end{bmatrix} = \begin{bmatrix} 3 \\ 2 \end{bmatrix}$$
+  </div>
+  <p class="caption">Jennifer's basis needed two equations solved together for this \(\vec x\). Here each coordinate is one dot product, worked out on its own.</p>
 </section>
 
 <section class="act-body">

@@ -21,7 +21,7 @@ class MatrixProductColumns(Scene):
         B = np.array([[2.0, 0.0], [1.0, 1.0]])
         AB = A @ B
         assert (AB == np.array([[4, 2], [1, 1]])).all()
-        bg = lin_plane(U).fade(0.65)
+        bg = ghost_plane(U)
         grid = lin_plane(U)
         matB = matrix_tex([[2, 0], [1, 1]])
         matA = matrix_tex([[1, 2], [0, 1]], col_colors=(None, None))

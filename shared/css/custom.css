@@ -690,3 +690,78 @@
 .reveal table.deriv td:first-child .katex-display { text-align: left; margin: 0.2em 0; }
 .reveal table.deriv td:first-child .katex-display > .katex { text-align: left; }
 .reveal table.deriv td:last-child { color: var(--ink-dim); font-size: 0.9em; }
+
+/* --- 5. chalkboard plugin (reveal.js-plugins) ----------------------------
+   The plugin draws its palette and board handle with Font Awesome icons.
+   Font Awesome is not loaded, so the two icons it uses are drawn here. */
+div.palette, div.boardhandle {
+  background: var(--bg-raised);
+  border-color: var(--rule);
+}
+div.palette i.fa-square::before {
+  content: '';
+  display: inline-block;
+  width: 0.8em;
+  height: 0.8em;
+  border-radius: 3px;
+  background: currentColor;
+}
+div.boardhandle a { color: var(--ink-dim); }
+div.boardhandle i.fa-chevron-up::before,
+div.boardhandle i.fa-chevron-down::before {
+  content: '';
+  display: inline-block;
+  width: 0.45em;
+  height: 0.45em;
+  border-left: 3px solid currentColor;
+  border-top: 3px solid currentColor;
+}
+div.boardhandle i.fa-chevron-up::before { transform: translateY(0.15em) rotate(45deg); }
+div.boardhandle i.fa-chevron-down::before { transform: translateY(-0.1em) rotate(225deg); }
+
+/* Annotation toolbar (customcontrols plugin). Sized in screen pixels, not
+   slide units, so the buttons stay finger sized at any scale. Closed, it is a
+   thin tab in the left margin strip that the slide never reaches (the 4%
+   reveal margin is about 24px at tablet sizes), so it covers nothing. Open,
+   it sits beside the tab, over the slide, while you annotate. */
+#customcontrols { left: 0; bottom: 64px; font-size: 16px; }
+#customcontrols > button,
+#customcontrols.collapsed > button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 56px;
+  border: 1px solid var(--rule);
+  border-left: none;
+  border-radius: 0 8px 8px 0;
+  background: var(--bg-raised);
+  color: var(--ink-dim);
+  touch-action: manipulation;
+}
+#customcontrols > button svg { width: 16px; height: 16px; }
+#customcontrols > ul {
+  display: flex;
+  gap: 8px;
+  left: 30px;
+  bottom: 61px; /* centred on the tab: (56 - 62) / 2 below its 64px */
+  padding: 6px;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  background: var(--bg-raised);
+}
+#customcontrols.collapsed > ul { display: none; }
+#customcontrols ul > li { margin: 0; padding: 0; float: none; }
+#customcontrols ul > li > button {
+  display: block;
+  width: 48px;
+  height: 48px;
+  padding: 11px;
+  border-radius: 8px;
+  color: var(--ink-dim);
+  touch-action: manipulation;
+}
+#customcontrols ul > li > button svg { display: block; width: 100%; height: 100%; }
+#customcontrols button:hover { color: var(--ink); }
+#customcontrols ul > li.active > button { color: var(--bg); background: var(--accent); }
+#customcontrols li#tool-next { margin-right: 10px; }

@@ -10,24 +10,25 @@
   <div class="act-num">Act 2 of 6</div>
   <h1>The learning rate</h1>
   <p class="act-sub">Too small wastes time. Too large never arrives.</p>
-  <div class="act-time">15 min</div>
 </section>
 
 <section class="clip-slide">
   <h2>Three learning rates on \(L(w) = w^2\)</h2>
   <video class="clip" src="assets/clips/LearningRates.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">Each step multiplies \(w\) by \(1-2\eta\): \(0.90\) crawls, \(0.40\) converges, \(-1.10\) grows 10% per step and flips sign.</p>
+  <p class="caption">The update is \(w_{k+1} = w_k - \eta\cdot 2w_k = (1-2\eta)\,w_k\). \(\eta = 0.05\) gives factor \(0.90\): crawls. \(\eta = 0.30\) gives \(0.40\): converges. \(\eta = 1.05\) gives \(-1.10\): grows 10% per step and flips sign.</p>
 </section>
 
 <section class="act-body">
   <div class="act-tag"><b>Act 2</b> / Why 1.05 diverges</div>
   <h2>Each step multiplies \(w\) by a constant</h2>
   <div style="font-size:1.4em; margin:0.4em 0 0.8em">$$w_{k+1} = w_k - \eta \cdot 2w_k = (1 - 2\eta)\,w_k$$</div>
+  <p style="font-size:0.85em; margin:0">Near a minimum \(\mathbf w^*\), a loss looks like a bowl. Let \(\lambda_{\max}\) be the largest eigenvalue of the Hessian: the steepest curvature. In the steepest direction \(L \approx L^* + \tfrac12\lambda\,(w - w^*)^2\), so a step gives
+  $$w_{k+1} - w^* = (1 - \eta\lambda)\,(w_k - w^*)$$
+  The gap shrinks when \(|1 - \eta\lambda| &lt; 1\), i.e. \(0 &lt; \eta &lt; 2/\lambda\). The steepest direction is the strictest, so \(\eta &lt; 2/\lambda_{\max}\). For \(L = w^2\), \(\lambda = 2\), giving \(\eta &lt; 1\).</p>
   <div class="beats">
     <div class="beat purpose"><h4>Shrinks</h4><p>\(0 &lt; \eta &lt; 0.5\): factor in \((0, 1)\): shrinks without crossing zero.</p></div>
     <div class="beat purpose"><h4>Flips, shrinks</h4><p>\(0.5 &lt; \eta &lt; 1\): factor in \((-1, 0)\): flips sign but still shrinks.</p></div>
     <div class="beat purpose"><h4>Grows</h4><p>\(\eta &gt; 1\): \(|1 - 2\eta| &gt; 1\): every step grows. At 1.05 the factor is \(-1.1\).</p></div>
   </div>
-  <p class="takeaway" style="font-size:1.25em">In general, for a quadratic bowl the limit is \(\eta &lt; 2/\lambda_{\max}\), where \(\lambda_{\max}\) is the largest eigenvalue of the Hessian.</p>
 </section>

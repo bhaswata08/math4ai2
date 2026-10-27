@@ -108,3 +108,10 @@ def lin_plane(unit=0.5, **kwargs):
                        y_range=[-np.ceil(half_h), np.ceil(half_h), 1],
                        x_length=2 * np.ceil(half_w) * unit,
                        y_length=2 * np.ceil(half_h) * unit, **kwargs)
+
+
+def ghost_plane(unit=0.5, opacity=0.18):
+    """A very faint copy of lin_plane(unit) that stays put. Add it behind the
+    plane a matrix acts on, so the grown, sheared or flipped cells can be
+    compared with the original unit squares."""
+    return lin_plane(unit).set_stroke(INK_FAINT, width=1, opacity=opacity)

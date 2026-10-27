@@ -11,15 +11,14 @@
   <div class="act-num">Act 2 of 5</div>
   <h1>The Hessian</h1>
   <p class="act-sub">The same Taylor step, with a vector for the slope and a matrix for the curvature.</p>
-  <div class="act-time">30 min</div>
 </section>
 
 <section class="act-body">
   <div class="act-tag"><b>Act 2</b> / One variable to many</div>
   <h2>Second-order approximation</h2>
+  <p style="font-size:0.85em; margin:0">Take \(\mathbf p \in \mathbb R^n\) as the base point and \(\mathbf h\) as a small step away from it. \(\nabla f(\mathbf p)\) is the gradient there, and \(H(\mathbf p)\) is the Hessian: the matrix of second derivatives, \(H_{ij} = \tfrac{\partial^2 f}{\partial x_i \partial x_j}\) evaluated at \(\mathbf p\). In one variable:</p>
   <div style="font-size:0.95em; color:var(--ink-dim)">$$f(a + h) \approx f(a) + f'(a)\,h + \tfrac12\,f''(a)\,h^2$$</div>
-  <div style="font-size:1.35em">$$f(\mathbf p + \mathbf h) \approx f(\mathbf p) + \nabla f^{\top}\mathbf h + \tfrac12\,\mathbf h^{\top} H\,\mathbf h$$</div>
-  <div style="font-size:0.95em">$$H = \begin{bmatrix} \dfrac{\partial^2 f}{\partial x_1^2} & \cdots & \dfrac{\partial^2 f}{\partial x_1 \partial x_n} \\ \vdots & \ddots & \vdots \\ \dfrac{\partial^2 f}{\partial x_n \partial x_1} & \cdots & \dfrac{\partial^2 f}{\partial x_n^2} \end{bmatrix}$$</div>
+  <div style="font-size:1.35em">$$f(\mathbf p + \mathbf h) \approx f(\mathbf p) + \nabla f(\mathbf p)^{\top}\mathbf h + \tfrac12\,\mathbf h^{\top} H(\mathbf p)\,\mathbf h$$</div>
   <p class="takeaway" style="font-size:0.85em">For smooth \(f\) the mixed partials agree, so \(H\) is symmetric: real eigenvalues, orthogonal eigenvectors.</p>
 </section>
 
@@ -27,12 +26,12 @@
   <h2>From slices to a quadratic</h2>
   <video class="clip" src="assets/clips/QuadraticAlongDirection.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">At \(\mathbf p = (1,1)\): slope 5 along \(x\), none along \(y\). The gradient gives the tangent plane, the Hessian bends it.</p>
+  <p class="caption">Take \(f(x, y) = x^3 + 2xy - y^2\) at \(\mathbf p = (1,1)\): slope 5 along \(x\), none along \(y\). The gradient gives the tangent plane, the Hessian bends it.</p>
 </section>
 
 <section class="act-body">
   <div class="act-tag"><b>Act 2</b> / Worked example</div>
-  <h2>\(f(x, y) = x^3 + 2xy - y^2\)</h2>
+  <h2>\(f(x, y) = x^3 + 2xy - y^2\) at \(\mathbf p = (1,1)\)</h2>
   <div class="cols" style="font-size:1.35em; align-items:center">
     <div>$$\nabla f = \begin{bmatrix} 3x^2 + 2y \\ 2x - 2y \end{bmatrix}$$</div>
     <div>$$H = \begin{bmatrix} 6x & 2 \\ 2 & -2 \end{bmatrix}$$</div>
@@ -41,12 +40,12 @@
     <div>$$\nabla f(1,1) = \begin{bmatrix} 5 \\ 0 \end{bmatrix}$$</div>
     <div>$$H(1,1) = \begin{bmatrix} 6 & 2 \\ 2 & -2 \end{bmatrix}$$</div>
   </div>
-  <p class="takeaway" style="font-size:0.85em">At \((1, 1)\), \(f = 2\). The two off-diagonal entries of \(H\) are equal, as promised.</p>
+  <p class="takeaway" style="font-size:0.85em">At \(\mathbf p = (1, 1)\), \(f(\mathbf p) = 2\), so \(f(\mathbf p + \mathbf h) \approx 2 + 5h_1 + 3h_1^2 + 2h_1h_2 - h_2^2\). The two off-diagonal entries of \(H\) are equal, as promised.</p>
 </section>
 
 <section class="clip-slide">
   <h2>Curvature in every direction</h2>
   <video class="clip" src="assets/clips/CurvatureAllDirections.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">For \(f = xy\), the curvature along a unit direction \(\mathbf u\) is \(\mathbf u^{\top}H\mathbf u = \sin 2\theta\). Its extremes are the eigenvalues, reached along the eigenvectors.</p>
+  <p class="caption">For \(\mathbf u = (\cos\theta, \sin\theta)\): \(\mathbf u^{\top}H\mathbf u = 2\cos\theta\sin\theta = \sin 2\theta\). Max \(1\) at \(\theta = \pi/4\), min \(-1\) at \(3\pi/4\): the largest and smallest eigenvalues of \(H\).</p>
 </section>

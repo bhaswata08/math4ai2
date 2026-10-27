@@ -1,11 +1,13 @@
 {
-  "title": "Eigendecomposition · Mathematics for AI 2.4",
+  "title": "Eigendecomposition \u00b7 Mathematics for AI 2.4",
   "sections": [
     "00-open.html",
-    "01-eigenvalues.html",
-    "02-diagonalization.html",
-    "03-symmetric.html",
-    "04-ai.html",
-    "05-recap.html"
+    "01-decompose.html",
+    "02-intuition.html",
+    "03-eigenvalues.html",
+    "04-diagonalization.html",
+    "05-symmetric.html",
+    "06-ai.html",
+    "07-recap.html"
   ]
 }

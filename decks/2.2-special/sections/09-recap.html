@@ -1,0 +1,34 @@
+<!-- ============================================================
+     ACT 9 of 9. Recap and practice. Budget: 5 min.
+     House rule: worked answer for problem 1 only.
+     ============================================================ -->
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 9</b> / Recap</div>
+  <h2>The family at a glance</h2>
+  <table style="font-size:0.78em">
+    <thead><tr><th>Matrix</th><th>Action</th><th>Key fact</th></tr></thead>
+    <tbody>
+      <tr><td>Identity</td><td>do nothing</td><td>\(AI=IA=A\)</td></tr>
+      <tr><td>Diagonal</td><td>scale each axis; negative flips</td><td>area \(\times\) product of entries</td></tr>
+      <tr><td>Shear</td><td>slant</td><td>area kept</td></tr>
+      <tr><td>Orthogonal</td><td>rotate or reflect</td><td>\(Q^{-1}=Q^T\), lengths kept</td></tr>
+      <tr><td>Projection</td><td>drop onto a line</td><td>\(P=uu^T\), \(P^2=P\), no inverse</td></tr>
+      <tr><td>Inverse</td><td>undo</td><td>\(A^{-1}A=I\)</td></tr>
+      <tr><td>Symmetric</td><td>mirror across diagonal</td><td>\(A=A^T\)</td></tr>
+      <tr><td>Positive definite</td><td>curves up everywhere</td><td>\(x^TAx>0\)</td></tr>
+    </tbody>
+  </table>
+  <p class="takeaway">Each one has a single-word action. Block 2.3 measures that action with one number, the determinant.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 9</b> / Practice</div>
+  <h2>By hand</h2>
+  <ol class="practice">
+    <li>Is \(Q=\begin{bmatrix}0&1\\1&0\end{bmatrix}\) orthogonal? Find \(Q^{-1}\). <span class="fragment">Columns \((0,1)\) and \((1,0)\) are unit and perpendicular, so \(Q^TQ=I\) and \(Q^{-1}=Q^T=Q\). It is a reflection across the line \(y=x\).</span></li>
+    <li>Write \(\mathrm{diag}(-2,\,0.5)\) as a reflection times two one-axis scalings.</li>
+    <li>Build \(P=uu^T\) for \(u=\tfrac15\begin{bmatrix}3\\4\end{bmatrix}\) and check \(P^2=P\).</li>
+    <li>Is \(\begin{bmatrix}2&3\\3&4\end{bmatrix}\) positive definite?</li>
+  </ol>
+</section>

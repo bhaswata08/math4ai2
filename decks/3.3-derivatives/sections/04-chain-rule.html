@@ -13,14 +13,13 @@
   <div class="act-num">Act 4 of 6</div>
   <h1>Sums, products, chains</h1>
   <p class="act-sub">Combine functions, and the nudges combine in a predictable way.</p>
-  <div class="act-time">20 min</div>
 </section>
 
 <section class="clip-slide">
   <h2>Sum rule: nudges stack</h2>
   <video class="clip" src="assets/clips/SumRule.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">The change in \(g + h\) is the change in <span class="cv">\(g\)</span> plus the change in <span class="cw">\(h\)</span>.</p>
+  <p class="caption"><span class="cr">\(d(g+h) = dg + dh\)</span>, because \((g+h)(x+dx) - (g+h)(x) = [g(x+dx) - g(x)] + [h(x+dx) - h(x)]\): the change in <span class="cv">\(g\)</span> plus the change in <span class="cw">\(h\)</span>.</p>
 </section>
 
 <section class="clip-slide">
@@ -34,14 +33,14 @@
   <h2>Chain rule: three number lines</h2>
   <video class="clip" src="assets/clips/ChainRuleLines.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">At \(x=1\), a nudge <span class="cx">\(dx\)</span> is stretched by \(2\), then by \(0.54\). The stretches multiply: \(1.08\).</p>
+  <p class="caption">Take \(h(x) = x^2\) and \(g(h) = \sin h\), at \(x_0 = 1\). A nudge <span class="cx">\(dx\)</span> is stretched by \(dh/dx = 2x_0 = 2\), then by \(dg/dh = \cos h(1) = \cos 1 \approx 0.54\). The stretches multiply: \(dg/dx \approx 1.08\).</p>
 </section>
 
 <section class="clip-slide">
   <h2>Chain rule in general</h2>
   <video class="clip" src="assets/clips/ChainRuleGeneral.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">One local factor per link, multiplied along the chain. Backpropagation is this, repeated.</p>
+  <p class="caption"><span class="cr">\(\dfrac{dg}{dx} = g'(h(x))\cdot h'(x)\)</span>: one local factor per link, multiplied along the chain. For \(\sin(x^2)\): \(\cos(x^2)\cdot 2x\). Backpropagation is this, repeated.</p>
 </section>
 
 <section class="act-body">

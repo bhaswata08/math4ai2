@@ -8,7 +8,6 @@
   <div class="act-num">Act 5 of 6</div>
   <h1>Affine maps</h1>
   <p class="act-sub">Add a shift after the matrix. The origin no longer stays put.</p>
-  <div class="act-time">10 min</div>
 </section>
 
 <section class="clip-slide">
@@ -28,9 +27,26 @@
 
 <section class="act-body">
   <div class="act-tag"><b>Act 5</b> / One matrix</div>
+  <h2>Can a shift be a matrix?</h2>
+  <p>Not with the same size: every matrix \(M\) sends \(\mathbf{0}\) to \(M\mathbf{0} = \mathbf{0}\), but a shift moves \(\mathbf{0}\) to \(\mathbf{b}\).</p>
+  <p>We still want one: then a chain of affine maps is just a product of matrices.</p>
+  <p class="takeaway">The trick: give every point an extra coordinate that is always \(1\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / One matrix</div>
+  <h2>A shift by \(\mathbf{b} = (3, 1)\)</h2>
+  <p>Effectively: add \(3\) to \(x\) and \(1\) to \(y\). Write the point \((x, y)\) as \((x, y, 1)\) and put \(\mathbf{b}\) in the third column:</p>
+  $$\begin{bmatrix} 1 & 0 & 3 \\ 0 & 1 & 1 \\ 0 & 0 & 1 \end{bmatrix}\begin{bmatrix} x \\ y \\ 1 \end{bmatrix} = \begin{bmatrix} x + 3 \cdot 1 \\ y + 1 \cdot 1 \\ 1 \end{bmatrix} = \begin{bmatrix} x + 3 \\ y + 1 \\ 1 \end{bmatrix}$$
+  <p>The third column multiplies the constant \(1\), so it adds \(\mathbf{b}\). The last row keeps the \(1\) for the next map.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / One matrix</div>
   <h2>Homogeneous coordinates</h2>
-  $$\begin{bmatrix} A & \mathbf{b} \\ \mathbf{0}^\top & 1 \end{bmatrix}\begin{bmatrix} \mathbf{x} \\ 1 \end{bmatrix} = \begin{bmatrix} A\mathbf{x} + \mathbf{b} \\ 1 \end{bmatrix}$$
-  <p>Append a 1 to the input. The shift becomes part of one bigger matrix.</p>
+  <p>Replace the identity block with any \(A\). The same steps give the general affine map:</p>
+  $$\begin{bmatrix} A & \mathbf{b} \\ \mathbf{0}^\top & 1 \end{bmatrix}\begin{bmatrix} \mathbf{x} \\ 1 \end{bmatrix} = \begin{bmatrix} A\mathbf{x} + \mathbf{b} \cdot 1 \\ \mathbf{0}^\top\mathbf{x} + 1 \end{bmatrix} = \begin{bmatrix} A\mathbf{x} + \mathbf{b} \\ 1 \end{bmatrix}$$
+  <p>\((\mathbf{x}, 1)\) is \(\mathbf{x}\) in <b>homogeneous coordinates</b>. Graphics and robotics chain every move this way.</p>
 </section>
 
 <section class="act-body">

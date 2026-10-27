@@ -9,7 +9,6 @@
   <div class="act-num">Act 6 of 9</div>
   <h1>PCA through the SVD</h1>
   <p class="act-sub">The SVD of the data matrix contains everything PCA needs, and you never have to form \(X^TX\).</p>
-  <div class="act-time">12 min</div>
 </section>
 
 <section class="act-body">
@@ -30,15 +29,18 @@
   <h2>The four points, by SVD</h2>
   <div class="cols" style="align-items:center">
     <div>
-      <p>$$X^TX = \begin{bmatrix}10&6\\6&10\end{bmatrix}: \ \sigma_1^2 = 16,\ \sigma_2^2 = 4$$</p>
-      <p>\(\sigma_1 = 4,\ \sigma_2 = 2\)<br>\(\lambda_1 = 16/4 = 4,\ \lambda_2 = 4/4 = 1\) ✓</p>
+      <p>$$X^TX = \begin{bmatrix}10&6\\6&10\end{bmatrix}, \quad (10-\mu)^2 - 36 = 0$$</p>
+      <p>\(\mu = 16,\ 4\), so \(\sigma_1 = 4,\ \sigma_2 = 2\).<br>\(\lambda_1 = 16/4 = 4,\ \lambda_2 = 4/4 = 1\) ✓</p>
+      <p>\(\mathbf v_1 = \tfrac1{\sqrt2}(1, 1)\) for 16, \(\mathbf v_2 = \tfrac1{\sqrt2}(1, -1)\) for 4.</p>
     </div>
-    <div>
-      <p>\(\mathbf v_1 = \tfrac1{\sqrt2}(1, 1)\), so</p>
-      <p>$$\mathbf u_1 = \frac{X\mathbf v_1}{\sigma_1} = \frac{1}{\sqrt2}\begin{bmatrix}1\\-1\\0\\0\end{bmatrix}, \quad \sigma_1\mathbf u_1 = \begin{bmatrix}2\sqrt2\\-2\sqrt2\\0\\0\end{bmatrix}$$</p>
+    <div class="fragment">
+      <p>$$\mathbf u_1 = \frac{X\mathbf v_1}{\sigma_1} = \tfrac{1}{\sqrt2}(1, -1, 0, 0)^T$$</p>
+      <p>$$\mathbf u_2 = \frac{X\mathbf v_2}{\sigma_2} = \tfrac{1}{\sqrt2}(0, 0, 1, -1)^T$$</p>
+      <p>$$\sigma_1\mathbf u_1 = (2\sqrt2, -2\sqrt2, 0, 0)^T$$</p>
+      <p>$$\sigma_2\mathbf u_2 = (0, 0, \sqrt2, -\sqrt2)^T$$</p>
     </div>
   </div>
-  <p class="takeaway">\(\sigma_1\mathbf u_1\) is exactly the first column of \(\hat X = XP\) from Act 3.</p>
+  <p class="takeaway fragment">\(\sigma_1\mathbf u_1\) and \(\sigma_2\mathbf u_2\) are exactly the columns of \(\hat X = XP\) from Act 3.</p>
 </section>
 
 <section class="act-body">

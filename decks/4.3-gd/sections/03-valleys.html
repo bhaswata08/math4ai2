@@ -10,7 +10,6 @@
   <div class="act-num">Act 3 of 6</div>
   <h1>Narrow valleys</h1>
   <p class="act-sub">When the bowl is stretched, the steepest direction is not the way to the bottom.</p>
-  <div class="act-time">15 min</div>
 </section>
 
 <section class="clip-slide">
@@ -33,10 +32,11 @@
     <video class="clip" src="assets/clips/MomentumVsPlain.mp4"></video>
     <span class="fragment clip-play"></span>
     <div>
+      <p style="font-size:0.8em; margin:0 0 0.4em">\(v\) is the velocity, a running sum of past steps. \(\beta\) is the friction: the share of \(v\) kept each step (\(\beta = 0.3\) here).</p>
       <div style="font-size:0.9em">$$v \leftarrow \beta\,v - \eta\,\nabla L(\mathbf w)$$
       $$\mathbf w \leftarrow \mathbf w + v$$</div>
-      <p style="margin-top:0.8em; font-size:0.8em; color:var(--ink-dim)">Kicks across the valley alternate in sign and cancel. Kicks along it keep their sign and add up.</p>
+      <p style="margin-top:0.8em; font-size:0.8em; color:var(--ink-dim)">Across the valley the kicks alternate in sign, so they cancel in \(v\). Along it they point the same way, so they add up.</p>
     </div>
   </div>
-  <p class="caption">Same \(\eta = 0.22\): plain GD needs 15 steps, momentum (\(\beta = 0.3\)) needs 8 to reach \(|\mathbf w| &lt; 0.1\).</p>
+  <p class="caption">Same \(\eta = 0.22\): plain GD needs 15 steps, momentum 8, to reach \(|\mathbf w| &lt; 0.1\).</p>
 </section>

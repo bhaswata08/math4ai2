@@ -7,14 +7,13 @@
   <div class="act-num">Act 4 of 6</div>
   <h1>The Hadamard product</h1>
   <p class="act-sub">Multiply matching entries. A different operation with the same look.</p>
-  <div class="act-time">8 min</div>
 </section>
 
 <section class="clip-slide">
   <h2>Entry times entry</h2>
   <video class="clip" src="assets/clips/Hadamard.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption"><span class="cr">\((A \odot B)_{ij} = a_{ij}\,b_{ij}\)</span>. Both matrices have the same shape. A 0-1 matrix works as a mask.</p>
+  <p class="caption"><span class="cr">\((A \odot B)_{ij} = a_{ij}\,b_{ij}\)</span>. Both matrices have the same shape. A matrix of 0s and 1s works as a <b>mask</b>: a 1 keeps the entry, a 0 sets it to zero.</p>
 </section>
 
 <section class="act-body">
@@ -28,8 +27,9 @@
 <section class="act-body">
   <div class="act-tag"><b>Act 4</b> / Try it</div>
   <h2>Mask a row</h2>
+  <p>A mask is a row of 0s and 1s. Under \(\odot\), a 1 keeps the entry and a 0 zeroes it.</p>
   <ol class="practice">
     <li>\(\begin{bmatrix} 1 & 0 & 1 \end{bmatrix} \odot \begin{bmatrix} 7 & 8 & 9 \end{bmatrix}\) <span class="fragment">\(= \begin{bmatrix} 7 & 0 & 9 \end{bmatrix}\)</span></li>
-    <li>Which mask keeps only the middle entry of a row of three?</li>
+    <li>Find the mask \(\mathbf m\) with \(\mathbf m \odot \begin{bmatrix} 7 & 8 & 9 \end{bmatrix} = \begin{bmatrix} 0 & 8 & 0 \end{bmatrix}\).</li>
   </ol>
 </section>

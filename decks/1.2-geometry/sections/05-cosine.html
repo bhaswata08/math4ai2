@@ -10,7 +10,6 @@
   <div class="act-num">Act 5 of 7</div>
   <h1>Cosine similarity</h1>
   <p class="act-sub">Compare direction, ignore size.</p>
-  <div class="act-time">20 min</div>
 </section>
 
 <section class="clip-slide">
@@ -31,10 +30,14 @@
   <div class="act-tag"><b>Act 5</b> / Example</div>
   <h2>The angle between [3, 1] and [1, 2]</h2>
   <div class="eq-big">
-    $$\cos\theta = \frac{5}{\sqrt{10}\,\sqrt{5}} = \frac{5}{\sqrt{50}} = \frac{1}{\sqrt{2}} \approx \textcolor{#f0a35e}{0.71}, \qquad \theta = \textcolor{#ffd166}{45^\circ}$$
+    $$\begin{aligned}
+    \cos\theta &= \frac{\vec v \cdot \vec w}{\lVert \vec v \rVert\,\lVert \vec w \rVert}
+      = \frac{3 \cdot 1 + 1 \cdot 2}{\sqrt{3^2 + 1^2}\,\sqrt{1^2 + 2^2}} \\
+    &= \frac{5}{\sqrt{10}\,\sqrt{5}} = \frac{1}{\sqrt{2}} \approx \textcolor{#f0a35e}{0.71}, \qquad \theta = \textcolor{#ffd166}{45^\circ}
+    \end{aligned}$$
   </div>
-  <p>Triple the second vector to \([3, 6]\): the dot product is 15, the length is \(3\sqrt{5}\).</p>
-  <p>\(\cos\theta = \dfrac{15}{3\sqrt{50}} = 0.71\), unchanged.</p>
+  <p>Triple the second vector to \([3, 6]\):</p>
+  <p>\(\cos\theta = \dfrac{3 \cdot 3 + 1 \cdot 6}{\sqrt{10}\,\sqrt{3^2 + 6^2}} = \dfrac{15}{\sqrt{10}\cdot 3\sqrt{5}} = \dfrac{5}{\sqrt{50}} \approx 0.71\), unchanged.</p>
 </section>
 
 <section class="act-body">
