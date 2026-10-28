@@ -118,6 +118,41 @@
 </section>
 
 <section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / Shifted subspaces</div>
+  <h2>A line that misses 0: an affine subspace</h2>
+  <div class="cols wide-left" style="align-items:center">
+    <div>
+      <p>Let \(\textcolor{#6fd0c0}{\vec v} = [1, 1]\) give a direction and \(\textcolor{#f0a35e}{\vec p} = [0, 1]\) a point. The line through \(\textcolor{#f0a35e}{\vec p}\) along \(\textcolor{#6fd0c0}{\vec v}\):</p>
+      $$L = \{\, \textcolor{#f0a35e}{\vec p} + t\,\textcolor{#6fd0c0}{\vec v} \;:\; t \in \mathbb{R} \,\} = \textcolor{#f0a35e}{\vec p} + \operatorname{span}(\textcolor{#6fd0c0}{\vec v})$$
+      <p class="fragment">\(\vec 0 \notin L\), so \(L\) is not a subspace. It is a subspace shifted by \(\textcolor{#f0a35e}{\vec p}\): an <b>affine subspace</b>.</p>
+      <p class="fragment">The difference of two points of \(L\) is \((s - t)\textcolor{#6fd0c0}{\vec v}\): the \(\textcolor{#f0a35e}{\vec p}\) cancels, and it lies in the subspace.</p>
+    </div>
+    <svg viewBox="0 0 560 380" aria-label="the line through the origin along v, dashed, and a parallel solid line through p one unit above">
+      <defs>
+        <marker id="m5v" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 z" fill="#6fd0c0"/></marker>
+        <marker id="m5p" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 z" fill="#f0a35e"/></marker>
+      </defs>
+      <!-- 60 px per unit, origin at (200, 250) -->
+      <line x1="0" y1="250" x2="560" y2="250" stroke="#2a3f5c" stroke-width="2"/>
+      <line x1="200" y1="0" x2="200" y2="380" stroke="#2a3f5c" stroke-width="2"/>
+      <line x1="70" y1="380" x2="450" y2="0" stroke="#a7b0be" stroke-width="3" stroke-dasharray="10 8"/>
+      <line x1="10" y1="380" x2="390" y2="0" stroke="#f0a35e" stroke-width="5"/>
+      <line x1="200" y1="250" x2="258" y2="192" stroke="#6fd0c0" stroke-width="6" marker-end="url(#m5v)"/>
+      <line x1="200" y1="250" x2="200" y2="196" stroke="#f0a35e" stroke-width="6" marker-end="url(#m5p)"/>
+      <circle cx="200" cy="250" r="6" fill="#e9ebef"/>
+      <g font-family="Inter" font-size="26">
+        <text x="335" y="150" fill="#a7b0be">span(v)</text>
+        <text x="270" y="95" fill="#f0a35e" text-anchor="end">p + span(v)</text>
+        <text x="270" y="215" fill="#6fd0c0">v</text>
+        <text x="150" y="215" fill="#f0a35e">p</text>
+        <text x="210" y="285" fill="#e9ebef">0</text>
+      </g>
+    </svg>
+  </div>
+  <p class="takeaway fragment">A neuron's boundary \(\vec w \cdot \vec x + b = 0\) is affine: with \(b \neq 0\) it misses 0.</p>
+</section>
+
+<section class="act-body">
   <div class="act-tag"><b>Act 5</b> / Subspaces</div>
   <h2>Every subspace of \(\mathbb{R}^3\)</h2>
   <div class="views" style="grid-template-columns:repeat(4, 1fr)">

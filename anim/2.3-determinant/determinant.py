@@ -134,27 +134,38 @@ class DetFormula(Scene):
     def construct(self):
         a, b, c, d = 4, 1, 2, 3
         W, H = a + b, c + d
-        u = 0.6
-        o = np.array([-4.2, -2.15, 0])
+        u = 0.5
+        o = np.array([-4.2, -1.6, 0])
 
         def P(x, y):
             return o + u * np.array([x, y, 0])
 
         plane = house_plane(x_range=[-20, 20, 1], y_range=[-12, 12, 1],
                             x_length=40 * u, y_length=24 * u).shift(o)
-        mat = corner_matrix([[a, b], [c, d]])
+        mat = label_box(VGroup(matrix_tex([["a", "b"], ["c", "d"]]), tag("="),
+                               matrix_tex([[a, b], [c, d]])).arrange(RIGHT, buff=0.15)
+                        .to_corner(UL, buff=0.25))
         para = Polygon(P(0, 0), P(a, c), P(a + b, c + d), P(b, d), color=RESULT_COLOR,
                        stroke_width=4, fill_color=RESULT_COLOR, fill_opacity=0.35)
         i_hat = Arrow(P(0, 0), P(a, c), buff=0, color=X_COLOR, stroke_width=6, tip_length=0.18)
         j_hat = Arrow(P(0, 0), P(b, d), buff=0, color=Y_COLOR, stroke_width=6, tip_length=0.18)
 
+        tip_ac = label_box(tag(r"(a,c)", X_COLOR).next_to(P(a, c), RIGHT, buff=0.15))
+        tip_bd = label_box(tag(r"(b,d)", Y_COLOR).next_to(P(b, d), LEFT, buff=0.15))
         q = tag(r"\text{area}=\,?", RESULT_COLOR).move_to([2.9, 1.9, 0])
-        self.add(plane, para, i_hat, j_hat, mat, label_box(q))
+        self.add(plane, para, i_hat, j_hat, mat, tip_ac, tip_bd, label_box(q))
         self.wait(1.5)
 
         box = Polygon(P(0, 0), P(W, 0), P(W, H), P(0, H), color=INK_DIM, stroke_width=4)
-        lw = tag("a+b").next_to(P(0.7 * W, H), UP, buff=0.35)
-        lh = tag("c+d").next_to(P(W, 0.25 * H), RIGHT, buff=0.75)
+        def side(p0, p1, direction, tex, color):
+            br = BraceBetweenPoints(p0, p1, direction=direction, color=color, buff=0.3)
+            return VGroup(br, tag(tex, color).next_to(br, direction, buff=0.08))
+
+        # bottom: a then b; right: c then d (where the arrow tips sit)
+        sides = VGroup(side(P(0, 0), P(a, 0), DOWN, "a", X_COLOR),
+                       side(P(a, 0), P(W, 0), DOWN, "b", Y_COLOR),
+                       side(P(W, 0), P(W, c), RIGHT, "c", X_COLOR),
+                       side(P(W, c), P(W, H), RIGHT, "d", Y_COLOR))
         box_area = W * H
         e1 = tag(rf"\text{{box}}={W}\cdot{H}={box_area}")
         ya = a * c
@@ -180,7 +191,7 @@ class DetFormula(Scene):
         for g in (tris_ac, tris_bd, rects):
             g.set_fill(opacity=0.5)
 
-        self.play(Create(box), FadeIn(lw), FadeIn(lh), FadeOut(q), run_time=1.5)
+        self.play(Create(box), FadeIn(sides), FadeOut(q), FadeOut(tip_ac), FadeOut(tip_bd), run_time=1.5)
         self.play(FadeIn(label_box(e1)), run_time=1.2)
         self.wait(1.5)
         for pieces, eq, away in ((tris_ac, e2, 0.2), (tris_bd, e3, 0.2), (rects, e4, 0.2)):

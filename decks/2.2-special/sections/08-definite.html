@@ -1,64 +1,253 @@
 <!-- ============================================================
-     ACT 7 of 9. Positive (semi-)definite. Budget: 15 min.
-     Clips QuadraticForms and PDAngle are Manim, made for this course.
-     Goal: x^T A x > 0 for all x != 0; the angle between x and Ax
-     stays under 90 degrees; 2x2 test; X^T X is PSD.
+     ACT 8 of 10. Positive (semi-)definite. Budget: 25 min.
+     Storyline and PD* footage from Infomity, "Positive Definite Matrices
+     Explained" (anim/footage-infomity.tsv). PDAngle is Manim, made for
+     this course.
+     The video leans on eigenvalues and determinants, which come later
+     (2.4 and 2.3). Here the lambdas are "curvatures along the bowl's two
+     axes", read off a diagonal matrix, and the determinant is ac - b^2.
+     Goal: x^T A x > 0 for all x != 0; bowl, trough, saddle; the 2x2
+     test; a PD Hessian means a true minimum; X^T X is PSD.
      ============================================================ -->
 
 <section class="act-open">
-  <div class="act-num">Act 7 of 9</div>
+  <div class="act-num">Act 8 of 10</div>
   <h1>Positive definite</h1>
   <p class="act-sub">Symmetric matrices that curve upward in every direction.</p>
 </section>
 
 <section class="clip-slide">
-  <h2>A matrix draws a surface</h2>
-  <video class="clip" src="assets/clips/QuadraticForms.mp4"></video>
+  <h2>Water pools at the bottom of a bowl</h2>
+  <div class="clip-talk">
+    <ul>
+      <li>How does an optimiser know it has reached a true minimum, and not a flat plateau?</li>
+      <li>Training looks for the lowest point of a loss: the lowest energy.</li>
+      <li>Water in a bowl always settles at its one lowest point.</li>
+      <li>The matrix behind that bowl is called <b>positive definite</b>.</li>
+    </ul>
+    <video class="clip" src="assets/clips/PDBowl.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">The height is \(z = x^TAx\). A bowl, a trough, a saddle.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>\(x^TAx\): a vector in, one number out</h2>
+  <div class="clip-talk">
+    <ul>
+      <li>\(x^TAx\): a vector in, one number out (an energy, or a height).</li>
+      <li>\(A\) stretches and turns \(x\) into \(Ax\).</li>
+      <li>Here \(x\) lies almost on a direction \(A\) only stretches, so \(Ax\) barely turns.</li>
+      <li>The dot product with \(x\) measures how much \(Ax\) still points along \(x\).</li>
+      <li>Positive for every \(x\neq0\): \(A\) is positive definite.</li>
+    </ul>
+    <video class="clip" src="assets/clips/PDMachine.mp4"></video>
+  </div>
+  <span class="fragment clip-play"></span>
 </section>
 
 <section class="act-body">
-  <div class="act-tag"><b>Act 7</b> / Definition</div>
-  <h2>Three kinds of symmetric matrix</h2>
-  <table style="font-size:0.85em">
-    <thead><tr><th>Name</th><th>Condition</th><th>Surface</th><th>Example</th></tr></thead>
-    <tbody>
-      <tr><td>Positive definite (PD)</td><td>\(x^TAx>0\) for all \(x\neq 0\)</td><td>bowl</td><td>\(\mathrm{diag}(2,1)\)</td></tr>
-      <tr><td>Positive semi-definite (PSD)</td><td>\(x^TAx\ge 0\) for all \(x\)</td><td>trough</td><td>\(\mathrm{diag}(1,0)\)</td></tr>
-      <tr><td>Indefinite</td><td>both signs occur</td><td>saddle</td><td>\(\mathrm{diag}(1,-1)\)</td></tr>
-    </tbody>
-  </table>
-  <p class="takeaway">For \(\mathrm{diag}(2,1)\): \(x^TAx = 2x^2 + y^2\), which is zero only at the origin.</p>
+  <div class="act-tag"><b>Act 8</b> / Quadratic form</div>
+  <h2>One number from a matrix and a vector</h2>
+  <p>Take a square matrix \(A\) and a vector \(x\). First \(A\) moves \(x\) to \(Ax\), then we take the dot product with \(x\) again:</p>
+  $$x^TAx \;=\; x\cdot(Ax) \;=\; \sum_i\sum_j a_{ij}\,x_i\,x_j$$
+  <p class="fragment">Every term is two coordinates multiplied together: \(x_1^2\), \(x_1x_2\), \(x_2^2\), and so on. No constants, no linear terms. This is called a <b>quadratic form</b>.</p>
 </section>
 
 <section class="clip-slide">
   <h2>The angle test</h2>
-  <video class="clip" src="assets/clips/PDAngle.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>\(x^TAx=\|x\|\,\|Ax\|\cos\theta\).</li>
+      <li>The lengths are positive, so the sign comes from \(\cos\theta\).</li>
+      <li>Positive definite: \(Ax\) never turns more than 90° away from \(x\), whatever \(x\) is.</li>
+    </ul>
+    <video class="clip" src="assets/clips/PDAngle.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">\(x^TAx = \|x\|\,\|Ax\|\cos\theta\). Positive definite means \(Ax\) never turns more than 90 degrees from \(x\).</p>
 </section>
 
 <section class="act-body">
-  <div class="act-tag"><b>Act 7</b> / Testing</div>
+  <div class="act-tag"><b>Act 8</b> / Quadratic form</div>
+  <h2>The anti-symmetric part cancels out</h2>
+  <p>When evaluating a quadratic form \(x^TAx\) with a general \(2\times2\) matrix:</p>
+  $$\begin{bmatrix}x_1&x_2\end{bmatrix}\begin{bmatrix}a&p\\q&c\end{bmatrix}\begin{bmatrix}x_1\\x_2\end{bmatrix}=ax_1^2+(p+q)x_1x_2+cx_2^2$$
+  <p class="fragment">The individual values of the off-diagonal entries \(p\) and \(q\) do not matter independently—only their sum \((p+q)\) appears in the resulting scalar expression.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 8</b> / Quadratic form</div>
+  <h2>Symmetrizing changes nothing in the output</h2>
+  <p>If you replace both \(p\) and \(q\) by their average:</p>
+  $$b=\frac{p+q}{2}$$
+  <p class="fragment">the matrix becomes symmetric:</p>
+  <div class="fragment">$$\begin{bmatrix}a&b\\b&c\end{bmatrix}$$</div>
+  <p class="fragment">The resulting quadratic form is identical:</p>
+  <div class="fragment">$$ax_1^2+2bx_1x_2+cx_2^2=ax_1^2+(p+q)x_1x_2+cx_2^2$$</div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 8</b> / Quadratic form</div>
+  <h2>Generalization to any size matrix</h2>
+  <p>Any square matrix \(A\) can be decomposed into a symmetric part and a skew-symmetric (anti-symmetric) part:</p>
+  $$A=\underbrace{\frac{A+A^T}{2}}_{\text{symmetric}}+\underbrace{\frac{A-A^T}{2}}_{\text{skew-symmetric}}$$
+  <p class="fragment">For any skew-symmetric matrix \(K\) (where \(K^T=-K\)), the quadratic form is always zero:</p>
+  <div class="fragment">$$x^TKx=0\quad\text{for all }x$$</div>
+  <p class="fragment">Therefore:</p>
+  <div class="fragment">$$x^TAx=x^T\left(\frac{A+A^T}{2}\right)x$$</div>
+</section>
+
+<section class="clip-slide">
+  <h2>Every direction gets a height</h2>
+  <div class="clip-talk">
+    <ul>
+      <li>Sweep \(x\) round the plane. \(x^TAx\) gives a height above each point.</li>
+      <li>Positive definite: every height is positive.</li>
+      <li>All directions together form a bowl that curves up.</li>
+      <li>The origin is the lowest point, so water cannot escape.</li>
+    </ul>
+    <video class="clip" src="assets/clips/PDSurface.mp4"></video>
+  </div>
+  <span class="fragment clip-play"></span>
+</section>
+
+<section class="clip-slide">
+  <h2>Steep and gentle directions</h2>
+  <div class="clip-talk">
+    <ul>
+      <li>The bowl has two main axes, at right angles.</li>
+      <li>Along each axis the cut is a parabola with steepness \(\lambda\).</li>
+      <li>Large \(\lambda\): steep, narrow walls. Small \(\lambda\): a gentle, wide slope.</li>
+      <li>Up in every direction exactly when every \(\lambda>0\). Block 2.4 calls these \(\lambda\)'s eigenvalues.</li>
+    </ul>
+    <video class="clip" src="assets/clips/PDCurvature.mp4"></video>
+  </div>
+  <span class="fragment clip-play"></span>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 8</b> / Curvature</div>
+  <h2>Reading the curvatures off a diagonal matrix</h2>
+  <p>Take \(A=\begin{bmatrix}\lambda_1&0\\0&\lambda_2\end{bmatrix}\). Then \(x^TAx=\lambda_1x_1^2+\lambda_2x_2^2\).</p>
+  <p class="fragment">Walk along the \(x_1\) axis (\(x_2=0\)): the height is \(z=\lambda_1x_1^2\), a parabola with steepness \(\lambda_1\). Along the \(x_2\) axis: \(z=\lambda_2x_2^2\).</p>
+  <p class="fragment">Both \(\lambda\) positive: up both ways, a bowl. One zero: flat along that axis, a trough. Opposite signs: a saddle. Both negative: a bowl upside down.</p>
+  <p class="fragment">A symmetric \(A\) that is not diagonal gives the same picture along two tilted axes at right angles. Block 2.4 finds those axes (eigenvectors) and the \(\lambda\)'s (eigenvalues).</p>
+  <p class="takeaway">Definiteness is the sign pattern of the curvatures.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>One curvature negative: a saddle</h2>
+  <div class="clip-talk">
+    <ul>
+      <li>What if one \(\lambda\) is negative? The matrix is <b>indefinite</b>.</li>
+      <li>Up along one axis, down along the other: a saddle.</li>
+      <li>Water at the centre spills off the sides.</li>
+      <li>The slope at the centre is zero, so an optimiser can think it has finished.</li>
+    </ul>
+    <video class="clip" src="assets/clips/PDSaddle.mp4"></video>
+  </div>
+  <span class="fragment clip-play"></span>
+</section>
+
+<section class="clip-slide">
+  <h2>Four landscapes from above</h2>
+  <div class="clip-talk">
+    <ul>
+      <li>All \(\lambda>0\): positive definite, rings round one lowest point.</li>
+      <li>Some \(\lambda=0\), the rest positive: semi-definite, a trough with a whole line of lowest points.</li>
+      <li>All \(\lambda<0\): negative definite, an upside-down bowl.</li>
+      <li>Mixed signs: indefinite, a saddle.</li>
+      <li>Ask: which is hardest to navigate in thousands of dimensions?</li>
+    </ul>
+    <video class="clip" src="assets/clips/PDSpectrum.mp4"></video>
+  </div>
+  <span class="fragment clip-play"></span>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 8</b> / Definition</div>
+  <h2>Four kinds of symmetric matrix</h2>
+  <table style="font-size:0.8em">
+    <thead><tr><th>Name</th><th>Condition</th><th>Curvatures</th><th>Surface</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td>Positive definite (PD)</td><td>\(x^TAx>0\) for all \(x\neq 0\)</td><td>all \(&gt;0\)</td><td>bowl</td><td>\(\mathrm{diag}(2,1)\)</td></tr>
+      <tr><td>Positive semi-definite (PSD)</td><td>\(x^TAx\ge 0\) for all \(x\)</td><td>all \(\ge0\)</td><td>trough</td><td>\(\mathrm{diag}(1,0)\)</td></tr>
+      <tr><td>Negative definite</td><td>\(x^TAx&lt;0\) for all \(x\neq 0\)</td><td>all \(&lt;0\)</td><td>upside-down bowl</td><td>\(\mathrm{diag}(-2,-1)\)</td></tr>
+      <tr><td>Indefinite</td><td>both signs occur</td><td>mixed signs</td><td>saddle</td><td>\(\mathrm{diag}(1,-1)\)</td></tr>
+    </tbody>
+  </table>
+  <p class="takeaway">For \(\mathrm{diag}(2,1)\): \(x^TAx = 2x_1^2 + x_2^2\), which is zero only at the origin.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Test the top-left corners</h2>
+  <div class="clip-talk">
+    <ul>
+      <li>Finding the curvatures of a big matrix is expensive.</li>
+      <li>Sylvester's test checks the top-left corners instead.</li>
+      <li>For a \(2\times2\): the corner \(a>0\), then the whole matrix \(ac-b^2>0\).</li>
+      <li>All corners positive: positive definite. Block 2.3 calls these numbers determinants.</li>
+    </ul>
+    <video class="clip" src="assets/clips/PDSylvester.mp4"></video>
+  </div>
+  <span class="fragment clip-play"></span>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 8</b> / Testing</div>
   <h2>A quick test for a symmetric 2×2</h2>
   $$A=\begin{bmatrix}a&b\\b&c\end{bmatrix}\ \text{is PD}\iff a>0\ \text{and}\ ac-b^2>0$$
+  $$x^TAx=\begin{bmatrix}x_1&x_2\end{bmatrix}\begin{bmatrix}a&b\\b&c\end{bmatrix}\begin{bmatrix}x_1\\x_2\end{bmatrix}=ax_1^2+2bx_1x_2+cx_2^2$$
   <p>Complete the square (\(a\neq0\)):</p>
-  $$x^TAx=ax_1^2+2bx_1x_2+cx_2^2=a\Big(x_1+\tfrac{b}{a}x_2\Big)^2+\tfrac{ac-b^2}{a}\,x_2^2$$
+  $$ax_1^2+2bx_1x_2+cx_2^2=a\Big(x_1+\tfrac{b}{a}x_2\Big)^2+\tfrac{ac-b^2}{a}\,x_2^2$$
   <p class="fragment">Both squares are positive for every \(x\neq0\) exactly when \(a>0\) and \(ac-b^2>0\).</p>
-  <p class="fragment">Check: \(\begin{bmatrix}2&1\\1&2\end{bmatrix}\) has \(a=2>0\) and \(ac-b^2=3>0\), so it is PD. \(\begin{bmatrix}1&0\\0&-1\end{bmatrix}\) has \(\det=-1\), so it is not.</p>
+  <p class="fragment">Check: \(\begin{bmatrix}2&1\\1&2\end{bmatrix}\) has \(a=2>0\) and \(ac-b^2=3>0\): PD. \(\begin{bmatrix}1&0\\0&-1\end{bmatrix}\) has \(ac-b^2=-1\): not PD.</p>
   <p class="takeaway">The test applies to symmetric matrices only.</p>
 </section>
 
 <section class="clip-slide">
-  <h2>Level curves tell the same story</h2>
-  <video class="clip" src="assets/clips/LevelSetsDefinite.mp4"></video>
+  <h2>Worked example</h2>
+  <div class="clip-talk">
+    <ul>
+      <li>\(A=\begin{bmatrix}4&2\\2&3\end{bmatrix}\)</li>
+      <li>Corner: \(4>0\).</li>
+      <li>Whole matrix: \(4\cdot3-2\cdot2=8>0\). Positive definite.</li>
+      <li>Curvatures about 5.56 and 1.44, both positive: a steep, tilted elliptical bowl.</li>
+    </ul>
+    <video class="clip" src="assets/clips/PDExample.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">The curve \(x^TAx=1\): a closed ellipse when \(ac-b^2>0\) and \(a>0\), two branches when \(ac-b^2<0\), two parallel lines when \(ac-b^2=0\).</p>
+</section>
+
+<section class="clip-slide">
+  <h2>The Hessian plays the role of \(A\)</h2>
+  <div class="clip-talk">
+    <ul>
+      <li>A real loss is a curved landscape, not one fixed \(x^TAx\).</li>
+      <li>The Hessian \(H\) collects the second derivatives of the loss.</li>
+      <li>Where the gradient is zero, \(H\) plays the role of \(A\).</li>
+      <li>It sets the curvature in every direction around that point (Day 4).</li>
+    </ul>
+    <video class="clip" src="assets/clips/PDHessian.mp4"></video>
+  </div>
+  <span class="fragment clip-play"></span>
+</section>
+
+<section class="clip-slide">
+  <h2>A positive definite Hessian means a true minimum</h2>
+  <div class="clip-talk">
+    <ul>
+      <li>\(H\) positive definite: every curvature is positive.</li>
+      <li>The loss curves up in every direction, like a bowl.</li>
+      <li>So the flat point is not a saddle or a plateau. It is a local minimum.</li>
+      <li>Gradient descent steps funnel down to the bottom.</li>
+    </ul>
+    <video class="clip" src="assets/clips/PDGuarantee.mp4"></video>
+  </div>
+  <span class="fragment clip-play"></span>
 </section>
 
 <section class="act-body">
-  <div class="act-tag"><b>Act 7</b> / Always PSD</div>
+  <div class="act-tag"><b>Act 8</b> / Always PSD</div>
   <h2>\(X^TX\) is never negative</h2>
   $$x^T(X^TX)x=(Xx)^T(Xx)=\|Xx\|^2\ \ge 0$$
   <div class="beats two">
@@ -67,12 +256,26 @@
   </div>
 </section>
 
+<section class="clip-slide">
+  <h2>One picture to keep</h2>
+  <div class="clip-talk">
+    <ul>
+      <li>Positive curvatures, \(x^TAx>0\), a guaranteed lowest point.</li>
+      <li>Three views of one bowl.</li>
+      <li>See a positive definite matrix, picture a bowl that funnels every path to rest.</li>
+    </ul>
+    <video class="clip" src="assets/clips/PDUnified.mp4"></video>
+  </div>
+  <span class="fragment clip-play"></span>
+</section>
+
 <section class="act-body">
-  <div class="act-tag"><b>Act 7</b> / Try it</div>
+  <div class="act-tag"><b>Act 8</b> / Try it</div>
   <h2>Definite or not?</h2>
   <ol class="practice">
     <li>\(\begin{bmatrix}3&1\\1&2\end{bmatrix}\) <span class="fragment">\(a=3>0\), \(ac-b^2=6-1=5>0\): positive definite.</span></li>
     <li>\(\begin{bmatrix}1&2\\2&1\end{bmatrix}\)</li>
     <li>\(\begin{bmatrix}1&1\\1&1\end{bmatrix}\)</li>
+    <li>\(\begin{bmatrix}-2&0\\0&-5\end{bmatrix}\)</li>
   </ol>
 </section>

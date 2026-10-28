@@ -1,76 +1,134 @@
 <!-- ============================================================
-     ACT 3 of 5. Changing basis. Budget: 35 min.
-     Source: 3b1b EoLA ch. 13 (JennysGrid, ShowOriginOfGrid,
-     TranslateFromJenny). TranslateToJenny is authored (the reverse).
-     Goal: students translate coordinates both ways between our
-     basis and Jennifer's b1, b2, using combinations and two
-     equations only. The change-of-basis matrix is Day 2 and is
-     only named here.
-     Act 4 owns subspace intersection.
+     ACT 6 of 10. Changing basis. Budget: 40 min.
+     Follows 3b1b EoLA ch. 13 in order: coordinates as scalars,
+     Jennifer's basis, her numbers to ours with B, why B looks
+     backwards, ours to hers with B^-1, then a transformation written
+     in her language, B^-1 M B. Ends with the orthonormal shortcut
+     (B^-1 = B^T) and PCA. Moved here from Block 1.4 on 2026-10-28;
+     reworked to the 3b1b storyline the same day.
      ============================================================ -->
 
 <section class="act-open">
-  <div class="act-num">Act 3 of 5</div>
+  <div class="act-num">Act 6 of 10</div>
   <h1>Changing basis</h1>
-  <p class="act-sub">Jennifer and we describe the same arrows with different numbers.</p>
+  <p class="act-sub">The same arrow can have different coordinates. A matrix and its inverse translate between them.</p>
 </section>
 
 <section class="clip-slide">
-  <h2>Jennifer's grid</h2>
+  <h2>What \([3, 2]\) means</h2>
+  <video class="clip" src="assets/clips/CoordinatesAsScalars.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">The numbers are instructions: 3 steps along \(\hat\imath\), then 2 steps along \(\hat\jmath\). Every coordinate silently assumes these two vectors.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Jennifer's basis</h2>
   <video class="clip" src="assets/clips/JennysGrid.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">Different grid lines. Her first steps are \(\vec b_1 = [2, 1]\) and \(\vec b_2 = [-1, 1]\). The only point we agree on is the origin \([0, 0]\): we both get it by scaling our basis vectors by 0.</p>
+  <p class="caption">Jennifer uses different first steps \(\textcolor{#6fd0c0}{\vec b_1}\) and \(\textcolor{#c792ea}{\vec b_2}\), so her grid is different. We agree only on the origin.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 6</b> / Two languages</div>
+  <h2>Same arrows, different numbers</h2>
+  <table class="fragment">
+    <tr><th></th><th>we write</th><th>Jennifer writes</th></tr>
+    <tr><td>\(\textcolor{#6fd0c0}{\vec b_1}\)</td><td>\([2, 1]\)</td><td>\([1, 0]\)</td></tr>
+    <tr><td>\(\textcolor{#c792ea}{\vec b_2}\)</td><td>\([-1, 1]\)</td><td>\([0, 1]\)</td></tr>
+    <tr><td>\(\textcolor{#f0a35e}{\vec x}\)</td><td>\([3, 2]\)</td><td>\([5/3,\ 1/3]\)</td></tr>
+  </table>
+  <p class="fragment">To Jennifer, her own basis vectors are \([1, 0]\) and \([0, 1]\), just as \(\hat\imath, \hat\jmath\) are to us.</p>
+  <p class="takeaway fragment">The arrow is the same. Only the description changes. We need a way to translate.</p>
 </section>
 
 <section class="clip-slide">
-  <h2>From her numbers to ours</h2>
+  <h2>One arrow, two descriptions</h2>
+  <video class="clip" src="assets/clips/SameArrowTwoNames.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">We reach \(\textcolor{#f0a35e}{\vec x}\) with \(3\hat\imath + 2\hat\jmath\). Jennifer reaches it with \(\tfrac53\textcolor{#6fd0c0}{\vec b_1} + \tfrac13\textcolor{#c792ea}{\vec b_2}\).</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Her numbers to ours</h2>
   <video class="clip" src="assets/clips/TranslateFromJenny.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">Jennifer says \([-1, 2]\). Build \(-1\,\vec b_1 + 2\,\vec b_2\) on her grid, then read the tip on ours.</p>
+  <p class="caption">Jennifer says \([-1, 2]\). That means \(-1\,\textcolor{#6fd0c0}{\vec b_1} + 2\,\textcolor{#c792ea}{\vec b_2}\). Build it, then read the tip on our grid.</p>
 </section>
 
 <section class="act-body">
-  <div class="act-tag"><b>Act 3</b> / Her numbers to ours</div>
+  <div class="act-tag"><b>Act 6</b> / Her numbers to ours</div>
   <h2>Scale her basis vectors, then add</h2>
+  <p>We know her basis vectors in our numbers, so we can do the sum ourselves:</p>
   <div class="eq-big">
-    $$-1\textcolor{#6fd0c0}{\begin{bmatrix} 2 \\ 1 \end{bmatrix}} + 2\textcolor{#c792ea}{\begin{bmatrix} -1 \\ 1 \end{bmatrix}} = \begin{bmatrix} -2 - 2 \\ -1 + 2 \end{bmatrix} = \textcolor{#f0a35e}{\begin{bmatrix} -4 \\ 1 \end{bmatrix}}$$
+    $$-1\textcolor{#6fd0c0}{\begin{bmatrix} 2 \\ 1 \end{bmatrix}} + 2\textcolor{#c792ea}{\begin{bmatrix} -1 \\ 1 \end{bmatrix}} = \textcolor{#f0a35e}{\begin{bmatrix} -4 \\ 1 \end{bmatrix}}$$
   </div>
-  <p class="caption">Her \([-1, 2]\) is our \([-4, 1]\). Day 2 packs this recipe into the change-of-basis matrix.</p>
+  <p class="fragment">This is a matrix times a vector (Block 2.1): the columns of the matrix are mixed by the entries of the vector.</p>
+  <div class="fragment">
+  $$\underbrace{\begin{bmatrix} \textcolor{#6fd0c0}{2} & \textcolor{#c792ea}{-1} \\ \textcolor{#6fd0c0}{1} & \textcolor{#c792ea}{1} \end{bmatrix}}_{B}\begin{bmatrix} -1 \\ 2 \end{bmatrix} = \textcolor{#f0a35e}{\begin{bmatrix} -4 \\ 1 \end{bmatrix}}$$
+  </div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 6</b> / Her numbers to ours</div>
+  <h2>The change-of-basis matrix</h2>
+  $$B = \begin{bmatrix} \textcolor{#6fd0c0}{\vec b_1} & \textcolor{#c792ea}{\vec b_2} \end{bmatrix}\quad\text{(her basis vectors, written in our numbers)}$$
+  <div class="eq-big fragment">
+  $$B\,\vec x_{\text{hers}} = \vec x_{\text{ours}}$$
+  </div>
+  <p class="takeaway fragment">Feed \(B\) Jennifer's numbers. Out come our numbers for the same arrow.</p>
 </section>
 
 <section class="clip-slide">
-  <h2>From our numbers to hers</h2>
-  <video class="clip" src="assets/clips/TranslateToJenny.mp4"></video>
+  <h2>What \(B\) does to the grid</h2>
+  <video class="clip" src="assets/clips/ChangeOfBasisMatrix.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">We say \([3, 2]\). Find \(a, b\) with \(a\,\vec b_1 + b\,\vec b_2 = [3, 2]\).</p>
+  <p class="caption">As a transformation, \(B\) moves \(\hat\imath\) to \(\textcolor{#6fd0c0}{\vec b_1}\) and \(\hat\jmath\) to \(\textcolor{#c792ea}{\vec b_2}\): our grid lands on hers.</p>
 </section>
 
 <section class="act-body">
-  <div class="act-tag"><b>Act 3</b> / Our numbers to hers</div>
-  <h2>Two equations, two unknowns</h2>
-  <div class="eq-big">
-    $$a\textcolor{#6fd0c0}{\begin{bmatrix} 2 \\ 1 \end{bmatrix}} + b\textcolor{#c792ea}{\begin{bmatrix} -1 \\ 1 \end{bmatrix}} = \begin{bmatrix} 3 \\ 2 \end{bmatrix}
-    \;\Longrightarrow\;
-    \begin{aligned} 2a - b &= 3 \\ a + b &= 2 \end{aligned}$$
-  </div>
-  <div class="eq-big">
-    $$3a = 5 \;\Rightarrow\; \textcolor{#f0a35e}{a = \tfrac53},\quad \textcolor{#f0a35e}{b = 2 - \tfrac53 = \tfrac13}$$
-  </div>
-  <p class="caption">Check: \(\tfrac53[2,1] + \tfrac13[-1,1] = [3, 2]\). Her coordinates are \((\tfrac53, \tfrac13)\).</p>
+  <div class="act-tag"><b>Act 6</b> / Her numbers to ours</div>
+  <h2>Isn't that backwards?</h2>
+  <p>\(B\) moves <b>our grid onto hers</b>, yet it translates <b>her numbers into ours</b>. Follow the clip step by step:</p>
+  <ol>
+    <li class="fragment">Jennifer says \([-1, 2]\). We misread it on our grid as \(-1\,\hat\imath + 2\,\hat\jmath\): the wrong arrow.</li>
+    <li class="fragment">\(B\) sends \(\hat\imath \to \textcolor{#6fd0c0}{\vec b_1}\) and \(\hat\jmath \to \textcolor{#c792ea}{\vec b_2}\), so it carries that arrow to \(-1\,\textcolor{#6fd0c0}{\vec b_1} + 2\,\textcolor{#c792ea}{\vec b_2}\): the arrow she meant.</li>
+    <li class="fragment">Its tip sits at \(\textcolor{#f0a35e}{[-4, 1]}\) on our grid. Those are our numbers.</li>
+  </ol>
+  <p class="takeaway fragment">\(B\) turns our misreading of her numbers into the arrow she actually meant.</p>
 </section>
 
 <section class="act-body">
-  <div class="act-tag"><b>Act 3</b> / We will come back to this</div>
-  <h2>Both translations are a matrix</h2>
+  <div class="act-tag"><b>Act 6</b> / Our numbers to hers</div>
+  <h2>The other direction: undo \(B\)</h2>
+  <p>Going from ours to hers undoes \(B\), so use the inverse (Act 5):</p>
   <div class="eq-big">
-    $$\begin{bmatrix} \textcolor{#6fd0c0}{2} & \textcolor{#c792ea}{-1} \\ \textcolor{#6fd0c0}{1} & \textcolor{#c792ea}{1} \end{bmatrix}\begin{bmatrix} -1 \\ 2 \end{bmatrix} = \textcolor{#f0a35e}{\begin{bmatrix} -4 \\ 1 \end{bmatrix}}$$
+  $$\vec x_{\text{hers}} = B^{-1}\vec x_{\text{ours}},\qquad B^{-1} = \tfrac13\begin{bmatrix} 1 & 1 \\ -1 & 2 \end{bmatrix}$$
   </div>
-  <p class="caption">Put her basis vectors in as columns. This matrix turns her numbers into ours, and its inverse turns ours into hers.</p>
-  <p class="takeaway">We revisit this properly with matrices, as the <b>change-of-basis matrix</b>.</p>
+  <div class="fragment">
+  $$B^{-1}\begin{bmatrix} 3 \\ 2 \end{bmatrix} = \tfrac13\begin{bmatrix} 3 + 2 \\ -3 + 4 \end{bmatrix} = \textcolor{#f0a35e}{\begin{bmatrix} 5/3 \\ 1/3 \end{bmatrix}}$$
+  </div>
+  <p class="caption fragment">The \([5/3,\ 1/3]\) Jennifer used for \(\vec x\) in the table.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>What \(B^{-1}\) does to the grid</h2>
+  <video class="clip" src="assets/clips/InverseChangeOfBasis.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(B^{-1}\) moves her grid back onto ours. Our \([3, 2]\) lands on her coordinates \([5/3,\ 1/3]\).</p>
 </section>
 
 <section class="act-body">
-  <div class="act-tag"><b>Act 3</b> / Try it</div>
+  <div class="act-tag"><b>Act 6</b> / Summary</div>
+  <h2>One matrix, two directions</h2>
+  <div class="eq-big">
+  $$\underbrace{\vec x_{\text{ours}} = B\,\vec x_{\text{hers}}}_{\text{her numbers to ours}} \qquad\qquad \underbrace{\vec x_{\text{hers}} = B^{-1}\vec x_{\text{ours}}}_{\text{our numbers to hers}}$$
+  </div>
+  <p class="takeaway">\(B^{-1}\) always exists: \(\vec b_1, \vec b_2\) are a basis, so they are independent and \(B\) squashes nothing.</p>
+</section>
+
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 6</b> / Try it</div>
   <h2>Drag the basis, drag the target</h2>
   <div class="clip-row" data-fig="basis">
     <div class="plane-host"></div>
@@ -83,65 +141,59 @@
 </section>
 
 <section class="act-body">
-  <div class="act-tag"><b>Act 3</b> / A better basis</div>
-  <h2>Orthonormal: coordinates are dot products</h2>
-  <div class="cols wide-left" style="align-items:center">
-    <div style="font-size:0.9em">
-      <p style="font-size:0.8em" class="cdim">Let \(\textcolor{#6fd0c0}{\vec u_1}, \textcolor{#c792ea}{\vec u_2}\) be an orthonormal basis: unit length and at right angles,</p>
-      $$\textcolor{#6fd0c0}{\vec u_1}\cdot\textcolor{#6fd0c0}{\vec u_1} = \textcolor{#c792ea}{\vec u_2}\cdot\textcolor{#c792ea}{\vec u_2} = 1,\qquad \textcolor{#6fd0c0}{\vec u_1}\cdot\textcolor{#c792ea}{\vec u_2} = 0$$
-      <p style="font-size:0.8em" class="cdim">Being a basis, they can build any \(\vec x\):</p>
-      $$\vec x = c_1\textcolor{#6fd0c0}{\vec u_1} + c_2\textcolor{#c792ea}{\vec u_2}$$
-      <p style="font-size:0.8em" class="cdim">Dot both sides with \(\textcolor{#6fd0c0}{\vec u_1}\), then with \(\textcolor{#c792ea}{\vec u_2}\):</p>
-      $$\begin{aligned} \vec x\cdot\textcolor{#6fd0c0}{\vec u_1} &= c_1\underbrace{\textcolor{#6fd0c0}{\vec u_1}\cdot\textcolor{#6fd0c0}{\vec u_1}}_{1} + c_2\underbrace{\textcolor{#c792ea}{\vec u_2}\cdot\textcolor{#6fd0c0}{\vec u_1}}_{0} = c_1 \\ \vec x\cdot\textcolor{#c792ea}{\vec u_2} &= c_1\underbrace{\textcolor{#6fd0c0}{\vec u_1}\cdot\textcolor{#c792ea}{\vec u_2}}_{0} + c_2\underbrace{\textcolor{#c792ea}{\vec u_2}\cdot\textcolor{#c792ea}{\vec u_2}}_{1} = c_2 \end{aligned}$$
-    </div>
-    <svg viewBox="20 40 460 410" aria-label="x projected onto the u1 line and the u2 line; the feet of the perpendiculars are at 3.4 along u1 and minus 1.2 along u2">
-      <defs>
-        <marker id="m3u1" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 z" fill="#6fd0c0"/></marker>
-        <marker id="m3u2" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 z" fill="#c792ea"/></marker>
-        <marker id="m3x" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 z" fill="#f0a35e"/></marker>
-      </defs>
-      <!-- 80 px per unit, origin at (150, 330) -->
-      <line x1="78" y1="426" x2="352" y2="61" stroke="#6fd0c0" stroke-opacity="0.35" stroke-width="2"/>
-      <line x1="291" y1="436" x2="54" y2="258" stroke="#c792ea" stroke-opacity="0.35" stroke-width="2"/>
-      <line x1="150" y1="330" x2="313.2" y2="112.4" stroke="#6fd0c0" stroke-opacity="0.55" stroke-width="10"/>
-      <line x1="150" y1="330" x2="226.8" y2="387.6" stroke="#c792ea" stroke-opacity="0.55" stroke-width="10"/>
-      <line x1="390" y1="170" x2="313.2" y2="112.4" stroke="#a7b0be" stroke-width="2" stroke-dasharray="7 6"/>
-      <line x1="390" y1="170" x2="226.8" y2="387.6" stroke="#a7b0be" stroke-width="2" stroke-dasharray="7 6"/>
-      <polyline points="304.8,123.6 316,132 324.4,120.8" fill="none" stroke="#a7b0be" stroke-width="2"/>
-      <polyline points="215.6,379.2 224,368 235.2,376.4" fill="none" stroke="#a7b0be" stroke-width="2"/>
-      <line x1="150" y1="330" x2="198" y2="266" stroke="#6fd0c0" stroke-width="5" marker-end="url(#m3u1)"/>
-      <line x1="150" y1="330" x2="86" y2="282" stroke="#c792ea" stroke-width="5" marker-end="url(#m3u2)"/>
-      <line x1="150" y1="330" x2="390" y2="170" stroke="#f0a35e" stroke-width="5" marker-end="url(#m3x)"/>
-      <circle cx="150" cy="330" r="5" fill="#a7b0be"/>
-      <g font-family="Inter" font-size="28">
-        <text x="398" y="168" fill="#f0a35e" font-style="italic">x</text>
-        <text x="146" y="268" fill="#6fd0c0"><tspan font-style="italic">u</tspan><tspan font-size="19" dy="6">1</tspan></text>
-        <text x="62" y="322" fill="#c792ea"><tspan font-style="italic">u</tspan><tspan font-size="19" dy="6">2</tspan></text>
-        <text x="248" y="104" fill="#6fd0c0">3.4</text>
-        <text x="150" y="420" fill="#c792ea">−1.2</text>
-      </g>
-    </svg>
-  </div>
-  <p class="takeaway">Substituting back into \(\vec x = c_1\textcolor{#6fd0c0}{\vec u_1} + c_2\textcolor{#c792ea}{\vec u_2}\): \(\vec x = (\vec x\cdot\textcolor{#6fd0c0}{\vec u_1})\,\textcolor{#6fd0c0}{\vec u_1} + (\vec x\cdot\textcolor{#c792ea}{\vec u_2})\,\textcolor{#c792ea}{\vec u_2}\). <b>No equations to solve.</b></p>
+  <div class="act-tag"><b>Act 6</b> / Translating a transformation</div>
+  <h2>A rotation, in Jennifer's numbers</h2>
+  <p>We write a \(90^\circ\) turn as \(M = \begin{bmatrix} 0 & -1 \\ 1 & 0 \end{bmatrix}\). Its columns say where \(\hat\imath\) and \(\hat\jmath\) land, in our numbers.</p>
+  <p class="fragment">Jennifer cannot use \(M\). If she feeds it her \([-1, 2]\), \(M\) reads those as our numbers and turns the wrong arrow.</p>
+  <p class="fragment">Her version must say where <b>her</b> basis vectors land, in <b>her</b> numbers.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Where her basis vectors land</h2>
+  <video class="clip" src="assets/clips/RotationInHerLanguage.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Turn \(\textcolor{#6fd0c0}{\vec b_1}\) and \(\textcolor{#c792ea}{\vec b_2}\) by \(90^\circ\), then read the results on her grid. Those numbers are the columns of the rotation in her language.</p>
 </section>
 
 <section class="act-body">
-  <div class="act-tag"><b>Act 3</b> / A better basis</div>
-  <h2>The same \(\vec x = [3, 2]\), two dot products</h2>
+  <div class="act-tag"><b>Act 6</b> / Translating a transformation</div>
+  <h2>Translate, rotate, translate back</h2>
+  <p>Start with a vector in her numbers and read right to left:</p>
   <div class="eq-big">
-    $$\textcolor{#6fd0c0}{\vec u_1 = \begin{bmatrix} 0.6 \\ 0.8 \end{bmatrix}},\qquad \textcolor{#c792ea}{\vec u_2 = \begin{bmatrix} -0.8 \\ 0.6 \end{bmatrix}}$$
+  $$B^{-1}\,M\,B\,\vec x_{\text{hers}}$$
   </div>
-  <div class="eq-big">
-    $$\begin{aligned} c_1 &= \vec x\cdot\textcolor{#6fd0c0}{\vec u_1} = 3(0.6) + 2(0.8) = \textcolor{#f0a35e}{3.4} \\ c_2 &= \vec x\cdot\textcolor{#c792ea}{\vec u_2} = 3(-0.8) + 2(0.6) = \textcolor{#f0a35e}{-1.2} \end{aligned}$$
+  <ol>
+    <li class="fragment">\(B\,\vec x_{\text{hers}}\): the same arrow, in our numbers</li>
+    <li class="fragment">\(M\): rotate it, still in our numbers</li>
+    <li class="fragment">\(B^{-1}\): the rotated arrow, back in her numbers</li>
+  </ol>
+  <div class="fragment">
+  $$B^{-1}MB = \tfrac13\begin{bmatrix} 1 & 1 \\ -1 & 2 \end{bmatrix}\begin{bmatrix} 0 & -1 \\ 1 & 0 \end{bmatrix}\begin{bmatrix} 2 & -1 \\ 1 & 1 \end{bmatrix} = \begin{bmatrix} 1/3 & -2/3 \\ 5/3 & -1/3 \end{bmatrix}$$
   </div>
-  <div class="eq-big">
-    $$\text{Check: }\ \textcolor{#f0a35e}{3.4}\textcolor{#6fd0c0}{\begin{bmatrix} 0.6 \\ 0.8 \end{bmatrix}} \textcolor{#f0a35e}{-\,1.2}\textcolor{#c792ea}{\begin{bmatrix} -0.8 \\ 0.6 \end{bmatrix}} = \begin{bmatrix} 2.04 + 0.96 \\ 2.72 - 0.72 \end{bmatrix} = \begin{bmatrix} 3 \\ 2 \end{bmatrix}$$
-  </div>
-  <p class="caption">Jennifer's basis needed two equations solved together for this \(\vec x\). Here each coordinate is one dot product, worked out on its own.</p>
+  <p class="caption fragment">The same matrix the clip read off her grid.</p>
 </section>
 
 <section class="act-body">
-  <div class="act-tag"><b>Act 3</b> / Where this shows up</div>
+  <div class="act-tag"><b>Act 6</b> / Translating a transformation</div>
+  <h2>\(B^{-1}MB\): one transformation, another basis</h2>
+  <div class="beats two">
+    <div class="beat purpose"><h4>Outside: \(B^{-1}\,\cdot\,B\)</h4><p>Change of viewpoint. Translate in, translate out.</p></div>
+    <div class="beat purpose"><h4>Middle: \(M\)</h4><p>The transformation itself, as we see it.</p></div>
+  </div>
+  <p class="takeaway">Block 2.4 picks the basis that makes \(B^{-1}MB\) as simple as possible: a diagonal matrix.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 6</b> / A better basis</div>
+  <h2>Orthonormal basis: \(B^{-1} = B^{T}\)</h2>
+  <p>If the basis vectors \(\textcolor{#6fd0c0}{\vec u_1}, \textcolor{#c792ea}{\vec u_2}\) are unit length and at right angles, \(B\) is orthogonal (Act 3), so \(B^{-1} = B^{T}\):</p>
+  $$\vec x_{\text{new}} = B^{T}\vec x = \begin{bmatrix} \textcolor{#6fd0c0}{\vec u_1}^{T} \\ \textcolor{#c792ea}{\vec u_2}^{T} \end{bmatrix}\vec x = \begin{bmatrix} \vec x\cdot\textcolor{#6fd0c0}{\vec u_1} \\ \vec x\cdot\textcolor{#c792ea}{\vec u_2} \end{bmatrix}$$
+  <p class="fragment">Example: \(\textcolor{#6fd0c0}{\vec u_1} = [0.6, 0.8]\), \(\textcolor{#c792ea}{\vec u_2} = [-0.8, 0.6]\), \(\vec x = [3, 2]\) gives \(3(0.6) + 2(0.8) = \textcolor{#f0a35e}{3.4}\) and \(3(-0.8) + 2(0.6) = \textcolor{#f0a35e}{-1.2}\).</p>
+  <p class="takeaway fragment">Each new coordinate is one dot product. No inverse to compute.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 6</b> / Where this shows up</div>
   <h2>PCA chooses a better basis for the data</h2>
   <div class="cols wide-right" style="align-items:center">
     <div>
@@ -168,4 +220,16 @@
     </svg>
   </div>
   <p class="src">illustrative points</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 6</b> / Try it</div>
+  <h2>Translate these</h2>
+  <p>Jennifer's basis is \(\vec b_1 = [2, 1]\), \(\vec b_2 = [-1, 1]\), so \(B = \begin{bmatrix} 2 & -1 \\ 1 & 1 \end{bmatrix}\).</p>
+  <ol class="practice">
+    <li>Jennifer says \([1, 1]\). What is it in our numbers? <span class="fragment">\(B\begin{bmatrix} 1 \\ 1 \end{bmatrix} = \vec b_1 + \vec b_2 = \begin{bmatrix} 1 \\ 2 \end{bmatrix}\).</span></li>
+    <li>We say \([1, 3]\). What does Jennifer say?</li>
+    <li>\(M = \begin{bmatrix} 2 & 0 \\ 0 & 1 \end{bmatrix}\) doubles our \(x\) direction. Write it in Jennifer's numbers with \(B^{-1}MB\).</li>
+    <li>With \(\vec u_1 = [0.6, 0.8]\), \(\vec u_2 = [-0.8, 0.6]\), find the coordinates of \([5, 0]\) without solving any equations.</li>
+  </ol>
 </section>

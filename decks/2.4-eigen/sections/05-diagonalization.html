@@ -1,70 +1,324 @@
 <!-- ============================================================
-     ACT 4 of 7. Diagonalization. Budget: 20 min.
-     Goal: A = P D P^-1, powers via D^k, power iteration.
+     ACT 5 of 7. Diagonalization. Budget: 25 min.
+     Goal: A = P D P^-1 shown with the same visuals as the spectral
+     decomposition in Act 4 (statement, matrix form, P e_i = v_i, numbers,
+     2D and 3D in three moves), then powers and power iteration.
+     Clips: anim/2.4-eigen/diag_vk.py, diagonalize.py, power.py.
      ============================================================ -->
 
 <section class="act-open">
-  <div class="act-num">Act 4 of 7</div>
+  <div class="act-num">Act 5 of 7</div>
   <h1>Diagonalization</h1>
-  <p class="act-sub">Use the eigenvectors as the axes. In that basis the matrix is just scaling.</p>
+  <p class="act-sub">Most matrices are not symmetric. If \(A\) still has \(n\) independent eigenvectors, it splits into three moves the same way. The eigenvectors are just no longer perpendicular.</p>
 </section>
 
 <section class="act-body">
-  <div class="act-tag"><b>Act 4</b> / Statement</div>
+  <div class="act-tag"><b>Act 5</b> / Statement</div>
   <h2>\(A = PDP^{-1}\)</h2>
+  <p>Let \(A\) be \(n\times n\) with independent eigenvectors \(\mathbf{v}_1,\dots,\mathbf{v}_n\) and eigenvalues \(\lambda_1,\dots,\lambda_n\).</p>
   <ul>
-    <li>\(P\): eigenvectors as columns</li>
-    <li>\(D\): eigenvalues on the diagonal, in the same order</li>
-    <li>Possible when \(A\) has \(n\) independent eigenvectors</li>
+    <li>\(P = [\,\mathbf{v}_1\ \cdots\ \mathbf{v}_n\,]\): eigenvectors as columns</li>
+    <li>\(D = \mathrm{diag}(\lambda_1,\dots,\lambda_n)\): eigenvalues in the same order</li>
   </ul>
-  <p class="takeaway">Read right to left: go to the eigenbasis, scale, come back.</p>
+  <p>Compare with Act 4: \(Q\) becomes \(P\), \(\Lambda\) becomes \(D\), and \(Q^T\) becomes \(P^{-1}\), since \(P\) is not orthogonal.</p>
+  <p class="takeaway">This is the \(B^{-1}MB\) of Block 2.2 with the eigenvectors as the basis: \(P^{-1}AP = D\).</p>
+</section>
+
+<!-- Borrowed from decks/2.2-special/sections/06-change-basis.html: "Translate, rotate, translate back" -->
+<section class="flashback">
+  <div class="fb-behind" aria-hidden="true">
+  <div class="act-tag"><b>Act 5</b> / Statement</div>
+  <h2>\(A = PDP^{-1}\)</h2>
+  <p>Let \(A\) be \(n\times n\) with independent eigenvectors \(\mathbf{v}_1,\dots,\mathbf{v}_n\) and eigenvalues \(\lambda_1,\dots,\lambda_n\).</p>
+  <ul>
+    <li>\(P = [\,\mathbf{v}_1\ \cdots\ \mathbf{v}_n\,]\): eigenvectors as columns</li>
+    <li>\(D = \mathrm{diag}(\lambda_1,\dots,\lambda_n)\): eigenvalues in the same order</li>
+  </ul>
+  <p>Compare with Act 4: \(Q\) becomes \(P\), \(\Lambda\) becomes \(D\), and \(Q^T\) becomes \(P^{-1}\), since \(P\) is not orthogonal.</p>
+  <p class="takeaway">This is the \(B^{-1}MB\) of Block 2.2 with the eigenvectors as the basis: \(P^{-1}AP = D\).</p>
+</div>
+  <div class="fb-label">Flashback to Block 2.2</div>
+  <div class="fb-card act-body">
+  <div class="act-tag"><b>Block 2.2</b> / Act 6 / Translating a transformation</div>
+  <h2>Translate, rotate, translate back</h2>
+  <p>Start with a vector in her numbers and read right to left:</p>
+  <div class="eq-big">
+  $$B^{-1}\,M\,B\,\vec x_{\text{hers}}$$
+  </div>
+  <ol>
+    <li class="fragment">\(B\,\vec x_{\text{hers}}\): the same arrow, in our numbers</li>
+    <li class="fragment">\(M\): rotate it, still in our numbers</li>
+    <li class="fragment">\(B^{-1}\): the rotated arrow, back in her numbers</li>
+  </ol>
+  <div class="fragment">
+  $$B^{-1}MB = \tfrac13\begin{bmatrix} 1 & 1 \\ -1 & 2 \end{bmatrix}\begin{bmatrix} 0 & -1 \\ 1 & 0 \end{bmatrix}\begin{bmatrix} 2 & -1 \\ 1 & 1 \end{bmatrix} = \begin{bmatrix} 1/3 & -2/3 \\ 5/3 & -1/3 \end{bmatrix}$$
+  </div>
+</div>
+</section>
+
+<!-- Borrowed from decks/2.2-special/sections/06-change-basis.html: "\(B^{-1}MB\): one transformation, another basis" -->
+<section class="flashback">
+  <div class="fb-behind" aria-hidden="true">
+  <div class="act-tag"><b>Act 5</b> / Statement</div>
+  <h2>\(A = PDP^{-1}\)</h2>
+  <p>Let \(A\) be \(n\times n\) with independent eigenvectors \(\mathbf{v}_1,\dots,\mathbf{v}_n\) and eigenvalues \(\lambda_1,\dots,\lambda_n\).</p>
+  <ul>
+    <li>\(P = [\,\mathbf{v}_1\ \cdots\ \mathbf{v}_n\,]\): eigenvectors as columns</li>
+    <li>\(D = \mathrm{diag}(\lambda_1,\dots,\lambda_n)\): eigenvalues in the same order</li>
+  </ul>
+  <p>Compare with Act 4: \(Q\) becomes \(P\), \(\Lambda\) becomes \(D\), and \(Q^T\) becomes \(P^{-1}\), since \(P\) is not orthogonal.</p>
+  <p class="takeaway">This is the \(B^{-1}MB\) of Block 2.2 with the eigenvectors as the basis: \(P^{-1}AP = D\).</p>
+</div>
+  <div class="fb-label">Flashback to Block 2.2</div>
+  <div class="fb-card act-body">
+  <div class="act-tag"><b>Block 2.2</b> / Act 6 / Translating a transformation</div>
+  <h2>\(B^{-1}MB\): one transformation, another basis</h2>
+  <div class="beats two">
+    <div class="beat purpose"><h4>Outside: \(B^{-1}\,\cdot\,B\)</h4><p>Change of viewpoint. Translate in, translate out.</p></div>
+    <div class="beat purpose"><h4>Middle: \(M\)</h4><p>The transformation itself, as we see it.</p></div>
+  </div>
+  <p class="takeaway">Block 2.4 picks the basis that makes \(B^{-1}MB\) as simple as possible: a diagonal matrix.</p>
+</div>
+</section>
+
+<!-- The citing slide again, after the recap -->
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / Statement</div>
+  <h2>\(A = PDP^{-1}\)</h2>
+  <p>Let \(A\) be \(n\times n\) with independent eigenvectors \(\mathbf{v}_1,\dots,\mathbf{v}_n\) and eigenvalues \(\lambda_1,\dots,\lambda_n\).</p>
+  <ul>
+    <li>\(P = [\,\mathbf{v}_1\ \cdots\ \mathbf{v}_n\,]\): eigenvectors as columns</li>
+    <li>\(D = \mathrm{diag}(\lambda_1,\dots,\lambda_n)\): eigenvalues in the same order</li>
+  </ul>
+  <p>Compare with Act 4: \(Q\) becomes \(P\), \(\Lambda\) becomes \(D\), and \(Q^T\) becomes \(P^{-1}\), since \(P\) is not orthogonal.</p>
+  <p class="takeaway">This is the \(B^{-1}MB\) of Block 2.2 with the eigenvectors as the basis: \(P^{-1}AP = D\).</p>
 </section>
 
 <section class="clip-slide">
-  <h2>Change basis, stretch, change back</h2>
-  <video class="clip" src="assets/clips/EigenbasisChange.mp4"></video>
+  <h2>Invertible, diagonal, invertible</h2>
+  <div class="clip-talk">
+    <ul>
+      <li>Built right to left: the order in which the moves act.</li>
+      <li>\(P^{-1}\): eigenvectors to axes.</li>
+      <li>\(D\): stretch the axes.</li>
+      <li>\(P\): axes back to eigenvectors.</li>
+      <li>Compare \(S = Q\Lambda Q^T\): rotation, stretch, rotation.</li>
+    </ul>
+    <video class="clip" src="assets/clips/DiagStatement.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">Follow \(\mathbf{x}=(3,0)\): \(P^{-1}\) gives its eigenbasis coordinates \((2,1)\), \(D\) stretches them to \((10,2)\), \(P\) returns \((12,6)=A\mathbf{x}\).</p>
+</section>
+
+<section class="clip-slide">
+  <h2>What goes into \(P\) and \(D\)</h2>
+  <div class="clip-talk">
+    <ul>
+      <li>Columns of \(P\): eigenvectors of \(A\), any length.</li>
+      <li>Diagonal of \(D\): eigenvalues, in the same order.</li>
+      <li>Last factor: \(P^{-1}\), not \(P^T\).</li>
+      <li>\(3\times3\): three of each.</li>
+    </ul>
+    <video class="clip" src="assets/clips/DiagMatrixForm.mp4"></video>
+  </div>
+  <span class="fragment clip-play"></span>
 </section>
 
 <section class="act-body">
-  <div class="act-tag"><b>Act 4</b> / Worked example</div>
-  <h2>Our matrix, factored</h2>
-  $$\large\begin{bmatrix}4&1\\2&3\end{bmatrix} = \underbrace{\begin{bmatrix}1&1\\1&-2\end{bmatrix}}_{P}\underbrace{\begin{bmatrix}5&0\\0&2\end{bmatrix}}_{D}\underbrace{\tfrac13\begin{bmatrix}2&1\\1&-1\end{bmatrix}}_{P^{-1}}$$
-  <p class="takeaway">Multiply it out once to see that it returns \(A\).</p>
+  <div class="act-tag"><b>Act 5</b> / Why it holds</div>
+  <h2>From \(A\mathbf{v}_i = \lambda_i\mathbf{v}_i\) to \(A = PDP^{-1}\)</h2>
+  <p>Multiply \(A\) into \(P\) one column at a time:</p>
+  $$AP = [\,A\mathbf{v}_1\ \ A\mathbf{v}_2\,] = [\,\lambda_1\mathbf{v}_1\ \ \lambda_2\mathbf{v}_2\,]$$
+  <p class="fragment">Scaling column \(i\) of \(P\) by \(\lambda_i\) is what multiplying by \(D\) on the right does:</p>
+  <p class="fragment">$$[\,\lambda_1\mathbf{v}_1\ \ \lambda_2\mathbf{v}_2\,] = [\,\mathbf{v}_1\ \ \mathbf{v}_2\,]\begin{bmatrix}\lambda_1&0\\0&\lambda_2\end{bmatrix} = PD$$</p>
+  <p class="fragment">So \(AP = PD\). The columns of \(P\) are the eigenvectors \(\mathbf{v}_1,\mathbf{v}_2\), which are independent, so \(P^{-1}\) exists. Multiply both sides on the right by \(P^{-1}\):</p>
+  <p class="takeaway fragment">\(A = PDP^{-1}\)</p>
+</section>
+
+<section class="clip-slide">
+  <h2>\(P\mathbf{e}_1 = \mathbf{v}_1\), \(P\mathbf{e}_2 = \mathbf{v}_2\)</h2>
+  <div class="clip-talk">
+    <ul>
+      <li>\(P\) times \((1,0)\) is its first column: \(\mathbf{v}_1\).</li>
+      <li>\(P\) times \((0,1)\) is \(\mathbf{v}_2\).</li>
+      <li>So \(P\) sends \(\mathbf{e}_i\) to \(\mathbf{v}_i\), as \(Q\) did.</li>
+      <li>\(P^{-1}\) sends \(\mathbf{v}_i\) back to \(\mathbf{e}_i\).</li>
+    </ul>
+    <video class="clip" src="assets/clips/DiagPe.mp4"></video>
+  </div>
+  <span class="fragment clip-play"></span>
+</section>
+
+<section class="clip-slide">
+  <h2>\(P\) is not a rotation</h2>
+  <div class="clip-talk">
+    <ul>
+      <li>\(Q\) turned the grid rigidly.</li>
+      <li>\(P\) carries \(\mathbf{e}_1, \mathbf{e}_2\) to \(\mathbf{v}_1 = (1,1)\), \(\mathbf{v}_2 = (-1,2)\).</li>
+      <li>Lengths change and the right angle is lost.</li>
+      <li>So \(P\) also stretches and shears.</li>
+    </ul>
+    <video class="clip" src="assets/clips/DiagPGrid.mp4"></video>
+  </div>
+  <span class="fragment clip-play"></span>
+</section>
+
+<section class="clip-slide">
+  <h2>Our \(A\), factored</h2>
+  <div class="clip-talk">
+    <ul>
+      <li>\(\mathbf{v}_1 = (1,1)\) with 5, \(\mathbf{v}_2 = (-1,2)\) with 2.</li>
+      <li>\(\mathbf{v}_2\) is \(-1\) times Act 3's \((1,-2)\): still an eigenvector.</li>
+      <li>This sign gives \(\det P = 3 > 0\): no flip, like choosing \(Q\) a rotation.</li>
+    </ul>
+    <video class="clip" src="assets/clips/DiagNumeric.mp4"></video>
+  </div>
+  <span class="fragment clip-play"></span>
+</section>
+
+<section class="clip-slide">
+  <h2>What \(A\) does in 2D</h2>
+  <div class="clip-talk">
+    <ul>
+      <li>Apply \(A\) to the rectangle in one go.</li>
+      <li>It becomes a parallelogram.</li>
+      <li>Next: the same result in three moves.</li>
+    </ul>
+    <video class="clip" src="assets/clips/Diag2DFull.mp4"></video>
+  </div>
+  <span class="fragment clip-play"></span>
+</section>
+
+<section class="clip-slide">
+  <h2>Eigenvectors to axes, scale, back</h2>
+  <div class="clip-talk">
+    <ul>
+      <li>\(P^{-1}\): eigenvectors onto the axes. It also shrinks, unlike \(Q^T\).</li>
+      <li>\(D\): scale \(x\) by 5, then \(y\) by 2.</li>
+      <li>\(P\): axes back onto the eigenvectors.</li>
+      <li>Gold: \(A\) in one go lands on the same shape.</li>
+    </ul>
+    <video class="clip" src="assets/clips/Diag2DSteps.mp4"></video>
+  </div>
+  <span class="fragment clip-play"></span>
+</section>
+
+<section class="clip-slide">
+  <h2>Follow one vector</h2>
+  <div class="clip-talk">
+    <ul>
+      <li>Follow \(\mathbf{x} = (3,0)\).</li>
+      <li>\(P^{-1}\mathbf{x} = (2,-1)\), so \(\mathbf{x} = 2\mathbf{v}_1 - \mathbf{v}_2\).</li>
+      <li>\(D\): \((10,-2)\).</li>
+      <li>\(P\): \((12,6) = A\mathbf{x}\), the same point \(A\) gives directly.</li>
+    </ul>
+    <video class="clip" src="assets/clips/EigenbasisChange.mp4"></video>
+  </div>
+  <span class="fragment clip-play"></span>
+</section>
+
+<section class="clip-slide">
+  <h2>The same in 3D</h2>
+  <div class="clip-talk">
+    <ul>
+      <li>\(A = P\,\mathrm{diag}(3,-1,2)\,P^{-1}\)</li>
+      <li>Eigenvectors \((1,1,0)\), \((0,1,1)\), \((1,0,1)\): not perpendicular.</li>
+      <li>\(\det A = -6 < 0\): the cube turns inside out on the way.</li>
+    </ul>
+    <video class="clip" src="assets/clips/Diag3DFull.mp4"></video>
+  </div>
+  <span class="fragment clip-play"></span>
+</section>
+
+<section class="clip-slide">
+  <h2>Three moves in 3D</h2>
+  <div class="clip-talk">
+    <ul>
+      <li>\(P^{-1}\): the three eigenvectors onto the axes.</li>
+      <li>\(D\): \(x\) by 3, \(y\) by \(-1\) (a flip), \(z\) by 2.</li>
+      <li>\(P\): back onto the eigenvectors.</li>
+      <li>Gold: \(A\) in one go, the same box.</li>
+    </ul>
+    <video class="clip" src="assets/clips/Diag3DSteps.mp4"></video>
+  </div>
+  <span class="fragment clip-play"></span>
 </section>
 
 <section class="act-body">
-  <div class="act-tag"><b>Act 4</b> / Powers</div>
+  <div class="act-tag"><b>Act 5</b> / Powers</div>
   <h2>\(A^k = PD^kP^{-1}\)</h2>
   <p>Write \(A^2\) out and cancel the middle pair:</p>
   $$A^2 = (PDP^{-1})(PDP^{-1}) = PD(P^{-1}P)DP^{-1} = PD^2P^{-1}$$
   <p class="fragment">Each new copy of \(A\) adds one more \(D\), so \(A^k = PD^kP^{-1}\) with \(D^k = \begin{bmatrix}5^k&0\\0&2^k\end{bmatrix}\).</p>
-  <p class="fragment">Spot check, \(k = 3\): entry \((1,1)\) of \(P\,\mathrm{diag}(125,8)\,P^{-1}\) is \((125\cdot2 + 8\cdot1)/3 = 86\), the \((1,1)\) entry of \(A^3\).</p>
+  <p class="fragment">Spot check, \(k = 3\): entry \((1,1)\) of \(P\,\mathrm{diag}(125,8)\,P^{-1}\) is \((125\cdot2 + (-8)(-1))/3 = 86\), the \((1,1)\) entry of \(A^3\).</p>
 </section>
 
+<!-- Power iteration clip slide, commented out
 <section class="clip-slide">
   <h2>Power iteration</h2>
-  <video class="clip" src="assets/clips/PowerIteration.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>Start at \(\mathbf{x}_0 = 2\mathbf{v}_1 + \mathbf{v}_2\), with \(\mathbf{v}_2 = (1,-2)\) here.</li>
+      <li>Each \(A\) scales the \(\mathbf{v}_1\) part by 5 and the \(\mathbf{v}_2\) part by 2.</li>
+      <li>The \(\mathbf{v}_1\) part wins: almost any start swings onto the \(\lambda = 5\) line.</li>
+    </ul>
+    <video class="clip" src="assets/clips/PowerIteration.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">Write \(\mathbf{x}_0=2\mathbf{v}_1+\mathbf{v}_2\). Each multiplication by \(A\) scales the \(\mathbf{v}_1\) part by 5 and the \(\mathbf{v}_2\) part by 2, so almost any start swings onto the \(\lambda = 5\) direction.</p>
 </section>
 
+-->
 <section class="act-body">
-  <div class="act-tag"><b>Act 4</b> / Why it works</div>
+  <div class="act-tag"><b>Act 5</b> / Why it works</div>
   <h2>The biggest eigenvalue wins</h2>
-  <p>Write \(\mathbf{x} = c_1\mathbf{v}_1 + c_2\mathbf{v}_2\) with \(c_1 \neq 0\). Since \(A\mathbf{v}_i = \lambda_i\mathbf{v}_i\),</p>
-  $$A\mathbf{x} = c_1\lambda_1\mathbf{v}_1 + c_2\lambda_2\mathbf{v}_2$$
-  <p class="fragment">Apply \(A\) again and again: \(A^k\mathbf{x} = c_1\lambda_1^k\mathbf{v}_1 + c_2\lambda_2^k\mathbf{v}_2\). Factor out \(\lambda_1^k\):</p>
-  <p class="fragment">$$A^k\mathbf{x} = \lambda_1^k\left(c_1\mathbf{v}_1 + c_2\left(\tfrac{\lambda_2}{\lambda_1}\right)^k\mathbf{v}_2\right)$$</p>
-  <p class="takeaway fragment">If \(|\lambda_1| > |\lambda_2|\) then \(|\lambda_2/\lambda_1|^k \to 0\), so the direction of \(A^k\mathbf{x}\) tends to \(\mathbf{v}_1\).</p>
+  <p class="takeaway">Question: apply the same \(A\) again and again (a process repeated step after step). What does \(A^k\mathbf{x}\) look like for large \(k\)? This long-run behavior is what we read off from the eigenvalues, and it is how a dominant eigenvector is computed in practice.</p>
+  <p>Setup: \(A\) has eigenvectors \(\mathbf{v}_1,\mathbf{v}_2\) with \(A\mathbf{v}_1=\lambda_1\mathbf{v}_1\), \(A\mathbf{v}_2=\lambda_2\mathbf{v}_2\). They form a basis, so any vector is \(\mathbf{x} = c_1\mathbf{v}_1 + c_2\mathbf{v}_2\). Apply \(A\) once; matrices respect sums and scalings, so</p>
+  $$A\mathbf{x} = c_1A\mathbf{v}_1 + c_2A\mathbf{v}_2 = c_1\lambda_1\mathbf{v}_1 + c_2\lambda_2\mathbf{v}_2$$
+  <p class="fragment">Each part is only scaled, by its own eigenvalue. Apply \(A\) to this result and each part is scaled again:</p>
+  <p class="fragment">$$A^2\mathbf{x} = c_1\lambda_1^2\mathbf{v}_1 + c_2\lambda_2^2\mathbf{v}_2 \quad\Longrightarrow\quad A^k\mathbf{x} = c_1\lambda_1^k\mathbf{v}_1 + c_2\lambda_2^k\mathbf{v}_2$$</p>
 </section>
 
 <section class="act-body">
-  <div class="act-tag"><b>Act 4</b> / Try it</div>
-  <h2>Powers</h2>
+  <div class="act-tag"><b>Act 5</b> / Why it works</div>
+  <h2>Which part is left?</h2>
+  <p>Compare the two parts of \(A^k\mathbf{x} = c_1\lambda_1^k\mathbf{v}_1 + c_2\lambda_2^k\mathbf{v}_2\) with \(\lambda_1 = 5\), \(\lambda_2 = 2\). Divide both by \(5^k\), which changes the length but not the direction:</p>
+  $$\frac{A^k\mathbf{x}}{5^k} = c_1\mathbf{v}_1 + c_2\left(\tfrac{2}{5}\right)^k\mathbf{v}_2$$
+  <p class="fragment">The \(\mathbf{v}_2\) coefficient is \(c_2\) times \(0.4,\ 0.16,\ 0.064,\ \dots\), which shrinks to \(0\). Only \(c_1\mathbf{v}_1\) is left.</p>
+  <p class="takeaway fragment">In general, if \(|\lambda_1| > |\lambda_2|\) then \((\lambda_2/\lambda_1)^k \to 0\), so \(A^k\mathbf{x}\) points along \(\mathbf{v}_1\) (needs \(c_1 \neq 0\)).</p>
+</section>
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / Try it</div>
+  <h2>Diagonalize and take powers</h2>
   <ol class="practice">
-    <li>For \(\begin{bmatrix}2&1\\1&2\end{bmatrix}\), write \(P\) and \(D\) and find \(A^{10}\)'s eigenvalues. <span class="fragment">\(P=\begin{bmatrix}1&1\\1&-1\end{bmatrix}\), \(D=\mathrm{diag}(3,1)\); \(A^{10}\) has eigenvalues \(3^{10}=59049\) and \(1\)</span></li>
+    <li>For \(A=\begin{bmatrix}5&4\\1&2\end{bmatrix}\), write \(P\) and \(D\) and find \(A^{10}\)'s eigenvalues.</li>
     <li>Why can \(\begin{bmatrix}1&1\\0&1\end{bmatrix}\) not be diagonalized?</li>
   </ol>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / Solution 1</div>
+  <h2>Step 1: eigenvalues</h2>
+  <p>\(A=\begin{bmatrix}5&4\\1&2\end{bmatrix}\). Solve \(\det(A-\lambda I)=0\):</p>
+  $$\det\begin{bmatrix}5-\lambda&4\\1&2-\lambda\end{bmatrix} = (5-\lambda)(2-\lambda) - 4 = \lambda^2 - 7\lambda + 6$$
+  <p class="fragment">Factor: \(\lambda^2 - 7\lambda + 6 = (\lambda-6)(\lambda-1)\), so \(\lambda_1 = 6\) and \(\lambda_2 = 1\).</p>
+  <p class="fragment">Check: the sum \(6+1 = 7\) is the trace, the product \(6\cdot 1 = 6\) is \(\det A\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / Solution 1</div>
+  <h2>Step 2: eigenvectors</h2>
+  <p>For \(\lambda_1 = 6\), solve \((A-6I)\mathbf{v}=\mathbf{0}\):</p>
+  $$\begin{bmatrix}-1&4\\1&-4\end{bmatrix}\begin{bmatrix}x\\y\end{bmatrix}=\begin{bmatrix}0\\0\end{bmatrix} \;\Rightarrow\; x = 4y \;\Rightarrow\; \mathbf{v}_1 = \begin{bmatrix}4\\1\end{bmatrix}$$
+  <p class="fragment">For \(\lambda_2 = 1\), solve \((A-I)\mathbf{v}=\mathbf{0}\):</p>
+  <p class="fragment">$$\begin{bmatrix}4&4\\1&1\end{bmatrix}\begin{bmatrix}x\\y\end{bmatrix}=\begin{bmatrix}0\\0\end{bmatrix} \;\Rightarrow\; x = -y \;\Rightarrow\; \mathbf{v}_2 = \begin{bmatrix}-1\\1\end{bmatrix}$$</p>
+  <p class="fragment">Check: \(A\mathbf{v}_1 = (24, 6) = 6\mathbf{v}_1\) and \(A\mathbf{v}_2 = (-1, 1) = 1\cdot\mathbf{v}_2\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / Solution 1</div>
+  <h2>Step 3: P, D, and the powers</h2>
+  <p>Put the eigenvectors in the columns of \(P\) and the eigenvalues on the diagonal of \(D\), in the same order:</p>
+  $$P = \begin{bmatrix}4&-1\\1&1\end{bmatrix}, \qquad D = \begin{bmatrix}6&0\\0&1\end{bmatrix}, \qquad A = PDP^{-1}$$
+  <p class="fragment">Then \(A^{10} = PD^{10}P^{-1}\) with</p>
+  <p class="fragment">$$D^{10} = \begin{bmatrix}6^{10}&0\\0&1^{10}\end{bmatrix}$$</p>
+  <p class="takeaway fragment">\(A^{10}\) has the same eigenvectors as \(A\), and its eigenvalues are \(6^{10} = 60466176\) and \(1\).</p>
 </section>

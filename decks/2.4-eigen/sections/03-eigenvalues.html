@@ -27,9 +27,20 @@
 <section class="act-body">
   <div class="act-tag"><b>Act 3</b> / Recipe</div>
   <h2>Turn it into a determinant</h2>
-  $$A\mathbf{v} = \lambda\mathbf{v} \;\iff\; (A - \lambda I)\,\mathbf{v} = \mathbf{0}$$
-  <p>A nonzero \(\mathbf{v}\) is sent to zero, so \(A-\lambda I\) squashes space. That happens exactly when</p>
-  $$\det(A - \lambda I) = 0$$
+  <div class="cols wide-right" style="align-items:center">
+    <div>
+      $$A\mathbf{v} = \lambda\mathbf{v}$$
+      $$\Updownarrow$$
+      $$(A - \lambda I)\,\mathbf{v} = \mathbf{0}$$
+      $$\Updownarrow$$
+      $$\det(A - \lambda I) = 0$$
+    </div>
+    <ul>
+      <li><b>Setup:</b> an eigenvector \(\mathbf{v}\neq\mathbf{0}\) is only scaled by \(A\). Move everything to one side.</li>
+      <li><b>Geometry:</b> \(A-\lambda I\) sends a nonzero \(\mathbf{v}\) to \(\mathbf{0}\), so it squashes space into a lower dimension.</li>
+      <li><b>Conclusion:</b> squashed space has zero area, so the determinant is \(0\).</li>
+    </ul>
+  </div>
 </section>
 
 <section class="clip-slide">
@@ -48,6 +59,28 @@
 
 <section class="act-body">
   <div class="act-tag"><b>Act 3</b> / Worked example</div>
+  <h2>Eigenvector for \(\lambda = 5\)</h2>
+  <p>Subtract \(\lambda = 5\) from the main diagonal of \(A\):</p>
+  $$A - 5I = \begin{bmatrix} 4 - 5 & 1 \\ 2 & 3 - 5 \end{bmatrix} = \begin{bmatrix} -1 & 1 \\ 2 & -2 \end{bmatrix}$$
+  <p>Set up \((A - 5I)\mathbf{v} = \mathbf{0}\) with \(\mathbf{v} = \begin{bmatrix} x \\ y \end{bmatrix}\):</p>
+  $$\begin{bmatrix} -1 & 1 \\ 2 & -2 \end{bmatrix} \begin{bmatrix} x \\ y \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix}$$
+  <p class="fragment">This gives the system \(-x + y = 0 \implies y = x\), and \(2x - 2y = 0 \implies y = x\) (redundant equation). Choosing \(x = 1\) gives \(y = 1\), so</p>
+  $$\mathbf{v}_1 = \begin{bmatrix} 1 \\ 1 \end{bmatrix}$$
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Worked example</div>
+  <h2>Eigenvector for \(\lambda = 2\)</h2>
+  <p>Subtract \(\lambda = 2\) from the main diagonal of \(A\):</p>
+  $$A - 2I = \begin{bmatrix} 4 - 2 & 1 \\ 2 & 3 - 2 \end{bmatrix} = \begin{bmatrix} 2 & 1 \\ 2 & 1 \end{bmatrix}$$
+  <p>Set up \((A - 2I)\mathbf{v} = \mathbf{0}\):</p>
+  $$\begin{bmatrix} 2 & 1 \\ 2 & 1 \end{bmatrix} \begin{bmatrix} x \\ y \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix}$$
+  <p class="fragment">This gives \(2x + y = 0 \implies y = -2x\). Choosing \(x = 1\) gives \(y = -2\), so</p>
+  $$\mathbf{v}_2 = \begin{bmatrix} 1 \\ -2 \end{bmatrix}$$
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Worked example</div>
   <h2>Eigenvectors: the null space of \(A - \lambda I\)</h2>
   <p>\(\lambda = 5\): \(\begin{bmatrix}-1&1\\2&-2\end{bmatrix}\mathbf{v}=\mathbf{0}\), so \(\mathbf{v}_1 = \begin{bmatrix}1\\1\end{bmatrix}\).</p>
   <p>\(\lambda = 2\): \(\begin{bmatrix}2&1\\2&1\end{bmatrix}\mathbf{v}=\mathbf{0}\), so \(\mathbf{v}_2 = \begin{bmatrix}1\\-2\end{bmatrix}\).</p>
@@ -55,13 +88,51 @@
 </section>
 
 <section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Why the checks hold</div>
+  <h2>Trace and determinant: the setup</h2>
+  <p>Let \(A\) be a general \(2 \times 2\) matrix:</p>
+  $$A = \begin{pmatrix} a & b \\ c & d \end{pmatrix}$$
+  <p>By definition, the trace is the sum of the main diagonal entries, and the determinant is \(ad-bc\):</p>
+  $$\operatorname{tr}(A) = a + d \qquad \det(A) = ad - bc$$
+  <p><b>1. Set up the matrix \(\lambda I - A\):</b></p>
+  $$\lambda I - A = \lambda \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix} - \begin{pmatrix} a & b \\ c & d \end{pmatrix} = \begin{pmatrix} \lambda - a & -b \\ -c & \lambda - d \end{pmatrix}$$
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Why the checks hold</div>
+  <h2>Trace and determinant: the derivation</h2>
+  <p><b>2. Compute the determinant</b> with \(\det \begin{pmatrix} p & q \\ r & s \end{pmatrix} = ps - qr\):</p>
+  $$\det(\lambda I - A) = (\lambda - a)(\lambda - d) - (-b)(-c)$$
+  <p><b>3. Expand the terms</b> and group by powers of \(\lambda\):</p>
+  $$\det(\lambda I - A) = \lambda^2 - a\lambda - d\lambda + ad - bc = \lambda^2 - (a + d)\lambda + (ad - bc)$$
+  <p><b>4. Substitute trace and determinant.</b> The coefficient of \(\lambda\) is \(-(a+d) = -\operatorname{tr}(A)\). The constant term is \(ad-bc = \det(A)\). Therefore:</p>
+  $$\det(\lambda I - A) = \lambda^2 - \operatorname{tr}(A)\lambda + \det(A) = 0$$
+</section>
+
+<section class="act-body">
   <div class="act-tag"><b>Act 3</b> / Two free checks</div>
   <h2>Trace and determinant</h2>
-  <p>If the eigenvalues are \(\lambda_1, \lambda_2\), the characteristic polynomial must factor as</p>
+  <p>We derived</p>
+  $$\det(\lambda I - A) = \lambda^2 - \operatorname{tr}(A)\lambda + \det(A) = 0$$
+  <p>The eigenvalues \(\lambda_1\) and \(\lambda_2\) are the roots of this polynomial, so it must also factor as</p>
   $$(\lambda - \lambda_1)(\lambda - \lambda_2) = \lambda^2 - (\lambda_1 + \lambda_2)\lambda + \lambda_1\lambda_2$$
-  <p class="fragment">Compare with our polynomial \(\lambda^2 - 7\lambda + 10\): \(\lambda_1 + \lambda_2 = 7\) and \(\lambda_1\lambda_2 = 10\). In general</p>
-  $$\operatorname{tr}A = \lambda_1 + \lambda_2 \qquad \det A = \lambda_1\lambda_2$$
-  <p>Here \(4+3 = 7 = 5+2\) and \(4\cdot3 - 1\cdot2 = 10 = 5\cdot 2\).</p>
+  <p class="fragment">Both lines are the same polynomial, so they agree for every \(\lambda\). Two polynomials that agree everywhere have equal coefficients.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Two free checks</div>
+  <h2>Match the coefficients</h2>
+  <div class="cols" style="align-items:center">
+    <div>
+      $$\lambda^2 - \operatorname{tr}(A)\,\lambda + \det(A)$$
+      $$\lambda^2 - (\lambda_1 + \lambda_2)\,\lambda + \lambda_1\lambda_2$$
+    </div>
+    <ul>
+      <li>Coefficient of \(\lambda\): \(\operatorname{tr}A = \lambda_1 + \lambda_2\)</li>
+      <li>Constant term: \(\det A = \lambda_1\lambda_2\)</li>
+    </ul>
+  </div>
+  <p class="fragment">Here \(4+3 = 7 = 5+2\) and \(4\cdot3 - 1\cdot2 = 10 = 5\cdot 2\).</p>
   <p class="takeaway">Always run these two checks before trusting your eigenvalues.</p>
 </section>
 

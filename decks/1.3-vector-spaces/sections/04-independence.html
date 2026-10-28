@@ -1,9 +1,12 @@
 <!-- ============================================================
-     ACT 4 of 6. Linear independence. Budget: 20 min.
+     ACT 4 of 6. Linear independence. Budget: 35 min.
      Source: 3b1b EoLA ch. 2 (LinearDependentEquations,
      AlternateDefOfLinearlyDependent). The 3D clip is authored.
      Goal: students call a vector redundant when it already lies in
      the span of the others, and state the test a v + b w + c u = 0.
+     Then the test as equations, solved by row reduction to RREF
+     (added 2026-10-28 after it was taught on the board): pivots decide
+     independence and a free column gives the constants.
      Basis and dimension, the payoff of independence, are Block 1.4.
      ============================================================ -->
 
@@ -36,6 +39,45 @@
   <div class="beats two">
     <div class="beat breaks"><h4>Dependent</h4><p>Some choice with <b>not all</b> of \(a, b, c\) zero gives \(\vec 0\).</p><span class="note" style="font-size:1em">\(\begin{bmatrix} 1 \\ 2 \end{bmatrix}\) and \(\begin{bmatrix} 2 \\ 4 \end{bmatrix}\): \(\;2\begin{bmatrix} 1 \\ 2 \end{bmatrix} - 1\begin{bmatrix} 2 \\ 4 \end{bmatrix} = \vec 0\)</span></div>
     <div class="beat anchor"><h4>Independent</h4><p>Only \(a = b = c = 0\) gives \(\vec 0\).</p><span class="note" style="font-size:1em">\(\begin{bmatrix} 1 \\ 0 \end{bmatrix}\) and \(\begin{bmatrix} 1 \\ 1 \end{bmatrix}\): \(\;a + b = 0\) and \(b = 0\), so \(a = 0\)</span></div>
+  </div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / By elimination</div>
+  <h2>Three vectors: the test is three equations</h2>
+  <p>Take \(\textcolor{#6fd0c0}{\vec v} = [1, 2, 1]\), \(\textcolor{#c792ea}{\vec w} = [2, 1, 0]\), \(\textcolor{#f0a35e}{\vec u} = [3, 3, 1]\). Write \(a\textcolor{#6fd0c0}{\vec v} + b\textcolor{#c792ea}{\vec w} + c\textcolor{#f0a35e}{\vec u} = \vec 0\) one entry at a time:</p>
+  $$\begin{aligned} a + 2b + 3c &= 0 \\ 2a + b + 3c &= 0 \\ a \phantom{{}+2b} + c &= 0 \end{aligned}
+  \qquad\Longleftrightarrow\qquad
+  \begin{bmatrix} \textcolor{#6fd0c0}{1} & \textcolor{#c792ea}{2} & \textcolor{#f0a35e}{3} \\ \textcolor{#6fd0c0}{2} & \textcolor{#c792ea}{1} & \textcolor{#f0a35e}{3} \\ \textcolor{#6fd0c0}{1} & \textcolor{#c792ea}{0} & \textcolor{#f0a35e}{1} \end{bmatrix}$$
+  <p class="fragment">The vectors become the columns. Three <b>row operations</b> never change the solutions, because each one can be undone: swap two rows, multiply a row by a nonzero number, add a multiple of one row to another.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / By elimination</div>
+  <h2>Row echelon form, then RREF</h2>
+  $$\begin{bmatrix} 1&2&3\\2&1&3\\1&0&1 \end{bmatrix}
+    \xrightarrow{\;R_2-2R_1,\;R_3-R_1 \;}
+    \begin{bmatrix} 1&2&3\\0&-3&-3\\0&-2&-2 \end{bmatrix}
+    \xrightarrow{\;-\frac13 R_2,\;R_3+2R_2 \;}
+    \begin{bmatrix} 1&2&3\\0&1&1\\0&0&0 \end{bmatrix}$$
+  <p class="fragment"><b>Row echelon form</b>: each row's first nonzero entry, its <b>pivot</b>, sits right of the one above.</p>
+  <div class="fragment">
+  $$\xrightarrow{\;R_1-2R_2 \;}\begin{bmatrix} 1&0&1\\0&1&1\\0&0&0 \end{bmatrix}$$
+  </div>
+  <p class="fragment"><b>RREF</b>: also every pivot is 1 and alone in its column.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / By elimination</div>
+  <h2>Read the answer off the RREF</h2>
+  <p>The two nonzero rows say \(a + c = 0\) and \(b + c = 0\). Column 3 has no pivot, so \(c\) is <b>free</b>: any value works.</p>
+  <p class="fragment">\(a = -c\) and \(b = -c\). Take \(c = -1\): then \(a = 1\), \(b = 1\), and</p>
+  <div class="fragment">
+  $$1\,\textcolor{#6fd0c0}{\vec v} + 1\,\textcolor{#c792ea}{\vec w} - 1\,\textcolor{#f0a35e}{\vec u} = \vec 0 \quad\text{so}\quad \textcolor{#f0a35e}{\vec u} = \textcolor{#6fd0c0}{\vec v} + \textcolor{#c792ea}{\vec w}$$
+  </div>
+  <div class="beats two fragment">
+    <div class="beat anchor"><h4>Pivot in every column</h4><p>Only \(a = b = c = 0\) works. Independent.</p></div>
+    <div class="beat breaks"><h4>A column without a pivot</h4><p>A free variable, so a nonzero mix gives \(\vec 0\). Dependent, and the RREF gives the constants.</p></div>
   </div>
 </section>
 

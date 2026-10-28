@@ -1,11 +1,11 @@
 <!-- ============================================================
-     ACT 5 of 9. Inverse. Budget: 20 min.
+     ACT 5 of 10. Inverse. Budget: 20 min.
      Goal: inverse = undo; exists iff det != 0; 2x2 formula;
      (AB)^-1; solve rather than inv.
      ============================================================ -->
 
 <section class="act-open">
-  <div class="act-num">Act 5 of 9</div>
+  <div class="act-num">Act 5 of 10</div>
   <h1>The inverse</h1>
   <p class="act-sub">Run the map backwards. It works only when nothing was lost.</p>
 </section>
@@ -56,6 +56,32 @@
 </section>
 
 <section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / By elimination</div>
+  <h2>Row-reduce \([\,A \mid I\,]\)</h2>
+  <p>Row-reduce as on Day 1. When the left half becomes \(I\), the right half is \(A^{-1}\).</p>
+  $$A = \begin{bmatrix}1&2&0\\0&1&1\\1&2&1\end{bmatrix}:\qquad
+    \left[\begin{array}{ccc|ccc}1&2&0&1&0&0\\0&1&1&0&1&0\\1&2&1&0&0&1\end{array}\right]
+    \xrightarrow{\;R_3 - R_1\;}
+    \left[\begin{array}{ccc|ccc}1&2&0&1&0&0\\0&1&1&0&1&0\\0&0&1&-1&0&1\end{array}\right]$$
+  <div class="fragment">
+  $$\xrightarrow{\;R_2 - R_3\;}
+    \left[\begin{array}{ccc|ccc}1&2&0&1&0&0\\0&1&0&1&1&-1\\0&0&1&-1&0&1\end{array}\right]
+    \xrightarrow{\;R_1 - 2R_2\;}
+    \left[\begin{array}{ccc|ccc}1&0&0&-1&-2&2\\0&1&0&1&1&-1\\0&0&1&-1&0&1\end{array}\right]$$
+  </div>
+  <p class="fragment">The right half is \(A^{-1}\). Multiply it by \(A\) to check that you get \(I\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / By elimination</div>
+  <h2>Why the right half is \(A^{-1}\)</h2>
+  <p>Each row operation is a multiplication by some matrix \(E\). Call the product of all of them \(M\).</p>
+  <p class="fragment">\(M\) turned \(A\) into \(I\), so \(MA = I\) and \(M = A^{-1}\).</p>
+  <p class="fragment">The same operations turned \(I\) into \(MI = M = A^{-1}\). That is the right half.</p>
+  <p class="takeaway fragment">If a row of zeros appears on the left, some direction was squashed. There is no inverse.</p>
+</section>
+
+<section class="act-body">
   <div class="act-tag"><b>Act 5</b> / Product</div>
   <h2>Socks and shoes</h2>
   $$(AB)^{-1} = B^{-1}A^{-1}$$
@@ -69,7 +95,7 @@
   <ol class="practice">
     <li>\(\begin{bmatrix}2&0\\0&4\end{bmatrix}\) <span class="fragment">Halve \(x\) and quarter \(y\): \(\begin{bmatrix}1/2&0\\0&1/4\end{bmatrix}\).</span></li>
     <li>The shear \(\begin{bmatrix}1&1\\0&1\end{bmatrix}\)</li>
-    <li>The rotation \(\begin{bmatrix}0&-1\\1&0\end{bmatrix}\)</li>
-    <li>The projection \(\begin{bmatrix}1&0\\0&0\end{bmatrix}\)</li>
+    <li>Row-reduce \([\,A \mid I\,]\) for \(A = \begin{bmatrix}1&0&1\\0&1&0\\0&0&1\end{bmatrix}\)</li>
+    <li>The flattening \(\begin{bmatrix}1&0&0\\0&1&0\\0&0&0\end{bmatrix}\), which squashes space onto the floor</li>
   </ol>
 </section>

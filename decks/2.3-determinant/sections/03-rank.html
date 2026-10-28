@@ -54,8 +54,43 @@
   <div class="act-tag"><b>Act 3</b> / Rank–nullity</div>
   <h2>What is lost</h2>
   $$n = \operatorname{rank} A + \dim(\text{null space})$$
-  <p>The null space holds every input that \(A\) sends to \(\mathbf{0}\). For \(A = \begin{bmatrix}1&0&1\\0&1&1\\1&1&2\end{bmatrix}\), \(A(1,1,-1)^{\mathsf T} = \text{col}_1 + \text{col}_2 - \text{col}_3 = \mathbf{0}\), so the null space is a line: \(3 = 2 + 1\).</p>
+  <p>Here \(n\) is the total number of input dimensions, the number of columns of \(A\). A \(5 \times 3\) matrix has \(n = 3\), a \(2 \times 4\) matrix has \(n = 4\).</p>
+  <p>The null space holds every input that \(A\) sends to \(\mathbf{0}\). For \(A = \begin{bmatrix}1&0&1\\0&1&1\\1&1&2\end{bmatrix}\), the first two columns add up to the third:</p>
+  $$\text{col}_1 + \text{col}_2 = \begin{bmatrix} 1 \\ 0 \\ 1 \end{bmatrix} + \begin{bmatrix} 0 \\ 1 \\ 1 \end{bmatrix} = \begin{bmatrix} 1 \\ 1 \\ 2 \end{bmatrix} = \text{col}_3$$
+  <p>Rewriting this gives:</p>
+  $$\text{col}_1 + \text{col}_2 - \text{col}_3 = \mathbf{0}$$
+  <p>That is \(A\) applied to \((1, 1, -1)\), so this input is sent to \(\mathbf{0}\). The null space is a line: \(3 = 2 + 1\).</p>
   <p class="takeaway">What survives plus what vanishes always adds up to the input dimension.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / By elimination</div>
+  <h2>Rank from the RREF</h2>
+  <p>Row-reduce \(A\) as in the Day 1 dependence test. Each pivot marks an independent column.</p>
+  $$\begin{bmatrix}1&0&1\\0&1&1\\1&1&2\end{bmatrix}\xrightarrow{\;R_3 - R_1 - R_2\;}\begin{bmatrix}1&0&1\\0&1&1\\0&0&0\end{bmatrix}$$
+  <p class="fragment">Two pivots, so rank 2. Column 3 has no pivot, so \(x_3\) is free and \(x_1 = x_2 = -x_3\). Taking \(x_3 = -1\) gives \((1, 1, -1)\), the null-space line from the clip.</p>
+  <p class="takeaway fragment">Rank = number of pivots. Null-space dimension = number of free columns.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>What \(A\) does to space</h2>
+  <video class="clip" src="assets/clips/RrefOriginal.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">The Day 1 matrix sends \(\hat\imath, \hat\jmath, \hat k\) to its columns \(\vec v, \vec w, \vec u\). All of space flattens onto the plane of \(\vec v\) and \(\vec w\), and the line along \((1,1,-1)\) goes to \(\mathbf 0\).</p>
+</section>
+
+<section class="clip-slide">
+  <h2>What row reduction does to space</h2>
+  <video class="clip" src="assets/clips/RrefWarp.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">The Day 1 columns \(\vec v, \vec w, \vec u\). Each row operation warps all of space. REF lays their plane on the floor; RREF puts \(\vec v, \vec w\) on the axes. \(\vec u = \vec v + \vec w\) at every step.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>\(A\), REF and RREF as maps</h2>
+  <video class="clip" src="assets/clips/RrefCompare.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">The null line \((1,1,-1)\) goes to \(\mathbf 0\) in all three: the null space never changes. The image does: a tilted plane, then the floor, then the floor with the columns on the axes.</p>
 </section>
 
 <section class="act-body">

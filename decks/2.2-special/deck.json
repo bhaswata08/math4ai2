@@ -1,5 +1,5 @@
 {
-  "title": "Special matrices \u00b7 Mathematics for AI 2.2",
+  "title": "Special matrices · Mathematics for AI 2.2",
   "sections": [
     "00-open.html",
     "01-identity.html",
@@ -7,9 +7,13 @@
     "03-orthogonal.html",
     "04-projection.html",
     "05-inverse.html",
-    "06-symmetric.html",
-    "07-definite.html",
-    "08-family.html",
-    "09-recap.html"
+    "06-change-basis.html",
+    "07-symmetric.html",
+    "08-definite.html",
+    "09-family.html",
+    "10-recap.html"
+  ],
+  "scripts": [
+    "figures.js"
   ]
 }

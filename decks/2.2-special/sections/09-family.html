@@ -1,5 +1,5 @@
 <!-- ============================================================
-     ACT 8 of 9. Family tree. Budget: 5 min.
+     ACT 9 of 10. Family tree. Budget: 5 min.
      One HTML/CSS diagram, no images. Claims checked:
        invertible ⊂ square; symmetric ⊂ square;
        orthogonal ⊂ invertible (Q^-1 = Q^T exists);
@@ -30,7 +30,7 @@
 </style>
 
 <section class="act-body">
-  <div class="act-tag"><b>Act 8</b> / Family tree</div>
+  <div class="act-tag"><b>Act 9</b> / Family tree</div>
   <h2>How the special matrices fit together</h2>
   <div class="ft ft-root">
     <span class="ft-t">Square matrices <span class="ft-s">\(n\times n\)</span></span>
@@ -40,9 +40,127 @@
       <div class="ft-box ft-inv">Invertible <span class="ft-s">\(A^{-1}\) exists</span></div>
       <div class="ft ft-item ft-orth"><span class="ft-t">Orthogonal</span>\(Q^{-1}=Q^T\)</div>
       <div class="ft ft-item ft-pd"><span class="ft-t">Positive definite</span>\(x^TAx>0\)</div>
-      <div class="ft ft-item ft-proj"><span class="ft-t">Orthogonal projection</span>\(P=uu^T\), \(P^2=P\)</div>
+      <div class="ft ft-item ft-proj"><span class="ft-t">Orthogonal projection</span>squash onto a line</div>
       <div class="ft ft-item ft-diag"><span class="ft-t">Diagonal</span>scale each axis</div>
     </div>
   </div>
   <p class="ft-note">Positive definite sits where Invertible overlaps Symmetric: it is symmetric, positive semi-definite and invertible. The identity \(I\) is diagonal, orthogonal and positive definite. Reflections such as \(\mathrm{diag}(-1,1)\) are orthogonal and symmetric, so those two boxes also overlap.</p>
+</section>
+
+<style>
+  .reveal .np-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8em; margin-top: 0.2em; }
+  .reveal .np-cell { text-align: center; }
+  .reveal .np-name { font-weight: 600; font-size: 0.72em; color: var(--ink); }
+  .reveal .np-fig { width: 210px; height: 210px; display: block; margin: 0.15em auto; }
+  .reveal .np-m, .reveal .np-q { font-size: 0.66em; }
+  .reveal .np-v { font-size: 0.66em; color: var(--warn); margin-top: 0.15em; }
+  .reveal .np-legend { font-size: 0.66em; color: var(--ink-dim); margin: 0; }
+</style>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 9</b> / Not PSD</div>
+  <h2>Orthogonal, but not positive semi-definite</h2>
+  <p class="np-legend">Dashed: the unit square. Yellow: where \(A\) sends it. Arrows: where <span style="color:var(--x)">\(e_1\)</span> and <span style="color:var(--y)">\(e_2\)</span> land.</p>
+  <div class="np-grid">
+    <div class="np-cell">
+      <div class="np-name">Swap the axes (mirror in the dotted line)</div>
+      <svg viewBox="-130 -130 260 260" class="np-fig" aria-hidden="true">
+      <defs><marker id="npo1x" markerWidth="4" markerHeight="4" refX="1" refY="2" orient="auto"><path d="M0,0 L4,2 L0,4 z" style="fill:var(--x)"/></marker><marker id="npo1y" markerWidth="4" markerHeight="4" refX="1" refY="2" orient="auto"><path d="M0,0 L4,2 L0,4 z" style="fill:var(--y)"/></marker></defs>
+      <g style="stroke:var(--grid)" stroke-width="1"><line x1="-100" y1="-130" x2="-100" y2="130"/><line x1="-130" y1="-100" x2="130" y2="-100"/><line x1="-50" y1="-130" x2="-50" y2="130"/><line x1="-130" y1="-50" x2="130" y2="-50"/><line x1="50" y1="-130" x2="50" y2="130"/><line x1="-130" y1="50" x2="130" y2="50"/><line x1="100" y1="-130" x2="100" y2="130"/><line x1="-130" y1="100" x2="130" y2="100"/></g>
+      <line x1="-130" y1="0" x2="130" y2="0" style="stroke:var(--ink-faint)" stroke-width="2"/><line x1="0" y1="-130" x2="0" y2="130" style="stroke:var(--ink-faint)" stroke-width="2"/>
+      <line x1="-130" y1="130" x2="130" y2="-130" style="stroke:var(--ink-dim)" stroke-width="2" stroke-dasharray="2 6"/>
+      <path d="M0.0,0.0 L50.0,0.0 L50.0,-50.0 L0.0,-50.0 Z" fill="none" style="stroke:var(--ink-dim)" stroke-width="2" stroke-dasharray="6 5"/>
+      <path d="M0.0,0.0 L0.0,-50.0 L50.0,-50.0 L50.0,0.0 Z" style="fill:var(--accent-soft);stroke:var(--accent)" stroke-width="2.5"/>
+      <line x1="0" y1="0" x2="0.0" y2="-41.0" style="stroke:var(--x)" stroke-width="5" marker-end="url(#npo1x)"/><line x1="0" y1="0" x2="41.0" y2="0.0" style="stroke:var(--y)" stroke-width="5" marker-end="url(#npo1y)"/>
+    </svg>
+      <div class="np-m">\(\begin{bmatrix}0&1\\1&0\end{bmatrix}\)</div>
+      <div class="np-q">\(x^TAx=2x_1x_2\)</div>
+      <div class="np-v">both signs: indefinite</div>
+    </div>
+    <div class="np-cell">
+      <div class="np-name">Rotate by 180°</div>
+      <svg viewBox="-130 -130 260 260" class="np-fig" aria-hidden="true">
+      <defs><marker id="npo2x" markerWidth="4" markerHeight="4" refX="1" refY="2" orient="auto"><path d="M0,0 L4,2 L0,4 z" style="fill:var(--x)"/></marker><marker id="npo2y" markerWidth="4" markerHeight="4" refX="1" refY="2" orient="auto"><path d="M0,0 L4,2 L0,4 z" style="fill:var(--y)"/></marker></defs>
+      <g style="stroke:var(--grid)" stroke-width="1"><line x1="-100" y1="-130" x2="-100" y2="130"/><line x1="-130" y1="-100" x2="130" y2="-100"/><line x1="-50" y1="-130" x2="-50" y2="130"/><line x1="-130" y1="-50" x2="130" y2="-50"/><line x1="50" y1="-130" x2="50" y2="130"/><line x1="-130" y1="50" x2="130" y2="50"/><line x1="100" y1="-130" x2="100" y2="130"/><line x1="-130" y1="100" x2="130" y2="100"/></g>
+      <line x1="-130" y1="0" x2="130" y2="0" style="stroke:var(--ink-faint)" stroke-width="2"/><line x1="0" y1="-130" x2="0" y2="130" style="stroke:var(--ink-faint)" stroke-width="2"/>
+      
+      <path d="M0.0,0.0 L50.0,0.0 L50.0,-50.0 L0.0,-50.0 Z" fill="none" style="stroke:var(--ink-dim)" stroke-width="2" stroke-dasharray="6 5"/>
+      <path d="M0.0,0.0 L-50.0,0.0 L-50.0,50.0 L0.0,50.0 Z" style="fill:var(--accent-soft);stroke:var(--accent)" stroke-width="2.5"/>
+      <line x1="0" y1="0" x2="-41.0" y2="0.0" style="stroke:var(--x)" stroke-width="5" marker-end="url(#npo2x)"/><line x1="0" y1="0" x2="0.0" y2="41.0" style="stroke:var(--y)" stroke-width="5" marker-end="url(#npo2y)"/>
+    </svg>
+      <div class="np-m">\(\begin{bmatrix}-1&0\\0&-1\end{bmatrix}\)</div>
+      <div class="np-q">\(x^TAx=-x_1^2-x_2^2\)</div>
+      <div class="np-v">always negative: negative definite</div>
+    </div>
+    <div class="np-cell">
+      <div class="np-name">Rotate by 90°</div>
+      <svg viewBox="-130 -130 260 260" class="np-fig" aria-hidden="true">
+      <defs><marker id="npo3x" markerWidth="4" markerHeight="4" refX="1" refY="2" orient="auto"><path d="M0,0 L4,2 L0,4 z" style="fill:var(--x)"/></marker><marker id="npo3y" markerWidth="4" markerHeight="4" refX="1" refY="2" orient="auto"><path d="M0,0 L4,2 L0,4 z" style="fill:var(--y)"/></marker></defs>
+      <g style="stroke:var(--grid)" stroke-width="1"><line x1="-100" y1="-130" x2="-100" y2="130"/><line x1="-130" y1="-100" x2="130" y2="-100"/><line x1="-50" y1="-130" x2="-50" y2="130"/><line x1="-130" y1="-50" x2="130" y2="-50"/><line x1="50" y1="-130" x2="50" y2="130"/><line x1="-130" y1="50" x2="130" y2="50"/><line x1="100" y1="-130" x2="100" y2="130"/><line x1="-130" y1="100" x2="130" y2="100"/></g>
+      <line x1="-130" y1="0" x2="130" y2="0" style="stroke:var(--ink-faint)" stroke-width="2"/><line x1="0" y1="-130" x2="0" y2="130" style="stroke:var(--ink-faint)" stroke-width="2"/>
+      
+      <path d="M0.0,0.0 L50.0,0.0 L50.0,-50.0 L0.0,-50.0 Z" fill="none" style="stroke:var(--ink-dim)" stroke-width="2" stroke-dasharray="6 5"/>
+      <path d="M0.0,0.0 L0.0,-50.0 L-50.0,-50.0 L-50.0,0.0 Z" style="fill:var(--accent-soft);stroke:var(--accent)" stroke-width="2.5"/>
+      <line x1="0" y1="0" x2="0.0" y2="-41.0" style="stroke:var(--x)" stroke-width="5" marker-end="url(#npo3x)"/><line x1="0" y1="0" x2="-41.0" y2="0.0" style="stroke:var(--y)" stroke-width="5" marker-end="url(#npo3y)"/>
+    </svg>
+      <div class="np-m">\(\begin{bmatrix}0&-1\\1&0\end{bmatrix}\)</div>
+      <div class="np-q">\(x^TAx=0\)</div>
+      <div class="np-v">not symmetric, so not PSD</div>
+    </div>
+  </div>
+  <p class="takeaway">Among the orthogonal matrices, only \(I\) is positive semi-definite.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 9</b> / Not PSD</div>
+  <h2>Diagonal, but not positive semi-definite</h2>
+  <p class="np-legend">Dashed: the unit square. Yellow: where \(A\) sends it. Arrows: where <span style="color:var(--x)">\(e_1\)</span> and <span style="color:var(--y)">\(e_2\)</span> land.</p>
+  <div class="np-grid">
+    <div class="np-cell">
+      <div class="np-name">Flip one axis</div>
+      <svg viewBox="-130 -130 260 260" class="np-fig" aria-hidden="true">
+      <defs><marker id="npd1x" markerWidth="4" markerHeight="4" refX="1" refY="2" orient="auto"><path d="M0,0 L4,2 L0,4 z" style="fill:var(--x)"/></marker><marker id="npd1y" markerWidth="4" markerHeight="4" refX="1" refY="2" orient="auto"><path d="M0,0 L4,2 L0,4 z" style="fill:var(--y)"/></marker></defs>
+      <g style="stroke:var(--grid)" stroke-width="1"><line x1="-100" y1="-130" x2="-100" y2="130"/><line x1="-130" y1="-100" x2="130" y2="-100"/><line x1="-50" y1="-130" x2="-50" y2="130"/><line x1="-130" y1="-50" x2="130" y2="-50"/><line x1="50" y1="-130" x2="50" y2="130"/><line x1="-130" y1="50" x2="130" y2="50"/><line x1="100" y1="-130" x2="100" y2="130"/><line x1="-130" y1="100" x2="130" y2="100"/></g>
+      <line x1="-130" y1="0" x2="130" y2="0" style="stroke:var(--ink-faint)" stroke-width="2"/><line x1="0" y1="-130" x2="0" y2="130" style="stroke:var(--ink-faint)" stroke-width="2"/>
+      
+      <path d="M0.0,0.0 L50.0,0.0 L50.0,-50.0 L0.0,-50.0 Z" fill="none" style="stroke:var(--ink-dim)" stroke-width="2" stroke-dasharray="6 5"/>
+      <path d="M0.0,0.0 L50.0,0.0 L50.0,50.0 L0.0,50.0 Z" style="fill:var(--accent-soft);stroke:var(--accent)" stroke-width="2.5"/>
+      <line x1="0" y1="0" x2="41.0" y2="0.0" style="stroke:var(--x)" stroke-width="5" marker-end="url(#npd1x)"/><line x1="0" y1="0" x2="0.0" y2="41.0" style="stroke:var(--y)" stroke-width="5" marker-end="url(#npd1y)"/>
+    </svg>
+      <div class="np-m">\(\begin{bmatrix}1&0\\0&-1\end{bmatrix}\)</div>
+      <div class="np-q">\(x^TAx=x_1^2-x_2^2\)</div>
+      <div class="np-v">both signs: indefinite</div>
+    </div>
+    <div class="np-cell">
+      <div class="np-name">Flip and stretch both</div>
+      <svg viewBox="-130 -130 260 260" class="np-fig" aria-hidden="true">
+      <defs><marker id="npd2x" markerWidth="4" markerHeight="4" refX="1" refY="2" orient="auto"><path d="M0,0 L4,2 L0,4 z" style="fill:var(--x)"/></marker><marker id="npd2y" markerWidth="4" markerHeight="4" refX="1" refY="2" orient="auto"><path d="M0,0 L4,2 L0,4 z" style="fill:var(--y)"/></marker></defs>
+      <g style="stroke:var(--grid)" stroke-width="1"><line x1="-100" y1="-130" x2="-100" y2="130"/><line x1="-130" y1="-100" x2="130" y2="-100"/><line x1="-50" y1="-130" x2="-50" y2="130"/><line x1="-130" y1="-50" x2="130" y2="-50"/><line x1="50" y1="-130" x2="50" y2="130"/><line x1="-130" y1="50" x2="130" y2="50"/><line x1="100" y1="-130" x2="100" y2="130"/><line x1="-130" y1="100" x2="130" y2="100"/></g>
+      <line x1="-130" y1="0" x2="130" y2="0" style="stroke:var(--ink-faint)" stroke-width="2"/><line x1="0" y1="-130" x2="0" y2="130" style="stroke:var(--ink-faint)" stroke-width="2"/>
+      
+      <path d="M0.0,0.0 L50.0,0.0 L50.0,-50.0 L0.0,-50.0 Z" fill="none" style="stroke:var(--ink-dim)" stroke-width="2" stroke-dasharray="6 5"/>
+      <path d="M0.0,0.0 L-50.0,0.0 L-50.0,100.0 L0.0,100.0 Z" style="fill:var(--accent-soft);stroke:var(--accent)" stroke-width="2.5"/>
+      <line x1="0" y1="0" x2="-41.0" y2="0.0" style="stroke:var(--x)" stroke-width="5" marker-end="url(#npd2x)"/><line x1="0" y1="0" x2="0.0" y2="91.0" style="stroke:var(--y)" stroke-width="5" marker-end="url(#npd2y)"/>
+    </svg>
+      <div class="np-m">\(\begin{bmatrix}-1&0\\0&-2\end{bmatrix}\)</div>
+      <div class="np-q">\(x^TAx=-x_1^2-2x_2^2\)</div>
+      <div class="np-v">always negative: negative definite</div>
+    </div>
+    <div class="np-cell">
+      <div class="np-name">Squash one, flip the other</div>
+      <svg viewBox="-130 -130 260 260" class="np-fig" aria-hidden="true">
+      <defs><marker id="npd3x" markerWidth="4" markerHeight="4" refX="1" refY="2" orient="auto"><path d="M0,0 L4,2 L0,4 z" style="fill:var(--x)"/></marker><marker id="npd3y" markerWidth="4" markerHeight="4" refX="1" refY="2" orient="auto"><path d="M0,0 L4,2 L0,4 z" style="fill:var(--y)"/></marker></defs>
+      <g style="stroke:var(--grid)" stroke-width="1"><line x1="-100" y1="-130" x2="-100" y2="130"/><line x1="-130" y1="-100" x2="130" y2="-100"/><line x1="-50" y1="-130" x2="-50" y2="130"/><line x1="-130" y1="-50" x2="130" y2="-50"/><line x1="50" y1="-130" x2="50" y2="130"/><line x1="-130" y1="50" x2="130" y2="50"/><line x1="100" y1="-130" x2="100" y2="130"/><line x1="-130" y1="100" x2="130" y2="100"/></g>
+      <line x1="-130" y1="0" x2="130" y2="0" style="stroke:var(--ink-faint)" stroke-width="2"/><line x1="0" y1="-130" x2="0" y2="130" style="stroke:var(--ink-faint)" stroke-width="2"/>
+      
+      <path d="M0.0,0.0 L50.0,0.0 L50.0,-50.0 L0.0,-50.0 Z" fill="none" style="stroke:var(--ink-dim)" stroke-width="2" stroke-dasharray="6 5"/>
+      <path d="M0.0,0.0 L0.0,0.0 L0.0,100.0 L0.0,100.0 Z" style="fill:var(--accent-soft);stroke:var(--accent)" stroke-width="2.5"/>
+      <circle cx="0" cy="0" r="6" style="fill:var(--x)"/><line x1="0" y1="0" x2="0.0" y2="91.0" style="stroke:var(--y)" stroke-width="5" marker-end="url(#npd3y)"/>
+    </svg>
+      <div class="np-m">\(\begin{bmatrix}0&0\\0&-2\end{bmatrix}\)</div>
+      <div class="np-q">\(x^TAx=-2x_2^2\)</div>
+      <div class="np-v">never positive: negative semi-definite</div>
+    </div>
+  </div>
+  <p class="takeaway">A diagonal matrix is positive semi-definite exactly when every diagonal entry is \(\ge0\).</p>
 </section>

@@ -1,31 +1,44 @@
 <!-- ============================================================
-     ACT 5 of 7. Symmetric matrices. Budget: 20 min.
+     ACT 4 of 7. Spectral decomposition. Budget: 25 min.
      Goal: spectral theorem, S = Q Lambda Q^T as rotate-scale-rotate,
-     rank-one sum.
+     what goes in Q and Lambda, Q e_i = q_i, 2D and 3D, rank-one sum.
+     Follows Visual Kernel ch.2, 09:36-14:13, visual for visual.
      ============================================================ -->
 
 <section class="act-open">
-  <div class="act-num">Act 5 of 7</div>
-  <h1>Symmetric matrices</h1>
-  <p class="act-sub">When \(S = S^T\), the eigenvectors come out perpendicular, and the factoring gets clean.</p>
+  <div class="act-num">Act 4 of 7</div>
+  <h1>Spectral decomposition</h1>
+  <p class="act-sub">When \(S = S^T\), the eigenvectors come out perpendicular, and \(S\) splits into a rotation, a stretch and a rotation back.</p>
 </section>
 
 <section class="clip-slide">
   <h2>Usually not at a right angle</h2>
-  <video class="clip" src="assets/clips/VKNonSymAngles.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>Take a matrix that is not symmetric.</li>
+      <li>Its two eigenvector lines meet at some angle.</li>
+      <li>In all four examples, the angle is never 90°.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKNonSymAngles.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">Four non-symmetric matrices. The angle between their eigenvector lines is never 90 degrees.</p>
 </section>
 
 <section class="clip-slide">
   <h2>Eigenvectors at a right angle</h2>
-  <video class="clip" src="assets/clips/VKSymPerp.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>Now make the matrix symmetric: \(S = S^T\).</li>
+      <li>The two eigenvector lines are always 90° apart.</li>
+      <li>Perpendicular eigenvectors make the factoring that follows possible.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKSymPerp.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">Three different symmetric matrices. The two eigenvector lines are always 90 degrees apart.</p>
 </section>
 
 <section class="act-body">
-  <div class="act-tag"><b>Act 5</b> / Spectral theorem</div>
+  <div class="act-tag"><b>Act 4</b> / Spectral theorem</div>
   <h2>The spectral theorem</h2>
   <p>A real symmetric \(S\) has</p>
   <ul>
@@ -38,41 +51,140 @@
 
 <section class="clip-slide">
   <h2>Orthogonal, diagonal, orthogonal</h2>
-  <video class="clip" src="assets/clips/VKStatement.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>Any symmetric \(S\) splits into three matrices: \(S = Q\Lambda Q^T\).</li>
+      <li>\(Q\) and \(Q^T\) are orthogonal: rotations.</li>
+      <li>\(\Lambda\) is diagonal: a stretch along the axes.</li>
+      <li>A complicated map becomes three simple moves.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKStatement.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">The spectral decomposition: a rotation, a stretch along the axes, and the rotation back.</p>
 </section>
 
 <section class="clip-slide">
-  <h2>Choose \(Q\) to be a rotation</h2>
-  <video class="clip" src="assets/clips/VKEigsToBasis.mp4"></video>
+  <h2>What goes into \(Q\) and \(\Lambda\)</h2>
+  <div class="clip-talk">
+    <ul>
+      <li>Columns of \(Q\): the unit eigenvectors of \(S\).</li>
+      <li>Diagonal of \(\Lambda\): their eigenvalues, in the same order.</li>
+      <li>\(Q^T\): the columns of \(Q\) laid down as rows.</li>
+      <li>\(3\times3\): three eigenvectors, three eigenvalues.</li>
+      <li>The clip writes \(\vec e_i\) for our \(\mathbf{q}_i\).</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKSpecMatrix.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">\(Q\) turns the standard basis onto the eigenvectors; \(Q^{-1} = Q^T\) turns them back. If \(\det Q = -1\), flip the sign of one eigenvector, or \(Q\) also reflects.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>\(\Lambda\) scales the axes</h2>
+  <div class="clip-talk">
+    <ul>
+      <li>\(\Lambda\) is diagonal, so it acts on each axis alone.</li>
+      <li>\(\Lambda\begin{bmatrix}x\\y\end{bmatrix} = \begin{bmatrix}\lambda_1 x\\ \lambda_2 y\end{bmatrix}\)</li>
+      <li>The \(x\)-axis stretches by \(\lambda_1\), the \(y\)-axis by \(\lambda_2\).</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKLambdaScale.mp4"></video>
+  </div>
+  <span class="fragment clip-play"></span>
+</section>
+
+<section class="clip-slide">
+  <h2>\(Q\) turns the axes onto the eigenvectors</h2>
+  <div class="clip-talk">
+    <ul>
+      <li>\(Q\) is orthogonal, so it is a rotation.</li>
+      <li>Which rotation? The one that turns the standard basis onto the eigenvectors.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKQColumns.mp4"></video>
+  </div>
+  <span class="fragment clip-play"></span>
+</section>
+
+<section class="clip-slide">
+  <h2>\(Q\mathbf{e}_1 = \mathbf{q}_1\), \(Q\mathbf{e}_2 = \mathbf{q}_2\)</h2>
+  <div class="clip-talk">
+    <ul>
+      <li>A matrix times \((1,0)\) picks out its first column.</li>
+      <li>So \(Q\mathbf{e}_1 = \mathbf{q}_1\): the \(x\)-axis goes to the first eigenvector.</li>
+      <li>Likewise \(Q\mathbf{e}_2 = \mathbf{q}_2\).</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKQe.mp4"></video>
+  </div>
+  <span class="fragment clip-play"></span>
 </section>
 
 <section class="clip-slide">
   <h2>Column \(i\) of \(Q\) is eigenvector \(i\)</h2>
-  <video class="clip" src="assets/clips/VKQMapping.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>\(Q\) turns the \(i\)-th standard basis vector onto the \(i\)-th eigenvector.</li>
+      <li>\(Q^{-1} = Q^T\) turns it back: the reverse rotation.</li>
+      <li>The clip writes \(Q^{-1}\); for an orthogonal \(Q\) that is \(Q^T\).</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKQMapping.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">The \(i\)-th standard basis vector lands on the \(i\)-th eigenvector. The clip writes \(Q^{-1}\); for an orthogonal \(Q\) that is \(Q^T\).</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Choose \(Q\) to be a rotation</h2>
+  <div class="clip-talk">
+    <ul>
+      <li>Flip the sign of an eigenvector and it is still an eigenvector.</li>
+      <li>Pick the signs so that \(\det Q = +1\).</li>
+      <li>Then \(Q\) is a pure rotation, with no reflection.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKEigsToBasis.mp4"></video>
+  </div>
+  <span class="fragment clip-play"></span>
+</section>
+
+<section class="clip-slide">
+  <h2>Our \(S\), factored</h2>
+  <div class="clip-talk">
+    <ul>
+      <li>\(S = \begin{bmatrix}4&2\\2&4\end{bmatrix}\)</li>
+      <li>\(\lambda_1 = 6\), \(\mathbf{q}_1 = \tfrac{1}{\sqrt2}(1,1)\)</li>
+      <li>\(\lambda_2 = 2\), \(\mathbf{q}_2 = \tfrac{1}{\sqrt2}(-1,1)\)</li>
+      <li>\(Q\) is a 45° rotation.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKSpecNumeric.mp4"></video>
+  </div>
+  <span class="fragment clip-play"></span>
 </section>
 
 <section class="clip-slide">
   <h2>What \(S\) does in 2D</h2>
-  <video class="clip" src="assets/clips/VKSpec2DFull.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>Apply \(S\) to the rectangle in one go.</li>
+      <li>It becomes a large parallelogram.</li>
+      <li>Next: the same result in three moves.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKSpec2DFull.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">\(S = \begin{bmatrix}4&2\\2&4\end{bmatrix}\) turns the rectangle into a parallelogram.</p>
 </section>
 
 <section class="clip-slide">
   <h2>Rotate, scale, rotate back</h2>
-  <video class="clip" src="assets/clips/VKSpec2D.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>\(Q^T\): rotate the eigenvectors onto the axes.</li>
+      <li>\(\Lambda\): scale \(x\) by 6 and \(y\) by 2.</li>
+      <li>\(Q\): rotate the axes back onto the eigenvectors.</li>
+      <li>The final shape is exactly what \(S\) gave.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKSpec2D.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">\(Q^T\) aligns the eigenvectors with the axes, \(\Lambda = \mathrm{diag}(6,2)\) scales them, \(Q\) rotates back.</p>
 </section>
 
 <section class="act-body">
-  <div class="act-tag"><b>Act 5</b> / Check</div>
+  <div class="act-tag"><b>Act 4</b> / Check</div>
   <h2>The same \(S\), numerically</h2>
   <p>\(\lambda_1 = 6\), \(\mathbf{q}_1 = \tfrac{1}{\sqrt2}(1,1)\); \(\lambda_2 = 2\), \(\mathbf{q}_2 = \tfrac{1}{\sqrt2}(-1,1)\). Columns in that order make \(Q\) a rotation.</p>
   $$S = \sum_i \lambda_i\,\mathbf{q}_i\mathbf{q}_i^{T} = 6\cdot\tfrac12\begin{bmatrix}1&1\\1&1\end{bmatrix} + 2\cdot\tfrac12\begin{bmatrix}1&-1\\-1&1\end{bmatrix} = \begin{bmatrix}4&2\\2&4\end{bmatrix}$$
@@ -81,44 +193,246 @@
 
 <section class="clip-slide">
   <h2>A negative eigenvalue flips</h2>
-  <video class="clip" src="assets/clips/SpectralNegative.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>\(S = \begin{bmatrix}-1&-2\\-2&-1.8\end{bmatrix}\): \(\lambda = 0.64\) and \(-3.44\).</li>
+      <li>\(Q^T\) rotates, as before.</li>
+      <li>\(\Lambda\) shrinks along \(\mathbf{q}_1\), and stretches and flips along \(\mathbf{q}_2\).</li>
+      <li>A negative eigenvalue reverses its direction.</li>
+    </ul>
+    <video class="clip" src="assets/clips/SpectralNegative.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">\(S = \begin{bmatrix}-1&-2\\-2&-1.8\end{bmatrix}\) has \(\lambda = 0.64\) and \(-3.44\). The \(\Lambda\) step stretches along \(\mathbf{q}_2\) and turns it around.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>A \(3\times3\) \(S\), factored</h2>
+  <div class="clip-talk">
+    <ul>
+      <li>A \(3\times3\) symmetric \(S\).</li>
+      <li>\(Q\): three perpendicular unit eigenvectors.</li>
+      <li>\(\Lambda = \mathrm{diag}(4.15,\,-1.56,\,1.31)\)</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKSpec3DNumeric.mp4"></video>
+  </div>
+  <span class="fragment clip-play"></span>
 </section>
 
 <section class="clip-slide">
   <h2>The same in 3D</h2>
-  <video class="clip" src="assets/clips/VKSpec3DFull.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>\(S\) deforms the coloured cube in one go.</li>
+      <li>Now take it apart in three steps.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKSpec3DFull.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">A \(3\times3\) symmetric \(S\) deforms the cube. Now take it apart in three steps.</p>
 </section>
 
 <section class="clip-slide">
   <h2>Step 1: rotate with \(Q^T\)</h2>
-  <video class="clip" src="assets/clips/VKSpec3DRot1.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>\(Q^T\) rotates the three perpendicular eigenvectors.</li>
+      <li>They land on the \(x\), \(y\), \(z\) axes.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKSpec3DRot1.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">The three eigenvectors land on the \(x\), \(y\), \(z\) axes.</p>
 </section>
 
 <section class="clip-slide">
   <h2>Step 2: scale with \(\Lambda\)</h2>
-  <video class="clip" src="assets/clips/VKSpec3DScale.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>Scale \(x\) by 4.15, \(y\) by \(-1.56\), \(z\) by 1.31.</li>
+      <li>The negative factor flips the \(y\) direction.</li>
+      <li>\(\Lambda\) does all three at once; the clip splits them up.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKSpec3DScale.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">Each axis is scaled by its eigenvalue. A negative one also flips that axis.</p>
 </section>
 
 <section class="clip-slide">
   <h2>Step 3: rotate back with \(Q\)</h2>
-  <video class="clip" src="assets/clips/VKSpec3DRot2.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>\(Q\) rotates the axes back onto the eigenvectors.</li>
+      <li>The result matches what \(S\) did in one go.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKSpec3DRot2.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">The result is exactly what \(S\) did to the cube.</p>
 </section>
 
 <section class="act-body">
-  <div class="act-tag"><b>Act 5</b> / Try it</div>
+  <div class="act-tag"><b>Act 4</b> / Back to the bowl</div>
+  <h2>Eigenvalues are the curvatures of \(x^TSx\)</h2>
+  <p>In Block 2.2, the bowl \(z=x^TSx\) had two axes at right angles, with a steepness \(\lambda\) along each. Now we can name them.</p>
+  <p class="fragment">Put \(S=Q\Lambda Q^T\) in, and write \(y=Q^Tx\), the coordinates of \(x\) along the eigenvectors:</p>
+  <div class="fragment">$$x^TSx=x^TQ\Lambda Q^Tx=(Q^Tx)^T\Lambda(Q^Tx)=y^T\Lambda y=\lambda_1y_1^2+\lambda_2y_2^2$$</div>
+  <p class="fragment">The axes of the bowl are the eigenvectors, and the steepness along each is its eigenvalue.</p>
+  <p class="takeaway">\(S\) is positive definite exactly when every eigenvalue is positive.</p>
+</section>
+
+<!-- Borrowed from decks/2.2-special/sections/08-definite.html: "Steep and gentle directions" -->
+<section class="flashback">
+  <div class="fb-behind" aria-hidden="true">
+  <div class="act-tag"><b>Act 4</b> / Back to the bowl</div>
+  <h2>Eigenvalues are the curvatures of \(x^TSx\)</h2>
+  <p>In Block 2.2, the bowl \(z=x^TSx\) had two axes at right angles, with a steepness \(\lambda\) along each. Now we can name them.</p>
+  <p>Put \(S=Q\Lambda Q^T\) in, and write \(y=Q^Tx\), the coordinates of \(x\) along the eigenvectors:</p>
+  <div>$$x^TSx=x^TQ\Lambda Q^Tx=(Q^Tx)^T\Lambda(Q^Tx)=y^T\Lambda y=\lambda_1y_1^2+\lambda_2y_2^2$$</div>
+  <p>The axes of the bowl are the eigenvectors, and the steepness along each is its eigenvalue.</p>
+  <p class="takeaway">\(S\) is positive definite exactly when every eigenvalue is positive.</p>
+</div>
+  <div class="fb-label">Flashback to Block 2.2</div>
+  <div class="fb-card clip-slide">
+  <div class="act-tag"><b>Block 2.2</b> / Act 8 / Curvature</div>
+  <h2>Steep and gentle directions</h2>
+  <div class="clip-talk">
+    <ul>
+      <li>The bowl has two main axes, at right angles.</li>
+      <li>Along each axis the cut is a parabola with steepness \(\lambda\).</li>
+      <li>Large \(\lambda\): steep, narrow walls. Small \(\lambda\): a gentle, wide slope.</li>
+      <li>Up in every direction exactly when every \(\lambda>0\). Block 2.4 calls these \(\lambda\)'s eigenvalues.</li>
+    </ul>
+    <video class="clip" src="assets/clips/PDCurvature.mp4"></video>
+  </div>
+  <span class="fragment clip-play"></span>
+</div>
+</section>
+
+<!-- The citing slide again, after the recap -->
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / Back to the bowl</div>
+  <h2>Eigenvalues are the curvatures of \(x^TSx\)</h2>
+  <p>In Block 2.2, the bowl \(z=x^TSx\) had two axes at right angles, with a steepness \(\lambda\) along each. Now we can name them.</p>
+  <p>Put \(S=Q\Lambda Q^T\) in, and write \(y=Q^Tx\), the coordinates of \(x\) along the eigenvectors:</p>
+  <div>$$x^TSx=x^TQ\Lambda Q^Tx=(Q^Tx)^T\Lambda(Q^Tx)=y^T\Lambda y=\lambda_1y_1^2+\lambda_2y_2^2$$</div>
+  <p>The axes of the bowl are the eigenvectors, and the steepness along each is its eigenvalue.</p>
+  <p class="takeaway">\(S\) is positive definite exactly when every eigenvalue is positive.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / Inverse and powers</div>
+  <h2>Inverse and powers from \(Q\Lambda Q^T\)</h2>
+  <p>Let \(S = Q\Lambda Q^T\) with every \(\lambda_i \neq 0\). Two facts from Block 2.2: \(Q^{-1} = Q^T\), and \((BC)^{-1} = C^{-1}B^{-1}\).</p>
+  <div class="fragment">$$S^{-1} = (Q\Lambda Q^T)^{-1} = (Q^T)^{-1}\Lambda^{-1}Q^{-1} = Q\Lambda^{-1}Q^T,\qquad \Lambda^{-1} = \mathrm{diag}(1/\lambda_1,\ 1/\lambda_2)$$</div>
+  <p class="fragment">Powers: in a product of copies, each middle \(Q^TQ\) is \(I\) and cancels.</p>
+  <div class="fragment">$$S^2 = Q\Lambda(Q^TQ)\Lambda Q^T = Q\Lambda^2Q^T,\qquad S^k = Q\Lambda^kQ^T,\qquad S^{-k} = (S^{-1})^k = Q\Lambda^{-k}Q^T$$</div>
+  <p class="takeaway fragment">To raise \(S\) to a power, raise each eigenvalue to it. The eigenvectors stay the same.</p>
+</section>
+
+<!-- Borrowed from decks/2.2-special/sections/03-orthogonal.html: "Orthonormal columns" -->
+<section class="flashback">
+  <div class="fb-behind" aria-hidden="true">
+  <div class="act-tag"><b>Act 4</b> / Inverse and powers</div>
+  <h2>Inverse and powers from \(Q\Lambda Q^T\)</h2>
+  <p>Let \(S = Q\Lambda Q^T\) with every \(\lambda_i \neq 0\). Two facts from Block 2.2: \(Q^{-1} = Q^T\), and \((BC)^{-1} = C^{-1}B^{-1}\).</p>
+  <div>$$S^{-1} = (Q\Lambda Q^T)^{-1} = (Q^T)^{-1}\Lambda^{-1}Q^{-1} = Q\Lambda^{-1}Q^T,\qquad \Lambda^{-1} = \mathrm{diag}(1/\lambda_1,\ 1/\lambda_2)$$</div>
+  <p>Powers: in a product of copies, each middle \(Q^TQ\) is \(I\) and cancels.</p>
+  <div>$$S^2 = Q\Lambda(Q^TQ)\Lambda Q^T = Q\Lambda^2Q^T,\qquad S^k = Q\Lambda^kQ^T,\qquad S^{-k} = (S^{-1})^k = Q\Lambda^{-k}Q^T$$</div>
+  <p class="takeaway">To raise \(S\) to a power, raise each eigenvalue to it. The eigenvectors stay the same.</p>
+</div>
+  <div class="fb-label">Flashback to Block 2.2</div>
+  <div class="fb-card act-body">
+  <div class="act-tag"><b>Block 2.2</b> / Act 3 / Definition</div>
+  <h2>Orthonormal columns</h2>
+  <p>\(Q\) is <b>orthogonal</b> when its columns are unit vectors at right angles to each other.</p>
+  $$Q^TQ = I \quad\Longleftrightarrow\quad Q^{-1}=Q^T$$
+  <p>\(Q^{-1}\) is the matrix that undoes \(Q\).</p>
+  <p>Entry \((i,j)\) of \(Q^TQ\) is column \(i\) dotted with column \(j\): 1 on the diagonal, 0 elsewhere.</p>
+  <p class="takeaway">To undo an orthogonal matrix, transpose it. No elimination needed.</p>
+</div>
+</section>
+
+<!-- Borrowed from decks/2.2-special/sections/05-inverse.html: "Socks and shoes" -->
+<section class="flashback">
+  <div class="fb-behind" aria-hidden="true">
+  <div class="act-tag"><b>Act 4</b> / Inverse and powers</div>
+  <h2>Inverse and powers from \(Q\Lambda Q^T\)</h2>
+  <p>Let \(S = Q\Lambda Q^T\) with every \(\lambda_i \neq 0\). Two facts from Block 2.2: \(Q^{-1} = Q^T\), and \((BC)^{-1} = C^{-1}B^{-1}\).</p>
+  <div>$$S^{-1} = (Q\Lambda Q^T)^{-1} = (Q^T)^{-1}\Lambda^{-1}Q^{-1} = Q\Lambda^{-1}Q^T,\qquad \Lambda^{-1} = \mathrm{diag}(1/\lambda_1,\ 1/\lambda_2)$$</div>
+  <p>Powers: in a product of copies, each middle \(Q^TQ\) is \(I\) and cancels.</p>
+  <div>$$S^2 = Q\Lambda(Q^TQ)\Lambda Q^T = Q\Lambda^2Q^T,\qquad S^k = Q\Lambda^kQ^T,\qquad S^{-k} = (S^{-1})^k = Q\Lambda^{-k}Q^T$$</div>
+  <p class="takeaway">To raise \(S\) to a power, raise each eigenvalue to it. The eigenvectors stay the same.</p>
+</div>
+  <div class="fb-label">Flashback to Block 2.2</div>
+  <div class="fb-card act-body">
+  <div class="act-tag"><b>Block 2.2</b> / Act 5 / Product</div>
+  <h2>Socks and shoes</h2>
+  $$(AB)^{-1} = B^{-1}A^{-1}$$
+  <p>Put on socks (\(B\)), then shoes (\(A\)). To undo, take off the shoes first, then the socks.</p>
+  <p class="fragment">Check: \((AB)(B^{-1}A^{-1}) = A(BB^{-1})A^{-1} = AIA^{-1} = I\).</p>
+</div>
+</section>
+
+<!-- The citing slide again, after the recap -->
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / Inverse and powers</div>
+  <h2>Inverse and powers from \(Q\Lambda Q^T\)</h2>
+  <p>Let \(S = Q\Lambda Q^T\) with every \(\lambda_i \neq 0\). Two facts from Block 2.2: \(Q^{-1} = Q^T\), and \((BC)^{-1} = C^{-1}B^{-1}\).</p>
+  <div>$$S^{-1} = (Q\Lambda Q^T)^{-1} = (Q^T)^{-1}\Lambda^{-1}Q^{-1} = Q\Lambda^{-1}Q^T,\qquad \Lambda^{-1} = \mathrm{diag}(1/\lambda_1,\ 1/\lambda_2)$$</div>
+  <p>Powers: in a product of copies, each middle \(Q^TQ\) is \(I\) and cancels.</p>
+  <div>$$S^2 = Q\Lambda(Q^TQ)\Lambda Q^T = Q\Lambda^2Q^T,\qquad S^k = Q\Lambda^kQ^T,\qquad S^{-k} = (S^{-1})^k = Q\Lambda^{-k}Q^T$$</div>
+  <p class="takeaway">To raise \(S\) to a power, raise each eigenvalue to it. The eigenvectors stay the same.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / Try it</div>
   <h2>Symmetric matrices</h2>
   <ol class="practice">
     <li>For \(S=\begin{bmatrix}2&1\\1&2\end{bmatrix}\), write \(Q\) and \(\Lambda\) with \(Q^TQ=I\). <span class="fragment">\(Q=\tfrac1{\sqrt2}\begin{bmatrix}1&-1\\1&1\end{bmatrix}\) (a 45° rotation), \(\Lambda=\mathrm{diag}(3,1)\)</span></li>
     <li>Why does the rank-one sum for a \(3\times3\) \(S\) have three terms?</li>
   </ol>
+</section>
+
+<!-- Worked problem: text and solution as given by the instructor, word for word.
+     Only the layout, the notation note and the two "why" lines are added. -->
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / Worked problem</div>
+  <h2>Problem 1</h2>
+  <p>When \(A = S\Lambda S^{-1}\) is a real-symmetric (or Hermitian) matrix, eigenvectors can be chosen orthonormal and hence \(S = Q\) is orthogonal (or unitary). Thus, \(A = Q\Lambda Q^T\), which is called the <em>spectral decomposition</em> of \(A\).</p>
+  <p>Find the spectral decomposition for \(A = \begin{pmatrix}3&2\\2&3\end{pmatrix}\), and check by explicit multiplication that \(A = Q\Lambda Q^T\). Hence, find \(A^{-3}\) and \(\cos(A\pi/3)\).</p>
+  <p class="takeaway">Here \(S\) is the matrix of eigenvectors (our \(P\) in Act 5), not a symmetric matrix.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / Worked problem</div>
+  <h2>Solution: eigenvalues, eigenvectors, \(Q\Lambda Q^T\)</h2>
+  <p>The characteristic equation for \(A\) is \(\lambda^2 - 6\lambda + 5 = 0\). Thus the eigenvalues of \(A\) are \(\lambda_1 = 1\) and \(\lambda_2 = 5\).</p>
+  <p class="fragment">For \(\lambda_1 = 1\), the eigenvector is \(\mathbf{v}_1 = \begin{pmatrix}1\\-1\end{pmatrix}\). For \(\lambda_2 = 5\), the eigenvector is \(\mathbf{v}_2 = \begin{pmatrix}1\\1\end{pmatrix}\).</p>
+  <div class="fragment">
+    <p>Thus the spectral decomposition of \(A\) is</p>
+    $$A = \begin{pmatrix}\sqrt2/2&\sqrt2/2\\-\sqrt2/2&\sqrt2/2\end{pmatrix}\begin{pmatrix}1&0\\0&5\end{pmatrix}\begin{pmatrix}\sqrt2/2&-\sqrt2/2\\\sqrt2/2&\sqrt2/2\end{pmatrix}.$$
+  </div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / Worked problem</div>
+  <h2>Check by explicit multiplication</h2>
+  <p>We check the above decomposition by explicit multiplication:</p>
+  $$\begin{aligned}\begin{pmatrix}\sqrt2/2&\sqrt2/2\\-\sqrt2/2&\sqrt2/2\end{pmatrix}\begin{pmatrix}1&0\\0&5\end{pmatrix}\begin{pmatrix}\sqrt2/2&-\sqrt2/2\\\sqrt2/2&\sqrt2/2\end{pmatrix} &= \begin{pmatrix}\sqrt2/2&5\sqrt2/2\\-\sqrt2/2&5\sqrt2/2\end{pmatrix}\begin{pmatrix}\sqrt2/2&-\sqrt2/2\\\sqrt2/2&\sqrt2/2\end{pmatrix}\\[4pt] &= \begin{pmatrix}3&2\\2&3\end{pmatrix}.\end{aligned}$$
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / Worked problem</div>
+  <h2>\(A^{-3}\)</h2>
+  <div>
+    <p>Now</p>
+    $$\begin{aligned}A^{-3} &= \begin{pmatrix}\sqrt2/2&\sqrt2/2\\-\sqrt2/2&\sqrt2/2\end{pmatrix}\begin{pmatrix}1&0\\0&5^{-3}\end{pmatrix}\begin{pmatrix}\sqrt2/2&-\sqrt2/2\\\sqrt2/2&\sqrt2/2\end{pmatrix}\\[4pt] &= \begin{pmatrix}(1+5^{-3})/2&(-1+5^{-3})/2\\(-1+5^{-3})/2&(1+5^{-3})/2\end{pmatrix}\end{aligned}$$
+  </div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / Worked problem</div>
+  <h2>\(\cos(A\pi/3)\)</h2>
+  <p>Why: \(\cos x = 1 - \tfrac{x^2}{2!} + \tfrac{x^4}{4!} - \cdots\) uses only powers, and each power of \(A\) is \(Q\Lambda^kQ^T\). So \(\cos(A\pi/3) = Q\cos(\Lambda\pi/3)Q^T\): apply \(\cos\) to each eigenvalue.</p>
+  <div class="fragment">
+    <p>and</p>
+    $$\begin{aligned}\cos(A\pi/3) &= \begin{pmatrix}\sqrt2/2&\sqrt2/2\\-\sqrt2/2&\sqrt2/2\end{pmatrix}\begin{pmatrix}\cos(\pi/3)&0\\0&\cos(5\pi/3)\end{pmatrix}\begin{pmatrix}\sqrt2/2&-\sqrt2/2\\\sqrt2/2&\sqrt2/2\end{pmatrix}\\[4pt] &= \begin{pmatrix}1/2&0\\0&1/2\end{pmatrix}.\end{aligned}$$
+  </div>
 </section>

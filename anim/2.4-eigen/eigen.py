@@ -97,3 +97,64 @@ class EigenSweep(Scene):
         self.play(Create(ln3), Create(ln1), run_time=1.2)
         self.play(FadeIn(t3), FadeIn(t1), FadeIn(eq), run_time=0.8)
         self.wait(2.5)
+
+
+class EigenScale(Scene):
+    """The grid and a lattice of dots move under A. Only the two eigenvectors stay on their lines:
+    one is stretched by 2.7, the other shrinks to 0.6. Same matrix as the Visual Kernel clip it replaces."""
+
+    def construct(self):
+        U = 0.6
+        A = np.array([[2.1, -0.5], [-1.8, 1.2]])
+        v1 = np.array([5.0, -6.0]) / np.hypot(5, 6) * 1.5   # lambda = 2.7
+        v2 = np.array([1.0, 3.0]) / np.hypot(1, 3) * 1.5    # lambda = 0.6
+        assert np.allclose(A @ v1, 2.7 * v1) and np.allclose(A @ v2, 0.6 * v2)
+        M = m2(*A.flatten())
+
+        def sc(p):
+            return np.array([p[0] * U, p[1] * U, 0.0])
+
+        ghost = ghost_plane(U)
+        # big enough that the moved grid still fills the frame
+        plane = house_plane(x_range=[-20, 20, 1], y_range=[-20, 20, 1], x_length=40 * U, y_length=40 * U)
+
+        dots = VGroup(*[Dot(sc((x, y)), radius=0.06, color=RESULT_COLOR)
+                        for x in range(-14, 15) for y in range(-10, 11) if (x, y) != (0, 0)])
+
+        def eigenline(v, colour):
+            d = v / np.linalg.norm(v)
+            return DashedLine(sc(-12 * d), sc(12 * d), color=colour, stroke_width=3,
+                              dash_length=0.12, stroke_opacity=0.8)
+
+        lines = VGroup(eigenline(v1, V_COLOR), eigenline(v2, W_COLOR))
+        t1, t2 = ValueTracker(1.0), ValueTracker(1.0)
+
+        def arrow(v, t, colour):
+            return always_redraw(lambda: Arrow(ORIGIN, sc(t.get_value() * v), buff=0, color=colour,
+                                               stroke_width=7, max_tip_length_to_length_ratio=0.3,
+                                               tip_length=0.22))
+
+        a1, a2 = arrow(v1, t1, V_COLOR), arrow(v2, t2, W_COLOR)
+        tails = VGroup(Dot(ORIGIN, radius=0.07, color=INK))
+        for m in (a1, a2):
+            m.set_z_index(5)
+        tails.set_z_index(6)
+
+        box = tex(r"\text{Apply}\;\setlength{\arraycolsep}{7pt}\renewcommand{\arraystretch}{1.3}\begin{bmatrix}2.1&-0.5\\-1.8&1.2\end{bmatrix}")
+        box.to_corner(UL, buff=0.25)
+        label_box(box, opacity=1.0)
+        box.set_z_index(10)
+
+        self.add(ghost, plane, lines, dots, a1, a2, tails, box)
+        self.wait(1.5)
+        self.play(plane.animate.apply_matrix(M), move_dots(dots, A),
+                  t1.animate.set_value(2.7), t2.animate.set_value(0.6), run_time=4)
+        self.wait(0.5)
+
+        l1 = tex(r"\lambda_1=2.7", V_COLOR).move_to(sc(2.7 * v1) + np.array([1.0, 0.1, 0]))
+        l2 = tex(r"\lambda_2=0.6", W_COLOR).move_to(sc(0.6 * v2) + np.array([1.05, 0.25, 0]))
+        for l in (l1, l2):
+            label_box(l)
+            l.set_z_index(10)
+        self.play(FadeIn(l1), FadeIn(l2), run_time=0.8)
+        self.wait(3)

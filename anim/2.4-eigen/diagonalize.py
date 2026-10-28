@@ -20,13 +20,13 @@ class EigenbasisChange(Scene):
         U = 0.35
         plane = lin_plane(U)
         A = np.array([[4.0, 1.0], [2.0, 3.0]])
-        P = np.array([[1.0, 1.0], [1.0, -2.0]])
+        P = np.array([[1.0, -1.0], [1.0, 2.0]])  # v2 = (-1, 2): det P > 0, no flip on the way
         Pi = np.linalg.inv(P)
         D = np.diag([5.0, 2.0])
         assert np.allclose(P @ D @ Pi, A)
         x0 = np.array([3.0, 0.0])
         stages = [x0, Pi @ x0, D @ Pi @ x0, P @ D @ Pi @ x0]
-        assert np.allclose(stages[1], [2, 1]) and np.allclose(stages[2], [10, 2])
+        assert np.allclose(stages[1], [2, -1]) and np.allclose(stages[2], [10, -2])
         assert np.allclose(stages[3], [12, 6]) and np.allclose(stages[3], A @ x0)
 
         def sc(v):
@@ -75,8 +75,8 @@ class EigenbasisChange(Scene):
             cur = new
             self.wait(1.4)
 
-        step("P^{-1}", Pi, r"(2,\,1)=2\mathbf{v}_1+1\mathbf{v}_2", "")
-        step("D", D, r"(10,\,2)=10\,\mathbf{v}_1+2\,\mathbf{v}_2", "")
+        step("P^{-1}", Pi, r"(2,\,-1)=2\mathbf{v}_1-\mathbf{v}_2", "")
+        step("D", D, r"(10,\,-2)=10\,\mathbf{v}_1-2\,\mathbf{v}_2", "")
         step("P", P, r"(12,\,6)=A\mathbf{x}", "")
 
         rings = VGroup(*[Circle(radius=0.06, color=INK, stroke_width=2).move_to(p) for p in ghost_pos])

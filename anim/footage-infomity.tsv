@@ -1,0 +1,15 @@
+# Infomity, "Positive Definite Matrices Explained in Linear Algebra for Machine Learning",
+# YouTube LqnJJVxttIk (5:55, 1080p).
+# Download: yt-dlp -f 'bv*[height<=1080][ext=mp4]+ba[ext=m4a]' --merge-output-format mp4 -o 'pd.%(ext)s' LqnJJVxttIk
+# Cut: shared/cut-footage.sh anim/footage-infomity.tsv build/yt
+decks/2.2-special	PDBowl	pd.mp4	2.9	30.9	-	-
+decks/2.2-special	PDMachine	pd.mp4	33.6	67.1	-	-
+decks/2.2-special	PDSurface	pd.mp4	69.6	97.8	-	-
+decks/2.2-special	PDCurvature	pd.mp4	100.5	132.9	-	-
+decks/2.2-special	PDSaddle	pd.mp4	133.8	167.4	-	-
+decks/2.2-special	PDSpectrum	pd.mp4	169.2	197.8	-	-
+decks/2.2-special	PDSylvester	pd.mp4	206.2	237.1	-	-
+decks/2.2-special	PDExample	pd.mp4	238.6	268.5	-	-
+decks/2.2-special	PDHessian	pd.mp4	269.8	294.7	-	-
+decks/2.2-special	PDGuarantee	pd.mp4	296.3	325.3	-	-
+decks/2.2-special	PDUnified	pd.mp4	327.6	343.3	-	-

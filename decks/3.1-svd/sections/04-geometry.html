@@ -73,6 +73,13 @@
 </section>
 
 <section class="clip-slide">
+  <h2>Three steps against one</h2>
+  <video class="clip" src="assets/clips/VKCompare3D.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Left: \(A\) applied directly. Right: \(V^T\), then \(\Sigma\), then \(U\). The two shapes match.</p>
+</section>
+
+<section class="clip-slide">
   <h2>The same steps on a sphere</h2>
   <video class="clip" src="assets/clips/VKSphereRot.mp4"></video>
   <span class="fragment clip-play"></span>
@@ -91,6 +98,13 @@
   <video class="clip" src="assets/clips/VKSphereRotU.mp4"></video>
   <span class="fragment clip-play"></span>
   <p class="caption">\(U\) turns the ellipse axes onto <span class="cr">\(\mathbf{u}_1, \mathbf{u}_2\)</span>. A unit sphere always lands on an ellipse with semi-axes \(\sigma_i\).</p>
+</section>
+
+<section class="clip-slide">
+  <h2>The whole map in 3D</h2>
+  <video class="clip" src="assets/clips/VKSphereReplay.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">A unit sphere in \(\mathbb{R}^3\) goes flat and becomes an ellipse with semi-axes \(\sigma_1 = 5\) and \(\sigma_2 = 3\).</p>
 </section>
 
 <section class="act-body">
@@ -134,4 +148,12 @@
   <video class="clip" src="assets/clips/VKFourPanel.mp4"></video>
   <span class="fragment clip-play"></span>
   <p class="caption">Rotate by \(V^T\), stretch by the \(\sigma_i\), erase or add dimensions, rotate by \(U\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / Higher dimensions</div>
+  <h2>The same four steps from \(\mathbb{R}^5\) to \(\mathbb{R}^3\)</h2>
+  <div class="eq-big">\(\begin{bmatrix}8&5&7&3&9\\1&4&-6&1&1\\0&4&-3&-3&6\end{bmatrix} = U\,D\,E\,V^T\)</div>
+  <div class="eq-big fragment" style="margin-top: 0.6em">\(\underset{\text{rotate in } \mathbb{R}^3}{\begin{bmatrix}-0.96&0.22&-0.15\\-0.04&-0.69&-0.73\\-0.26&-0.69&0.67\end{bmatrix}} \quad \underset{\text{stretch}}{\begin{bmatrix}15.48&0&0\\0&9.64&0\\0&0&4.51\end{bmatrix}} \quad \underset{\text{erase 2 dimensions}}{\begin{bmatrix}1&0&0&0&0\\0&1&0&0&0\\0&0&1&0&0\end{bmatrix}}\)</div>
+  <p class="fragment">\(V^T\) is a \(5 \times 5\) rotation that puts the right singular vectors on the axes of \(\mathbb{R}^5\). \(E\) drops the last two coordinates, \(D\) stretches by \(\sigma_1, \sigma_2, \sigma_3\), and \(U\) turns the result onto the left singular vectors.</p>
 </section>

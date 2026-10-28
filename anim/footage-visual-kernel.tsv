@@ -2,7 +2,7 @@
 # 1.mp4 = 7Gtxd-ew4lk ch.1 part 1, 2.mp4 = wciU07gPqUE ch.1 part 2, 3.mp4 = mhy-ZKSARxI ch.2.
 # Download: yt-dlp -f 'bv*[height<=1080][ext=mp4]+ba[ext=m4a]' --merge-output-format mp4 -o '%(playlist_index)s.%(ext)s' <playlist>
 # Cut: shared/cut-footage.sh anim/footage-visual-kernel.tsv build/yt
-decks/2.3-determinant	VKScalar2	1.mp4	264	275
+decks/2.3-determinant	VKScalar2	1.mp4	264	270.5	-	-
 decks/2.2-special	VKScalarHalf	1.mp4	302	307
 decks/2.2-special	VKScalar3D	1.mp4	405.5	412
 decks/2.2-special	VKOffOneY	1.mp4	436.5	443.5
@@ -11,9 +11,9 @@ decks/2.2-special	VKReflectYaxis	1.mp4	538	546
 decks/2.2-special	VKReflectXaxis	1.mp4	549	556.5
 decks/2.2-special	VKReflectBoth	1.mp4	614.5	622.5
 decks/2.2-special	VKDiag2D	1.mp4	725	734
-decks/2.2-special	VKDiag3D	1.mp4	821	831
-decks/2.2-special	VKShear	2.mp4	19	30.5
-decks/2.2-special	VKShear3D	2.mp4	78.5	86.5
+decks/2.2-special	VKDiag3D	1.mp4	821.5	831	-	-
+decks/2.2-special	VKShear	2.mp4	19	26	-	-
+decks/2.2-special	VKShear3D	2.mp4	79.2	86.5	-	-
 decks/2.2-special	VKOrthoPerp	2.mp4	172.5	177
 decks/2.2-special	VKRotation2D	2.mp4	186	194
 decks/2.2-special	VKProjLine	2.mp4	371	379
@@ -22,36 +22,35 @@ decks/2.2-special	VKProjPlane	2.mp4	381.5	388.5
 decks/2.2-special	VKSymmetric3x3	3.mp4	88.5	96
 decks/2.4-eigen	VKOffLine	3.mp4	345.5	351.5
 decks/2.4-eigen	VKEigenDots	3.mp4	384.5	395.5
-decks/2.4-eigen	VKEigenScale	3.mp4	446.5	453.8
 decks/2.4-eigen	VKSymPerp	3.mp4	533	545.5
 decks/2.4-eigen	VKEigsToBasis	3.mp4	556.5	566.5
-decks/2.4-eigen	VKQMapping	3.mp4	703.5	722.5
-decks/2.4-eigen	VKSpec2DFull	3.mp4	732.2	741
-decks/2.4-eigen	VKSpec2D	3.mp4	741.5	763.5
-decks/2.4-eigen	VKSpec3DFull	3.mp4	772.5	781.5
+decks/2.4-eigen	VKQMapping	3.mp4	702.8	722.5	-	-
+decks/2.4-eigen	VKSpec2DFull	3.mp4	732.2	738	-	-
+decks/2.4-eigen	VKSpec2D	3.mp4	746	763.5	-	-
+decks/2.4-eigen	VKSpec3DFull	3.mp4	772.5	778	-	-
 decks/2.4-eigen	VKSpec3DRot1	3.mp4	782.5	791.5
 decks/2.4-eigen	VKSpec3DScale	3.mp4	793	812
-decks/2.4-eigen	VKSpec3DRot2	3.mp4	815	825
+decks/2.4-eigen	VKSpec3DRot2	3.mp4	815	826.3	-	-
 # 4.mp4 = vSczTbgc8Rc ch.3 SVD (block 3.1)
 decks/3.1-svd	VKRecapDiag	4.mp4	54.5	65
 decks/3.1-svd	VKAnyShape	4.mp4	25.5	30
-decks/3.1-svd	VKFormulaHL	4.mp4	36	44.5
+decks/3.1-svd	VKFormulaHL	4.mp4	39.8	44.5	-	-
 decks/3.1-svd	VKWhichMatrix	4.mp4	151	163.5
 decks/3.1-svd	VKMap3to2	4.mp4	164	173.5
-decks/3.1-svd	VKCubeFlatten	4.mp4	190	206.5
-decks/3.1-svd	VKEraserAlg	4.mp4	219	227.5
+decks/3.1-svd	VKCubeFlatten	4.mp4	202.3	206.5	-	-
+decks/3.1-svd	VKEraserAlg	4.mp4	213.2	220	-	-
 decks/3.1-svd	VKEraser3D	4.mp4	239.5	251.5
 decks/3.1-svd	VKAdderAlg	4.mp4	259.5	269.5
 decks/3.1-svd	VKCompoundAlg	4.mp4	275.5	292.5
 decks/3.1-svd	VKAAT	4.mp4	366	385
 decks/3.1-svd	VKATA	4.mp4	386.5	397
-decks/3.1-svd	VKThreeSym	4.mp4	414.5	424.5
-decks/3.1-svd	VKSLSRBuild	4.mp4	437.5	452.5
-decks/3.1-svd	VKSingVecLabels	4.mp4	453	472.5
-decks/3.1-svd	VKLambdaOrder	4.mp4	491.5	508.5
-decks/3.1-svd	VKSigmaDef	4.mp4	509.5	526.5
-decks/3.1-svd	VKFormulaDissect	4.mp4	541	555.5
-decks/3.1-svd	VKDirect3D	4.mp4	612	620.5
+decks/3.1-svd	VKThreeSym	4.mp4	409	420.5	-	-
+decks/3.1-svd	VKSLSRBuild	4.mp4	443	452.5	-	-
+decks/3.1-svd	VKSingVecLabels	4.mp4	452	472.5	-	-	455.5-459.5
+decks/3.1-svd	VKLambdaOrder	4.mp4	490.7	508.5	-	-
+decks/3.1-svd	VKSigmaDef	4.mp4	515.8	526.5	-	-
+decks/3.1-svd	VKFormulaDissect	4.mp4	541	555	-	-
+decks/3.1-svd	VKDirect3D	4.mp4	613.3	618.5	-	-
 decks/3.1-svd	VKRotRight	4.mp4	626.5	636.5
 decks/3.1-svd	VKFlattenScale	4.mp4	655.5	672.5
 decks/3.1-svd	VKRotLeft	4.mp4	672.5	676.5
@@ -65,10 +64,24 @@ decks/3.1-svd	VKRotU3D	4.mp4	765	775.5
 decks/3.1-svd	VKFourPanel	4.mp4	855	869.5
 decks/3.1-svd	VKHighDim	4.mp4	886.5	895
 decks/3.1-svd	VKRankOneSum	4.mp4	808	817.5
-decks/2.4-eigen	VKCompVsDecomp	3.mp4	266.5	276.5
+decks/2.4-eigen	VKCompVsDecomp	3.mp4	271.5	276.5	-	-
 decks/2.4-eigen	VKRandomMDecomp	3.mp4	279.5	289.6
 decks/2.4-eigen	VKNonSymAngles	3.mp4	519	529.8
-decks/2.4-eigen	VKStatement	3.mp4	595	606.5
-decks/2.1-matrices	VKComposeXZ	2.mp4	270	282.5	-	33
-decks/2.1-matrices	VKComposeZX	2.mp4	290	305	-	33
-decks/2.2-special	VKRotBack	3.mp4	199	206.5	-	33
+decks/2.4-eigen	VKStatement	3.mp4	594.5	601.5	-	-
+decks/2.1-matrices	VKComposeXZ	2.mp4	260.4	282.5	-	33	270.8-273.9
+decks/2.2-special	VKRotBack	3.mp4	194.8	206.5	-	33	196.8-198.0,199.6-202.8
+decks/2.4-eigen	VKComposeAlg	3.mp4	213	233.5
+decks/2.4-eigen	VKEigenCounts	3.mp4	414	419.3	-	33
+decks/2.4-eigen	VKEigenPairs	3.mp4	420.3	437
+decks/2.4-eigen	VKEigenDef	3.mp4	465.5	484.8
+decks/2.4-eigen	VKSpecMatrix	3.mp4	614	640.6
+decks/2.4-eigen	VKLambdaScale	3.mp4	652.5	663
+decks/2.4-eigen	VKQColumns	3.mp4	665.5	677.5
+decks/2.4-eigen	VKQe	3.mp4	677.5	701.6
+decks/2.4-eigen	VKSpecNumeric	3.mp4	724	729.6
+decks/2.4-eigen	VKSpec3DNumeric	3.mp4	766.2	769.3
+decks/3.1-svd	VKCubeBuild	4.mp4	190	200.7
+decks/3.1-svd	VKEraserCards	4.mp4	252.5	257.2	-	34
+decks/3.1-svd	VKAdderCards	4.mp4	269.6	275.2	-	34
+decks/3.1-svd	VKCompare3D	4.mp4	678.3	685.7
+decks/3.1-svd	VKSphereReplay	4.mp4	732	736.3

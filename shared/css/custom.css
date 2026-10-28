@@ -588,6 +588,38 @@
 .reveal .katex-display { margin: 0.4em 0; }
 .reveal .eq-big .katex-display > .katex { font-size: 1.6em; }
 
+/* --- 4.2b flashback: a slide from an earlier block, recalled mid-deck ----
+   The citing slide stays behind, blurred and dimmed (.fb-behind); the
+   recalled slide sits on top in a framed card at its original layout,
+   scaled down (.fb-card); .fb-label names the block. */
+.reveal section.flashback { overflow: hidden; }
+.reveal .fb-behind {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 2.2em 0 1em;
+  filter: blur(5px); opacity: 0.4;
+  pointer-events: none;
+}
+.reveal .fb-card {
+  position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+  box-sizing: border-box;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 2.4em 1.4em 1.2em;
+  background: var(--bg);
+  border: 4px solid var(--ink-dim);
+  border-radius: 14px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.75);
+  transform: translateY(3.5%) scale(0.86);
+}
+.reveal .fb-card .act-tag { top: 1.2em; left: 2.8em; }
+.reveal .fb-card.clip-slide { align-items: center; padding-top: 2em; }
+.reveal .fb-label {
+  position: absolute; top: 0.25em; right: 4.6em;
+  font-family: var(--font-sans); font-weight: 700; font-size: 0.95em;
+  color: var(--accent);
+  letter-spacing: -0.01em;
+}
+
 /* --- 4.3 clip slide: a manim clip, one sentence under it ----------------- */
 /* The clip background equals --bg, so the video has no visible frame.
    Height is capped so the caption row always fits on the 720px stage. */
@@ -608,6 +640,11 @@
 }
 .reveal .clip-row { display: grid; grid-template-columns: 1.55fr 1fr; gap: 1.2em; align-items: center; width: 100%; }
 .reveal .clip-row video.clip { max-height: 440px; }
+/* Talking points on the left, the clip on the right. */
+.reveal .clip-talk { display: grid; grid-template-columns: 1fr 2fr; gap: 0.8em; align-items: center; width: 100%; }
+.reveal .clip-talk ul { margin: 0 0 0 1.1em; font-size: 0.72em; }
+.reveal .clip-talk li { margin-bottom: 0.55em; }
+.reveal .clip-talk video.clip { width: 100%; max-height: 520px; }
 .reveal .caption { margin-top: 0.5em; color: var(--ink-dim); font-size: 0.8em; text-align: center; }
 /* A fragment that exists only to trigger playback. Invisible, takes no space. */
 .reveal .fragment.clip-play { display: none; }

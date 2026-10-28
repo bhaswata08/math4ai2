@@ -1,4 +1,4 @@
-// Interactive figures for Block 1.4. Each one is a pure function of its
+// Interactive figures for Block 2.2 (change of basis; moved from 1.4). Each one is a pure function of its
 // state: a handle changes the state, then draw() rebuilds the plane's
 // dynamic layer and the readout. See shared/js/plane.js.
 

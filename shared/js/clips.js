@@ -6,7 +6,8 @@
 // on. Going back hides the fragment and rewinds. Arriving on a slide
 // backwards (fragments already shown) parks the clip on its last frame,
 // which is the resting state every clip is designed to end on.
-// Clicking a clip pauses or resumes it.
+// Clicking a clip pauses or resumes it. data-rate="0.6" on the video plays
+// it slower (or faster) than recorded.
 window.Clips = {
   attach(Reveal) {
     const clipOf = (el) => el.closest('section').querySelector('video.clip');
@@ -15,6 +16,7 @@ window.Clips = {
       v.muted = true;
       v.playsInline = true;
       v.preload = 'auto';
+      if (v.dataset.rate) v.defaultPlaybackRate = v.playbackRate = Number(v.dataset.rate);
       v.addEventListener('click', () => (v.paused ? v.play() : v.pause()));
     });
 

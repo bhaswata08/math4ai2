@@ -20,6 +20,9 @@
       icon: icon('<rect x="3" y="4" width="18" height="12" rx="1"/><path d="M8 20l4-4 4 4"/>') },
     { id: 'tool-clear', title: 'Clear this slide (DEL)', action: 'RevealChalkboard.clear()',
       icon: icon('<path d="M4 7h16"/><path d="M9 7V4h6v3"/><path d="M6 7l1 13h10l1-13"/>') },
+    { id: 'tool-full', title: 'Fullscreen (F)',
+      action: 'document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen()',
+      icon: icon('<path d="M4 9V4h5"/><path d="M20 9V4h-5"/><path d="M4 15v5h5"/><path d="M20 15v5h-5"/>') },
   ];
 
   const slides = document.querySelector('.reveal .slides');
@@ -105,12 +108,14 @@
     const board = document.getElementById('chalkboard');
     const boardOpen = board?.style.visibility === 'visible';
     document.getElementById('tool-board')?.classList.toggle('active', boardOpen);
+    document.getElementById('tool-full')?.classList.toggle('active', !!document.fullscreenElement);
     const penOn = !boardOpen && notes?.style.pointerEvents === 'auto';
     document.getElementById('tool-pen')?.classList.toggle('active', penOn);
     if (e?.target.closest?.('#tool-pen, #tool-board') && !penOn && !boardOpen) toolbar.classList.add('collapsed');
   };
   toolbar.addEventListener('click', syncTools);
   document.addEventListener('keyup', syncTools);
+  document.addEventListener('fullscreenchange', () => syncTools());
 
   const bar = document.createElement('div');
   bar.className = 'deck-progress';

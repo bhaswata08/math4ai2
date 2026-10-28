@@ -10,12 +10,14 @@
   <p class="act-sub">Most vectors get turned. A few do not.</p>
 </section>
 
+<!--
 <section class="clip-slide">
   <h2>Turn a unit vector all the way round</h2>
   <video class="clip" src="assets/clips/EigenSweep.mp4"></video>
   <span class="fragment clip-play"></span>
   <p class="caption">\(A=\begin{bmatrix}2&1\\1&2\end{bmatrix}\). \(Ax\) lies on the dotted line through \(x\) only twice, along \((1,1)\) with stretch 3 and along \((1,-1)\) with stretch 1.</p>
 </section>
+-->
 
 <section class="clip-slide">
   <h2>A matrix usually knocks a vector off its line</h2>
@@ -32,15 +34,36 @@
 </section>
 
 <section class="clip-slide">
+  <h2>How many lines stay put?</h2>
+  <video class="clip" src="assets/clips/VKEigenCounts.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Left: a 45 degree turn, no line survives. Middle: only the \(x\)-axis. Right: two lines. A real \(2\times2\) matrix keeps 0, 1 or 2 lines (every line if it is \(cI\)).</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Each eigenvector comes with a number</h2>
+  <video class="clip" src="assets/clips/VKEigenPairs.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">A \(2\times2\) matrix with two eigen-directions gives two pairs: an eigenvector \(e_i\) and the stretch \(\lambda_i\) along it. The pairs are what we will use to take \(A\) apart.</p>
+</section>
+
+<section class="clip-slide">
   <h2>The stretch is the eigenvalue</h2>
-  <video class="clip" src="assets/clips/VKEigenScale.mp4"></video>
+  <video class="clip" src="assets/clips/EigenScale.mp4"></video>
   <span class="fragment clip-play"></span>
   <p class="caption">For \(\begin{bmatrix}2.1&-0.5\\-1.8&1.2\end{bmatrix}\) one vector is stretched by 2.7, the other shrinks to 0.6. Each stays on its own line.</p>
 </section>
 
+<section class="clip-slide">
+  <h2>Eigenvector and eigenvalue</h2>
+  <video class="clip" src="assets/clips/VKEigenDef.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Apply \(A\) to \(v\) and you get \(v\) back, only scaled by \(\lambda\). The right side is still \(v\): same line as the original direction.</p>
+</section>
+
 <section class="act-body">
   <div class="act-tag"><b>Act 2</b> / Definition</div>
-  <h2>\(Av=\lambda v\)</h2>
+  <h2>Reading \(Av=\lambda v\)</h2>
   $$A\,\underbrace{v}_{\text{eigenvector}}=\underbrace{\lambda}_{\text{eigenvalue}}\,v$$
   <ul>
     <li>\(v\neq0\) keeps its line. \(\lambda\) is the stretch along that line.</li>
