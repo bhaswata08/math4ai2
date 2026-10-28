@@ -41,7 +41,7 @@ SVD: \(\sigma = 4, 2\), \(\sigma^2/m = 4, 1\).
 
 0. Title, credits, outcomes
 1. A better basis — NewBasis clip; dropping a column is not PCA; redundant columns (Khapra's x, y, z table); goals
-2. Data in a new basis — CoordinatesXP clip; \(\hat X = XP\); variance, covariance and correlation following Normalized Nerd, "Covariance Clearly Explained!" (6-point dataset, mean (4, 3)); covariance matrix
+2. Data in a new basis — user-pasted coordinates derivation (verbatim, 2026-10-28) with SumCollapse, CoordinatesXP, RowTimesP, StackRows, CentredStays clips; \(\hat X = XP\); variance, covariance and correlation following Normalized Nerd, "Covariance Clearly Explained!" (6-point dataset, mean (4, 3)); covariance matrix
 3. Interpretation 1: decorrelate — \(\hat C = P^TCP\); want diagonal; spectral theorem; Decorrelate clip; worked example
 4. Interpretation 2: least reconstruction error — derivation; lemma \(\max_{\|\mathbf p\|=1}\mathbf p^TC\mathbf p = \lambda_1\) (proof in the eigenbasis); CapturedVsLost clip
 5. Interpretation 3: most variance — variance along \(\mathbf p_j\) is \(\lambda_j\); KeepTopK clip; three interpretations, one answer; the algorithm; ThreeToTwo clip
@@ -56,6 +56,10 @@ SVD: \(\sigma = 4, 2\), \(\sigma^2/m = 4, 1\).
 |---|---|---|
 | NewBasis | basis.py | Same cloud, two bases: in x, y both coordinates vary; in p1, p2 the second coordinate is tiny |
 | CoordinatesXP | basis.py | One point, its coordinates as dot products; all points: X̂ = XP |
+| SumCollapse | coords.py | Dot both sides of x_i = Σ α_ij p_j with p_2; every term but j = k dies; α_ik = x_i^T p_k |
+| RowTimesP | coords.py | Row x_i^T times P, entry k lights up as x_i^T p_k |
+| StackRows | coords.py | Rows of X times P fill the rows of X̂ |
+| CentredStays | coords.py | Real cloud turned into the p basis; one point's coordinates change, column means stay 0 |
 | Variance1D | covintro.py | Squared distances as squares on a number line (Normalized Nerd) |
 | TwoVariances | covintro.py | Mirrored points keep Var(x), Var(y) but reverse the trend |
 | CovarianceRectangles | covintro.py | One signed rectangle per point; average area is Cov(x, y) |

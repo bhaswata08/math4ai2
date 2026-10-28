@@ -14,26 +14,51 @@
 <section class="act-body">
   <div class="act-tag"><b>Act 2</b> / Setup</div>
   <h2>The data matrix</h2>
-  <div class="eq-big">$$X = \begin{bmatrix} \text{—}\ \mathbf x_1^T\ \text{—} \\ \vdots \\ \text{—}\ \mathbf x_m^T\ \text{—} \end{bmatrix} \in \mathbb R^{m \times n}$$</div>
+  <div>$$X = \begin{bmatrix} \text{—}\ \mathbf x_1^T\ \text{—} \\ \vdots \\ \text{—}\ \mathbf x_m^T\ \text{—} \end{bmatrix} \in \mathbb R^{m \times n}$$</div>
   <ul>
     <li>\(m\) data points (rows), \(n\) features (columns).</li>
-    <li><b>Centre</b> every column: subtract its mean, so \(\sum_i \mathbf x_i = \mathbf 0\). This step is assumed from here on.</li>
-    <li>If the features are in different units (cm and km, rupees and years), also divide each column by its standard deviation. Otherwise the column with the largest numbers dominates.</li>
+    <li><b>Centre</b> every column (subtract its mean), so \(\sum_i \mathbf x_i = \mathbf 0\). Assumed from here on.</li>
+    <li>Features in different units (cm and km)? Also divide each column by its standard deviation, or the largest numbers dominate.</li>
     <li>New basis: \(P = [\,\mathbf p_1 \cdots \mathbf p_n\,]\) with orthonormal columns, so \(P^TP = I\).</li>
   </ul>
 </section>
 
 <section class="act-body">
   <div class="act-tag"><b>Act 2</b> / Coordinates</div>
-  <h2>Coordinates are dot products</h2>
-  <p>Write a point in the new basis, then take the dot product of both sides with \(\mathbf p_k\):</p>
-  <p>$$\mathbf x_i = \sum_{j=1}^{n} \alpha_{ij}\,\mathbf p_j \quad\Longrightarrow\quad \mathbf x_i^T\mathbf p_k = \sum_{j} \alpha_{ij}\,\underbrace{\mathbf p_j^T\mathbf p_k}_{1 \text{ if } j=k,\ 0 \text{ otherwise}} = \alpha_{ik}$$</p>
+  <h2>The Core Idea: Coordinates via Dot Products</h2>
+  <p>Suppose you have an orthonormal basis \(\{\mathbf{p}_1, \mathbf{p}_2, \dots, \mathbf{p}_n\}\). Orthonormal means:</p>
   <ul>
-    <li>All \(n\) coordinates of one point: \([\alpha_{i1} \cdots \alpha_{in}] = \mathbf x_i^T P\), a \(1 \times n\) row.</li>
-    <li>Stack the \(m\) rows:</li>
+    <li>Every basis vector has unit length: \(\mathbf{p}_k^T \mathbf{p}_k = 1\)</li>
+    <li>Every pair of distinct basis vectors is perpendicular: \(\mathbf{p}_j^T \mathbf{p}_k = 0\) for \(j \neq k\)</li>
   </ul>
-  <div class="eq-big">$$\underset{m\times n}{\hat X} = \underset{m\times n}{X}\ \underset{n\times n}{P}$$</div>
-  <p class="cdim">Each new column is a mix of centred columns, so \(\hat X\) is centred too.</p>
+  <p class="fragment">Any data point \(\mathbf{x}_i\) can be written as a linear combination of these basis vectors:</p>
+  <div class="fragment">$$\mathbf{x}_i = \sum_{j=1}^n \alpha_{ij} \mathbf{p}_j$$</div>
+  <p class="fragment">Here, \(\alpha_{ik}\) represents the coordinate (weight/projection) of \(\mathbf{x}_i\) along the direction \(\mathbf{p}_k\).</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Dot both sides with \(\mathbf p_k\)</h2>
+  <video class="clip" src="assets/clips/SumCollapse.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Shown for \(k = 2\): only the \(j = k\) term survives.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Coordinates</div>
+  <h2>The Core Idea: Coordinates via Dot Products</h2>
+  <p>To find the value of \(\alpha_{ik}\), take the inner product (dot product) of both sides with \(\mathbf{p}_k\):</p>
+  $$\mathbf{x}_i^T \mathbf{p}_k = \sum_{j} \alpha_{ij} (\mathbf{p}_j^T \mathbf{p}_k)$$
+  <div class="fragment">
+    <p>Because the basis is orthonormal:</p>
+    <ul style="display:flex; gap:3em">
+      <li>\(\mathbf{p}_j^T \mathbf{p}_k = 0\) for all \(j \neq k\)</li>
+      <li>\(\mathbf{p}_j^T \mathbf{p}_k = 1\) when \(j = k\)</li>
+    </ul>
+  </div>
+  <div class="fragment">
+    <p>Every term in the summation vanishes except when \(j = k\), leaving: \(\quad\alpha_{ik} = \mathbf{x}_i^T \mathbf{p}_k\)</p>
+  </div>
+  <p class="fragment">This proves that <b>to find a point’s coordinate along an orthonormal axis, simply take the dot product of the point with that axis vector.</b></p>
 </section>
 
 <section class="clip-slide">
@@ -41,6 +66,64 @@
   <video class="clip" src="assets/clips/CoordinatesXP.mp4"></video>
   <span class="fragment clip-play"></span>
   <p class="caption">Coordinate \(\alpha_{ij}\) is the length of the shadow of \(\mathbf x_i\) on \(\mathbf p_j\). Row \(i\) of \(XP\) holds all of them.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Coordinates</div>
+  <h2>Vectorizing for a Single Data Point</h2>
+  <p>To get all \(n\) new coordinates \([\alpha_{i1}, \alpha_{i2}, \dots, \alpha_{in}]\) for a single point \(\mathbf{x}_i\):</p>
+  <ul>
+    <li>Pack the basis vectors into the columns of a matrix \(P = \begin{bmatrix} \mathbf{p}_1 & \mathbf{p}_2 & \cdots & \mathbf{p}_n \end{bmatrix}\) (size \(n \times n\)).</li>
+    <li class="fragment">Multiply the row vector \(\mathbf{x}_i^T\) (\(1 \times n\)) by \(P\):</li>
+  </ul>
+  <div class="eq-big fragment">$$[\alpha_{i1}, \dots, \alpha_{in}] = \mathbf{x}_i^T P$$</div>
+</section>
+
+<section class="clip-slide">
+  <h2>One row times \(P\)</h2>
+  <video class="clip" src="assets/clips/RowTimesP.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Entry \(k\) of \(\mathbf x_i^T P\) is the row \(\mathbf x_i^T\) against column \(\mathbf p_k\): \(\mathbf x_i^T\mathbf p_k = \alpha_{ik}\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Coordinates</div>
+  <h2>Stacking All \(m\) Data Points (Matrix Form)</h2>
+  <p>If you have \(m\) data points arranged as rows in a data matrix \(X\) (\(m \times n\)):</p>
+  <div class="eq-big">$$\hat{X} = X P$$</div>
+  <ul>
+    <li class="fragment"><b>\(X\) (\(m \times n\)):</b> The original data matrix where row \(i\) is \(\mathbf{x}_i^T\).</li>
+    <li class="fragment"><b>\(P\) (\(n \times n\)):</b> The transformation matrix whose columns are the orthonormal basis vectors (e.g., eigenvectors in PCA).</li>
+    <li class="fragment"><b>\(\hat{X}\) (\(m \times n\)):</b> The coordinates of all points in the new basis (often called scores or projected data).</li>
+  </ul>
+</section>
+
+<section class="clip-slide">
+  <h2>Every row at once</h2>
+  <video class="clip" src="assets/clips/StackRows.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Row \(i\) of \(X\) times \(P\) is row \(i\) of \(\hat X\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Coordinates</div>
+  <h2>Mean-Centering Property</h2>
+  <p><i>“Each new column is a mix of centred columns, so \(\hat{X}\) is centred too.”</i></p>
+  <p>If the original data \(X\) has already been mean-centered (mean of each column is 0):</p>
+  <ul>
+    <li class="fragment">Each column of \(\hat{X}\) is formed by a linear combination of the columns of \(X\):
+      $$\hat{\mathbf{x}}_{*k} = X \mathbf{p}_k$$</li>
+    <li class="fragment">Because the expectation/mean operator is linear:
+      $$\mathbb{E}[\hat{\mathbf{x}}_{*k}] = \mathbb{E}[X] \mathbf{p}_k = \mathbf{0}^T \mathbf{p}_k = 0$$</li>
+    <li class="fragment">Therefore, rotating or projecting already-centered data preserves zero mean in the new coordinate system without requiring re-centering.</li>
+  </ul>
+</section>
+
+<section class="clip-slide">
+  <h2>Turn the cloud, the means stay at 0</h2>
+  <video class="clip" src="assets/clips/CentredStays.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">The 40-point cloud from Act 1, rewritten in \(\mathbf p_1, \mathbf p_2\). Every point gets new coordinates; both column means stay 0.</p>
 </section>
 
 <section class="act-body">
