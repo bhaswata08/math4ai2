@@ -3,8 +3,10 @@
 //   node shared/site.mjs            # writes site/
 //   python -m http.server -d site   # or any static host
 //
-// Each block becomes site/<block>/index.html (the self-contained deck.html), so
-// every deck loads on its own. The landing page lists blocks by day, in order.
+// Each block becomes site/<block>.html (the self-contained deck.html), so
+// every deck loads on its own, also straight from a file manager over file://
+// where directory links like <block>/ do not resolve. The landing page lists
+// blocks by day, in order.
 
 import { execFileSync } from 'node:child_process';
 import { copyFile, mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
@@ -25,17 +27,17 @@ const key = (b) => b.num.split('.').map(Number);
 blocks.sort((a, b) => key(a)[0] - key(b)[0] || key(a)[1] - key(b)[1]);
 
 await rm(OUT, { recursive: true, force: true });
+await mkdir(OUT);
 for (const b of blocks) {
   execFileSync('node', [join(ROOT, 'shared/build.mjs'), b.dir], { stdio: 'inherit' });
-  await mkdir(join(OUT, b.name), { recursive: true });
-  await copyFile(join(b.dir, 'deck.html'), join(OUT, b.name, 'index.html'));
+  await copyFile(join(b.dir, 'deck.html'), join(OUT, `${b.name}.html`));
 }
 
 const days = Map.groupBy(blocks, (b) => key(b)[0]);
 const body = [...days].map(([day, bs]) => `
   <h2>Day ${day}</h2>
   <ol>${bs.map((b) => `
-    <li><a href="${b.name}/"><span class="n">${esc(b.num)}</span>${esc(b.title)}</a></li>`).join('')}
+    <li><a href="${b.name}.html"><span class="n">${esc(b.num)}</span>${esc(b.title)}</a></li>`).join('')}
   </ol>`).join('');
 
 await writeFile(join(OUT, 'index.html'), `<!DOCTYPE html>
