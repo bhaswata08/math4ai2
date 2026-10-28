@@ -12,16 +12,29 @@
 
 <section class="clip-slide">
   <h2>The unit circle becomes an ellipse</h2>
-  <video class="clip" src="assets/clips/SVDCircleSteps.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>\(A=\begin{bmatrix}3&0\\4&5\end{bmatrix}\).</li>
+      <li><span class="cv">\(V^T\)</span> turns \(\mathbf{v}_1,\mathbf{v}_2\) onto the axes.</li>
+      <li>\(\Sigma\) stretches by \(6.71\) and \(2.24\).</li>
+      <li><span class="cr">\(U\)</span> turns the axes onto \(\mathbf{u}_1,\mathbf{u}_2\).</li>
+    </ul>
+    <video class="clip" src="assets/clips/SVDCircleSteps.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">\(A = \begin{bmatrix}3&0\\4&5\end{bmatrix}\): <span class="cv">\(V^T\)</span> turns \(\mathbf{v}_1, \mathbf{v}_2\) onto the axes, \(\Sigma\) stretches by \(6.71\) and \(2.24\), <span class="cr">\(U\)</span> turns the axes onto \(\mathbf{u}_1, \mathbf{u}_2\).</p>
 </section>
 
 <section class="clip-slide">
   <h2>Perpendicular in, perpendicular out</h2>
-  <video class="clip" src="assets/clips/SingularPairs.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>\(A\mathbf{v}_i=\sigma_i\mathbf{u}_i\).</li>
+      <li>The \(\mathbf{v}_i\) are perpendicular, and so are the \(\mathbf{u}_i\).</li>
+      <li>This is the one perpendicular pair that \(A\) keeps perpendicular.</li>
+    </ul>
+    <video class="clip" src="assets/clips/SingularPairs.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">\(A\mathbf{v}_i = \sigma_i\mathbf{u}_i\). The right singular vectors are the one perpendicular pair that \(A\) keeps perpendicular.</p>
 </section>
 
 <section class="act-body">
@@ -46,65 +59,119 @@
 
 <section class="clip-slide">
   <h2>What \(A\) does in one go</h2>
-  <video class="clip" src="assets/clips/VKDirect3D.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>Apply \(A\) in one go to the unit cube.</li>
+      <li>It lands in the plane as a slanted hexagon.</li>
+      <li>Hard to read. The SVD splits it into three simple moves.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKDirect3D.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">The unit cube lands in the plane as a slanted hexagon. Hard to read in one step.</p>
 </section>
 
 <section class="clip-slide">
   <h2>Step 1: rotate with \(V^T\)</h2>
-  <video class="clip" src="assets/clips/VKRotRight.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>Step 1: \(V^T\) rotates in 3D.</li>
+      <li><span class="cv">\(\mathbf{v}_1,\mathbf{v}_2,\mathbf{v}_3\)</span> land on the \(x\), \(y\), \(z\) axes.</li>
+      <li>Lengths and angles are unchanged.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKRotRight.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">The right singular vectors <span class="cv">\(\mathbf{v}_1, \mathbf{v}_2, \mathbf{v}_3\)</span> turn onto the \(x\), \(y\), \(z\) axes.</p>
 </section>
 
 <section class="clip-slide">
   <h2>Step 2: erase \(z\), stretch with \(\Sigma\)</h2>
-  <video class="clip" src="assets/clips/VKFlattenScale.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>Step 2: \(\Sigma\) drops the third axis.</li>
+      <li>Then it stretches \(x\) by 5 and \(y\) by 3.</li>
+      <li>This is the only step that changes shape.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKFlattenScale.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">\(\Sigma\) drops the third axis, then stretches \(x\) by 5 and \(y\) by 3.</p>
 </section>
 
 <section class="clip-slide">
   <h2>Step 3: rotate with \(U\)</h2>
-  <video class="clip" src="assets/clips/VKRotLeft.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>Step 3: \(U\) rotates in the plane.</li>
+      <li>The axes land on <span class="cr">\(\mathbf{u}_1,\mathbf{u}_2\)</span>.</li>
+      <li>The result is exactly what \(A\) did in one go.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKRotLeft.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">The axes turn onto the left singular vectors <span class="cr">\(\mathbf{u}_1, \mathbf{u}_2\)</span>. The result is exactly what \(A\) did in one go.</p>
 </section>
 
 <section class="clip-slide">
   <h2>Three steps against one</h2>
-  <video class="clip" src="assets/clips/VKCompare3D.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>Left: \(A\) applied directly.</li>
+      <li>Right: \(V^T\), then \(\Sigma\), then \(U\).</li>
+      <li>The two shapes match.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKCompare3D.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">Left: \(A\) applied directly. Right: \(V^T\), then \(\Sigma\), then \(U\). The two shapes match.</p>
 </section>
 
 <section class="clip-slide">
   <h2>The same steps on a sphere</h2>
-  <video class="clip" src="assets/clips/VKSphereRot.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>Same three steps, now on a sphere.</li>
+      <li>Step 1: \(V^T\) turns the sphere.</li>
+      <li>A sphere looks the same after a rotation, but the right singular vectors now lie on the axes.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKSphereRot.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">Step 1 again: \(V^T\) turns the sphere so the right singular vectors lie on the axes.</p>
 </section>
 
 <section class="clip-slide">
   <h2>The sphere becomes an ellipse</h2>
-  <video class="clip" src="assets/clips/VKSphereFlatScale.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>Seen from above, the flattened sphere is a disc.</li>
+      <li>\(\Sigma\) stretches it to semi-axes 5 and 3.</li>
+      <li>The disc becomes an ellipse.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKSphereFlatScale.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">Seen from above, the flattened sphere is a disc. \(\Sigma\) stretches it to semi-axes 5 and 3.</p>
 </section>
 
 <section class="clip-slide">
   <h2>Rotate the ellipse into place</h2>
-  <video class="clip" src="assets/clips/VKSphereRotU.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>Step 3: \(U\) turns the ellipse axes onto <span class="cr">\(\mathbf{u}_1,\mathbf{u}_2\)</span>.</li>
+      <li>A unit sphere always lands on an ellipse with semi-axes \(\sigma_i\).</li>
+      <li>The singular values are the lengths of those axes.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKSphereRotU.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">\(U\) turns the ellipse axes onto <span class="cr">\(\mathbf{u}_1, \mathbf{u}_2\)</span>. A unit sphere always lands on an ellipse with semi-axes \(\sigma_i\).</p>
 </section>
 
 <section class="clip-slide">
   <h2>The whole map in 3D</h2>
-  <video class="clip" src="assets/clips/VKSphereReplay.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>The whole map in one replay.</li>
+      <li>Unit sphere in \(\mathbb{R}^3\), flattened.</li>
+      <li>Ellipse with semi-axes \(\sigma_1=5\), \(\sigma_2=3\).</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKSphereReplay.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">A unit sphere in \(\mathbb{R}^3\) goes flat and becomes an ellipse with semi-axes \(\sigma_1 = 5\) and \(\sigma_2 = 3\).</p>
 </section>
 
 <section class="act-body">
@@ -117,37 +184,65 @@
 
 <section class="clip-slide">
   <h2>What \(A\) does in one go</h2>
-  <video class="clip" src="assets/clips/VKDirect2D3D.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>Now a \(3\times2\) matrix: 2D in, 3D out.</li>
+      <li>Flat discs in the plane land on a tilted plane in 3D.</li>
+      <li>Again hard to read in one step.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKDirect2D3D.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">Flat discs in the plane land on a tilted plane in 3D.</p>
 </section>
 
 <section class="clip-slide">
   <h2>Step 1: rotate with \(V^T\)</h2>
-  <video class="clip" src="assets/clips/VKRotV2D.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>Step 1: a small 2D rotation by \(V^T\), about 26 degrees.</li>
+      <li><span class="cv">\(\mathbf{v}_1,\mathbf{v}_2\)</span> land on the axes.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKRotV2D.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">A small 2D rotation, about 26 degrees, puts \(\mathbf{v}_1, \mathbf{v}_2\) on the axes.</p>
 </section>
 
 <section class="clip-slide">
   <h2>Step 2: stretch, then add a dimension</h2>
-  <video class="clip" src="assets/clips/VKScale2DAdd.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>Step 2: \(\Sigma\) stretches \(x\) by 3.93 and \(y\) by 1.67.</li>
+      <li>Then it lays the result flat in 3D: the dimension adder.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKScale2DAdd.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">Stretch \(x\) by 3.93 and \(y\) by 1.67, then lay the result flat in 3D.</p>
 </section>
 
 <section class="clip-slide">
   <h2>Step 3: rotate with \(U\) in 3D</h2>
-  <video class="clip" src="assets/clips/VKRotU3D.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>Step 3: \(U\) is now a 3D rotation.</li>
+      <li>It tilts the flat shape onto the plane spanned by <span class="cr">\(\mathbf{u}_1,\mathbf{u}_2\)</span>.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKRotU3D.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">A 3D rotation tilts the flat shape onto the plane spanned by \(\mathbf{u}_1, \mathbf{u}_2\).</p>
 </section>
 
 <section class="clip-slide">
   <h2>Four steps, any matrix</h2>
-  <video class="clip" src="assets/clips/VKFourPanel.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>Rotate by \(V^T\).</li>
+      <li>Stretch by the \(\sigma_i\).</li>
+      <li>Erase or add dimensions.</li>
+      <li>Rotate by \(U\). This works for any matrix.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKFourPanel.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">Rotate by \(V^T\), stretch by the \(\sigma_i\), erase or add dimensions, rotate by \(U\).</p>
 </section>
 
 <section class="act-body">

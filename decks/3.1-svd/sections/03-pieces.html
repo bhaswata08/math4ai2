@@ -12,23 +12,41 @@
 
 <section class="clip-slide">
   <h2>\(AA^T\): a \(2 \times 2\) symmetric matrix</h2>
-  <video class="clip" src="assets/clips/VKAAT.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>Take any \(2\times3\) matrix \(A\).</li>
+      <li>\(AA^T\) is \(2\times2\) and symmetric.</li>
+      <li>Symmetric means the spectral theorem applies: real eigenvalues, orthogonal eigenvectors.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKAAT.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">\(A = \begin{bmatrix}1&2&3\\4&5&6\end{bmatrix}\) is \(2\times3\). Times its transpose it gives \(AA^T = \begin{bmatrix}14&32\\32&77\end{bmatrix}\).</p>
 </section>
 
 <section class="clip-slide">
   <h2>\(A^TA\): a \(3 \times 3\) symmetric matrix</h2>
-  <video class="clip" src="assets/clips/VKATA.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>The other order, \(A^TA\), is \(3\times3\).</li>
+      <li>Also symmetric, whatever \(A\) is.</li>
+      <li>Same trick, different size.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKATA.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">The other order gives a \(3 \times 3\) matrix. Both products are symmetric, whatever \(A\) is.</p>
 </section>
 
 <section class="clip-slide">
   <h2>One matrix, two symmetric matrices</h2>
-  <video class="clip" src="assets/clips/VKThreeSym.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>One rectangular matrix gives two square symmetric ones.</li>
+      <li>\(AA^T\) is \(m\times m\); \(A^TA\) is \(n\times n\).</li>
+      <li>We can diagonalize both. That is the plan.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKThreeSym.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">\(AA^T\) is \(m \times m\) and \(A^TA\) is \(n \times n\).</p>
 </section>
 
 <section class="act-body">
@@ -45,51 +63,94 @@
 
 <section class="clip-slide">
   <h2>Their eigenvectors</h2>
-  <video class="clip" src="assets/clips/VKSLSRBuild.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>Name them \(S_L=AA^T\) and \(S_R=A^TA\).</li>
+      <li><span class="cr">\(\mathbf{u}_1,\mathbf{u}_2\)</span> are eigenvectors of \(S_L\).</li>
+      <li><span class="cv">\(\mathbf{v}_1,\mathbf{v}_2,\mathbf{v}_3\)</span> are eigenvectors of \(S_R\).</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKSLSRBuild.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">Call them \(S_L = AA^T\) and \(S_R = A^TA\). Eigenvectors <span class="cr">\(\mathbf{u}_1, \mathbf{u}_2\)</span> of \(S_L\), <span class="cv">\(\mathbf{v}_1, \mathbf{v}_2, \mathbf{v}_3\)</span> of \(S_R\).</p>
 </section>
 
 <section class="clip-slide">
   <h2>Left and right singular vectors</h2>
-  <video class="clip" src="assets/clips/VKSingVecLabels.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li><span class="cr">\(\mathbf{u}_i\)</span>: left singular vectors of \(A\).</li>
+      <li><span class="cv">\(\mathbf{v}_i\)</span>: right singular vectors of \(A\).</li>
+      <li>Left and right refer to which side of \(\Sigma\) they sit on in \(U\Sigma V^T\).</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKSingVecLabels.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">The <span class="cr">\(\mathbf{u}_i\)</span> are the left singular vectors of \(A\), the <span class="cv">\(\mathbf{v}_i\)</span> the right singular vectors.</p>
 </section>
 
 <section class="clip-slide">
   <h2>Order the eigenvalues</h2>
-  <video class="clip" src="assets/clips/VKLambdaOrder.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>Sort the eigenvalues from largest to smallest.</li>
+      <li>For our \(A\): \(90.40\) and \(0.60\), shared by \(S_L\) and \(S_R\).</li>
+      <li>\(S_R\) has a third eigenvalue, 0, with no partner in \(S_L\).</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKLambdaOrder.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">Sort from largest to smallest. For our \(A\): \(90.40\), \(0.60\), and a third one equal to 0 that only \(S_R\) has.</p>
 </section>
 
 <section class="clip-slide">
   <h2>Singular values</h2>
-  <video class="clip" src="assets/clips/VKSigmaDef.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>Singular value: \(\sigma_i=\sqrt{\lambda_i}\).</li>
+      <li>For our \(A\): \(\sigma_1=9.51\), \(\sigma_2=0.77\).</li>
+      <li>They are never negative, and they are the stretch factors in \(\Sigma\).</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKSigmaDef.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">\(\sigma_i = \sqrt{\lambda_i}\). For our \(A\): \(\sigma_1 = 9.51\), \(\sigma_2 = 0.77\).</p>
 </section>
 
 <section class="clip-slide">
   <h2>The three factors</h2>
-  <video class="clip" src="assets/clips/VKFormulaDissect.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>\(U\): orthogonal, columns \(\mathbf{u}_i\).</li>
+      <li>\(\Sigma\): rectangular diagonal, entries \(\sigma_i\).</li>
+      <li>\(V^T\): orthogonal, rows \(\mathbf{v}_i^T\).</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKFormulaDissect.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">\(U\) orthogonal, \(\Sigma\) rectangular diagonal, \(V^T\) orthogonal.</p>
 </section>
 
 <section class="clip-slide">
   <h2>The shapes of \(U\), \(\Sigma\), \(V^T\)</h2>
-  <video class="clip" src="assets/clips/SVDShapes2x3.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>\(A\) is \(2\times3\).</li>
+      <li>\(U\) is \(2\times2\): eigenvectors of \(AA^T\).</li>
+      <li>\(\Sigma\) is \(2\times3\): eraser plus stretches.</li>
+      <li>\(V^T\) is \(3\times3\): eigenvectors of \(A^TA\).</li>
+    </ul>
+    <video class="clip" src="assets/clips/SVDShapes2x3.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">\(A\) is \(2 \times 3\). The columns of <span class="cr">\(U\)</span> are eigenvectors of \(AA^T\), \(\Sigma\) is \(2 \times 3\) (the dimension eraser, with stretches), the rows of <span class="cv">\(V^T\)</span> are eigenvectors of \(A^TA\).</p>
 </section>
 
 <section class="clip-slide">
   <h2>Any shape works the same way</h2>
-  <video class="clip" src="assets/clips/SVDShapes4x2.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>\(A\) is \(4\times2\): \(U\) is \(4\times4\), \(\Sigma\) is \(4\times2\), \(V^T\) is \(2\times2\).</li>
+      <li>\(\Sigma\) always has the shape of \(A\).</li>
+      <li>Its zero rows add dimensions.</li>
+    </ul>
+    <video class="clip" src="assets/clips/SVDShapes4x2.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">A \(4 \times 2\) matrix: \(U\) is \(4 \times 4\), \(\Sigma\) is \(4 \times 2\), \(V^T\) is \(2 \times 2\). \(\Sigma\) always has the shape of \(A\); its zero rows add dimensions.</p>
 </section>
 
 <section class="act-body">

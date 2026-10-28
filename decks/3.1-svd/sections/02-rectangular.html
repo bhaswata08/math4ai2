@@ -12,16 +12,28 @@
 
 <section class="clip-slide">
   <h2>From \(\mathbb{R}^3\) to \(\mathbb{R}^2\)</h2>
-  <video class="clip" src="assets/clips/VKWhichMatrix.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>Input has 3 entries, output has 2.</li>
+      <li>Columns count the inputs, rows count the outputs.</li>
+      <li>So the matrix has 2 rows and 3 columns.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKWhichMatrix.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">Which matrix connects a vector with 3 entries to a vector with 2? One with 2 rows and 3 columns.</p>
 </section>
 
 <section class="clip-slide">
   <h2>Three numbers in, two numbers out</h2>
-  <video class="clip" src="assets/clips/VKMap3to2.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>Each output entry is one row dotted with the input.</li>
+      <li>Two rows give two numbers, so \(\mathbb{R}^3\) lands in \(\mathbb{R}^2\).</li>
+      <li>Check the first entry: \(3 - 4 + 3 = 2\).</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKMap3to2.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">\(\begin{bmatrix}3&-2&1\\2&1&-1\end{bmatrix}\begin{bmatrix}1\\2\\3\end{bmatrix} = \begin{bmatrix}2\\1\end{bmatrix}\): one dot product per row.</p>
 </section>
 
 <section class="act-body">
@@ -37,65 +49,119 @@
 
 <section class="clip-slide">
   <h2>A cube in \(\mathbb{R}^3\)</h2>
-  <video class="clip" src="assets/clips/VKCubeBuild.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>A cube is a stack of unit blocks, one vector per corner.</li>
+      <li>A \(3\times3\) matrix such as \(2I\) keeps the cube in 3D.</li>
+      <li>It can grow, rotate or shear the cube but not flatten it, unless it is singular.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKCubeBuild.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">Vectors in 3D, then a cube built from unit blocks. A \(3 \times 3\) matrix such as \(2I\) keeps it in 3D: it only grows.</p>
 </section>
 
 <section class="clip-slide">
   <h2>Flatten a cube</h2>
-  <video class="clip" src="assets/clips/VKCubeFlatten.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>A \(2\times3\) matrix has only two output coordinates.</li>
+      <li>The whole cube is pressed onto a plane.</li>
+      <li>Many 3D points share one image: information is lost.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKCubeFlatten.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">A \(2 \times 3\) matrix pushes the whole cube down onto a plane.</p>
 </section>
 
 <section class="clip-slide">
   <h2>The dimension eraser</h2>
-  <video class="clip" src="assets/clips/VKEraserAlg.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>The rows pick out \(x\) and \(y\).</li>
+      <li>The third column is zero, so \(z\) never reaches the output.</li>
+      <li>This is the dimension eraser.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKEraserAlg.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">\(\begin{bmatrix}1&0&0\\0&1&0\end{bmatrix}\) keeps \(x\) and \(y\) and drops \(z\).</p>
 </section>
 
 <section class="clip-slide">
   <h2>Every vector drops onto the plane</h2>
-  <video class="clip" src="assets/clips/VKEraser3D.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>\((x,y,z)\mapsto(x,y)\): every vector drops straight down.</li>
+      <li>Points at different heights land on the same spot.</li>
+      <li>The height is gone and cannot be recovered.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKEraser3D.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">\((x, y, z) \mapsto (x, y)\). The height is lost and cannot be recovered.</p>
 </section>
 
 <section class="clip-slide">
   <h2>A torus, a cube, a cylinder</h2>
-  <video class="clip" src="assets/clips/VKEraserCards.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>Same eraser, three solids.</li>
+      <li>Torus becomes a ring, cube a square, cylinder a disc.</li>
+      <li>Shadow on the floor: the eraser is a projection.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKEraserCards.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">The same eraser flattens each solid: the torus becomes a ring, the cube a square, the cylinder a disc.</p>
 </section>
 
 <section class="clip-slide">
   <h2>The dimension adder</h2>
-  <video class="clip" src="assets/clips/VKAdderAlg.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>A \(3\times2\) matrix takes 2 numbers in and gives 3 out.</li>
+      <li>The zero row sets \(z=0\).</li>
+      <li>This is the dimension adder, the transpose of the eraser.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKAdderAlg.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">\(\begin{bmatrix}1&0\\0&1\\0&0\end{bmatrix}\) puts a 2D vector into 3D with \(z = 0\).</p>
 </section>
 
 <section class="clip-slide">
   <h2>Flat shapes lifted into 3D</h2>
-  <video class="clip" src="assets/clips/VKAdderCards.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>The adder changes no shape, it only moves it into 3D.</li>
+      <li>Disc, square and hexagon now lie in the plane \(z=0\).</li>
+      <li>The output is still only a 2D plane inside \(\mathbb{R}^3\).</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKAdderCards.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">The adder keeps a disc, a square and a hexagon exactly as they are, now lying in the plane \(z = 0\) of 3D.</p>
 </section>
 
 <section class="clip-slide">
   <h2>Erase, then stretch</h2>
-  <video class="clip" src="assets/clips/VKCompoundAlg.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>Erase first, then stretch: multiply the two matrices.</li>
+      <li>The product is rectangular and diagonal.</li>
+      <li>This shape is exactly what \(\Sigma\) will have.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKCompoundAlg.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">\(\begin{bmatrix}4&0\\0&2\end{bmatrix}\begin{bmatrix}1&0&0\\0&1&0\end{bmatrix} = \begin{bmatrix}4&0&0\\0&2&0\end{bmatrix}\): a rectangular diagonal matrix.</p>
 </section>
 
 <section class="clip-slide">
   <h2>A cylinder, step by step</h2>
-  <video class="clip" src="assets/clips/EraseThenStretch.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>Erase the height: the cylinder becomes a disc.</li>
+      <li>Stretch \(x\) by 4 and \(y\) by 2: the disc becomes an ellipse.</li>
+      <li>The single product matrix does both at once.</li>
+    </ul>
+    <video class="clip" src="assets/clips/EraseThenStretch.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">Erase the height: a disc. Stretch \(x\) by 4 and \(y\) by 2: an ellipse. The combined matrix does both at once.</p>
 </section>
 
 <section class="act-body">

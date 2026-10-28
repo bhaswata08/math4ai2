@@ -12,9 +12,15 @@
 
 <section class="clip-slide">
   <h2>A sum of rank-1 matrices</h2>
-  <video class="clip" src="assets/clips/VKRankOneSum.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>Multiply out \(U\Sigma V^T\) one column at a time.</li>
+      <li>\(A=\sigma_1\mathbf{u}_1\mathbf{v}_1^T+\sigma_2\mathbf{u}_2\mathbf{v}_2^T+\dots\)</li>
+      <li>Each term is a rank-1 matrix, weighted by its singular value.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKRankOneSum.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">Multiply out \(U\Sigma V^T\) column by column: \(A = \sigma_1\mathbf{u}_1\mathbf{v}_1^T + \sigma_2\mathbf{u}_2\mathbf{v}_2^T + \dots\)</p>
 </section>
 
 <section class="act-body">
@@ -31,9 +37,15 @@
 
 <section class="clip-slide">
   <h2>Layer by layer</h2>
-  <video class="clip" src="assets/clips/RankOneLayers.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>Each layer is one column pattern times one row pattern.</li>
+      <li>The running sum rebuilds the matrix.</li>
+      <li>The big \(\sigma_i\) come first, so early layers matter most.</li>
+    </ul>
+    <video class="clip" src="assets/clips/RankOneLayers.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">Each layer is one column pattern times one row pattern. The running sum rebuilds the matrix.</p>
 </section>
 
 <section class="act-body">
@@ -49,16 +61,28 @@
 
 <section class="clip-slide">
   <h2>An image is a matrix</h2>
-  <video class="clip" src="assets/clips/ImageCompression.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>A grayscale photo is a matrix of pixel values.</li>
+      <li>Keep only the first \(k\) layers: a rank-\(k\) reconstruction.</li>
+      <li>A few dozen terms already look like the original.</li>
+    </ul>
+    <video class="clip" src="assets/clips/ImageCompression.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">Rank-\(k\) reconstructions of a grayscale photo. A few dozen terms already look like the original.</p>
 </section>
 
 <section class="clip-slide">
   <h2>Why so few terms are enough</h2>
-  <video class="clip" src="assets/clips/SingularSpectrum.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>First 60 of the photo's 240 singular values.</li>
+      <li>They fall off fast.</li>
+      <li>The first 20 hold 96.7% of \(\sum\sigma_i^2\), so dropping the rest costs little.</li>
+    </ul>
+    <video class="clip" src="assets/clips/SingularSpectrum.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">The first 60 of the photo's 240 singular values. They fall off fast: the first 20 hold 96.7% of \(\sum \sigma_i^2\).</p>
 </section>
 
 <section class="act-body">

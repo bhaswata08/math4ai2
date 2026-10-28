@@ -12,9 +12,15 @@
 
 <section class="clip-slide">
   <h2>Two moves we already know</h2>
-  <video class="clip" src="assets/clips/VKRecapDiag.mp4" data-rate="0.6"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>Diagonal matrix: each axis gets its own stretch factor.</li>
+      <li>Orthogonal matrix: lengths and angles are kept, so it only rotates (or reflects).</li>
+      <li>Both were on Day 2. The SVD builds every matrix from these two.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKRecapDiag.mp4" data-rate="0.6"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">A diagonal matrix stretches each axis by its own factor. An orthogonal matrix only rotates.</p>
 </section>
 
 <section class="act-body">
@@ -43,14 +49,26 @@
 
 <section class="clip-slide">
   <h2>Any shape</h2>
-  <video class="clip" src="assets/clips/VKAnyShape.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>Eigen-decomposition needed a square, symmetric matrix.</li>
+      <li>The SVD has no such condition: square, wide or tall, any rank.</li>
+      <li>That is why it is the workhorse for real data matrices.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKAnyShape.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">Square, wide, tall: the SVD puts no condition on symmetry, dimension or rank.</p>
 </section>
 
 <section class="clip-slide">
   <h2>\(A = U\,\Sigma\,V^T\)</h2>
-  <video class="clip" src="assets/clips/VKFormulaHL.mp4"></video>
+  <div class="clip-talk">
+    <ul>
+      <li>Read right to left, as the matrix acts on a vector: first <span class="cv">\(V^T\)</span>, then \(\Sigma\), then <span class="cr">\(U\)</span>.</li>
+      <li>Two different rotations, one on each side. The eigen case used \(Q\) and \(Q^T\).</li>
+      <li>The stretch \(\Sigma\) sits between them.</li>
+    </ul>
+    <video class="clip" src="assets/clips/VKFormulaHL.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">Two different rotations, <span class="cv">\(V^T\)</span> and <span class="cr">\(U\)</span>, with a stretch \(\Sigma\) between them.</p>
 </section>
