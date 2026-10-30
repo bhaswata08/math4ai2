@@ -1,27 +1,64 @@
 <!-- ============================================================
      ACT 4 of 9. Lose the least, keep the most. Budget: 18 min.
-     Goal: interpretations 2 and 3 (Khapra CS7015 6.5, 6.6) told
-     simply: Pythagoras splits each point into a kept part and a
-     lost part with a fixed total; variance along p is p^T C p;
-     in the eigenbasis that is a blend of the eigenvalues, so the
-     top eigenvector wins.
+     Goal: interpretation 2 (Khapra CS7015 6.5) shown in 3D: ditch
+     p3, the loss is the drop to the p1-p2 plane and equals lambda_3;
+     ditching each in turn loses its eigenvalue (dropthird.py). Then
+     interpretation 3 (6.6) told simply: Pythagoras splits each point
+     into kept and lost with a fixed total; variance along p is
+     p^T C p, a blend of the eigenvalues, so the top eigenvector wins.
      ============================================================ -->
 
 <section class="act-open">
   <div class="act-num">Act 4 of 9</div>
   <h1>Lose the least, keep the most</h1>
-  <p class="act-sub">Interpretations 2 and 3: the smallest reconstruction error and the largest variance turn out to be the same goal.</p>
+  <p class="act-sub">Interpretation 2: drop a direction and measure what you lose. Interpretation 3: keep the most spread. They pick the same directions.</p>
 </section>
 
 <section class="act-body">
-  <div class="act-tag"><b>Act 4</b> / The question</div>
-  <h2>Keep one direction. Which one?</h2>
+  <div class="act-tag"><b>Act 4</b> / The setup</div>
+  <h2>Keep two coordinates out of three</h2>
+  <p>Data in 3D, written in the principal directions:</p>
+  <div class="eq-big">$$\mathbf x_i = \alpha_{i1}\mathbf p_1 + \alpha_{i2}\mathbf p_2 + \alpha_{i3}\mathbf p_3$$</div>
   <ul>
-    <li>Keep only the coordinate along a unit vector \(\mathbf p\): each point \(\mathbf x_i\) becomes its shadow \((\mathbf x_i^T\mathbf p)\,\mathbf p\).</li>
-    <li><b>Interpretation 2:</b> choose \(\mathbf p\) so the shadows are as close as possible to the points (small reconstruction error).</li>
-    <li><b>Interpretation 3:</b> choose \(\mathbf p\) so the shadows are as spread out as possible (large variance).</li>
+    <li class="fragment">Store only two numbers per point, \(\alpha_{i1}, \alpha_{i2}\). Rebuild the point from them: \(\hat{\mathbf x}_i = \alpha_{i1}\mathbf p_1 + \alpha_{i2}\mathbf p_2\).</li>
+    <li class="fragment">The rebuilt point misses by \(\mathbf x_i - \hat{\mathbf x}_i\). The <b>reconstruction loss</b> is the average squared miss: \(\tfrac1m\sum_i\|\mathbf x_i - \hat{\mathbf x}_i\|^2\).</li>
   </ul>
-  <p class="takeaway">These look like two different goals. Pythagoras shows they are the same one.</p>
+  <p class="takeaway fragment">Which direction should we ditch so the loss is smallest?</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Ditch \(\mathbf p_3\), see what is lost</h2>
+  <video class="clip" src="assets/clips/DropThird.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Every point drops straight onto the \(\mathbf p_1\)–\(\mathbf p_2\) plane. The <span class="cy">red</span> drop is \(\mathbf x_i - \hat{\mathbf x}_i\), what we lose. Its average square is \(0.5 = \lambda_3\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / The loss</div>
+  <h2>Why the loss is \(\lambda_3\)</h2>
+  <ul>
+    <li>The miss is the part we dropped: \(\mathbf x_i - \hat{\mathbf x}_i = \alpha_{i3}\mathbf p_3\).</li>
+    <li class="fragment">\(\mathbf p_3\) has length 1, so the squared miss is \(\alpha_{i3}^2\).</li>
+    <li class="fragment">Average over the points: \(\tfrac1m\sum_i \alpha_{i3}^2\) is the variance of the third coordinate, and Act 3 showed that is \(\lambda_3\).</li>
+  </ul>
+  <p class="takeaway fragment">Ditch a principal direction and you lose exactly its eigenvalue.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Ditch each one in turn</h2>
+  <video class="clip" src="assets/clips/DropEach.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Ditch \(\mathbf p_1\): lose 4.0. Ditch \(\mathbf p_2\): lose 1.5. Ditch \(\mathbf p_3\): lose 0.5. Ditch the direction with the <b>smallest</b> eigenvalue.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / Only eigenvectors?</div>
+  <h2>Could another direction lose less?</h2>
+  <ul>
+    <li>We only tried ditching the eigenvectors. A tilted direction in between might do better.</li>
+    <li class="fragment">It cannot. The next slides show why, in 2D with one direction, where the whole circle of choices fits on a slide.</li>
+    <li class="fragment">Setup for 2D: keep one unit direction \(\mathbf p\). Each point becomes its <b>shadow</b> \((\mathbf x_i^T\mathbf p)\,\mathbf p\); the leftover \(\mathbf x_i - (\mathbf x_i^T\mathbf p)\,\mathbf p\) is what we lose.</li>
+  </ul>
 </section>
 
 <section class="act-body">

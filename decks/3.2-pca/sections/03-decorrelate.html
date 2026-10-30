@@ -44,10 +44,22 @@
 
 <section class="act-body">
   <div class="act-tag"><b>Act 3</b> / Example</div>
+  <h2>Back to the four points</h2>
+  <p>The example from Act 2: four centred points and their covariance matrix.</p>
+  <div class="cols" style="align-items:center">
+    <p>$$X = \begin{bmatrix}2&2\\-2&-2\\1&-1\\-1&1\end{bmatrix}$$</p>
+    <p>$$C = \tfrac14 X^TX = \begin{bmatrix}2.5&1.5\\1.5&2.5\end{bmatrix}$$</p>
+  </div>
+  <p class="fragment">To decorrelate, we need the eigenvectors of \(C\). First its eigenvalues, from \(\det(C - \lambda I) = 0\):</p>
+  <div class="eq-big fragment">$$(2.5 - \lambda)^2 - 1.5^2 = 0 \quad\Rightarrow\quad 2.5 - \lambda = \pm 1.5 \quad\Rightarrow\quad \lambda = 4,\ 1$$</div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Example</div>
   <h2>The four points, decorrelated</h2>
   <div class="cols" style="align-items:center">
     <div>
-      <p>$$(2.5 - \lambda)^2 = 1.5^2 \Rightarrow 2.5 - \lambda = \pm 1.5 \Rightarrow \lambda = 4,\ 1$$</p>
+      <p>Eigenvalues of \(C\): \(\lambda_1 = 4\), \(\lambda_2 = 1\). Eigenvectors:</p>
       <p>\(C - 4I = \begin{bmatrix}-1.5&1.5\\1.5&-1.5\end{bmatrix}\), so \(\mathbf p_1 \propto (1, 1)\).<br>\(C - I = \begin{bmatrix}1.5&1.5\\1.5&1.5\end{bmatrix}\), so \(\mathbf p_2 \propto (1, -1)\).</p>
       <p>Unit length: \(\mathbf p_1 = \tfrac{1}{\sqrt2}(1, 1)\), \(\mathbf p_2 = \tfrac{1}{\sqrt2}(1, -1)\).</p>
     </div>

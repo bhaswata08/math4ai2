@@ -41,9 +41,9 @@ SVD: \(\sigma = 4, 2\), \(\sigma^2/m = 4, 1\).
 
 0. Title, credits, outcomes
 1. A better basis — NewBasis clip; dropping a column is not PCA; redundant columns (Khapra's x, y, z table); goals
-2. Data in a new basis — user-pasted coordinates derivation (verbatim, 2026-10-28) with SumCollapse, CoordinatesXP, RowTimesP, StackRows, CentredStays clips; \(\hat X = XP\); variance, covariance and correlation following Normalized Nerd, "Covariance Clearly Explained!" (6-point dataset, mean (4, 3)); covariance matrix
+2. Data in a new basis — user-pasted coordinates derivation (verbatim, 2026-10-28) with SumCollapse, CoordinatesXP, RowTimesP, StackRows, CentredStays clips; \(\hat X = XP\); covariance in Socratica "Covariance Explained" order (Logan, three shapes, real return clouds, deviation signs, by hand, scale, correlation, uses, variance as Cov(x,x), matrix; clips in socratica.py); covariance matrix
 3. Interpretation 1: decorrelate — \(\hat C = P^TCP\); want diagonal; spectral theorem; Decorrelate clip; worked example
-4. Interpretation 2: least reconstruction error — derivation; lemma \(\max_{\|\mathbf p\|=1}\mathbf p^TC\mathbf p = \lambda_1\) (proof in the eigenbasis); CapturedVsLost clip
+4. Interpretation 2: least reconstruction error — 3D setup (keep 2 of 3 coordinates), DropThird clip (ditch p3, loss = drop to the p1-p2 plane = λ3), why the loss is λ3, DropEach clip (ditch each, lose its eigenvalue); then Pythagoras, CapturedVsLost, p^T C p as a blend
 5. Interpretation 3: most variance — variance along \(\mathbf p_j\) is \(\lambda_j\); KeepTopK clip; three interpretations, one answer; the algorithm; ThreeToTwo clip
 6. PCA through the SVD — \(X = U\Sigma V^T\), \(C = V\tfrac{\Sigma^2}{m}V^T\); scores \(XV = U\Sigma\); the \(XX^T\) trick when \(n \gg m\)
 7. Eigenfaces — Eigenfaces and FaceReconstruction clips (Olivetti faces, 400 × 4096); applications and limits
@@ -55,7 +55,7 @@ SVD: \(\sigma = 4, 2\), \(\sigma^2/m = 4, 1\).
 | Scene | File | Idea |
 |---|---|---|
 | NewBasis | basis.py | Same cloud, two bases: in x, y both coordinates vary; in p1, p2 the second coordinate is tiny |
-| CoordinatesXP | basis.py | One point, its coordinates as dot products; all points: X̂ = XP |
+| CoordinatesXP | basis.py | One point, its coordinates as dot products, rebuilt tip to tail (X̂ = XP is left to RowTimesP and StackRows) |
 | SumCollapse | coords.py | Dot both sides of x_i = Σ α_ij p_j with p_2; every term but j = k dies; α_ik = x_i^T p_k |
 | RowTimesP | coords.py | Row x_i^T times P, entry k lights up as x_i^T p_k |
 | StackRows | coords.py | Rows of X times P fill the rows of X̂ |
@@ -65,6 +65,8 @@ SVD: \(\sigma = 4, 2\), \(\sigma^2/m = 4, 1\).
 | CovarianceRectangles | covintro.py | One signed rectangle per point; average area is Cov(x, y) |
 | CovarianceMorph | covintro.py | Points rearrange; live Var, Cov and correlation |
 | Decorrelate | decorrelate.py | Rotate the basis; live P^T C P; off-diagonal hits 0 at the eigenvectors |
+| DropThird | dropthird.py | 3D cloud (λ = 4, 1.5, 0.5), three PCs; ditch p3, points drop to the p1-p2 plane, loss = λ3 |
+| DropEach | dropthird.py | Ditch p1, p2, p3 in turn; scoreboard of losses 4.0, 1.5, 0.5 |
 | CapturedVsLost | variance.py | Rotating unit p: captured p^T C p plus lost = tr C; max at p1, min at p2 |
 | KeepTopK | variance.py | Drop p2: points fall onto the p1 line, become 1D coordinates |
 | ThreeToTwo | threed.py | 3D cloud, three eigenvectors, project onto the top-2 plane |

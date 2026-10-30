@@ -181,22 +181,3 @@ class CoordinatesXP(Scene):
         self.play(FadeIn(dec))
         self.wait(2)
 
-        # all points at once
-        self.play(FadeOut(VGroup(t1, t2, dec)))
-        eq = tex(r"\hat X = X P", INK)
-        shp = VGroup(tex(r"\hat X:\ m\times n", INK_DIM), tex(r"X:\ m\times n", INK_DIM),
-                     tex(r"P:\ n\times n", INK_DIM))
-        shp.arrange(DOWN, aligned_edge=LEFT, buff=0.15)
-        mn = tex(r"m=40,\ n=2", INK_DIM)
-        row = VGroup(tex(r"\text{row } i \text{ of } \hat X:", INK),
-                     tex(r"[\alpha_{i1},\alpha_{i2}]", INK),
-                     tex(f"=[{num(a1)},\\ {num(a2)}]", INK)).arrange(DOWN, aligned_edge=LEFT, buff=0.1)
-        allg = VGroup(eq, shp, mn, row).arrange(DOWN, aligned_edge=LEFT, buff=0.2)
-        allg.move_to([px, 0, 0], aligned_edge=LEFT)
-        allg.shift(UP * (2.55 - allg.get_top()[1]))
-        self.play(FadeIn(eq))
-        self.wait(1)
-        self.play(FadeIn(shp), FadeIn(mn))
-        self.wait(1.5)
-        self.play(FadeIn(row))
-        self.wait(2)

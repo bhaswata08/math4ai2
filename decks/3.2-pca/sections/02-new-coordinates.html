@@ -1,7 +1,7 @@
 <!-- ============================================================
      ACT 2 of 9. Data in a new basis. Budget: 20 min.
-     Goal: X-hat = XP; variance, covariance (Normalized Nerd's
-     rectangles), the covariance matrix, correlation; C = X^T X / m.
+     Goal: X-hat = XP; covariance in Socratica's order, correlation,
+     variance as Cov(x, x), the covariance matrix; C = X^T X / m.
      Khapra CS7015 6.4, second half (the lemmas).
      ============================================================ -->
 
@@ -62,10 +62,10 @@
 </section>
 
 <section class="clip-slide">
-  <h2>One point, then all of them</h2>
+  <h2>One point, two shadows</h2>
   <video class="clip" src="assets/clips/CoordinatesXP.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">Coordinate \(\alpha_{ij}\) is the length of the shadow of \(\mathbf x_i\) on \(\mathbf p_j\). Row \(i\) of \(XP\) holds all of them.</p>
+  <p class="caption">Coordinate \(\alpha_{ij}\) is the length of the shadow of \(\mathbf x_i\) on \(\mathbf p_j\). Together they rebuild the point: \(\mathbf x_i = \alpha_{i1}\mathbf p_1 + \alpha_{i2}\mathbf p_2\).</p>
 </section>
 
 <section class="act-body">
@@ -98,6 +98,20 @@
   </ul>
 </section>
 
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Example</div>
+  <h2>Example: four points, a diagonal basis</h2>
+  <p>\(m = 4\) points, \(n = 2\) features; \(\mathbf p_1 = \tfrac{1}{\sqrt2}(1, 1)\), \(\mathbf p_2 = \tfrac{1}{\sqrt2}(1, -1)\).</p>
+  <div>$$\underbrace{\begin{bmatrix}2&2\\-2&-2\\1&-1\\-1&1\end{bmatrix}}_{X:\ 4\times2}
+  \underbrace{\tfrac{1}{\sqrt2}\begin{bmatrix}1&1\\1&-1\end{bmatrix}}_{P:\ 2\times2}
+  = \underbrace{\begin{bmatrix}2\sqrt2&0\\-2\sqrt2&0\\0&\sqrt2\\0&-\sqrt2\end{bmatrix}}_{\hat X:\ 4\times2}$$</div>
+  <ul>
+    <li class="fragment">\((4 \times 2)(2 \times 2) = 4 \times 2\): one row per point, one column per new axis.</li>
+    <li class="fragment">One entry: \(\alpha_{32} = \mathbf x_3^T\mathbf p_2 = \tfrac{1}{\sqrt2}(1 + 1) = \sqrt2\).</li>
+    <li class="fragment">Points 1, 2 lie on the \(\mathbf p_1\) axis; points 3, 4 on the \(\mathbf p_2\) axis.</li>
+  </ul>
+</section>
+
 <section class="clip-slide">
   <h2>Every row at once</h2>
   <video class="clip" src="assets/clips/StackRows.mp4"></video>
@@ -119,6 +133,17 @@
   </ul>
 </section>
 
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Coordinates</div>
+  <h2>Mean-centering in plain words</h2>
+  <ul>
+    <li>Each new column is a mix of the old columns.</li>
+    <li class="fragment">Mix columns whose means are 0, and the mean of the mix is 0 too.</li>
+    <li class="fragment">Example: the columns of \(\hat X\) sum to \(2\sqrt2 - 2\sqrt2 + 0 + 0 = 0\) and \(0 + 0 + \sqrt2 - \sqrt2 = 0\).</li>
+    <li class="fragment"><b>If the data is centred before you change basis, it is still centred afterwards.</b></li>
+  </ul>
+</section>
+
 <section class="clip-slide">
   <h2>Turn the cloud, the means stay at 0</h2>
   <video class="clip" src="assets/clips/CentredStays.mp4"></video>
@@ -126,53 +151,91 @@
   <p class="caption">The 40-point cloud from Act 1, rewritten in \(\mathbf p_1, \mathbf p_2\). Every point gets new coordinates; both column means stay 0.</p>
 </section>
 
+<section class="act-open">
+  <div class="act-num">Act 2</div>
+  <h1>Discussion of covariance</h1>
+</section>
+
+<section class="clip-slide">
+  <h2>Meet Logan</h2>
+  <video class="clip" src="assets/clips/LoganWeeks.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Three weeks of a first-year student. More studying, higher quiz scores; but also more studying, less sleep.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Covariance: a number for moving together</h2>
+  <video class="clip" src="assets/clips/ThreeShapes.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption"><span class="cr">Positive</span>: they rise and fall together. <span class="cw">Negative</span>: one rises as the other falls. No pattern: close to 0.</p>
+</section>
+
 <section class="act-body">
   <div class="act-tag"><b>Act 2</b> / Moving together</div>
-  <h2>Do two things move together?</h2>
-  <table style="font-size:0.85em">
-    <thead><tr><th>Logan, first term</th><th>week 1</th><th>week 2</th><th>week 3</th></tr></thead>
-    <tbody>
-      <tr><td>hours studied</td><td class="num">2</td><td class="num">5</td><td class="num">6</td></tr>
-      <tr><td>quiz score</td><td class="num">70</td><td class="num">90</td><td class="num">95</td></tr>
-      <tr><td>hours of sleep</td><td class="num">8</td><td class="num">7</td><td class="num">6.5</td></tr>
-    </tbody>
-  </table>
+  <h2>Why we need a formula</h2>
   <ul>
-    <li>More studying, higher scores: the two rise together. <span class="cr">Positive</span> covariance.</li>
-    <li>More studying, less sleep: one rises as the other falls. <span class="cw">Negative</span> covariance.</li>
-    <li>No pattern: covariance near 0. In real data with millions of rows the pattern is not visible by eye, so we need a number.</li>
+    <li>For Logan the pattern is clear: study more, score higher; study more, sleep less.</li>
+    <li class="fragment">Real data has millions of rows. Trends hide in the noise.</li>
+    <li class="fragment">Some relationships are strong, some are subtle. We want to measure them, not just notice them.</li>
   </ul>
 </section>
 
-<section class="clip-slide">
-  <h2>Variance: spread around the mean</h2>
-  <video class="clip" src="assets/clips/Variance1D.mp4"></video>
-  <span class="fragment clip-play"></span>
-  <p class="caption">Each distance from the mean, squared, is a square. Variance is the average square: \(\mathrm{Var}(x) = \tfrac1m\sum_i (x_i - \bar x)^2\).</p>
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Moving together</div>
+  <h2>Four stock tickers</h2>
+  <p>A <b>ticker</b> is the short code a stock or fund trades under.</p>
+  <table style="font-size:0.85em">
+    <thead><tr><th>ticker</th><th>what it is</th></tr></thead>
+    <tbody>
+      <tr><td>GOOG</td><td>Alphabet, Google's parent company</td></tr>
+      <tr><td>META</td><td>Meta Platforms, owner of Facebook and Instagram</td></tr>
+      <tr><td>SPY</td><td>a fund that tracks the S&amp;P 500, the 500 largest US companies: "the market"</td></tr>
+      <tr><td>VIXY</td><td>a fund that tracks the VIX, the "fear index": it rises when the market gets nervous</td></tr>
+    </tbody>
+  </table>
+  <p>We plot <b>daily returns</b>: the percent change in price from one day to the next.</p>
 </section>
 
 <section class="clip-slide">
-  <h2>Two variances miss the trend</h2>
-  <video class="clip" src="assets/clips/TwoVariances.mp4"></video>
+  <h2>Two real clouds</h2>
+  <video class="clip" src="assets/clips/ReturnClouds.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">Mirror the points: \(\mathrm{Var}(x)\) and \(\mathrm{Var}(y)\) stay the same, but the trend reverses. We need a number that sees how \(x\) and \(y\) move together.</p>
+  <p class="caption">One dot per trading day. GOOG and META tilt up: <span class="cr">positive</span>. SPY and VIXY tilt down: <span class="cw">negative</span>. Covariance in %².</p>
 </section>
 
 <section class="clip-slide">
-  <h2>Covariance: one rectangle per point</h2>
-  <video class="clip" src="assets/clips/CovarianceRectangles.mp4"></video>
+  <h2>Building the formula</h2>
+  <video class="clip" src="assets/clips/DeviationSigns.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">\((x_i - \bar x)(y_i - \bar y)\) is the signed area of the rectangle from the mean to the point. <span class="cr">Positive</span> above-right and below-left, <span class="cw">negative</span> in the other two corners.</p>
+  <p class="caption">Each point: how far is \(x\) from its mean, how far is \(y\) from its mean? Multiply. Same side gives \(+\), opposite sides give \(-\). Then average.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Formula</div>
+  <h2>The covariance formula in three steps</h2>
+  <ol class="practice">
+    <li>Subtract the means: \(x_i - \bar x\) and \(y_i - \bar y\).</li>
+    <li class="fragment">Multiply them: \(+\) when both are on the same side of their means, \(-\) when not.</li>
+    <li class="fragment">Average the products.</li>
+  </ol>
+  <div class="eq-big fragment">$$\mathrm{Cov}(x, y) = \frac1m\sum_i (x_i - \bar x)(y_i - \bar y)$$</div>
 </section>
 
 <section class="act-body">
   <div class="act-tag"><b>Act 2</b> / By hand</div>
   <h2>A covariance by hand</h2>
-  <p>Data: \(a = 2, 4, 6, 8, 10\) and \(b = 1, 3, 4, 6, 8\). Means \(\bar a = 6\), \(\bar b = 4.4\).</p>
-  <div class="eq-big">$$\mathrm{Cov}(a, b) = \frac1m\sum_i (a_i - \bar a)(b_i - \bar b)$$</div>
-  <p>First point: \((2 - 6)(1 - 4.4) = (-4)(-3.4) = 13.6\). The other four products are \(2.8,\ 0,\ 3.2,\ 14.4\).</p>
-  <p>No product is negative: \(a\) and \(b\) are always on the same side of their means.</p>
-  <p class="takeaway">The five products sum to 34, so \(\mathrm{Cov}(a, b) = 34/5 = 6.8\). Positive: they rise and fall together.</p>
+  <p>Five pairs that occur together. Means \(\bar a = 6\), \(\bar b = 4.4\).</p>
+  <table style="font-size:0.8em">
+    <thead><tr><th>\(a\)</th><th>\(b\)</th><th>\(a - \bar a\)</th><th>\(b - \bar b\)</th><th>product</th></tr></thead>
+    <tbody>
+      <tr><td class="num">2</td><td class="num">1</td><td class="num">−4</td><td class="num">−3.4</td><td class="num">13.6</td></tr>
+      <tr><td class="num">4</td><td class="num">3</td><td class="num">−2</td><td class="num">−1.4</td><td class="num">2.8</td></tr>
+      <tr><td class="num">6</td><td class="num">4</td><td class="num">0</td><td class="num">−0.4</td><td class="num">0</td></tr>
+      <tr><td class="num">8</td><td class="num">6</td><td class="num">2</td><td class="num">1.6</td><td class="num">3.2</td></tr>
+      <tr><td class="num">10</td><td class="num">8</td><td class="num">4</td><td class="num">3.6</td><td class="num">14.4</td></tr>
+    </tbody>
+  </table>
+  <p class="takeaway fragment">No product is negative. Their mean: \((13.6 + 2.8 + 0 + 3.2 + 14.4)/5 = 6.8\). Positive: \(a\) and \(b\) rise and fall together.</p>
 </section>
 
 <section class="act-body">
@@ -234,6 +297,24 @@
 </section>
 
 <section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Uses</div>
+  <h2>Where covariance is used</h2>
+  <div class="beats two recap">
+    <div class="beat purpose"><h4>Finance</h4><p>Daily returns of Google and Meta rise together; the S&amp;P 500 and a volatility index move opposite. Mixing assets with low covariance spreads risk.</p></div>
+    <div class="beat purpose"><h4>Engineering</h4><p>Quantities that interact, such as temperature and pressure in a gas, vary together. Their covariance goes into the model.</p></div>
+    <div class="beat purpose"><h4>Machine learning</h4><p>Which features move together, and which are redundant. PCA is built entirely on this.</p></div>
+    <div class="beat purpose"><h4>Standardised data</h4><p>Turn every column into z-scores and the covariance matrix becomes the correlation matrix. PCA on it treats all units alike.</p></div>
+  </div>
+</section>
+
+<section class="clip-slide">
+  <h2>Covariance of a variable with itself</h2>
+  <video class="clip" src="assets/clips/Variance1D.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">\(\mathrm{Cov}(x, x)\) multiplies each deviation by itself: a square. Its average is the <b>variance</b>, the spread of one variable: \(\mathrm{Var}(x) = \tfrac1m\sum_i (x_i - \bar x)^2\).</p>
+</section>
+
+<section class="act-body">
   <div class="act-tag"><b>Act 2</b> / Covariance matrix</div>
   <h2>All the variances and covariances in one matrix</h2>
   <div class="eq-big">$$C = \begin{bmatrix}\mathrm{Cov}(x,x) & \mathrm{Cov}(x,y)\\ \mathrm{Cov}(y,x) & \mathrm{Cov}(y,y)\end{bmatrix} = \begin{bmatrix}\mathrm{Var}(x) & \mathrm{Cov}(x,y)\\ \mathrm{Cov}(x,y) & \mathrm{Var}(y)\end{bmatrix}$$</div>
@@ -245,17 +326,6 @@
   <ul>
     <li class="cdim">np.cov divides by \(m - 1\). Same eigenvectors, eigenvalues scaled by \(m/(m-1)\).</li>
   </ul>
-</section>
-
-<section class="act-body">
-  <div class="act-tag"><b>Act 2</b> / Uses</div>
-  <h2>Where covariance is used</h2>
-  <div class="beats two recap">
-    <div class="beat purpose"><h4>Finance</h4><p>Daily returns of Google and Meta rise together; the S&amp;P 500 and a volatility index move opposite. Mixing assets with low covariance spreads risk.</p></div>
-    <div class="beat purpose"><h4>Engineering</h4><p>Quantities that interact, such as temperature and pressure in a gas, vary together. Their covariance goes into the model.</p></div>
-    <div class="beat purpose"><h4>Machine learning</h4><p>Which features move together, and which are redundant. PCA is built entirely on this.</p></div>
-    <div class="beat purpose"><h4>Standardised data</h4><p>Turn every column into z-scores and the covariance matrix becomes the correlation matrix. PCA on it treats all units alike.</p></div>
-  </div>
 </section>
 
 <section class="act-body">
