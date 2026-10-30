@@ -38,7 +38,7 @@ decks/3.1-svd	VKFormulaHL	4.mp4	39.8	44.5	-	-
 decks/3.1-svd	VKWhichMatrix	4.mp4	151	163.5
 decks/3.1-svd	VKMap3to2	4.mp4	164	173.5
 decks/3.1-svd	VKCubeFlatten	4.mp4	202.3	206.5	-	-
-decks/3.1-svd	VKEraserAlg	4.mp4	213.2	220	-	-
+decks/3.1-svd	VKEraserAlg	4.mp4	213.2	220	-	-	-	drawtext=fontfile=node_modules/katex/dist/fonts/KaTeX_Math-Italic.ttf:text=I:fontsize=120:fontcolor=0x7FAFC2:x=1007-tw/2:y=25:alpha='if(lt(t,1.9),0,if(lt(t,2.1),(t-1.9)/0.2,if(lt(t,3.1),1,if(lt(t,3.3),(3.3-t)/0.2,0))))'
 decks/3.1-svd	VKEraser3D	4.mp4	239.5	251.5
 decks/3.1-svd	VKAdderAlg	4.mp4	259.5	269.5
 decks/3.1-svd	VKCompoundAlg	4.mp4	275.5	292.5
