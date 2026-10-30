@@ -18,9 +18,10 @@
       <li>Columns count the inputs, rows count the outputs.</li>
       <li>So the matrix has 2 rows and 3 columns.</li>
     </ul>
-    <video class="clip" src="assets/clips/VKWhichMatrix.mp4"></video>
+    <video class="clip" src="assets/clips/VKWhichMatrix.mp4" data-pause="5.25"></video>
   </div>
   <span class="fragment clip-play"></span>
+  <span class="fragment clip-resume"></span>
 </section>
 
 <section class="clip-slide">
@@ -76,11 +77,23 @@
 <section class="clip-slide">
   <h2>The dimension eraser</h2>
   <div class="clip-talk">
-    <ul>
-      <li>The rows pick out \(x\) and \(y\).</li>
-      <li>The third column is zero, so \(z\) never reaches the output.</li>
-      <li>This is the dimension eraser.</li>
-    </ul>
+    <div>
+      <ul>
+        <li>The rows pick out \(x\) and \(y\).</li>
+        <li>The third column is zero, so \(z\) never reaches the output.</li>
+        <li>This is the dimension eraser.</li>
+      </ul>
+      <div class="eraser-mul">
+        $$\begin{aligned}
+          \begin{bmatrix}1&0&0\\0&1&0\end{bmatrix}\begin{bmatrix}3\\5\\\textcolor{#ff6b6b}{7}\end{bmatrix}
+          &=\begin{bmatrix}1\cdot3+0\cdot5+0\cdot\textcolor{#ff6b6b}{7}\\0\cdot3+1\cdot5+0\cdot\textcolor{#ff6b6b}{7}\end{bmatrix}\\
+          &=\begin{bmatrix}3\\5\end{bmatrix}\\[6pt]
+          \begin{bmatrix}1&0&0\\0&1&0\end{bmatrix}\begin{bmatrix}3\\5\\\textcolor{#ff6b6b}{-2}\end{bmatrix}
+          &=\begin{bmatrix}3\\5\end{bmatrix}
+        \end{aligned}$$
+        <p>Height 7 or \(-2\): same output. \(z\) is erased.</p>
+      </div>
+    </div>
     <video class="clip" src="assets/clips/VKEraserAlg.mp4"></video>
   </div>
   <span class="fragment clip-play"></span>

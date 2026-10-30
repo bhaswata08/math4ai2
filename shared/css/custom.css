@@ -329,6 +329,8 @@
   border-bottom: 1px solid var(--rule);
   padding: 0.4em 0.6em 0.4em 0;
 }
+/* Maths in a header keeps its case: an uppercased \\bar a reads as A. */
+.reveal table th .katex { text-transform: none; }
 .reveal table td {
   padding: 0.45em 0.6em 0.45em 0;
   border-bottom: 1px solid var(--bg-raised);
@@ -647,7 +649,8 @@
 .reveal .clip-talk video.clip { width: 100%; max-height: 520px; }
 .reveal .caption { margin-top: 0.5em; color: var(--ink-dim); font-size: 0.8em; text-align: center; }
 /* A fragment that exists only to trigger playback. Invisible, takes no space. */
-.reveal .fragment.clip-play { display: none; }
+.reveal .fragment.clip-play,
+.reveal .fragment.clip-resume { display: none; }
 
 /* --- 4.4 interactive figure: a live SVG plane plus a readout ------------- */
 .reveal .fig { position: relative; user-select: none; }
@@ -802,3 +805,12 @@ div.boardhandle i.fa-chevron-down::before { transform: translateY(-0.1em) rotate
 #customcontrols button:hover { color: var(--ink); }
 #customcontrols ul > li.active > button { color: var(--bg); background: var(--accent); }
 #customcontrols li#tool-next { margin-right: 10px; }
+
+/* 3.1 dimension eraser: worked product under the talking points */
+.reveal .eraser-mul { font-size: 0.66em; margin-top: 0.2em; }
+.reveal .eraser-mul .katex-display { margin: 0.3em 0; }
+.reveal .eraser-mul p { margin: 0.2em 0 0; font-size: 1.1em; color: var(--ink-dim); }
+
+/* A worked factorization kept on screen across a run of clip slides. */
+.reveal .eq-ref { align-self: center; font-size: 0.62em; margin: 0 0 0.3em; }
+.reveal .clip-slide .eq-ref ~ .clip-talk video.clip { max-height: 400px; }
