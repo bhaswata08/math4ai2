@@ -1,0 +1,81 @@
+<!-- ============================================================
+     ACT 3 of 6. The rules. Budget: 15 min.
+     One worked picture (the sin/cos graph figure in figures.js),
+     then the cheat sheet students keep open for the rest of the
+     course. Act 4 derives the product and chain rules.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 3 of 6</div>
+  <h1>The rules</h1>
+  <p class="act-sub">One picture for where a rule comes from, then the table you actually use.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Where a rule comes from</div>
+  <h2>Walk \(\theta\) along \(\sin\), read the slope off \(\cos\)</h2>
+  <div class="clip-row fig" data-fig="sine-slope-graph">
+    <div class="plane-host"></div>
+    <div>
+      <div class="readout"></div>
+      <button class="sweep fig-btn">sweep</button>
+      <div class="hint">drag the circle on <span class="cv">sin</span> · the triangle rises by the slope over a run of 1 · the bar on the axis is that same height, and it lands on <span class="cr">cos</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Cheat sheet, part 1</div>
+  <h2>Rules for putting functions together</h2>
+  <p class="cdim" style="font-size:0.8em">All of it comes from one definition:</p>
+  <div style="font-size:0.8em">$$f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}$$</div>
+  <table class="sheet" style="font-size:0.78em">
+    <thead><tr><th>rule</th><th>formula</th></tr></thead>
+    <tbody>
+      <tr><td>constant</td><td>\((c)' = 0\)</td></tr>
+      <tr><td>constant multiple</td><td>\((c\,f)' = c\,f'\)</td></tr>
+      <tr><td>sum and difference</td><td>\((f \pm g)' = f' \pm g'\)</td></tr>
+      <tr><td>power</td><td>\((x^n)' = n\,x^{n-1}\)</td></tr>
+      <tr><td>product</td><td>\((f g)' = f'g + f g'\)</td></tr>
+      <tr><td>quotient</td><td>\(\left(f/g\right)' = \dfrac{f'g - f g'}{g^2}\)</td></tr>
+      <tr><td>chain</td><td>\(\big(f(g(x))\big)' = f'(g(x))\cdot g'(x)\)</td></tr>
+    </tbody>
+  </table>
+  <p class="src" style="font-size:0.7em">Act 4 derives the product and chain rules. The quotient rule is the product rule applied to \(f \cdot g^{-1}\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Cheat sheet, part 2</div>
+  <h2>Derivatives worth knowing by heart</h2>
+  <div class="cols">
+    <table class="sheet">
+      <thead><tr><th>\(f(x)\)</th><th>\(f'(x)\)</th></tr></thead>
+      <tbody>
+        <tr><td>\(x\)</td><td>\(1\)</td></tr>
+        <tr><td>\(x^n\)</td><td>\(n\,x^{n-1}\)</td></tr>
+        <tr><td>\(1/x\)</td><td>\(-1/x^2\)</td></tr>
+        <tr><td>\(\sqrt{x}\)</td><td>\(1/(2\sqrt{x})\)</td></tr>
+        <tr><td>\(e^x\)</td><td>\(e^x\)</td></tr>
+        <tr><td>\(a^x\)</td><td>\(a^x \ln a\)</td></tr>
+        <tr><td>\(\ln x\)</td><td>\(1/x\), for \(x &gt; 0\)</td></tr>
+        <tr><td>\(\log_a x\)</td><td>\(1/(x \ln a)\)</td></tr>
+        <tr><td>\(\sin x\)</td><td>\(\cos x\)</td></tr>
+        <tr><td>\(\cos x\)</td><td>\(-\sin x\)</td></tr>
+        <tr><td>\(\tan x\)</td><td>\(\sec^2 x\)</td></tr>
+        <tr><td>\(\arctan x\)</td><td>\(1/(1 + x^2)\)</td></tr>
+      </tbody>
+    </table>
+    <table class="sheet">
+      <thead><tr><th>the ones you will meet</th><th>\(f'(x)\)</th></tr></thead>
+      <tbody>
+        <tr><td>\(\sigma(x) = 1/(1 + e^{-x})\)<br><span class="cdim">logistic regression, gates</span></td><td>\(\sigma(x)\,(1 - \sigma(x))\)</td></tr>
+        <tr><td>\(\tanh x\)<br><span class="cdim">older hidden layers</span></td><td>\(1 - \tanh^2 x\)</td></tr>
+        <tr><td>\(\max(0, x)\)<br><span class="cdim">ReLU</span></td><td>\(0\) if \(x &lt; 0\), \(1\) if \(x &gt; 0\)</td></tr>
+        <tr><td>\(\ln(1 + e^x)\)<br><span class="cdim">softplus</span></td><td>\(\sigma(x)\)</td></tr>
+        <tr><td>\(-\ln x\)<br><span class="cdim">cross-entropy loss</span></td><td>\(-1/x\)</td></tr>
+        <tr><td>\((y - \hat y)^2\)<br><span class="cdim">squared error, in \(\hat y\)</span></td><td>\(-2(y - \hat y)\)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="src" style="font-size:0.7em">\(e^x\) and \(\ln x\) are stated, not derived here. \(\sigma'\) and \(\tanh'\) follow from the chain rule.</p>
+</section>

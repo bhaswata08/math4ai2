@@ -297,244 +297,183 @@ def grad_el(x, y):
     return np.array([2.0 * x, 8.0 * y])
 
 
-class PerpToContours(Scene):
+def ellipse_axes(c):
+    """Semi-axes of the contour f_el = c."""
+    return np.sqrt(c), np.sqrt(c) / 2.0
+
+
+class PerpToContours(ThreeDScene):
+    """The bowl z = x^2 + 4y^2, its level rings, and the same rings pushed down
+    to the floor as a contour map. The gradient is a vector in the input plane,
+    so every arrow is drawn on the floor. The camera flattens to a top view for
+    the tight-versus-wide comparison, where the right angle reads true."""
+
+    PHI = 58 * DEGREES
+    THETA = -50 * DEGREES
+    LEVELS = (1, 4, 9)
+    ARROW = 0.16      # floor arrows drawn at 0.16x the gradient's length
+
     def construct(self):
-        U = 1.2                       # screen units per unit of x, y
-        origin = np.array([-1.2, -0.5, 0.0])
+        self.set_camera_orientation(phi=self.PHI, theta=self.THETA)
 
-        def to_screen(x, y):
-            return origin + U * np.array([x, y, 0.0])
-
-        axes = VGroup(
-            Line(to_screen(-3.8, 0), to_screen(3.6, 0), stroke_color=X_COLOR, stroke_width=2.5),
-            Line(to_screen(0, -1.7), to_screen(0, 1.7), stroke_color=Y_COLOR, stroke_width=2.5),
+        axes = ThreeDAxes(
+            x_range=[-3, 3, 1], y_range=[-1.8, 1.8, 1], z_range=[0, 18, 6],
+            x_length=6.0, y_length=3.6, z_length=2.8,
+            axis_config={"stroke_width": 2.5, "include_ticks": False, "include_tip": False},
         )
-        lbl_x = MathTex("x", font_size=MIN_FONT, color=X_COLOR).move_to(to_screen(3.5, -0.35))
-        lbl_y = MathTex("y", font_size=MIN_FONT, color=Y_COLOR).move_to(to_screen(0.4, 1.55))
+        axes.x_axis.set_color(X_COLOR)
+        axes.y_axis.set_color(Y_COLOR)
+        axes.z_axis.set_opacity(0.0)   # the bowl reads its own height; the axis only clutters
+        axes.shift(IN * 1.2)           # drop the bowl to the middle of the frame
+        c2p = axes.c2p
 
-        levels = [1, 4, 9]
-        contours = VGroup()
-        for c in levels:
-            a, b = np.sqrt(c), np.sqrt(c) / 2.0
-            e = ParametricFunction(lambda t, a=a, b=b: to_screen(a * np.cos(t), b * np.sin(t)),
-                                   t_range=[0, TAU], color=INK_DIM, stroke_width=3.5)
-            contours.add(e)
-        level_lbls = VGroup()
-        for c in levels:
-            a, b = np.sqrt(c), np.sqrt(c) / 2.0
-            m = MathTex(f"f={c}", font_size=MIN_FONT, color=INK_DIM)
-            m.move_to(to_screen(-0.75, b * np.sqrt(1 - (0.75 / a) ** 2)) + np.array([0.0, 0.3, 0.0]))
-            m.add_background_rectangle(color=BG, opacity=0.9, buff=0.04)
-            level_lbls.add(m)
-        # f=1 label would sit inside the small ellipse; keep it, it is small enough.
+        surface = Surface(
+            lambda u, v: c2p(u, v, f_el(u, v)),
+            u_range=[-3, 3], v_range=[-1.5, 1.5], resolution=(24, 12),
+            stroke_color=INK_FAINT, stroke_width=0.8, stroke_opacity=0.5,
+        )
+        for face in surface.submobjects:
+            face.set_fill(color=INK_DIM,
+                          opacity=0.09 if (face.u_index + face.v_index) % 2 == 0 else 0.18)
 
-        def point_at(deg):
+        def ellipse(c, z, color, width):
+            a, b = ellipse_axes(c)
+            return ParametricFunction(
+                lambda t, a=a, b=b: c2p(a * np.cos(t), b * np.sin(t), z),
+                t_range=[0, TAU], color=color, stroke_width=width)
+
+        # Level rings cut on the bowl, and the same rings on the floor.
+        rings = VGroup(*[ellipse(c, c, V_COLOR if c == 4 else INK_DIM, 6 if c == 4 else 4)
+                         for c in self.LEVELS])
+        floor = VGroup(*[ellipse(c, 0, V_COLOR if c == 4 else INK_FAINT, 5 if c == 4 else 3.5)
+                         for c in self.LEVELS])
+        floor.set_z_index(3)
+
+        def level_label(c, z, deg, out):
+            """Label the contour f = c, placed just outside it at this angle."""
+            a, b = ellipse_axes(c)
             t = np.radians(deg)
-            return 2.0 * np.cos(t), 1.0 * np.sin(t)    # on f = 4
+            m = MathTex(f"f={c}", font_size=MIN_FONT, color=V_COLOR if c == 4 else INK_DIM)
+            m.move_to(c2p((a + out) * np.cos(t), (b + out * 0.5) * np.sin(t), z))
+            m.add_background_rectangle(color=BG, opacity=0.85, buff=0.05)
+            return m
 
-        def probe(deg, with_len=False):
-            x, y = point_at(deg)
-            assert abs(f_el(x, y) - 4.0) < 1e-9
+        # On the bowl the labels sit off the back-left end of each ring, where
+        # the rings own heights separate them; on the flat map they fan out
+        # along the upper-left, one angle per level.
+        FLAT_DEG = {1: 155, 4: 140, 9: 118}
+        ring_lbls = VGroup(*[level_label(c, c, 180, 0.5) for c in self.LEVELS])
+
+        ax_lbls = VGroup()
+        for ch, col, pos in (("x", X_COLOR, (3.35, -0.4, 0)), ("y", Y_COLOR, (-0.4, 1.95, 0))):
+            m = MathTex(ch, font_size=MIN_FONT, color=col).move_to(c2p(*pos))
+            m.add_background_rectangle(color=BG, opacity=0.8, buff=0.04)
+            ax_lbls.add(m)
+
+        h_f = hud(r"f(x,y) = x^2 + 4y^2", 2.45, V_COLOR, x=-2.9)
+        h_w = hud(r"\text{walk along } f = 4", 2.45, V_COLOR, x=3.0)
+
+        # ---- the floor probe: tangent, gradient arrow, right-angle square ----
+        def probe(deg):
+            t = np.radians(deg)
+            x, y = 2.0 * np.cos(t), np.sin(t)
             g = grad_el(x, y)
             mag = float(np.hypot(*g))
             gd = g / mag
             td = np.array([-gd[1], gd[0]])
-            p = to_screen(x, y)
-            gv = np.array([gd[0], gd[1], 0.0]) * 0.2 * mag      # arrows at 0.2x length
-            arrow = Arrow(p, p + gv, buff=0, color=RESULT_COLOR, stroke_width=7,
-                          max_tip_length_to_length_ratio=0.25)
-            tangent = Line(p - 0.9 * np.array([td[0], td[1], 0]), p + 0.9 * np.array([td[0], td[1], 0]),
+            p = c2p(x, y, 0)
+            tip = c2p(x + self.ARROW * g[0], y + self.ARROW * g[1], 0)
+            arrow = Arrow(p, tip, buff=0, color=RESULT_COLOR, stroke_width=7,
+                          max_tip_length_to_length_ratio=0.28)
+            e = 1.0
+            tangent = Line(c2p(x - e * td[0], y - e * td[1], 0),
+                           c2p(x + e * td[0], y + e * td[1], 0),
                            color=INK, stroke_width=4)
-            s = 0.2
-            corners = [p + s * np.array([td[0], td[1], 0]),
-                       p + s * np.array([td[0] + gd[0], td[1] + gd[1], 0]),
-                       p + s * np.array([gd[0], gd[1], 0])]
+            s = 0.30
+            corners = [c2p(x + s * td[0], y + s * td[1], 0),
+                       c2p(x + s * (td[0] + gd[0]), y + s * (td[1] + gd[1]), 0),
+                       c2p(x + s * gd[0], y + s * gd[1], 0)]
             box = VMobject(color=HIGHLIGHT, stroke_width=4).set_points_as_corners(corners)
             grp = VGroup(tangent, arrow, box)
-            lab = None
-            if with_len:
-                lab = MathTex(rf"|\nabla f| = {mag:g}", font_size=MIN_FONT, color=RESULT_COLOR)
-                lab.add_background_rectangle(color=BG, opacity=0.9, buff=0.05)
-            return grp, mag, lab
+            grp.set_z_index(6)
+            return grp, mag
 
-        dot = Dot(to_screen(*point_at(0)), radius=0.1, color=V_COLOR).set_z_index(10)
-        note = MathTex(r"\text{walk along } f = 4", font_size=MIN_FONT, color=V_COLOR)
-        note.move_to(np.array([3.0, 2.2, 0.0]))
-        note.add_background_rectangle(color=BG, opacity=0.9, buff=0.05)
-
-        self.add(axes, lbl_x, lbl_y, contours, level_lbls, dot, note)
-        self.wait(1.5)
-
-        def walk(a0, a1):
+        def walk(a0, a1, z):
+            lo = np.radians(a0)
+            hi = np.radians(a1) + (TAU if a1 <= a0 else 0.0)
             return ParametricFunction(
-                lambda t: to_screen(2.0 * np.cos(t), np.sin(t)),
-                t_range=[np.radians(a0), np.radians(a1) + (TAU if a1 < a0 else 0)])
+                lambda t: c2p(2.0 * np.cos(t), np.sin(t), z), t_range=[lo, hi])
+
+        # ---- open on the bowl with its rings already cut -------------------
+        self.add(axes, surface, rings)
+        self.add_fixed_orientation_mobjects(*ring_lbls)
+        self.add_fixed_in_frame_mobjects(h_f)
+        self.wait(2.0)
+
+        # ---- push the rings down: that is the contour map -------------------
+        self.play(*[TransformFromCopy(r, fl) for r, fl in zip(rings, floor)], run_time=2.0)
+        self.wait(1.2)
+
+        # ---- walk the f = 4 ring, read the gradient on the floor ------------
+        dot = Dot3D(c2p(2, 0, 4), radius=0.10, color=V_COLOR)
+        shadow = Dot3D(c2p(2, 0, 0), radius=0.07, color=V_COLOR)
+        shadow.set_z_index(8)
+        drop = always_redraw(lambda: DashedLine(dot.get_center(), shadow.get_center(),
+                                                color=INK_DIM, stroke_width=3))
+        self.add(dot, shadow, drop)
+        self.add_fixed_in_frame_mobjects(h_w)
+        self.wait(0.8)
 
         cur = None
         prev = 0
-        for deg in (0, 50, 130, 310):
-            if deg != 0:
-                self.play(MoveAlongPath(dot, walk(prev, deg)), run_time=1.4, rate_func=smooth)
-            grp, _, _ = probe(deg)
+        for deg in (0, 50, 130):
+            if deg != prev:
+                self.play(MoveAlongPath(dot, walk(prev, deg, 4.0)),
+                          MoveAlongPath(shadow, walk(prev, deg, 0.0)),
+                          run_time=1.4, rate_func=smooth)
+            grp, _ = probe(deg)
             if cur is not None:
                 self.play(FadeOut(cur), run_time=0.4)
             self.play(Create(grp[0]), GrowArrow(grp[1]), Create(grp[2]), run_time=1.2)
             cur = grp
             prev = deg
-            self.wait(1.5)
+            self.wait(1.4)
 
-        # Compare a wide-spaced spot with a tight-spaced spot
-        self.play(FadeOut(cur), FadeOut(note), run_time=0.5)
-        self.play(MoveAlongPath(dot, walk(prev, 0)), run_time=1.2)
-        g0, m0, l0 = probe(0, True)
+        # ---- drop the bowl away and flatten to the map ----------------------
+        self.remove(drop)
+        self.play(FadeOut(cur), FadeOut(surface), FadeOut(rings), FadeOut(ring_lbls),
+                  FadeOut(dot), FadeOut(h_w), run_time=1.0)
+        self.move_camera(phi=0.0, theta=-90 * DEGREES, run_time=2.0)
+
+        floor_lbls = VGroup(*[level_label(c, 0, FLAT_DEG[c], 0.35) for c in self.LEVELS])
+        floor_lbls.set_z_index(9)
+        # The axis letters only earn their place once the map is flat; in the
+        # tilted view the +y end sits inside the bowl.
+        self.add_fixed_orientation_mobjects(*floor_lbls, *ax_lbls)
+        self.wait(1.0)
+
+        # ---- wide contours give a short arrow, tight ones a long arrow ------
+        self.play(MoveAlongPath(shadow, walk(prev, 360, 0.0)), run_time=1.3)
+        g0, m0 = probe(0)
         self.play(Create(g0[0]), GrowArrow(g0[1]), Create(g0[2]), run_time=1.0)
-        l0.next_to(g0[1].get_end(), RIGHT, buff=0.12)
-        self.play(FadeIn(l0), run_time=0.6)
-        self.wait(1.0)
-        self.play(MoveAlongPath(dot, walk(0, 90)), run_time=1.3)
-        g1, m1, l1 = probe(90, True)
+        l0 = MathTex(rf"|\nabla f| = {m0:g}", font_size=MIN_FONT, color=RESULT_COLOR)
+        l0.add_background_rectangle(color=BG, opacity=0.9, buff=0.05)
+        l0.next_to(g0[1].get_end(), RIGHT, buff=0.15)
+        self.add_fixed_orientation_mobjects(l0)
+        self.wait(1.2)
+
+        self.play(MoveAlongPath(shadow, walk(0, 90, 0.0)), run_time=1.3)
+        g1, m1 = probe(90)
         self.play(Create(g1[0]), GrowArrow(g1[1]), Create(g1[2]), run_time=1.0)
+        l1 = MathTex(rf"|\nabla f| = {m1:g}", font_size=MIN_FONT, color=RESULT_COLOR)
+        l1.add_background_rectangle(color=BG, opacity=0.9, buff=0.05)
         l1.next_to(g1[1].get_end(), RIGHT, buff=0.15)
-        self.play(FadeIn(l1), run_time=0.6)
-        self.wait(1.0)
-        tight = MathTex(r"\text{tighter} \to \text{longer}", font_size=MIN_FONT, color=RESULT_COLOR)
-        tight.move_to(np.array([3.3, -1.9, 0.0])).add_background_rectangle(color=BG, opacity=0.9, buff=0.05)
-        self.play(FadeIn(tight), run_time=0.8)
+        self.add_fixed_orientation_mobjects(l1)
+        self.wait(1.2)
+
+        tight = hud(r"\text{tighter} \to \text{longer}", -2.45, RESULT_COLOR, x=3.0)
+        self.add_fixed_in_frame_mobjects(tight)
         self.wait(2.5)
-
-
-# =============================================================================
-# SCENE 4: DirectionalDerivative  (projection of grad f onto u)
-# =============================================================================
-class DirectionalDerivative(Scene):
-    def construct(self):
-        G = np.array([2.0, 1.5])               # grad f at p, drawn at true length
-        gmag = float(np.hypot(*G))             # 2.5
-        alpha = float(np.arctan2(G[1], G[0]))
-        p = np.array([-1.6, -0.3, 0.0])
-
-        def vec(ang, length=1.0):
-            return length * np.array([np.cos(ang), np.sin(ang), 0.0])
-
-        circle = Circle(radius=1.0, color=INK_FAINT, stroke_width=3).move_to(p)
-        p_dot = Dot(p, radius=0.09, color=RESULT_COLOR).set_z_index(10)
-        grad_arrow = Arrow(p, p + np.append(G, 0), buff=0, color=RESULT_COLOR, stroke_width=7,
-                           max_tip_length_to_length_ratio=0.15).set_z_index(3)
-        grad_lbl = MathTex(r"\nabla f", font_size=MIN_FONT, color=RESULT_COLOR)
-        grad_lbl.move_to(p + np.append(G, 0) + np.array([0.15, 0.35, 0.0]))
-        grad_lbl.add_background_rectangle(color=BG, opacity=0.9, buff=0.05)
-        unit_note = MathTex(r"|\mathbf{u}| = 1", font_size=MIN_FONT, color=INK_DIM)
-        unit_note.move_to(p + np.array([-0.7, -1.55, 0.0]))
-
-        th = ValueTracker(0.0)
-
-        def ang():
-            return alpha + th.get_value()
-
-        def dval():
-            return gmag * np.cos(th.get_value())
-
-        def u_arrow():
-            return Arrow(p, p + vec(ang()), buff=0, color=W_COLOR, stroke_width=7,
-                         max_tip_length_to_length_ratio=0.3).set_z_index(6)
-
-        def u_line():
-            return DashedLine(p - vec(ang(), 2.0), p + vec(ang(), 2.0), color=INK_FAINT, stroke_width=2.5)
-
-        def shadow():
-            d = dval()
-            s = p + vec(ang(), d)
-            seg = Line(p, s, color=RESULT_COLOR, stroke_width=14, stroke_opacity=0.9).set_z_index(2) \
-                if abs(d) > 0.02 else VGroup()
-            drop = DashedLine(p + np.append(G, 0), s, color=INK_DIM, stroke_width=3) \
-                if np.linalg.norm(p + np.append(G, 0) - s) > 0.05 else VGroup()
-            return VGroup(seg, drop)
-
-        def u_lbl():
-            a = ang()
-            m = MathTex(r"\mathbf{u}", font_size=MIN_FONT, color=W_COLOR)
-            m.move_to(p + vec(a, 0.55) + vec(a - PI / 2, 0.5))
-            m.add_background_rectangle(color=BG, opacity=0.9, buff=0.05)
-            return m
-
-        u_arr = always_redraw(u_arrow)
-        u_ln = always_redraw(u_line)
-        shd = always_redraw(shadow)
-        u_l = always_redraw(u_lbl)
-
-        # contour tangent (shown only at 90 degrees)
-        tang_dir = vec(alpha + PI / 2)
-        tangent = Line(p - 1.6 * tang_dir, p + 1.6 * tang_dir, color=INK, stroke_width=4)
-        tang_lbl = MathTex(r"\text{contour: slope } 0", font_size=MIN_FONT, color=INK)
-        tang_lbl.move_to(np.array([-2.9, 1.8, 0.0]))
-        tang_lbl.add_background_rectangle(color=BG, opacity=0.9, buff=0.05)
-
-        # readout and plot on the right
-        rx = 2.95
-        readout = MathTex(r"D_{\mathbf{u}} f = \nabla f \cdot \mathbf{u} =", font_size=MIN_FONT, color=INK)
-        readout.move_to(np.array([rx, 2.2, 0.0]))
-        num = DecimalNumber(gmag, num_decimal_places=2, include_sign=False, font_size=MIN_FONT, color=RESULT_COLOR)
-        num.add_updater(lambda d: d.set_value(dval()).move_to(np.array([rx, 1.55, 0.0])))
-        theta_lbl = MathTex(r"\theta = ", font_size=MIN_FONT, color=W_COLOR).move_to(np.array([2.2, 0.85, 0.0]))
-        theta_num = DecimalNumber(0, num_decimal_places=0, unit=r"^\circ", font_size=MIN_FONT, color=W_COLOR)
-        theta_num.add_updater(lambda d: d.set_value(np.degrees(th.get_value())).next_to(theta_lbl, RIGHT, buff=0.15))
-
-        num.update()
-        theta_num.update()
-
-        plot = Axes(x_range=[0, TAU, PI], y_range=[-gmag, gmag, 1], x_length=3.1, y_length=1.9,
-                    axis_config={"stroke_color": INK_DIM, "stroke_width": 2.5, "include_ticks": False},
-                    tips=False).move_to(np.array([3.1, -1.0, 0.0]))
-        curve_full = plot.plot(lambda t: gmag * np.cos(t), x_range=[0, TAU], color=INK_FAINT, stroke_width=3)
-        t_lbls = VGroup(*[
-            MathTex(s_, font_size=MIN_FONT, color=INK_DIM).next_to(plot.c2p(v, 0), DOWN, buff=0.45 if v else 0.45)
-            for s_, v in (("0", 0), (r"\pi", PI), (r"2\pi", TAU))])
-        # put the labels below the lowest point of the curve so they never sit on it
-        for m_ in t_lbls:
-            m_.set_y(plot.c2p(0, -gmag)[1] - 0.3)
-        y_lbl = MathTex(r"D_{\mathbf{u}} f", font_size=MIN_FONT, color=RESULT_COLOR).next_to(plot.y_axis.get_top(), LEFT, buff=0.1)
-        x_lbl = MathTex(r"\theta", font_size=MIN_FONT, color=W_COLOR).next_to(plot.x_axis.get_end(), UP, buff=0.12)
-        trace = always_redraw(lambda: plot.plot(
-            lambda t: gmag * np.cos(t), x_range=[0, max(th.get_value(), 0.01)],
-            color=RESULT_COLOR, stroke_width=5))
-        mover = always_redraw(lambda: Dot(plot.c2p(th.get_value(), dval()), radius=0.1, color=W_COLOR).set_z_index(8))
-
-        def frozen(angle, label):
-            d = Dot(plot.c2p(angle, gmag * np.cos(angle)), radius=0.12, color=HIGHLIGHT).set_z_index(9)
-            t = MathTex(label, font_size=MIN_FONT, color=HIGHLIGHT)
-            off = {0: (0.55, 0.05), 1: (0.0, 0.4), 2: (0.0, 0.5)}[int(round(angle / (PI / 2))) if angle < PI else 2]
-            t.move_to(d.get_center() + np.array([off[0], off[1], 0.0]))
-            t.add_background_rectangle(color=BG, opacity=0.9, buff=0.04)
-            return VGroup(d, t)
-
-        self.add(circle, u_ln, shd, grad_arrow, grad_lbl, u_arr, u_l, p_dot, unit_note,
-                 readout, num, theta_lbl, theta_num, plot, curve_full, t_lbls, y_lbl, x_lbl, trace, mover)
-
-        steep = MathTex(r"\text{steepest}", font_size=MIN_FONT, color=RESULT_COLOR)
-        steep.move_to(np.array([-2.5, 1.0, 0.0]))
-        steep.add_background_rectangle(color=BG, opacity=0.9, buff=0.05)
-        down = MathTex(r"\text{steepest descent}", font_size=MIN_FONT, color=RESULT_COLOR)
-        down.move_to(np.array([-2.2, 1.0, 0.0]))
-        down.add_background_rectangle(color=BG, opacity=0.9, buff=0.05)
-
-        # 0 degrees: along the gradient
-        self.wait(1.0)
-        self.play(FadeIn(steep), FadeIn(frozen(0, f"{gmag:.1f}")), run_time=0.8)
-        self.wait(2.2)
-        self.play(FadeOut(steep), run_time=0.4)
-        # 90 degrees
-        self.play(th.animate.set_value(PI / 2), run_time=3.5, rate_func=smooth)
-        self.play(Create(tangent), FadeIn(tang_lbl), FadeIn(frozen(PI / 2, "0")), run_time=0.8)
-        self.wait(2.2)
-        self.play(FadeOut(tangent), FadeOut(tang_lbl), run_time=0.4)
-        # 180 degrees
-        self.play(th.animate.set_value(PI), run_time=3.5, rate_func=smooth)
-        self.play(FadeIn(down), FadeIn(frozen(PI, f"-{gmag:.1f}")), run_time=0.8)
-        self.wait(2.2)
-        self.play(FadeOut(down), run_time=0.4)
-        # rest of the turn
-        self.play(th.animate.set_value(TAU), run_time=4.0, rate_func=smooth)
-        self.wait(2.0)
 
 
 def f_func(x, y):
@@ -551,168 +490,364 @@ def grad_func(x, y):
 
 
 
-# =============================================================================
-# SCENE 5: SteepestAscent (2D)
-# =============================================================================
-class SteepestAscent(Scene):
-    def construct(self):
-        # Left ~55% of frame width (5.425 units), ~83% of frame height (4.65 units)
-        scale = 1.6
-        x_min, x_max = -1.25, 2.25
-        y_min, y_max = -1.8, 1.2
 
-        axes = Axes(
-            x_range=[x_min, x_max, 1.0],
-            y_range=[y_min, y_max, 1.0],
-            x_length=(x_max - x_min) * scale,
-            y_length=(y_max - y_min) * scale,
-            axis_config={
-                "stroke_color": INK_DIM,
-                "stroke_width": 2,
-                "include_ticks": False,
-            },
-            tips=False,
-        ).move_to(np.array([-1.85, 0.0, 0.0]))
+# =============================================================================
+# SCENE 4: DirectionalDerivative  (the slope of the hill along u)
+# =============================================================================
+# The same hill the ascent clip climbs, f_func, read at one point on its flank.
+# On the flank due west of the peak, so grad f runs along +x and always
+# projects across the screen rather than down it.
+PD = np.array([-0.9, -0.3])
+
+
+class DirectionalDerivative(ThreeDScene):
+    """Turn a unit vector u on the floor and watch two things move together:
+    the shadow of grad f on u, down on the map, and the tilt of the hill along
+    u, up on the surface. They are the same number, D_u f."""
+
+    PHI = 62 * DEGREES
+    THETA = -130 * DEGREES  # camera on p's side, so the point is never behind the dome
+    SHIFT = np.array([-1.95, 0.15, 0.0])   # a true screen offset, see the transpose below
+    XR = (-2.1, 2.25)
+    YR = (-1.8, 1.4)
+
+    def construct(self):
+        self.set_camera_orientation(phi=self.PHI, theta=self.THETA)
+        S = 0.95                                   # screen units per unit of x, y and z
+        x_min, x_max = self.XR
+        y_min, y_max = self.YR
+
+        axes = ThreeDAxes(
+            x_range=[x_min, x_max, 1.0], y_range=[y_min, y_max, 1.0], z_range=[0, 2.4, 1.0],
+            x_length=(x_max - x_min) * S, y_length=(y_max - y_min) * S, z_length=2.4 * S,
+            axis_config={"stroke_width": 2.0, "include_ticks": False, "include_tip": False},
+        )
         axes.x_axis.set_color(X_COLOR)
         axes.y_axis.set_color(Y_COLOR)
+        axes.z_axis.set_opacity(0.0)
+        # SHIFT is where the hill should sit on screen, so it has to be sent
+        # back through the inverse of the camera rotation, not through the
+        # rotation itself.
+        axes.shift(np.dot(self.SHIFT, self.camera.get_rotation_matrix().T))
+        c2p = axes.c2p
 
-        lbl_x = MathTex("x", font_size=MIN_FONT, color=X_COLOR)
-        lbl_x.next_to(axes.x_axis.get_end(), DL, buff=0.10)
-        lbl_x.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
+        surface = Surface(
+            lambda u, v: c2p(u, v, f_func(u, v)),
+            u_range=[x_min, x_max], v_range=[y_min, y_max], resolution=(28, 26),
+            stroke_color=INK_FAINT, stroke_width=0.8, stroke_opacity=0.5,
+        )
+        for face in surface.submobjects:
+            face.set_fill(color=INK_DIM,
+                          opacity=0.08 if (face.u_index + face.v_index) % 2 == 0 else 0.17)
 
-        lbl_y = MathTex("y", font_size=MIN_FONT, color=Y_COLOR)
-        lbl_y.next_to(axes.y_axis.get_end(), LEFT, buff=0.10)
-        lbl_y.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
+        FP = float(f_func(*PD))                    # the hill's height at p
+        G = grad_func(*PD)
+        GM = float(np.hypot(*G))
+        AL = float(np.arctan2(G[1], G[0]))
 
-        # Elliptical contour lines
-        peak_pos = axes.c2p(0.5, -0.3)
-        levels = [0.65, 0.90, 1.15, 1.40, 1.65, 1.85]
-        opacities = [0.06, 0.11, 0.16, 0.22, 0.28, 0.35]
+        def flat(v):
+            return c2p(PD[0] + v[0], PD[1] + v[1], 0.0)
 
-        contour_mobs = []
-        for lvl, opac in zip(levels, opacities):
+        P3 = c2p(PD[0], PD[1], FP)
+        P0 = flat(np.zeros(2))
+        drop = DashedLine(P3, P0, color=INK_FAINT, stroke_width=2.5)
+        dot_p = Dot3D(P3, radius=0.09, color=RESULT_COLOR).set_z_index(20)
+        dot_f = Dot3D(P0, radius=0.06, color=RESULT_COLOR).set_z_index(11)
+
+        circle = ParametricFunction(lambda t: flat(np.array([np.cos(t), np.sin(t)])),
+                                    t_range=[0, TAU], color=INK_FAINT,
+                                    stroke_width=3).set_z_index(10)
+        grad_arrow = Arrow3D(P0, flat(G), color=RESULT_COLOR, thickness=0.030,
+                             height=0.22, base_radius=0.085).set_z_index(14)
+        grad_lbl = MathTex(r"\nabla f", font_size=MIN_FONT, color=RESULT_COLOR)
+        grad_lbl.move_to(flat(G * 1.0 + np.array([0.34, -0.2])))
+        grad_lbl.add_background_rectangle(color=BG, opacity=0.9, buff=0.05)
+
+        # The contour ring through p, cut on the hill. Only the near arc is
+        # drawn: manim cannot hide the far half behind the dome, and a full
+        # ring then reads as a hoop floating above the surface.
+        a_c = np.sqrt(2.5 * np.log(2.0 / FP))
+        b_c = a_c / np.sqrt(2.0)
+        t_near = self.THETA
+        ring = ParametricFunction(
+            lambda t: c2p(0.5 + a_c * np.cos(t), -0.3 + b_c * np.sin(t), FP),
+            t_range=[t_near - 1.75, t_near + 1.75], color=INK,
+            stroke_width=5).set_z_index(16)
+
+        th = ValueTracker(0.0)
+
+        def ang():
+            return AL + th.get_value()
+
+        def uvec():
+            a = ang()
+            return np.array([np.cos(a), np.sin(a)])
+
+        def dval():
+            return GM * np.cos(th.get_value())
+
+        def u_arrow():
+            return Arrow3D(P0, flat(uvec()), color=W_COLOR, thickness=0.030,
+                           height=0.2, base_radius=0.08).set_z_index(15)
+
+        def u_line():
+            d = uvec()
+            return DashedLine(flat(-1.4 * d), flat(1.4 * d),
+                              color=INK_FAINT, stroke_width=2.5).set_z_index(9)
+
+        def shade():
+            d = dval()
+            foot = uvec() * d
+            seg = Line(P0, flat(foot), color=RESULT_COLOR, stroke_width=13,
+                       stroke_opacity=0.9).set_z_index(12) if abs(d) > 0.03 else VGroup()
+            tie = DashedLine(flat(G), flat(foot), color=INK_DIM,
+                             stroke_width=2.5).set_z_index(12) \
+                if float(np.linalg.norm(G - foot)) > 0.05 else VGroup()
+            return VGroup(seg, tie)
+
+        def slice_curve():
+            d = uvec()
+            return ParametricFunction(
+                lambda t: c2p(PD[0] + t * d[0], PD[1] + t * d[1],
+                              f_func(PD[0] + t * d[0], PD[1] + t * d[1])),
+                t_range=[-1.0, 1.0], color=V_COLOR, stroke_width=6).set_z_index(17)
+
+        def tangent():
+            d, m, e = uvec(), dval(), 0.7
+            return Line(c2p(PD[0] - e * d[0], PD[1] - e * d[1], FP - e * m),
+                        c2p(PD[0] + e * d[0], PD[1] + e * d[1], FP + e * m),
+                        color=RESULT_COLOR, stroke_width=7).set_z_index(18)
+
+        u_arr = always_redraw(u_arrow)
+        u_ln = always_redraw(u_line)
+        shd = always_redraw(shade)
+        sl = always_redraw(slice_curve)
+        tg = always_redraw(tangent)
+
+        u_lbl = MathTex(r"\mathbf{u}", font_size=MIN_FONT, color=W_COLOR)
+        u_lbl.add_background_rectangle(color=BG, opacity=0.9, buff=0.05)
+
+        def place_u(m):
+            d = uvec()
+            m.move_to(flat(1.05 * d + 0.42 * np.array([-d[1], d[0]])))
+
+        u_lbl.add_updater(place_u)
+        place_u(u_lbl)
+
+        # ---- the right column: the rule, the reading, the cosine ------------
+        rx = 3.1
+        h_def = hud(r"D_{\mathbf{u}} f = \nabla f \cdot \mathbf{u}", 2.4, INK, x=rx)
+        h_unit = hud(r"|\mathbf{u}| = 1", 1.72, INK_DIM, x=rx)
+
+        plot = Axes(x_range=[0, TAU, PI], y_range=[-GM, GM, 1], x_length=2.6, y_length=1.5,
+                    axis_config={"stroke_color": INK_DIM, "stroke_width": 2.5,
+                                 "include_ticks": False}, tips=False)
+        plot.move_to(np.array([rx, -1.55, 0.0]))
+        curve_full = plot.plot(lambda t: GM * np.cos(t), x_range=[0, TAU],
+                               color=INK_FAINT, stroke_width=3)
+        t_lbls = VGroup(*[MathTex(s_, font_size=MIN_FONT, color=INK_DIM).move_to(
+            np.array([plot.c2p(v, 0)[0], plot.c2p(0, -GM)[1] - 0.34, 0.0]))
+            for s_, v in (("0", 0), (r"\pi", PI), (r"2\pi", TAU))])
+        y_lbl = MathTex(r"D_{\mathbf{u}} f", font_size=MIN_FONT, color=RESULT_COLOR)
+        y_lbl.next_to(plot.y_axis.get_top(), LEFT, buff=0.1)
+        x_lbl = MathTex(r"\theta", font_size=MIN_FONT, color=W_COLOR)
+        x_lbl.next_to(plot.x_axis.get_end(), UP, buff=0.12)
+
+        # Both are single VMobjects, so become() never swaps their families and
+        # the fixed-in-frame flag survives every redraw.
+        trace = always_redraw(lambda: plot.plot(
+            lambda t: GM * np.cos(t), x_range=[0, max(th.get_value(), 0.01)],
+            color=RESULT_COLOR, stroke_width=5))
+        mover = always_redraw(lambda: Dot(plot.c2p(th.get_value(), dval()),
+                                          radius=0.09, color=W_COLOR))
+
+        self.add(axes, surface, circle, u_ln, shd, grad_arrow, u_arr, drop, sl, tg,
+                 dot_f, dot_p)
+        self.add_fixed_orientation_mobjects(grad_lbl, u_lbl)
+        self.add_fixed_in_frame_mobjects(h_def, h_unit, plot, curve_full, t_lbls,
+                                         y_lbl, x_lbl, trace, mover)
+
+        def stop(deg, tex, colour):
+            # Two short lines, never one long one: a single line runs off the
+            # right edge of the frame.
+            a = hud(rf"\theta = {deg}^\circ", 1.05, colour, x=rx)
+            b = hud(tex, 0.38, colour, x=rx)
+            d = Dot(plot.c2p(np.radians(deg), GM * np.cos(np.radians(deg))),
+                    radius=0.11, color=HIGHLIGHT)
+            self.add_fixed_in_frame_mobjects(a, b, d)
+            return VGroup(a, b)
+
+        def note(tex, colour):
+            m = hud(tex, 2.4, colour, x=-3.05)
+            self.add_fixed_in_frame_mobjects(m)
+            return m
+
+        # theta = 0: straight up the hill
+        self.wait(1.2)
+        r0 = stop(0, rf"D_{{\mathbf{{u}}}} f = {GM:.2f}", RESULT_COLOR)
+        n0 = note(r"\text{steepest climb}", RESULT_COLOR)
+        self.wait(2.4)
+        self.play(FadeOut(n0), FadeOut(r0), run_time=0.4)
+
+        # theta = 90: along the contour, the hill is level
+        self.play(th.animate.set_value(PI / 2), run_time=3.5, rate_func=smooth)
+        r1 = stop(90, r"D_{\mathbf{u}} f = 0", INK)
+        n1 = note(r"\text{contour: slope } 0", INK)
+        self.play(Create(ring), run_time=1.0)
+        self.wait(2.4)
+        self.play(FadeOut(n1), FadeOut(r1), FadeOut(ring), run_time=0.4)
+
+        # theta = 180: straight down
+        self.play(th.animate.set_value(PI), run_time=3.5, rate_func=smooth)
+        r2 = stop(180, rf"D_{{\mathbf{{u}}}} f = -{GM:.2f}", W_COLOR)
+        n2 = note(r"\text{steepest descent}", W_COLOR)
+        self.wait(2.4)
+        self.play(FadeOut(n2), FadeOut(r2), run_time=0.4)
+
+        # finish the turn
+        self.play(th.animate.set_value(TAU), run_time=4.0, rate_func=smooth)
+        self.wait(2.0)
+
+
+# =============================================================================
+# SCENE 5: SteepestAscent  (the hill itself, climbed)
+# =============================================================================
+class SteepestAscent(ThreeDScene):
+    """The hill f_func as a surface, its contour map on the floor underneath,
+    and the ascent rule walked up the hillside: each amber arrow is one step of
+    x_{k+1} = x_k + 0.4 grad f, with its shadow on the map below. The violet
+    arrows run the same rule with the sign flipped and go downhill."""
+
+    PHI = 62 * DEGREES
+    THETA = -70 * DEGREES   # -50 sends the descent arrows straight down the screen
+    SHIFT = np.array([-1.8, -1.6, 0.0])     # where the hill sits on screen
+    LEVELS = (0.65, 0.90, 1.15, 1.40, 1.65, 1.85)
+    PEAK = (0.5, -0.3)
+
+    def construct(self):
+        self.set_camera_orientation(phi=self.PHI, theta=self.THETA)
+        x_min, x_max = -1.25, 2.9
+        y_min, y_max = -1.8, 1.2
+        S = 1.05                                  # screen units per unit of x, y
+
+        axes = ThreeDAxes(
+            x_range=[x_min, x_max, 1.0], y_range=[y_min, y_max, 1.0], z_range=[0, 2.4, 1.0],
+            x_length=(x_max - x_min) * S, y_length=(y_max - y_min) * S, z_length=2.2 * 1.2,
+            axis_config={"stroke_width": 2.5, "include_ticks": False, "include_tip": False},
+        )
+        axes.x_axis.set_color(X_COLOR)
+        axes.y_axis.set_color(Y_COLOR)
+        axes.z_axis.set_opacity(0.0)
+        axes.shift(np.dot(self.SHIFT, self.camera.get_rotation_matrix()))
+        c2p = axes.c2p
+
+        surface = Surface(
+            lambda u, v: c2p(u, v, f_func(u, v)),
+            u_range=[x_min, x_max], v_range=[y_min, y_max], resolution=(28, 24),
+            stroke_color=INK_FAINT, stroke_width=0.8, stroke_opacity=0.5,
+        )
+        for face in surface.submobjects:
+            face.set_fill(color=INK_DIM,
+                          opacity=0.07 if (face.u_index + face.v_index) % 2 == 0 else 0.15)
+
+        # The contour map, on the floor under the hill.
+        contours = VGroup()
+        for lvl in self.LEVELS:
             a = np.sqrt(2.5 * np.log(2.0 / lvl))
             b = a / np.sqrt(2.0)
-            ell = Ellipse(
-                width=2.0 * a * scale,
-                height=2.0 * b * scale,
-                stroke_color=INK_DIM,
-                stroke_width=1.5,
-                fill_color=V_COLOR,
-                fill_opacity=opac,
-            ).move_to(peak_pos)
-            contour_mobs.append(ell)
+            contours.add(ParametricFunction(
+                lambda t, a=a, b=b: c2p(self.PEAK[0] + a * np.cos(t),
+                                        self.PEAK[1] + b * np.sin(t), 0.0),
+                t_range=[0, TAU], color=INK_DIM, stroke_width=2.5))
+        contours.set_z_index(2)
 
-        contours_group = VGroup(*contour_mobs)
-        peak_dot = Dot(peak_pos, radius=0.07, color=V_COLOR)
+        summit = c2p(*self.PEAK, f_func(*self.PEAK))
+        peak_dot = Dot3D(summit, radius=0.09, color=V_COLOR)
+        peak_pin = DashedLine(summit, c2p(*self.PEAK, 0.0), color=INK_FAINT, stroke_width=2.5)
         peak_lbl = MathTex(r"\text{peak}", font_size=MIN_FONT, color=V_COLOR)
-        peak_lbl.next_to(peak_pos, UP, buff=0.22)
-        peak_lbl.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
+        peak_lbl.move_to(summit + np.array([0.0, 0.45, 0.0]))
+        peak_lbl.add_background_rectangle(color=BG, opacity=0.85, buff=0.06)
 
-        # Exactly two lines in the right column, centered at x = 3.10 (clear of all edges)
-        right_x = 2.9
-        c_ascent = MathTex(r"\text{ascent: follow } +\nabla f", font_size=MIN_FONT, color=RESULT_COLOR)
-        c_ascent.move_to(np.array([right_x, 2.05, 0.0]))
-        c_ascent.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
+        ax_lbls = VGroup()
+        for ch, col, pos in (("x", X_COLOR, (x_max + 0.28, 0.0, 0.0)),
+                             ("y", Y_COLOR, (0.0, y_max + 0.32, 0.0))):
+            m = MathTex(ch, font_size=MIN_FONT, color=col).move_to(c2p(*pos))
+            m.add_background_rectangle(color=BG, opacity=0.8, buff=0.04)
+            ax_lbls.add(m)
 
-        c_descent = MathTex(r"\text{descent: follow } -\nabla f", font_size=MIN_FONT, color=W_COLOR)
-        c_descent.move_to(np.array([right_x, -0.55, 0.0]))
-        c_descent.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
+        def march(start, lr, n):
+            """n steps of x <- x + lr * grad f from start."""
+            pts = [np.array(start, dtype=float)]
+            for _ in range(n):
+                pts.append(pts[-1] + lr * grad_func(*pts[-1]))
+            return pts
 
-        c_rule = MathTex(r"\mathbf{x}_{k+1} = \mathbf{x}_k + 0.4\,\nabla f", font_size=MIN_FONT, color=RESULT_COLOR)
-        c_rule.move_to(np.array([right_x, 1.25, 0.0]))
-        c_rule.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
-        c_shrink = MathTex(r"\text{steps get shorter}", font_size=MIN_FONT, color=INK_DIM)
-        c_shrink.move_to(np.array([right_x, 0.45, 0.0]))
-        c_shrink.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
-        c_rule2 = MathTex(r"\mathbf{w}_{k+1} = \mathbf{w}_k - 0.32\,\nabla f", font_size=MIN_FONT, color=W_COLOR)
-        c_rule2.move_to(np.array([right_x, -1.35, 0.0]))
-        c_rule2.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
+        def climb(p, q, color):
+            """One step, drawn on the hillside, with its shadow on the map."""
+            a, b = c2p(p[0], p[1], f_func(*p)), c2p(q[0], q[1], f_func(*q))
+            L = float(np.linalg.norm(b - a))
+            arr = Arrow3D(a, b, color=color, thickness=0.036,
+                          height=min(0.26, 0.55 * L), base_radius=min(0.095, 0.22 * L))
+            arr.set_z_index(7)
+            sh = DashedLine(c2p(p[0], p[1], 0.0), c2p(q[0], q[1], 0.0),
+                            color=color, stroke_width=3).set_opacity(0.45)
+            sh.set_z_index(4)
+            return arr, sh
 
-        # -------------------------------------------------------------
-        # Part 1: Steepest Ascent to peak
-        # -------------------------------------------------------------
-        p_start = np.array([-1.0, -1.2])
-        dot_start = Dot(axes.c2p(*p_start), radius=0.08, color=RESULT_COLOR)
-        lbl_start = MathTex(r"\mathbf{x}_0", font_size=MIN_FONT, color=RESULT_COLOR)
-        lbl_start.next_to(axes.c2p(*p_start), RIGHT, buff=0.15)
-        lbl_start.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
+        def marker(p, color, tex, shift):
+            d = Dot3D(c2p(p[0], p[1], f_func(*p)), radius=0.08, color=color).set_z_index(9)
+            s = Dot3D(c2p(p[0], p[1], 0.0), radius=0.055, color=color).set_z_index(5)
+            s.set_opacity(0.55)
+            m = MathTex(tex, font_size=MIN_FONT, color=color)
+            m.move_to(d.get_center() + shift)
+            m.add_background_rectangle(color=BG, opacity=0.85, buff=0.06)
+            return d, s, m
 
-        # Calculate ascent trajectory
-        ascent_pts = [p_start]
-        lr = 0.40
-        curr = p_start.copy()
-        for _ in range(6):
-            g = grad_func(curr[0], curr[1])
-            curr = curr + lr * g
-            ascent_pts.append(curr.copy())
+        up = march((-1.0, -1.2), 0.40, 6)
+        # Due east of the peak, so every descent step runs along +x and
+        # reads as a step across the screen, not a drop through the hill.
+        down = march((1.6, -0.3), -0.32, 3)
 
-        ascent_arrows = []
-        for i in range(len(ascent_pts) - 1):
-            p1 = axes.c2p(*ascent_pts[i])
-            p2 = axes.c2p(*ascent_pts[i + 1])
-            arr = Arrow(
-                p1, p2,
-                buff=0,
-                stroke_width=4.5,
-                max_tip_length_to_length_ratio=0.30,
-                color=RESULT_COLOR,
-            )
-            ascent_arrows.append(arr)
+        d0, s0, l0 = marker(up[0], RESULT_COLOR, r"\mathbf{x}_0", np.array([0.45, 0.1, 0.0]))
+        dq, sq, lq = marker(down[0], W_COLOR, r"\mathbf{w}_0", np.array([0.45, 0.2, 0.0]))
 
-        flash_peak = Dot(peak_pos, radius=0.18, color=HIGHLIGHT)
+        rx = 2.85
+        h_asc = hud(r"\text{ascent: follow } +\nabla f", 2.35, RESULT_COLOR, x=rx)
+        h_rule = hud(r"\mathbf{x}_{k+1} = \mathbf{x}_k + 0.4\,\nabla f", 1.55, RESULT_COLOR, x=rx)
+        h_short = hud(r"\text{steps get shorter}", 0.75, INK_DIM, x=rx)
+        h_desc = hud(r"\text{descent: follow } -\nabla f", -0.45, W_COLOR, x=rx)
+        h_rule2 = hud(r"\mathbf{w}_{k+1} = \mathbf{w}_k - 0.32\,\nabla f", -1.25, W_COLOR, x=rx)
 
-        # -------------------------------------------------------------
-        # Part 2: Contrast with Steepest Descent
-        # -------------------------------------------------------------
-        q_start = np.array([1.1, -0.6])
-        dot_q = Dot(axes.c2p(*q_start), radius=0.08, color=W_COLOR)
-        lbl_q = MathTex(r"\mathbf{w}_0", font_size=MIN_FONT, color=W_COLOR)
-        lbl_q.next_to(axes.c2p(*q_start), UR, buff=0.10)
-        lbl_q.add_background_rectangle(color=BG, opacity=0.85, buff=0.08)
+        # ---- open on the hill with its map and the starting point ----------
+        self.add(axes, surface, contours, peak_pin, peak_dot, d0, s0)
+        self.add_fixed_orientation_mobjects(peak_lbl, l0, *ax_lbls)
+        self.add_fixed_in_frame_mobjects(h_asc, h_rule)
+        self.wait(1.8)
 
-        descent_pts = [q_start]
-        curr_d = q_start.copy()
-        for _ in range(3):
-            g = grad_func(curr_d[0], curr_d[1])
-            curr_d = curr_d - 0.32 * g
-            descent_pts.append(curr_d.copy())
-
-        descent_arrows = []
-        for i in range(len(descent_pts) - 1):
-            q1 = axes.c2p(*descent_pts[i])
-            q2 = axes.c2p(*descent_pts[i + 1])
-            arr = Arrow(
-                q1, q2,
-                buff=0,
-                stroke_width=4.5,
-                max_tip_length_to_length_ratio=0.30,
-                color=W_COLOR,
-            )
-            descent_arrows.append(arr)
-
-        # 1. First frame: givens present
-        self.add(
-            axes, lbl_x, lbl_y, contours_group, peak_dot, peak_lbl,
-            dot_start, lbl_start, c_ascent, c_rule,
-        )
-        self.wait(1.5)
-
-        # 2. Draw steepest ascent steps one by one
-        for arr in ascent_arrows:
-            self.play(GrowArrow(arr), run_time=0.45)
+        # ---- climb ---------------------------------------------------------
+        for p, q in zip(up, up[1:]):
+            arr, sh = climb(p, q, RESULT_COLOR)
+            self.play(Create(arr), Create(sh), run_time=0.5)
         self.wait(0.5)
-        self.play(FadeIn(c_shrink), run_time=0.8)
+        self.add_fixed_in_frame_mobjects(h_short)
+        self.wait(1.2)
 
-        # Flash peak
-        self.play(FadeIn(flash_peak, run_time=0.25))
-        self.play(FadeOut(flash_peak, run_time=0.25))
+        flash = Dot3D(summit, radius=0.18, color=HIGHLIGHT)
+        self.play(FadeIn(flash), run_time=0.3)
+        self.play(FadeOut(flash), run_time=0.3)
         self.wait(0.8)
 
-        # 3. Contrast with steepest descent
-        self.play(FadeIn(dot_q), Write(lbl_q), FadeIn(c_descent), FadeIn(c_rule2), run_time=1.0)
-        self.wait(0.4)
+        # ---- the same rule with the sign flipped runs downhill -------------
+        self.add(dq, sq)
+        self.add_fixed_orientation_mobjects(lq)
+        self.add_fixed_in_frame_mobjects(h_desc, h_rule2)
+        self.wait(0.8)
+        for p, q in zip(down, down[1:]):
+            arr, sh = climb(p, q, W_COLOR)
+            self.play(Create(arr), Create(sh), run_time=0.5)
+        self.wait(1.2)
 
-        for arr in descent_arrows:
-            self.play(GrowArrow(arr), run_time=0.45)
-        self.wait(4.0)
+        self.begin_ambient_camera_rotation(rate=0.035)
+        self.wait(5.0)
+        self.stop_ambient_camera_rotation()
+        self.wait(1.5)

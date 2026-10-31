@@ -109,6 +109,20 @@ window.Plane = class Plane {
     }, this.layer);
   }
 
+  // The graph of y = f(x) as a polyline, sampled across the plane.
+  curve(f, color, { width = 4, from = this.o.xmin, to = this.o.xmax, steps = 400, opacity = 1, dashed = false } = {}) {
+    const pts = [];
+    for (let i = 0; i <= steps; i++) {
+      const x = from + ((to - from) * i) / steps;
+      pts.push(this.px([x, f(x)]).join(","));
+    }
+    return svgEl("polyline", {
+      points: pts.join(" "), fill: "none", stroke: color, "stroke-width": width, opacity,
+      "stroke-linecap": "round", "stroke-linejoin": "round",
+      "stroke-dasharray": dashed ? "8 7" : "none",
+    }, this.layer);
+  }
+
   dot(p, color, r = 6) {
     const [x, y] = this.px(p);
     return svgEl('circle', { cx: x, cy: y, r, fill: color }, this.layer);

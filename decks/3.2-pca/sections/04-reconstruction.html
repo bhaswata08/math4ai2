@@ -56,11 +56,11 @@
   <h2>Could another direction lose less?</h2>
   <ul>
     <li>We only tried ditching the eigenvectors. A tilted direction in between might do better.</li>
-    <li class="fragment">It cannot. The next slides show why, in 2D with one direction, where the whole circle of choices fits on a slide.</li>
-    <li class="fragment">Setup for 2D: keep one unit direction \(\mathbf p\). Each point becomes its <b>shadow</b> \((\mathbf x_i^T\mathbf p)\,\mathbf p\); the leftover \(\mathbf x_i - (\mathbf x_i^T\mathbf p)\,\mathbf p\) is what we lose.</li>
+    <li class="fragment">It cannot. The best direction is always the top eigenvector, and to keep \(k\) directions you take the eigenvectors of the \(k\) largest eigenvalues. The loss is the sum of the eigenvalues you drop.</li>
   </ul>
 </section>
 
+<!--
 <section class="act-body">
   <div class="act-tag"><b>Act 4</b> / Pythagoras</div>
   <h2>Kept plus lost is fixed</h2>
@@ -100,6 +100,7 @@
     <li>The same holds in \(n\) dimensions. To keep \(k\) directions, take the eigenvectors of the \(k\) largest eigenvalues. The loss is the sum of the eigenvalues you drop.</li>
   </ul>
 </section>
+-->
 
 <section class="clip-slide">
   <h2>Keep one direction</h2>

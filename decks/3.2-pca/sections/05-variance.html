@@ -37,6 +37,85 @@
 </section>
 
 <section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / Worked example, step 1</div>
+  <h2>Centre the columns</h2>
+  <p>Four samples, two features, straight off the measuring instrument:</p>
+  <div class="cols" style="align-items:center">
+    <div>
+      <p>$$X_{\text{raw}} = \begin{bmatrix}7&5\\3&1\\6&2\\4&4\end{bmatrix}$$</p>
+      <p class="cdim">Column means: \(\bar x = \tfrac{20}{4} = 5\), \(\bar y = \tfrac{12}{4} = 3\).</p>
+    </div>
+    <div class="fragment">
+      <p>$$X = \begin{bmatrix}7-5&5-3\\3-5&1-3\\6-5&2-3\\4-5&4-3\end{bmatrix} = \begin{bmatrix}2&2\\-2&-2\\1&-1\\-1&1\end{bmatrix}$$</p>
+    </div>
+  </div>
+  <p class="takeaway fragment">Both features are in the same units here, so no standardising. These are the four points from Act 2.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / Worked example, step 2</div>
+  <h2>Build the covariance matrix</h2>
+  <div class="cols" style="align-items:center">
+    <div>
+      <p>$$X^TX = \begin{bmatrix}4+4+1+1 & 4+4-1-1\\ 4+4-1-1 & 4+4+1+1\end{bmatrix}$$</p>
+    </div>
+    <div>
+      <p>$$C = \tfrac14 X^TX = \begin{bmatrix}2.5&1.5\\1.5&2.5\end{bmatrix}$$</p>
+      <p class="cdim">\(m = 4\), and \(C\) is \(2 \times 2\): one row and column per feature.</p>
+    </div>
+  </div>
+  <p class="takeaway">Variance 2.5 in each feature, covariance 1.5 between them. Total variance \(2.5 + 2.5 = 5\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / Worked example, step 3</div>
+  <h2>Eigenvectors and eigenvalues of \(C\)</h2>
+  <div class="eq-big">$$(2.5 - \lambda)^2 - 1.5^2 = 0 \quad\Rightarrow\quad \lambda_1 = 4,\ \ \lambda_2 = 1$$</div>
+  <div class="cols" style="align-items:center">
+    <div>
+      <p>\(C - 4I = \begin{bmatrix}-1.5&1.5\\1.5&-1.5\end{bmatrix}\), so <span class="cr">\(\mathbf p_1 = \tfrac{1}{\sqrt2}(1, 1)\)</span>.</p>
+      <p>\(C - I = \begin{bmatrix}1.5&1.5\\1.5&1.5\end{bmatrix}\), so <span class="cw">\(\mathbf p_2 = \tfrac{1}{\sqrt2}(1, -1)\)</span>.</p>
+    </div>
+    <div>
+      <p class="cdim">Check: \(\lambda_1 + \lambda_2 = 5\), the total variance from step 2. Sorted largest first, so \(\mathbf p_1\) is the first principal component.</p>
+    </div>
+  </div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / Worked example, steps 4 and 5</div>
+  <h2>Keep one component and project</h2>
+  <div class="cols" style="align-items:center">
+    <div>
+      <p>Take \(k = 1\): \(P_1 = \tfrac{1}{\sqrt2}\begin{bmatrix}1\\1\end{bmatrix}\), size \(2 \times 1\).</p>
+      <p class="cdim">Share kept: \(\dfrac{\lambda_1}{\lambda_1 + \lambda_2} = \dfrac45 = 80\%\).</p>
+    </div>
+    <div class="fragment">
+      <p>$$\hat X_1 = XP_1 = \begin{bmatrix}2\sqrt2\\-2\sqrt2\\0\\0\end{bmatrix} \approx \begin{bmatrix}2.83\\-2.83\\0\\0\end{bmatrix}$$</p>
+      <p class="cdim">Size \(4 \times 1\): each point is now one number.</p>
+    </div>
+  </div>
+  <p class="takeaway fragment">Variance of that column: \(\tfrac14(8 + 8 + 0 + 0) = 4 = \lambda_1\), as promised.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / Worked example, the loss</div>
+  <h2>What the 20% cost us</h2>
+  <p>Rebuild each sample from its one number: \(\ \mathbf{\hat x}_i = \alpha_i\,\mathbf p_1 + (\bar x, \bar y)\). Sample 3 has \(\alpha_3 = 0\), so it rebuilds as \(0 \cdot \mathbf p_1 + (5,3) = (5,3)\).</p>
+  <table style="font-size:0.85em">
+    <thead><tr><th>sample</th><th>original</th><th>\(\alpha_i\)</th><th>rebuilt</th><th>lost</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>\((7, 5)\)</td><td>\(2\sqrt2\)</td><td>\((7, 5)\)</td><td>\(0\)</td></tr>
+      <tr><td>2</td><td>\((3, 1)\)</td><td>\(-2\sqrt2\)</td><td>\((3, 1)\)</td><td>\(0\)</td></tr>
+      <tr><td>3</td><td>\((6, 2)\)</td><td>\(0\)</td><td>\((5, 3)\)</td><td>\(\|(1,-1)\|^2 = 2\)</td></tr>
+      <tr><td>4</td><td>\((4, 4)\)</td><td>\(0\)</td><td>\((5, 3)\)</td><td>\(\|(-1,1)\|^2 = 2\)</td></tr>
+    </tbody>
+  </table>
+  <p class="cdim">Samples 1 and 2 sat on the <span class="cr">\(\mathbf p_1\)</span> line through the mean, so they come back exactly. Samples 3 and 4 were off it, and collapse onto the mean.</p>
+  <p class="takeaway fragment">Mean squared error \(= \tfrac14(0 + 0 + 2 + 2) = 1 = \lambda_2\), the eigenvalue we dropped.</p>
+</section>
+
+<section class="act-body">
   <div class="act-tag"><b>Act 5</b> / Choosing \(k\)</div>
   <h2>How many components?</h2>
   <div class="eq-big">$$\text{share kept} = \frac{\lambda_1 + \dots + \lambda_k}{\lambda_1 + \dots + \lambda_n}$$</div>
