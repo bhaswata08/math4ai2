@@ -38,19 +38,23 @@ circle, which has two highs (1.5) and two lows (0.5).
   "Second example", with LambdaIsPrice.
 - Credits slide (`00-open.html`) names Bazett.
 
+**4.4 Act 2, second example** (after Brian Douglas, MATLAB Tech Talk): the
+lagrange.py scenes ConstrainedSlice, LevelOnTheCurve, LagrangeSystem and
+ShadowPrice are fixed and in the deck, after the Bazett worked example.
+- Layout: a smaller bowl further left, and a text column at x = 0 that
+  clears its rim.
+- Sign convention: the scenes now use the deck recipe L = f - lambda (g - c),
+  so lambda = -3 and dJ*/dt = lambda.
+- ShadowPrice replaces LambdaIsPrice, whose source scene was gone. The
+  rectangle example is dropped, and the unused clips (ConstraintWalk,
+  TangencyGradients, LambdaIsPrice) are deleted.
+- Douglas is on the credits slide.
+
 ## Not done
 
-- `anim/4.4-constrained/lagrange.py` holds a separate in-flight rewrite from
-  another session, after Brian Douglas (MATLAB Tech Talk): ConstrainedSlice,
-  LevelOnTheCurve, LagrangeSystem and ShadowPrice, all on "minimise
-  x1^2 + x2^2 on the line x1 + x2 + 3 = 0". They are not wired into the deck.
-  Drafts in `build/drafts/decks/4.4-constrained/` show defects: the bowl rim
-  is clipped at the top and covers the title, and the LagrangeSystem
-  caption "the lambda row hands the constraint back" runs off the right
-  edge. Rendering its LagrangeSystem at -qh would overwrite the old (now
-  unused) `LagrangeSystem.mp4`.
-- The old clips ConstraintWalk, TangencyGradients and LagrangeSystem are no
-  longer referenced by the deck but are still in `assets/clips/`.
+- The day-4 release tag still points at f5ca4a2. The assets are current,
+  but moving the tag needs a force-push, which the harness blocks. Run
+  `git tag -f day-4 <sha> && git push -f origin day-4` by hand if wanted.
 
 ## Gotchas found this session
 

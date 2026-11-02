@@ -1,7 +1,10 @@
 <!-- ============================================================
      ACT 2 of 4. Lagrange multipliers. Budget: 25 min.
      Source: worked example after Trefor Bazett, "Lagrange Multipliers |
-     Geometric Meaning & Full Example"; LambdaIsPrice built for this course.
+     Geometric Meaning & Full Example". Second example after Brian Douglas,
+     MATLAB Tech Talk "Constrained Optimization: Intuition behind the
+     Lagrangian" (lagrange.py: ConstrainedSlice, LevelOnTheCurve,
+     LagrangeSystem, ShadowPrice).
      Goal: students set up and solve ∇f = λ∇g, g = c, and see two
      uses in ML. Inequality constraints (KKT) are named in Act 3 only.
      ============================================================ -->
@@ -69,23 +72,32 @@
   <p class="takeaway fragment" style="font-size:0.95em">The equations only find candidates; they do not say which is a maximum. Evaluating \(f\) sorts them, and matches the two highs and two lows of Act 1.</p>
 </section>
 
-<section class="act-body">
-  <div class="act-tag"><b>Act 2</b> / Second example</div>
-  <h2>Largest rectangle with perimeter 4</h2>
-  <div style="font-size:1.1em">$$\max\; xy \quad \text{s.t.}\quad 2x + 2y = 4$$</div>
-  <ol class="practice" style="font-size:1.05em">
-    <li class="fragment">Gradients: \(\nabla f = (y,\, x)\) and \(\nabla g = (2,\, 2)\).</li>
-    <li class="fragment">\(\nabla f = \lambda\nabla g\) gives \(y = 2\lambda\) and \(x = 2\lambda\), so \(x = y\).</li>
-    <li class="fragment">Constraint: \(2x + 2y = 4\) gives \(x + y = 2\), so \(x = y = 1\).</li>
-    <li class="fragment">\(\lambda = \tfrac12\): the best rectangle is the unit square, area \(1\).</li>
-  </ol>
+<section class="clip-slide">
+  <h2>Second example: a bowl cut by a wall</h2>
+  <video class="clip" src="assets/clips/ConstrainedSlice.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Minimise \(J = x_1^2 + x_2^2\) on the line \(x_1 + x_2 + 3 = 0\). The wall over the line cuts the bowl in a parabola; its lowest point is the answer, \(J = 4.5\).</p>
+</section>
+
+<section class="clip-slide">
+  <h2>The same picture: a level curve touches</h2>
+  <video class="clip" src="assets/clips/LevelOnTheCurve.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Where a level curve only touches the line, <span class="cr">\(\nabla J\)</span> lies along <span class="cw">\(\nabla c\)</span>: \(\nabla J = -3\,\nabla c\), so \(\lambda = -3\).</p>
+</section>
+
+<section class="clip-slide">
+  <h2>The Lagrangian does the bookkeeping</h2>
+  <video class="clip" src="assets/clips/LagrangeSystem.mp4"></video>
+  <span class="fragment clip-play"></span>
+  <p class="caption">Setting every partial of \(\mathcal L\) to zero gives \(\nabla J = \lambda\nabla c\) and the constraint, in one system.</p>
 </section>
 
 <section class="clip-slide">
   <h2>What \(\lambda\) means</h2>
-  <video class="clip" src="assets/clips/LambdaIsPrice.mp4"></video>
+  <video class="clip" src="assets/clips/ShadowPrice.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">\(\lambda\) is the rate at which the best value improves per unit of constraint relaxed: the shadow price.</p>
+  <p class="caption">Move the wall by \(t\) and the best value changes at rate \(\lambda\): the shadow price of the constraint.</p>
 </section>
 
 <section class="act-body">

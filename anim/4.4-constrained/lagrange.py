@@ -65,13 +65,13 @@ def on_line(s, t=0.0):
     return foot(t) + D * s
 
 
-def make_axes(shift=LEFT * 2.0 + UP * 0.35):
+def make_axes(shift=LEFT * 2.5 + DOWN * 0.2):
     """A frame for c2p only. The axes stay hidden: drawn, they run straight
     through the bowl and through the constraint line, and green and rose are
     already spoken for here."""
     axes = ThreeDAxes(
         x_range=[-R, R, 1.5], y_range=[-R, R, 1.5], z_range=[0, ZMAX, 5],
-        x_length=4.3, y_length=4.3, z_length=2.5,
+        x_length=3.8, y_length=3.8, z_length=2.15,
         axis_config={"stroke_color": INK_DIM, "stroke_width": 1.5,
                      "include_ticks": False, "include_tip": False},
     )
@@ -146,7 +146,7 @@ def hud(scene, *mobs):
     return mobs
 
 
-def column(m, y, x0=-0.45):
+def column(m, y, x0=0.0):
     """Left-align a HUD line in the column to the right of the bowl."""
     m.move_to([0, y, 0]).align_to([x0, 0, 0], LEFT)
     return m
@@ -371,8 +371,8 @@ class LagrangeSystem(Scene):
             return m
 
         lag = row(MathTex(r"\mathcal{L}(x_1, x_2, \lambda)", r"=",
-                          r"x_1^2 + x_2^2", r"+", r"\lambda", r"\,(x_1 + x_2 + 3)",
-                          font_size=FS), 2.2)
+                          r"x_1^2 + x_2^2", r"-", r"\lambda", r"\,(x_1 + x_2 + 3)",
+                          font_size=FS), 1.85)
         colour_parts(lag, {2: V_COLOR, 4: RESULT_COLOR, 5: W_COLOR})
         obj_tag = MathTex(r"\text{objective}", font_size=38, color=V_COLOR)
         con_tag = MathTex(r"\text{constraint}", font_size=38, color=W_COLOR)
@@ -389,18 +389,18 @@ class LagrangeSystem(Scene):
         # slash, not a built-up fraction: three stacked fractions do not fit the
         # frame height once the solve is added underneath.
         e1 = row(MathTex(r"\partial\mathcal{L}/\partial x_1", r"=",
-                         r"2x_1 + \lambda = 0", font_size=FS, color=X_COLOR), 1.1)
+                         r"2x_1 - \lambda = 0", font_size=FS, color=X_COLOR), 1.1)
         e2 = row(MathTex(r"\partial\mathcal{L}/\partial x_2", r"=",
-                         r"2x_2 + \lambda = 0", font_size=FS, color=Y_COLOR), 0.25)
+                         r"2x_2 - \lambda = 0", font_size=FS, color=Y_COLOR), 0.25)
         e3 = row(MathTex(r"\partial\mathcal{L}/\partial \lambda", r"=",
-                         r"x_1 + x_2 + 3 = 0", font_size=FS, color=W_COLOR), -0.6)
+                         r"-(x_1 + x_2 + 3) = 0", font_size=FS, color=W_COLOR), -0.6)
         brace = Brace(VGroup(e1, e2, e3), RIGHT, color=INK_DIM)
         count = MathTex(r"\text{3 equations,}\\ \text{3 unknowns}", font_size=40,
                         color=INK_DIM)
         count.next_to(brace, RIGHT, buff=0.3)
-        back = MathTex(r"\text{the }\lambda\text{ row hands}\\ \text{the constraint back}",
-                       font_size=38, color=W_COLOR)
-        back.next_to(count, DOWN, buff=0.7).align_to(count, LEFT)
+        back = MathTex(r"\text{the } \lambda \text{ row gives back the constraint}",
+                       font_size=40, color=W_COLOR)
+        back.next_to(e3, DOWN, buff=0.45).align_to(e3, LEFT)
 
         self.play(FadeIn(e1), run_time=0.8)
         self.wait(0.9)
@@ -414,18 +414,18 @@ class LagrangeSystem(Scene):
         self.wait(2.2)
 
         # Solve it, and check the solve against numpy.
-        A = np.array([[2.0, 0.0, 1.0], [0.0, 2.0, 1.0], [1.0, 1.0, 0.0]])
+        A = np.array([[2.0, 0.0, -1.0], [0.0, 2.0, -1.0], [1.0, 1.0, 0.0]])
         b = np.array([0.0, 0.0, -3.0])
         x1, x2, lam = np.linalg.solve(A, b)
-        assert np.allclose([x1, x2, lam], [-1.5, -1.5, 3.0])
+        assert np.allclose([x1, x2, lam], [-1.5, -1.5, -3.0])
         assert abs(J(x1, x2) - 4.5) < 1e-12
 
         self.play(FadeOut(brace, count, back, lag), run_time=0.6)
         self.play(VGroup(e1, e2, e3).animate.shift(UP * 1.0), run_time=0.8)
 
-        s1 = row(MathTex(r"\text{first two rows: } x_1 = x_2 = -\lambda/2",
+        s1 = row(MathTex(r"\text{first two rows: } x_1 = x_2 = \lambda/2",
                          font_size=FS), -0.5)
-        s2 = row(MathTex(r"\text{put that in the third: } -\lambda + 3 = 0",
+        s2 = row(MathTex(r"\text{put that in the third: } \lambda + 3 = 0",
                          font_size=FS), -1.4)
         s3 = row(MathTex(rf"\lambda = {lam:.0f}, \quad x_1 = x_2 = {x1:.1f},"
                          rf" \quad J = {J(x1, x2):.1f}",
@@ -480,9 +480,9 @@ class ShadowPrice(ThreeDScene):
         h = 1e-6
         rate = (jstar(h) - jstar(-h)) / (2 * h)
         assert abs(rate + 3.0) < 1e-6
-        f1 = column(tex(r"J^*(t) = \tfrac{(3-t)^2}{2}", INK, 44), -0.6)
+        f1 = column(tex(r"J^*(t) = \frac{(3-t)^2}{2}", INK, 44), -0.6)
         f2 = column(tex(rf"\left.\frac{{dJ^*}}{{dt}}\right|_{{t=0}}"
-                        rf" = {rate:.0f} = -\lambda", RESULT_COLOR, 46), -1.9)
+                        rf" = {rate:.0f} = \lambda", RESULT_COLOR, 46), -1.9)
         hud(self, f1, f2)
         self.play(FadeIn(f1), run_time=0.9)
         self.wait(1.8)
