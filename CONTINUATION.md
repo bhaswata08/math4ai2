@@ -34,8 +34,7 @@ circle, which has two highs (1.5) and two lows (0.5).
   tangent line" derivation slide.
 - `02-lagrange.html`: the old f = x + y `LagrangeSystem` clip is gone. Four
   worked-example slides follow the recipe (set up, three equations, two
-  cases, compare f at the four candidates). The rectangle example stays as
-  "Second example", with LambdaIsPrice.
+  cases, compare f at the four candidates).
 - Credits slide (`00-open.html`) names Bazett.
 
 **4.4 Act 2, second example** (after Brian Douglas, MATLAB Tech Talk): the
