@@ -1,27 +1,41 @@
 <!-- ============================================================
      ACT 1 of 4. Optimising on a curve. Budget: 25 min.
-     Source: built for this course (lagrange.py: ConstraintWalk,
-     TangencyGradients).
-     Goal: students see the optimum as the point where the constraint
-     touches a contour, so ∇f ∥ ∇g. Act 2 owns the algebra.
+     Source: built for this course after Trefor Bazett's "Lagrange
+     Multipliers | Geometric Meaning & Full Example" (saddle.py:
+     SaddleOnCircle, LevelCurvesTouch).
+     Goal: students see the optimum as the point where a level curve of f
+     only touches the constraint, so ∇f ∥ ∇g. Act 2 owns the algebra.
      ============================================================ -->
 
 <section class="act-open">
   <div class="act-num">Act 1 of 4</div>
   <h1>Optimising on a curve</h1>
-  <p class="act-sub">Maximise \(f(x, y) = x + y\), but only on the unit circle.</p>
+  <p class="act-sub">Find the largest and smallest values of \(f(x, y) = xy + 1\), but only on the unit circle \(x^2 + y^2 = 1\).</p>
 </section>
 
 <section class="clip-slide">
-  <h2>Walk the constraint</h2>
-  <video class="clip" src="assets/clips/ConstraintWalk.mp4"></video>
+  <h2>A saddle, seen along a circle</h2>
+  <video class="clip" src="assets/clips/SaddleOnCircle.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">While the walk crosses contours, \(f\) still changes. It peaks where the circle only touches one.</p>
+  <p class="caption">On its own the saddle has no highest point. Above the circle, \(f\) traces a closed loop: two highs at \(1.5\), two lows at \(0.5\).</p>
 </section>
 
 <section class="clip-slide">
-  <h2>Two gradients line up</h2>
-  <video class="clip" src="assets/clips/TangencyGradients.mp4"></video>
+  <h2>Raise the level until it only touches</h2>
+  <video class="clip" src="assets/clips/LevelCurvesTouch.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">At the optimum, <span class="cr">\(\nabla f\)</span> has no component along the circle, so it is parallel to <span class="cw">\(\nabla g\)</span>.</p>
+  <p class="caption">A level curve that crosses the circle is not the best yet. The highest one that still meets it only touches, and there <span class="cr">\(\nabla f\)</span> lies on the same line as <span class="cw">\(\nabla g\)</span>.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 1</b> / Why the gradients line up</div>
+  <h2>Touching curves share a tangent line</h2>
+  <p style="font-size:0.9em; margin:0">Write the constraint as \(g(x, y) = x^2 + y^2 - 1 = 0\). The circle is the level curve \(g = 0\).</p>
+  <ol class="practice" style="font-size:0.92em">
+    <li class="fragment">A gradient is perpendicular to its own level curve. So <span class="cw">\(\nabla g\)</span> is perpendicular to the circle.</li>
+    <li class="fragment"><span class="cr">\(\nabla f\)</span> is perpendicular to the level curve of \(f\) through the same point.</li>
+    <li class="fragment">Where the two curves only touch, they share one tangent line. Both gradients are perpendicular to it.</li>
+    <li class="fragment">In the plane, two vectors perpendicular to the same line lie on one line: \(\nabla f = \lambda\,\nabla g\) for some number \(\lambda\).</li>
+  </ol>
+  <p class="takeaway fragment" style="font-size:0.88em">At the highs \(\lambda = \tfrac12\) (same direction); at the lows \(\lambda = -\tfrac12\) (opposite).</p>
 </section>

@@ -1,6 +1,7 @@
 <!-- ============================================================
      ACT 2 of 4. Lagrange multipliers. Budget: 25 min.
-     Source: built for this course (lagrange.py: LagrangeSystem, LambdaIsPrice).
+     Source: worked example after Trefor Bazett, "Lagrange Multipliers |
+     Geometric Meaning & Full Example"; LambdaIsPrice built for this course.
      Goal: students set up and solve ∇f = λ∇g, g = c, and see two
      uses in ML. Inequality constraints (KKT) are named in Act 3 only.
      ============================================================ -->
@@ -9,13 +10,6 @@
   <div class="act-num">Act 2 of 4</div>
   <h1>Lagrange multipliers</h1>
   <p class="act-sub">Turn "parallel gradients" into equations you can solve.</p>
-</section>
-
-<section class="clip-slide">
-  <h2>Solve the system</h2>
-  <video class="clip" src="assets/clips/LagrangeSystem.mp4"></video>
-  <span class="fragment clip-play"></span>
-  <p class="caption">Three equations, three unknowns: \(x\), \(y\) and the multiplier \(\lambda\).</p>
 </section>
 
 <section class="act-body">
@@ -29,7 +23,54 @@
 </section>
 
 <section class="act-body">
-  <div class="act-tag"><b>Act 2</b> / Worked example</div>
+  <div class="act-tag"><b>Act 2</b> / Worked example, step 1 of 4</div>
+  <h2>Set up: the saddle on the circle</h2>
+  <div style="font-size:1.1em">$$\text{maximise and minimise}\;\; f(x, y) = xy + 1 \quad \text{s.t.}\quad g(x, y) = x^2 + y^2 - 1 = 0$$</div>
+  <ol class="practice" style="font-size:1.05em">
+    <li class="fragment">\(\nabla f = \big(\partial f/\partial x,\; \partial f/\partial y\big) = (y,\; x)\)</li>
+    <li class="fragment">\(\nabla g = \big(\partial g/\partial x,\; \partial g/\partial y\big) = (2x,\; 2y)\)</li>
+  </ol>
+  <p class="takeaway fragment" style="font-size:0.95em">The unknowns are \(x\), \(y\) and the multiplier \(\lambda\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Worked example, step 2 of 4</div>
+  <h2>Three equations, three unknowns</h2>
+  <p style="font-size:0.9em; margin:0">\(\nabla f = \lambda\nabla g\) is an equation between two vectors, so it holds in each component. The constraint adds the third.</p>
+  <table class="deriv" style="font-size:1.05em">
+    <tr class="fragment"><td>$$y = \lambda\,(2x)$$</td><td>first components: \(\partial f/\partial x = \lambda\,\partial g/\partial x\)</td></tr>
+    <tr class="fragment"><td>$$x = \lambda\,(2y)$$</td><td>second components: \(\partial f/\partial y = \lambda\,\partial g/\partial y\)</td></tr>
+    <tr class="fragment"><td>$$x^2 + y^2 = 1$$</td><td>the constraint \(g = 0\), still in force</td></tr>
+  </table>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Worked example, step 3 of 4</div>
+  <h2>Solve: two cases</h2>
+  <table class="deriv" style="font-size:0.95em">
+    <tr class="fragment"><td>$$y = 2\lambda(2\lambda y) = 4\lambda^2 y \;\Rightarrow\; y\,(1 - 4\lambda^2) = 0$$</td><td>put the second equation into the first</td></tr>
+    <tr class="fragment"><td>$$y = 0 \;\Rightarrow\; x = 2\lambda y = 0$$</td><td>case 1: but \(0^2 + 0^2 \ne 1\), so \((0, 0)\) is not on the circle. Reject.</td></tr>
+    <tr class="fragment"><td>$$\lambda = \pm\tfrac12 \;\Rightarrow\; x = \pm y$$</td><td>case 2: \(x = 2\lambda y\) gives \(x = y\) when \(\lambda = \tfrac12\), \(x = -y\) when \(\lambda = -\tfrac12\)</td></tr>
+    <tr class="fragment"><td>$$x^2 + x^2 = 1 \;\Rightarrow\; x = \pm\tfrac{1}{\sqrt2}$$</td><td>substitute \(y = \pm x\) into the constraint</td></tr>
+  </table>
+  <p class="takeaway fragment" style="font-size:0.95em">Four candidates: \(\big(\pm\tfrac{1}{\sqrt2}, \pm\tfrac{1}{\sqrt2}\big)\), every combination of signs.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Worked example, step 4 of 4</div>
+  <h2>Compare \(f\) at every candidate</h2>
+  <table style="font-size:1.0em">
+    <thead><tr><th>point \((x, y)\)</th><th>\(\lambda\)</th><th>\(f = xy + 1\)</th></tr></thead>
+    <tbody>
+      <tr class="fragment"><td>\(\big(\tfrac{1}{\sqrt2}, \tfrac{1}{\sqrt2}\big)\), \(\big({-\tfrac{1}{\sqrt2}}, {-\tfrac{1}{\sqrt2}}\big)\)</td><td>\(\tfrac12\)</td><td>\(\tfrac12 + 1 = 1.5\): <b class="cr">maximum</b></td></tr>
+      <tr class="fragment"><td>\(\big(\tfrac{1}{\sqrt2}, {-\tfrac{1}{\sqrt2}}\big)\), \(\big({-\tfrac{1}{\sqrt2}}, \tfrac{1}{\sqrt2}\big)\)</td><td>\(-\tfrac12\)</td><td>\(-\tfrac12 + 1 = 0.5\): <b class="cy">minimum</b></td></tr>
+    </tbody>
+  </table>
+  <p class="takeaway fragment" style="font-size:0.95em">The equations only find candidates; they do not say which is a maximum. Evaluating \(f\) sorts them, and matches the two highs and two lows of Act 1.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Second example</div>
   <h2>Largest rectangle with perimeter 4</h2>
   <div style="font-size:1.1em">$$\max\; xy \quad \text{s.t.}\quad 2x + 2y = 4$$</div>
   <ol class="practice" style="font-size:1.05em">

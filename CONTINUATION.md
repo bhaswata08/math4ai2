@@ -1,65 +1,63 @@
-# Continuation: 4.3 gradient descent on a 3D loss surface
+# Continuation: Day 4 loss surfaces and the 4.4 Lagrange acts
 
-Written 2026-11-02. Pick this up on the office machine.
+Updated 2026-11-02.
 
-## The standing instruction
+## Standing instruction
 
 Every loss picture in Block 4.3 shows the loss as a **3D surface**, never as a
-2D contour map. The user rejected the contour look twice. Block 4.2's
-`ConvexAlongEveryLine` is the reference for how a surface should look: a mesh
-in `V_COLOR` with alternating face opacity, axes coloured `X_COLOR` / `Y_COLOR`,
-and every label fixed in the frame by projecting with
-`self.camera.project_point`.
+2D contour map. Block 4.2's `ConvexAlongEveryLine` is the reference look: a mesh
+in `V_COLOR` with alternating face opacity, axes in `X_COLOR` / `Y_COLOR`, labels
+fixed in the frame by projecting with `self.camera.project_point`. Shared
+helpers live in `shared/anim/bowl.py`.
 
 ## Done
 
-**4.2 `anim/4.2-shape/curvature.py`, scene `ConvexAlongEveryLine`** (rendered at
-1080p, in the deck): rewritten from two flat 2D parabola panels to a
-`ThreeDScene`. The surface is drawn as a disc, not a square patch, because the
-corners of a square patch of `x^2 + y^2` reach `f = 2R^2` and run off the top
-of the frame. The x slice is green, the y slice rose, the chord amber, and each
-panel label names its direction ("along x", "along y").
+**4.3** (`anim/4.3-gd/valley.py`, `stochastic.py`): ValleyThreeRates,
+MomentumVsPlain, BatchVsSGD and NoiseBallSchedule are 3D, rendered at 1080p
+and in the deck. BatchVsSGD's legend sits in the empty bottom-left corner.
+NoiseBallSchedule re-pins its eta_k readouts in the updater, because
+`DecimalNumber.set_value` drops new digits out of the fixed-in-frame set.
 
-**4.2 `decks/4.2-shape/sections/03-critical.html`**: the crammed "Solve ∇f = 0"
-slide is now four slides, one per step (partials, solve, Hessian, classify).
+**4.4 Acts 1 and 2**, rebuilt after Trefor Bazett, "Lagrange Multipliers |
+Geometric Meaning & Full Example" (youtube 8mjcnxGMwFo; transcript and
+contact sheets in `build/yt/v8m/`). Running example: f = xy + 1 on the unit
+circle, which has two highs (1.5) and two lows (0.5).
 
-**Shared 3D bowl module `shared/anim/bowl.py`**:
-Extracted bowl surface and axes helpers for Block 4.3 scenes:
-- `L_MAX = 12.0`, `LIFT = 0.45`
-- `LOSS(w)`, `bowl_axes()`, `bowl_surface(ax)`, `on_bowl(ax, w, lift)`, `trail(...)`
-- `BowlScene(ThreeDScene)` with `setup_bowl()` and `fixed(*mobs)`
-- Circular isotropic bowl helpers: `circular_bowl_axes(cx, cy)`, `circular_bowl_surface(ax)`, `on_circular_bowl(ax, w, lift)`
+- `anim/4.4-constrained/saddle.py`:
+  - `SaddleOnCircle`: the 3D saddle, the circle lifted onto it, and the
+    highs and lows marked. The camera sits at theta = -67.5 degrees: at -45
+    or -90, two of the four points share a line of sight.
+  - `LevelCurvesTouch`: the level xy + 1 = c rises until it only touches
+    the circle, then the shared tangent line, then grad f and grad g on
+    one line (lambda = 1/2 at the highs, -1/2 at the lows).
+- `01-constraints.html`: the two clips, plus a "touching curves share a
+  tangent line" derivation slide.
+- `02-lagrange.html`: the old f = x + y `LagrangeSystem` clip is gone. Four
+  worked-example slides follow the recipe (set up, three equations, two
+  cases, compare f at the four candidates). The rectangle example stays as
+  "Second example", with LambdaIsPrice.
+- Credits slide (`00-open.html`) names Bazett.
 
-**4.3 `anim/4.3-gd/valley.py`**:
-- `ValleyThreeRates` and `MomentumVsPlain` subclass `BowlScene`.
-- Diverging run in `ValleyThreeRates` cut to 3 steps so it doesn't climb out through the header.
-- Imports shared bowl helpers from `shared.anim.bowl`.
+## Not done
 
-**4.3 `anim/4.3-gd/stochastic.py`**:
-- `BatchVsSGD`: rewritten to subclass `BowlScene`, showing batch (RESULT_COLOR), mini-batch (W_COLOR), and SGD (Y_COLOR) 3D paths floating at staggered lift levels above the bowl with fixed 2D legend in frame.
-- `NoiseBallSchedule`: rewritten to `ThreeDScene` with two side-by-side circular 3D bowls (`cx = -2.6` and `cx = 2.6`) showing constant vs decaying step size convergence, paired with 2D $\eta_k$ readouts below.
-- Deleted dead helper `bowl_contours`.
+- `anim/4.4-constrained/lagrange.py` holds a separate in-flight rewrite from
+  another session, after Brian Douglas (MATLAB Tech Talk): ConstrainedSlice,
+  LevelOnTheCurve, LagrangeSystem and ShadowPrice, all on "minimise
+  x1^2 + x2^2 on the line x1 + x2 + 3 = 0". They are not wired into the deck.
+  Drafts in `build/drafts/decks/4.4-constrained/` show defects: the bowl rim
+  is clipped at the top and covers the title, and the LagrangeSystem
+  caption "the lambda row hands the constraint back" runs off the right
+  edge. Rendering its LagrangeSystem at -qh would overwrite the old (now
+  unused) `LagrangeSystem.mp4`.
+- The old clips ConstraintWalk, TangencyGradients and LagrangeSystem are no
+  longer referenced by the deck but are still in `assets/clips/`.
 
-**4.3 `anim/4.3-gd/descent.py`**:
-- Removed unused legacy `get_bowl_contours` helper.
+## Gotchas found this session
 
-## Rendered 2026-11-02
-
-All four 4.3 clips (ValleyThreeRates, MomentumVsPlain, BatchVsSGD,
-NoiseBallSchedule) are rendered at 1080p and in the deck. Review fixes made
-before the final render:
-
-- BatchVsSGD: the legend ran off the left edge and sat on the bowl and the
-  w_0 label. It now sits in the empty bottom-left corner with the short
-  labels LossCurves uses ("Mini-batch: 4", "SGD: 64").
-- NoiseBallSchedule: the eta_k readouts were skewed because
-  DecimalNumber.set_value rebuilds the digits and drops them out of the
-  fixed-in-frame set. The updater now re-pins them beside "eta_k =". The two
-  bowls are placed so their minima project to the same screen height.
-
-Notes:
-
-Scenes that are not contour plots and stay as they are:
-   - `Descent1D` and `LearningRates` (1D parabolas)
-   - `LossCurves` (loss against step)
-   - `WhyNoise` (data scatter and gradient vectors)
+- Do not render two scenes from the same file in parallel. They share the
+  Tex cache and partial-movie folders, and one of them fails with
+  FileNotFoundError.
+- In this harness's Bash tool, `\;` inside a command (sed, node -e) is
+  stripped to `;`. Make TeX edits that contain `\;` with the Edit tool.
+- `ThreeDAxes.c2p` maps through the axis objects, so shifting `ax.x_axis`
+  moves every point. Draw separate lines to put the axes on a floor plane.
