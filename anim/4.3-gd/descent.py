@@ -18,24 +18,6 @@ def d_loss_1d(w):
     return (w - 1.0) + 0.4 * np.cos(2.0 * (w - 1.0))
 
 
-def get_bowl_contours(axes, levels, scale_x=1.0, scale_y=1.0):
-    """Create concentric elliptical contours for L(w1, w2) = w1^2/2 + 4 w2^2."""
-    mobs = []
-    opacities = np.linspace(0.04, 0.22, len(levels))
-    origin = axes.c2p(0.0, 0.0)
-    for lvl, opac in zip(levels, opacities):
-        a = np.sqrt(2.0 * lvl)
-        b = np.sqrt(lvl / 4.0)
-        ell = Ellipse(
-            width=2.0 * a * scale_x,
-            height=2.0 * b * scale_y,
-            stroke_color=INK_DIM,
-            stroke_width=1.5,
-            fill_color=V_COLOR,
-            fill_opacity=opac,
-        ).move_to(origin)
-        mobs.append(ell)
-    return VGroup(*mobs)
 
 
 # =============================================================================

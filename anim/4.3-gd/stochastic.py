@@ -4,8 +4,8 @@
 # shrinking step size.
 
 from shared.anim.house import *
+from shared.anim.bowl import *
 import numpy as np
-
 
 # =============================================================================
 # Shared data: linear regression with N = 64 and Hessian diag(1, 8)
@@ -47,23 +47,6 @@ def run_variant(kind, n_updates, eta, w_start):
         w = w - eta * bowl_grad(w, idx, x, y)
         path.append(w.copy())
     return np.array(path)
-
-
-def bowl_contours(axes, levels):
-    """Full ellipses of L = w1^2/2 + 4 w2^2 in axes coordinates (never cropped)."""
-    mobs = []
-    opacities = np.linspace(0.05, 0.22, len(levels))
-    for lvl, opac in zip(levels, opacities):
-        a = np.sqrt(2.0 * lvl)
-        b = np.sqrt(lvl / 4.0)
-        sx = abs(axes.c2p(1, 0)[0] - axes.c2p(0, 0)[0])
-        sy = abs(axes.c2p(0, 1)[1] - axes.c2p(0, 0)[1])
-        mobs.append(Ellipse(width=2 * a * sx, height=2 * b * sy,
-                            stroke_color=INK_DIM, stroke_width=1.5,
-                            fill_color=V_COLOR, fill_opacity=opac
-                            ).move_to(axes.c2p(0, 0)))
-    return VGroup(*mobs)
-
 
 def legend_row(label, color, dashed=False, width=0.5):
     if dashed:
@@ -206,23 +189,9 @@ class WhyNoise(Scene):
 # =============================================================================
 # SCENE: BatchVsSGD
 # =============================================================================
-class BatchVsSGD(Scene):
+class BatchVsSGD(BowlScene):
     def construct(self):
-        scale = 1.0
-        axes = Axes(
-            x_range=[-4.8, 4.8, 1.0], y_range=[-1.7, 1.7, 1.0],
-            x_length=9.6 * scale, y_length=3.4 * scale,
-            axis_config={"stroke_color": INK_DIM, "stroke_width": 2.0, "include_ticks": False},
-            tips=False,
-        ).move_to(np.array([0.0, -0.85, 0.0]))
-
-        lbl_w1 = MathTex(r"w_1", font_size=MIN_FONT, color=INK_DIM)
-        lbl_w1.next_to(axes.x_axis.get_end(), UP, buff=0.08)
-        lbl_w2 = MathTex(r"w_2", font_size=MIN_FONT, color=INK_DIM)
-        lbl_w2.next_to(axes.y_axis.get_end(), RIGHT, buff=0.1)
-
-        contours = bowl_contours(axes, [0.4, 1.2, 2.5, 4.5, 7.0, 9.5])
-        min_dot = Dot(axes.c2p(0, 0), radius=0.07, color=V_COLOR)
+        ax, surf = self.setup_bowl()
 
         w_start = np.array([-3.5, 1.2])
         n_updates = 40
@@ -233,39 +202,42 @@ class BatchVsSGD(Scene):
         for p in (path_b, path_mb, path_sgd):
             assert abs(p[:, 0]).max() < 4.6 and abs(p[:, 1]).max() < 1.6
 
-        # legend with updates per epoch (N = 64, B = 16)
+        # legend with updates per epoch (N = 64, B = 16) fixed in frame at top left
         legend = VGroup(
             legend_row(r"\text{Batch: } 1", RESULT_COLOR),
             legend_row(r"\text{Mini-batch: } N/B = 4", W_COLOR),
             legend_row(r"\text{SGD: } N = 64", Y_COLOR),
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.14)
         hdr = MathTex(r"\text{updates per epoch}", font_size=MIN_FONT, color=INK_DIM)
-        legend = VGroup(hdr, legend).arrange(DOWN, aligned_edge=LEFT, buff=0.14)
-        legend.move_to(np.array([-4.8 + legend.width / 2, 1.75, 0]))
-        legend.shift(UP * 0)
+        legend_box = self.fixed(VGroup(hdr, legend).arrange(DOWN, aligned_edge=LEFT, buff=0.14))
+        legend_box.move_to(np.array([-3.1, 1.85, 0]))
 
-        start_dot = Dot(axes.c2p(*w_start), radius=0.09, color=INK)
-        lbl_w0 = MathTex(r"\mathbf{w}_0", font_size=MIN_FONT, color=INK)
-        lbl_w0.next_to(axes.c2p(*w_start), LEFT, buff=0.28)
+        min_dot = Dot3D(on_bowl(ax, np.array([0.0, 0.0]), lift=0.1), radius=0.07, color=V_COLOR)
+        start_pt = on_bowl(ax, w_start, lift=0.1)
+        start_dot = Dot3D(start_pt, radius=0.09, color=INK)
 
-        dot_b = Dot(axes.c2p(*w_start), radius=0.09, color=RESULT_COLOR)
-        dot_mb = Dot(axes.c2p(*w_start), radius=0.08, color=W_COLOR)
-        dot_sgd = Dot(axes.c2p(*w_start), radius=0.08, color=Y_COLOR)
+        scr = lambda p: self.camera.project_point(np.array(p, dtype=float))
+        lbl_w0 = self.fixed(MathTex(r"\mathbf{w}_0", font_size=MIN_FONT, color=INK).move_to(scr(start_pt) + LEFT * 0.45 + UP * 0.15))
 
-        self.add(contours, axes, lbl_w1, lbl_w2, min_dot, start_dot, lbl_w0, legend)
+        dot_b = Dot3D(on_bowl(ax, w_start, lift=0.55), radius=0.09, color=RESULT_COLOR)
+        dot_mb = Dot3D(on_bowl(ax, w_start, lift=0.45), radius=0.08, color=W_COLOR)
+        dot_sgd = Dot3D(on_bowl(ax, w_start, lift=0.35), radius=0.08, color=Y_COLOR)
+
+        self.add(min_dot, start_dot, lbl_w0, legend_box)
         self.wait(1.5)
 
         segs = VGroup()
         self.add(segs)
         for k in range(n_updates):
-            new = []
-            # draw order: SGD, mini-batch, then batch on top
-            for path, col, wd in ((path_sgd, Y_COLOR, 3.5), (path_mb, W_COLOR, 3.5), (path_b, RESULT_COLOR, 4.5)):
-                new.append(Line(axes.c2p(*path[k]), axes.c2p(*path[k + 1]), color=col, stroke_width=wd))
+            new = [
+                Line(on_bowl(ax, path_sgd[k], lift=0.35), on_bowl(ax, path_sgd[k + 1], lift=0.35), color=Y_COLOR, stroke_width=3.5),
+                Line(on_bowl(ax, path_mb[k], lift=0.45), on_bowl(ax, path_mb[k + 1], lift=0.45), color=W_COLOR, stroke_width=3.5),
+                Line(on_bowl(ax, path_b[k], lift=0.55), on_bowl(ax, path_b[k + 1], lift=0.55), color=RESULT_COLOR, stroke_width=4.5),
+            ]
             segs.add(*new)
-            dot_sgd.move_to(axes.c2p(*path_sgd[k + 1]))
-            dot_mb.move_to(axes.c2p(*path_mb[k + 1]))
-            dot_b.move_to(axes.c2p(*path_b[k + 1]))
+            dot_sgd.move_to(on_bowl(ax, path_sgd[k + 1], lift=0.35))
+            dot_mb.move_to(on_bowl(ax, path_mb[k + 1], lift=0.45))
+            dot_b.move_to(on_bowl(ax, path_b[k + 1], lift=0.55))
             self.add(dot_sgd, dot_mb, dot_b)
             self.wait(0.2)
         self.wait(2.5)
@@ -401,8 +373,12 @@ class LossCurves(Scene):
 # =============================================================================
 # SCENE: NoiseBallSchedule
 # =============================================================================
-class NoiseBallSchedule(Scene):
+class NoiseBallSchedule(ThreeDScene):
     def construct(self):
+        self.set_camera_orientation(phi=58 * DEGREES, theta=-68 * DEGREES)
+        self.camera.rotation_matrix = self.camera.generate_rotation_matrix()
+        scr = lambda p: self.camera.project_point(np.array(p, dtype=float))
+
         # Per-example loss l_i(w) = 0.5 |w - a_i|^2, so L has its minimum at mean(a_i) = 0.
         n_pts = 64
         rng = np.random.default_rng(5)
@@ -426,30 +402,37 @@ class NoiseBallSchedule(Scene):
         const = lambda k: eta0
         decay = lambda k: eta0 / (1.0 + k / 50.0)
         P_c, P_d = sgd(const), sgd(decay)
-        # ball radius in the second half, from the real runs
         r_c = np.sqrt(np.mean(np.sum(P_c[100:] ** 2, axis=1)))
         r_d = np.sqrt(np.mean(np.sum(P_d[-20:] ** 2, axis=1)))
         print("noise ball rms radius const %.3f, decay (last 20 steps) %.3f" % (r_c, r_d))
 
-        def panel(cx):
-            ax = Axes(x_range=[-2.2, 2.2, 1], y_range=[-2.2, 2.2, 1], x_length=3.4, y_length=3.4,
-                      axis_config={"stroke_color": INK_DIM, "stroke_width": 2.0, "include_ticks": False},
-                      tips=False).move_to(np.array([cx, 0.45, 0]))
-            rings = VGroup(*[Circle(radius=r * ax.x_length / 4.4, stroke_color=INK_DIM, stroke_width=1.5,
-                                    fill_color=V_COLOR, fill_opacity=op).move_to(ax.c2p(0, 0))
-                             for r, op in ((2.0, 0.05), (1.5, 0.08), (1.0, 0.12), (0.5, 0.18))])
-            return ax, rings
+        ax_l = circular_bowl_axes(-2.6, cy=0.6)
+        ax_r = circular_bowl_axes(2.6, cy=0.6)
+        surf_l = circular_bowl_surface(ax_l)
+        surf_r = circular_bowl_surface(ax_r)
 
-        ax_l, ring_l = panel(-2.6)
-        ax_r, ring_r = panel(2.6)
-        mins = VGroup(Dot(ax_l.c2p(0, 0), radius=0.06, color=V_COLOR), Dot(ax_r.c2p(0, 0), radius=0.06, color=V_COLOR))
-        starts = VGroup(Dot(ax_l.c2p(*w0), radius=0.08, color=INK), Dot(ax_r.c2p(*w0), radius=0.08, color=INK))
+        lbl_w1_l = MathTex("w_1", font_size=MIN_FONT, color=X_COLOR).move_to(scr(ax_l.c2p(2.4, 0, 0)) + RIGHT * 0.25)
+        lbl_w2_l = MathTex("w_2", font_size=MIN_FONT, color=Y_COLOR).move_to(scr(ax_l.c2p(0, -2.4, 0)) + DOWN * 0.3)
+        lbl_w1_r = MathTex("w_1", font_size=MIN_FONT, color=X_COLOR).move_to(scr(ax_r.c2p(2.4, 0, 0)) + RIGHT * 0.25)
+        lbl_w2_r = MathTex("w_2", font_size=MIN_FONT, color=Y_COLOR).move_to(scr(ax_r.c2p(0, -2.4, 0)) + DOWN * 0.3)
+        bowl_labels = VGroup(lbl_w1_l, lbl_w2_l, lbl_w1_r, lbl_w2_r)
+        self.camera.add_fixed_in_frame_mobjects(bowl_labels)
+
+        mins = VGroup(
+            Dot3D(on_circular_bowl(ax_l, np.zeros(2)), radius=0.06, color=V_COLOR),
+            Dot3D(on_circular_bowl(ax_r, np.zeros(2)), radius=0.06, color=V_COLOR),
+        )
+        starts = VGroup(
+            Dot3D(on_circular_bowl(ax_l, w0), radius=0.08, color=INK),
+            Dot3D(on_circular_bowl(ax_r, w0), radius=0.08, color=INK),
+        )
 
         # eta curves under each bowl
         def eta_axes(cx):
             return Axes(x_range=[0, K, 100], y_range=[0, 0.3, 0.1], x_length=3.6, y_length=0.8,
                         axis_config={"stroke_color": INK_DIM, "stroke_width": 2.0, "include_ticks": False},
-                        tips=False).move_to(np.array([cx, -1.75, 0]))
+                        tips=False).move_to(np.array([cx, -1.65, 0]))
+
         ea_l, ea_r = eta_axes(-2.6), eta_axes(2.6)
         ks = np.arange(K + 1)
         eta_l = ea_l.plot_line_graph(ks, [const(k) for k in ks], line_color=INK, add_vertex_dots=False, stroke_width=4)
@@ -462,41 +445,45 @@ class NoiseBallSchedule(Scene):
         # live eta readout beside each curve's title
         def readout(cx, f):
             d = DecimalNumber(f(0), num_decimal_places=2, font_size=MIN_FONT, color=INK)
-            d.move_to(np.array([cx, -2.5, 0]))
+            d.move_to(np.array([cx, -2.42, 0]))
             return d
+
         ro_l, ro_r = readout(-2.1, const), readout(2.9, decay)
         ro_l_sym = MathTex(r"\eta_k =", font_size=MIN_FONT, color=INK_DIM).next_to(ro_l, LEFT, buff=0.12)
         ro_r_sym = MathTex(r"\eta_k =", font_size=MIN_FONT, color=INK_DIM).next_to(ro_r, LEFT, buff=0.12)
 
         t_l = MathTex(r"\text{constant } \eta = 0.30", font_size=MIN_FONT, color=INK).move_to(np.array([-2.6, 2.45, 0]))
         t_r = MathTex(r"\eta_k = 0.30/(1 + k/50)", font_size=MIN_FONT, color=INK).move_to(np.array([2.6, 2.45, 0]))
-        self.add(t_l, t_r, ring_l, ring_r, ax_l, ax_r, mins, starts, ea_l, ea_r, eta_l, eta_r, *eta_sym, *k_sym,
-                 ro_l, ro_r, ro_l_sym, ro_r_sym)
+
+        fixed_2d = VGroup(t_l, t_r, ea_l, ea_r, eta_l, eta_r, *eta_sym, *k_sym, ro_l, ro_r, ro_l_sym, ro_r_sym)
+        self.camera.add_fixed_in_frame_mobjects(fixed_2d)
+
+        self.add(ax_l, ax_r, surf_l, surf_r, mins, starts, bowl_labels, fixed_2d)
         self.wait(1.5)
 
         tr = ValueTracker(0)
         trace_l = VMobject(stroke_color=RESULT_COLOR, stroke_width=3, fill_opacity=0)
         trace_r = VMobject(stroke_color=RESULT_COLOR, stroke_width=3, fill_opacity=0)
-        dot_l = Dot(ax_l.c2p(*w0), radius=0.09, color=RESULT_COLOR)
-        dot_r = Dot(ax_r.c2p(*w0), radius=0.09, color=RESULT_COLOR)
+        dot_l = Dot3D(on_circular_bowl(ax_l, w0), radius=0.09, color=RESULT_COLOR)
+        dot_r = Dot3D(on_circular_bowl(ax_r, w0), radius=0.09, color=RESULT_COLOR)
         mk_l = Dot(ea_l.c2p(0, const(0)), radius=0.07, color=RESULT_COLOR)
         mk_r = Dot(ea_r.c2p(0, decay(0)), radius=0.07, color=RESULT_COLOR)
+        self.camera.add_fixed_in_frame_mobjects(mk_l, mk_r)
 
         def refresh(_):
             k = int(round(tr.get_value()))
             for tm, ax, P in ((trace_l, ax_l, P_c), (trace_r, ax_r, P_d)):
-                tm.set_points_as_corners([ax.c2p(*p) for p in P[: k + 1]] if k > 0 else
-                                         [ax.c2p(*P[0]), ax.c2p(*P[0])])
-            dot_l.move_to(ax_l.c2p(*P_c[k])); dot_r.move_to(ax_r.c2p(*P_d[k]))
-            mk_l.move_to(ea_l.c2p(k, const(k))); mk_r.move_to(ea_r.c2p(k, decay(k)))
+                tm.set_points_as_corners([on_circular_bowl(ax, p) for p in P[: k + 1]] if k > 0 else
+                                         [on_circular_bowl(ax, P[0]), on_circular_bowl(ax, P[0])])
+            dot_l.move_to(on_circular_bowl(ax_l, P_c[k]))
+            dot_r.move_to(on_circular_bowl(ax_r, P_d[k]))
+            mk_l.move_to(ea_l.c2p(k, const(k)))
+            mk_r.move_to(ea_r.c2p(k, decay(k)))
+            ro_l.set_value(const(k))
+            ro_r.set_value(decay(k))
         trace_l.add_updater(refresh)
-        def live(f, anchor):
-            return always_redraw(lambda: DecimalNumber(f(int(round(tr.get_value()))), num_decimal_places=2,
-                                                       font_size=MIN_FONT, color=INK).move_to(anchor))
-        a_l, a_r = ro_l.get_center(), ro_r.get_center()
-        self.remove(ro_l, ro_r)
-        ro_l, ro_r = live(const, a_l), live(decay, a_r)
-        self.add(trace_l, trace_r, dot_l, dot_r, mk_l, mk_r, ro_l, ro_r)
+
+        self.add(trace_l, trace_r, dot_l, dot_r, mk_l, mk_r)
         self.play(tr.animate.set_value(K), run_time=9.0, rate_func=linear)
         trace_l.clear_updaters()
         self.wait(2.5)

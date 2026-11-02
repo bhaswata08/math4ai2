@@ -23,63 +23,44 @@ panel label names its direction ("along x", "along y").
 **4.2 `decks/4.2-shape/sections/03-critical.html`**: the crammed "Solve ∇f = 0"
 slide is now four slides, one per step (partials, solve, Hessian, classify).
 
-**4.3 `anim/4.3-gd/valley.py`**: rewritten onto the 3D bowl. New shared pieces
-near the top of the file:
+**Shared 3D bowl module `shared/anim/bowl.py`**:
+Extracted bowl surface and axes helpers for Block 4.3 scenes:
+- `L_MAX = 12.0`, `LIFT = 0.45`
+- `LOSS(w)`, `bowl_axes()`, `bowl_surface(ax)`, `on_bowl(ax, w, lift)`, `trail(...)`
+- `BowlScene(ThreeDScene)` with `setup_bowl()` and `fixed(*mobs)`
+- Circular isotropic bowl helpers: `circular_bowl_axes(cx, cy)`, `circular_bowl_surface(ax)`, `on_circular_bowl(ax, w, lift)`
 
-- `L_MAX = 12.0`, the level set the surface is drawn out to.
-- `LOSS(w)`, `bowl_axes()`, `bowl_surface(ax)`, `on_bowl(ax, w)`, `trail(...)`.
-- `class BowlScene(ThreeDScene)` with `setup_bowl()` and `fixed(*mobs)`.
-  Both scenes in the file now subclass it.
+**4.3 `anim/4.3-gd/valley.py`**:
+- `ValleyThreeRates` and `MomentumVsPlain` subclass `BowlScene`.
+- Diverging run in `ValleyThreeRates` cut to 3 steps so it doesn't climb out through the header.
+- Imports shared bowl helpers from `shared.anim.bowl`.
 
-`bowl_surface` is parametrised so the rim is a true level set: for `s` in
-`[0,1]` and angle `a`, `L = L_MAX s^2`, `w1 = sqrt(2L) cos a`,
-`w2 = sqrt(L/4) sin a`, which satisfies `0.5 w1^2 + 4 w2^2 = L` exactly.
+**4.3 `anim/4.3-gd/stochastic.py`**:
+- `BatchVsSGD`: rewritten to subclass `BowlScene`, showing batch (RESULT_COLOR), mini-batch (W_COLOR), and SGD (Y_COLOR) 3D paths floating at staggered lift levels above the bowl with fixed 2D legend in frame.
+- `NoiseBallSchedule`: rewritten to `ThreeDScene` with two side-by-side circular 3D bowls (`cx = -2.6` and `cx = 2.6`) showing constant vs decaying step size convergence, paired with 2D $\eta_k$ readouts below.
+- Deleted dead helper `bowl_contours`.
 
-Framing that survived several passes, do not re-tune it blind:
-`phi=58°`, `theta=-68°`, `x_length=7.4`, `y_length=3.4`, `z_length=2.8`,
-`z_range=[0,20]`, `ax.shift(DOWN * 0.95)`. The diverging run in
-`ValleyThreeRates` was cut from 4 steps to 3; the fourth step reaches `L ≈ 19`
-and climbs out of the frame through the header.
+**4.3 `anim/4.3-gd/descent.py`**:
+- Removed unused legacy `get_bowl_contours` helper.
 
-## Not done
+## Not done (To be rendered on office machine)
 
-1. **`ValleyThreeRates` and `MomentumVsPlain` are only drafted.** The clips sitting
-   in `decks/4.3-gd/assets/clips/` are still the old 2D contour renders. Render
-   both at full quality and rebuild:
+The code changes are complete and pass `py_compile`. Clips in `decks/4.3-gd/assets/clips/` are still the older renders and need to be rendered at 1080p:
 
-       bash shared/anim/render.sh anim/4.3-gd/valley.py ValleyThreeRates decks/4.3-gd
-       bash shared/anim/render.sh anim/4.3-gd/valley.py MomentumVsPlain decks/4.3-gd
-       node shared/site.mjs
+1. **Render 4.3 clips**:
+   ```bash
+   bash shared/anim/render.sh anim/4.3-gd/valley.py ValleyThreeRates decks/4.3-gd
+   bash shared/anim/render.sh anim/4.3-gd/valley.py MomentumVsPlain decks/4.3-gd
+   bash shared/anim/render.sh anim/4.3-gd/stochastic.py BatchVsSGD decks/4.3-gd
+   bash shared/anim/render.sh anim/4.3-gd/stochastic.py NoiseBallSchedule decks/4.3-gd
+   node shared/site.mjs
+   ```
 
-2. **`MomentumVsPlain` has never been looked at.** Its velocity-kick arrows were
-   changed from flat `Arrow` to `Arrow3D` (`thickness=0.012`, `base_radius=0.05`)
-   and nobody has seen a frame of it. Check the five decomposition arrows read
-   clearly against the mesh; if `Arrow3D` is too fat or too dark, fall back to a
-   thick `Line` plus a small `Dot3D` at the tip.
+2. **Visual review checks**:
+   - Check `MomentumVsPlain`'s 5 velocity kick `Arrow3D` decomposition arrows against the mesh (if too dark or heavy, replace with thick `Line` + small `Dot3D`).
+   - Check `BatchVsSGD` and `NoiseBallSchedule` 3D framing and labels.
 
-3. **`anim/4.3-gd/stochastic.py` is untouched.** Two scenes there still draw
-   filled contour ellipses and must move to the same bowl:
-   - `BatchVsSGD` (line ~209), uses `bowl_contours` at line ~224.
-   - `NoiseBallSchedule` (line ~404), draws two panels of concentric `Circle`
-     rings, one per schedule.
-   The helper `bowl_contours` at line ~52 dies with them. Import the bowl
-   helpers from `valley.py` rather than copying them, or lift them into a small
-   shared module if the import reads badly. `NoiseBallSchedule` is two
-   side-by-side bowls, so it needs its own narrower axes, not `bowl_axes()`.
-
-4. Scenes that are **not** contour plots and must stay as they are: `Descent1D`
-   and `LearningRates` (1D parabolas), `LossCurves` (loss against step),
-   `WhyNoise` (data scatter and a gradient-vector plot).
-
-5. `decks/4.3-gd/sections/*.html` hold no inline figures, only `<video>` tags,
-   so no slide markup needs to change for any of this.
-
-## Two loose ends
-
-- A memory file, `memory/no-contour-plots-use-3d-surfaces.md`, was written
-  mid-session. It is right about 4.3 and 4.2 but it is phrased as an absolute;
-  `WhyNoise`'s gradient-vector plot and the 1D loss panels are not contour maps
-  and should not be swept up by it.
-- Another session edited `anim/4.2-shape/curvature.py` while this work was in
-  flight, renaming the slice labels from `\mathbf h` to `\boldsymbol\delta`.
-  That matches the deck's δ-for-the-step notation, so it was left alone.
+3. **Scenes that are NOT contour plots and remain unchanged**:
+   - `Descent1D` and `LearningRates` (1D parabolas)
+   - `LossCurves` (loss against step)
+   - `WhyNoise` (data scatter and gradient vectors)
