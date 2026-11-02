@@ -37,7 +37,7 @@ ZMAX = R * R                               # the bowl is drawn up to its rim
 # still keeps 82% of its length across the screen and the normal keeps 57%.
 PHI, THETA = 64 * DEGREES, -100 * DEGREES
 D = np.array([1.0, -1.0]) / np.sqrt(2.0)   # unit vector along the constraint
-GSCALE = 0.75                              # plot units drawn per unit gradient
+GSCALE = 0.65                              # plot units drawn per unit gradient
 
 
 def J(x, y):
@@ -330,10 +330,10 @@ class LevelOnTheCurve(ThreeDScene):
         self.camera.rotation_matrix = self.camera.generate_rotation_matrix()
         scr = lambda p: self.camera.project_point(np.array(p, dtype=float))
         lab_J = clamp_to_frame(bg(tex(r"\nabla J", RESULT_COLOR, 44)).move_to(
-            scr(axes.c2p(x1 + GSCALE * gJ[0], x2 + GSCALE * gJ[1], 0)) + LEFT * 0.55))
+            scr(axes.c2p(x1 + GSCALE * gJ[0], x2 + GSCALE * gJ[1], 0)) + DOWN * 0.4 + RIGHT * 0.25))
         lab_c = clamp_to_frame(bg(tex(r"\nabla c", W_COLOR, 44)).move_to(
             scr(axes.c2p(x1 + GSCALE * gc[0], x2 + GSCALE * gc[1], 0))
-            + RIGHT * 0.55 + UP * 0.3))
+            + RIGHT * 0.5))
         hud(self, lab_J, lab_c)
 
         self.play(FadeOut(title), Create(drop), FadeIn(foot_dot), run_time=1.2)

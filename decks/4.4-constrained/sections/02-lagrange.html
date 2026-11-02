@@ -74,30 +74,62 @@
 
 <section class="clip-slide">
   <h2>Second example: a bowl cut by a wall</h2>
-  <video class="clip" src="assets/clips/ConstrainedSlice.mp4"></video>
+  <div class="clip-talk">
+    <div>
+      <ul>
+        <li>Minimise \(J = x_1^2 + x_2^2\), a bowl, on the line \(x_1 + x_2 + 3 = 0\).</li>
+        <li>A wall over the line cuts the bowl in a parabola: \(J\) along the line.</li>
+        <li>Its lowest point is the answer: \(x_1 = x_2 = -1.5\), \(J = 4.5\).</li>
+      </ul>
+    </div>
+    <video class="clip" src="assets/clips/ConstrainedSlice.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">Minimise \(J = x_1^2 + x_2^2\) on the line \(x_1 + x_2 + 3 = 0\). The wall over the line cuts the bowl in a parabola; its lowest point is the answer, \(J = 4.5\).</p>
 </section>
 
 <section class="clip-slide">
   <h2>The same picture: a level curve touches</h2>
-  <video class="clip" src="assets/clips/LevelOnTheCurve.mp4"></video>
+  <div class="clip-talk">
+    <div>
+      <ul>
+        <li>A level curve of \(J\) that crosses the line is not the best yet. Shrink it until it only touches.</li>
+        <li>There <span class="cr">\(\nabla J\)</span> and <span class="cw">\(\nabla c\)</span> are both perpendicular to the line.</li>
+        <li>\(\nabla J = (-3, -3) = -3\,(1, 1) = -3\,\nabla c\), so \(\lambda = -3\).</li>
+      </ul>
+    </div>
+    <video class="clip" src="assets/clips/LevelOnTheCurve.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">Where a level curve only touches the line, <span class="cr">\(\nabla J\)</span> lies along <span class="cw">\(\nabla c\)</span>: \(\nabla J = -3\,\nabla c\), so \(\lambda = -3\).</p>
 </section>
 
 <section class="clip-slide">
   <h2>The Lagrangian does the bookkeeping</h2>
-  <video class="clip" src="assets/clips/LagrangeSystem.mp4"></video>
+  <div class="clip-talk">
+    <div>
+      <ul>
+        <li>\(\mathcal L = x_1^2 + x_2^2 - \lambda\,(x_1 + x_2 + 3)\)</li>
+        <li>The two \(x\)-partials give \(\nabla J = \lambda\nabla c\). The \(\lambda\)-partial gives back the constraint.</li>
+        <li>Solve: \(x_1 = x_2 = \lambda/2\), then \(\lambda + 3 = 0\). So \(\lambda = -3\) and \(x_1 = x_2 = -1.5\).</li>
+      </ul>
+    </div>
+    <video class="clip" src="assets/clips/LagrangeSystem.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">Setting every partial of \(\mathcal L\) to zero gives \(\nabla J = \lambda\nabla c\) and the constraint, in one system.</p>
 </section>
 
 <section class="clip-slide">
   <h2>What \(\lambda\) means</h2>
-  <video class="clip" src="assets/clips/ShadowPrice.mp4"></video>
+  <div class="clip-talk">
+    <div>
+      <ul>
+        <li>Move the wall: ask for \(x_1 + x_2 + 3 = t\) instead of \(0\).</li>
+        <li>The best value becomes \((3 - t)^2 / 2\).</li>
+        <li>Its rate at \(t = 0\) is \(-3 = \lambda\): the shadow price of the constraint.</li>
+      </ul>
+    </div>
+    <video class="clip" src="assets/clips/ShadowPrice.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">Move the wall by \(t\) and the best value changes at rate \(\lambda\): the shadow price of the constraint.</p>
 </section>
 
 <section class="act-body">

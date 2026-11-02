@@ -51,9 +51,9 @@ ShadowPrice are fixed and in the deck, after the Bazett worked example.
 
 ## Not done
 
-- The day-4 release tag still points at f5ca4a2. The assets are current,
-  but moving the tag needs a force-push, which the harness blocks. Run
-  `git tag -f day-4 <sha> && git push -f origin day-4` by hand if wanted.
+- Nothing open. The day-4 tag points at a59bdac (moved by hand). Moving a
+  tag needs a force-push, which the harness blocks: run
+  `git tag -f day-4 <sha> && git push -f origin day-4` by hand.
 
 ## Gotchas found this session
 
@@ -103,8 +103,9 @@ replaces it everywhere in Acts 1 and 2:
     subject to c(x1, x2) = x1 + x2 + 3 = 0    a line in the x1-x2 plane
     answer     x1 = x2 = -1.5, J* = 4.5, lambda = 3
 
-Note the sign convention changed with it: the deck now uses `L = J + lambda*c`,
-where it used to use `L = f - lambda*(g - c)`.
+Superseded: the sign convention went back to the deck recipe
+`L = f - lambda*(g - c)` in commit 8a5ac43, so this example now has
+`lambda = -3`, and the four scenes show that value.
 
 ## Done: `anim/4.4-constrained/lagrange.py`, rewritten end to end
 
@@ -124,7 +125,7 @@ All four old scenes were thrown away. The four new ones are:
   `np.linalg.solve` and asserted before any number is shown.
 - **`ShadowPrice`** (3D). The bowl stays still and only the wall, the curve and
   the minimum dot move as the constraint relaxes from `t = 0` to `t = 1`. Ends
-  on `dJ*/dt = -3 = -lambda`, with the `-3` from a central difference.
+  on `dJ*/dt = -3 = lambda`, with the `-3` from a central difference.
 
 ### Geometry that survived tuning, do not re-tune blind
 
@@ -157,48 +158,18 @@ and the half-chord calculation both use.
   readouts were invisible before this.
 
 
-## State as of the handover
+## State, after both threads
 
-A second session was working the same deck in parallel and has carried this
-further than the list below was first written for. As of commit `4317393` and
-the one after it:
-
-- All four scenes are **rendered at 1080p and in the deck**. `LevelOnTheCurve`'s
-  poster frame was checked: the last framing change (`GSCALE` 0.5 -> 0.75, axes
-  `LEFT*2.0 + UP*0.35`) survived. `grad J` fits, `grad c` is a real arrow rather
-  than a stub, and the bowl is not clipped.
-- The old circle-example clips are gone, and two more have appeared from the
-  other session: `SaddleOnCircle` and `LevelCurvesTouch`, used by
-  `01-constraints.html`.
-- `02-lagrange.html` is written. It keeps a `xy + 1` on the unit circle worked
-  example (after Trefor Bazett) for the algebra and uses all four of these
-  clips for the geometry. So the deck now carries two examples on purpose, not
-  the single one the rewrite assumed.
-
-## Not done
-
-1. **A sign contradiction, and it is on a slide.** The `LevelOnTheCurve`
-   caption in `02-lagrange.html` reads "`grad J = -3 grad c`, so `lambda = -3`".
-   With `L = J + lambda*c` the stationarity condition is
-   `grad J + lambda*grad c = 0`, so `grad J = -lambda*grad c` and
-   `lambda = +3`. `LagrangeSystem` shows `lambda = 3` on screen, so the slide
-   and the clip disagree. Fix the caption, not the clip.
-
-2. **Talking points are not beside the clips yet.** The instruction was "keep
-   talking points beside animations and slides". The four new clip slides use a
-   single `<p class="caption">` under the video. They should use the `clip-talk`
-   grid (points left, clip right) that `4.1-backprop/01-four-cases.html` and the
-   3.1 deck use, with the caption's content broken into two or three `<li>`.
-
-3. **Small render nit.** In `LevelOnTheCurve` the `grad c` label box still
-   clips the top of its own arrow. Nudge it further right in `lab_c`
-   (`RIGHT * 0.55 + UP * 0.3` today) and re-render that one scene.
-
-4. **Check the KKT takeaway still reads true.** `03-convex.html` line 69 says
-   "Act 2 maximised with `L = f - lambda(g - c)`; here we minimise, so the sign
-   flips." That was written against the old act. Act 2 now carries both a
-   maximise-on-the-circle example and a minimise-the-bowl example, so the
-   sentence needs a second look rather than a straight deletion.
-
-5. **Rebuild the whole site, not the single deck**: `node shared/site.mjs`.
-   See `memory/rebuild-site-after-every-change.md`.
+- All four scenes are rendered at 1080p and in `02-lagrange.html`, after
+  the `xy + 1` worked example (after Trefor Bazett). Acts 1 and 2 carry both
+  examples on purpose.
+- Every clip slide in Acts 1 and 2 (these four, plus `SaddleOnCircle` and
+  `LevelCurvesTouch`) uses the `clip-talk` grid: talking points left, clip
+  right.
+- `LevelOnTheCurve`: `GSCALE` is 0.65 so the grad J arrow stays inside the
+  frame; grad J's label sits under its tip and grad c's to the right of its
+  tip.
+- The caption sign contradiction is gone: the slide, `LevelOnTheCurve` and
+  `LagrangeSystem` all say `lambda = -3`.
+- The KKT takeaway in `03-convex.html` now says only that, unlike Act 2,
+  the sign of lambda is fixed.
