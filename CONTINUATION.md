@@ -43,24 +43,23 @@ Extracted bowl surface and axes helpers for Block 4.3 scenes:
 **4.3 `anim/4.3-gd/descent.py`**:
 - Removed unused legacy `get_bowl_contours` helper.
 
-## Not done (To be rendered on office machine)
+## Rendered 2026-11-02
 
-The code changes are complete and pass `py_compile`. Clips in `decks/4.3-gd/assets/clips/` are still the older renders and need to be rendered at 1080p:
+All four 4.3 clips (ValleyThreeRates, MomentumVsPlain, BatchVsSGD,
+NoiseBallSchedule) are rendered at 1080p and in the deck. Review fixes made
+before the final render:
 
-1. **Render 4.3 clips**:
-   ```bash
-   bash shared/anim/render.sh anim/4.3-gd/valley.py ValleyThreeRates decks/4.3-gd
-   bash shared/anim/render.sh anim/4.3-gd/valley.py MomentumVsPlain decks/4.3-gd
-   bash shared/anim/render.sh anim/4.3-gd/stochastic.py BatchVsSGD decks/4.3-gd
-   bash shared/anim/render.sh anim/4.3-gd/stochastic.py NoiseBallSchedule decks/4.3-gd
-   node shared/site.mjs
-   ```
+- BatchVsSGD: the legend ran off the left edge and sat on the bowl and the
+  w_0 label. It now sits in the empty bottom-left corner with the short
+  labels LossCurves uses ("Mini-batch: 4", "SGD: 64").
+- NoiseBallSchedule: the eta_k readouts were skewed because
+  DecimalNumber.set_value rebuilds the digits and drops them out of the
+  fixed-in-frame set. The updater now re-pins them beside "eta_k =". The two
+  bowls are placed so their minima project to the same screen height.
 
-2. **Visual review checks**:
-   - Check `MomentumVsPlain`'s 5 velocity kick `Arrow3D` decomposition arrows against the mesh (if too dark or heavy, replace with thick `Line` + small `Dot3D`).
-   - Check `BatchVsSGD` and `NoiseBallSchedule` 3D framing and labels.
+Notes:
 
-3. **Scenes that are NOT contour plots and remain unchanged**:
+Scenes that are not contour plots and stay as they are:
    - `Descent1D` and `LearningRates` (1D parabolas)
    - `LossCurves` (loss against step)
    - `WhyNoise` (data scatter and gradient vectors)

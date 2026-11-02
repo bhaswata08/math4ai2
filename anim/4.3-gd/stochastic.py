@@ -202,15 +202,16 @@ class BatchVsSGD(BowlScene):
         for p in (path_b, path_mb, path_sgd):
             assert abs(p[:, 0]).max() < 4.6 and abs(p[:, 1]).max() < 1.6
 
-        # legend with updates per epoch (N = 64, B = 16) fixed in frame at top left
+        # legend with updates per epoch (N = 64, B = 16), fixed in the empty
+        # bottom-left corner: the bowl's rim and w_0 fill the top of the frame
         legend = VGroup(
             legend_row(r"\text{Batch: } 1", RESULT_COLOR),
-            legend_row(r"\text{Mini-batch: } N/B = 4", W_COLOR),
-            legend_row(r"\text{SGD: } N = 64", Y_COLOR),
+            legend_row(r"\text{Mini-batch: } 4", W_COLOR),
+            legend_row(r"\text{SGD: } 64", Y_COLOR),
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.14)
         hdr = MathTex(r"\text{updates per epoch}", font_size=MIN_FONT, color=INK_DIM)
         legend_box = self.fixed(VGroup(hdr, legend).arrange(DOWN, aligned_edge=LEFT, buff=0.14))
-        legend_box.move_to(np.array([-3.1, 1.85, 0]))
+        legend_box.to_corner(DL, buff=0.25)
 
         min_dot = Dot3D(on_bowl(ax, np.array([0.0, 0.0]), lift=0.1), radius=0.07, color=V_COLOR)
         start_pt = on_bowl(ax, w_start, lift=0.1)
@@ -406,8 +407,21 @@ class NoiseBallSchedule(ThreeDScene):
         r_d = np.sqrt(np.mean(np.sum(P_d[-20:] ** 2, axis=1)))
         print("noise ball rms radius const %.3f, decay (last 20 steps) %.3f" % (r_c, r_d))
 
-        ax_l = circular_bowl_axes(-2.6, cy=0.6)
-        ax_r = circular_bowl_axes(2.6, cy=0.6)
+        # The camera is turned, so equal 3D offsets do not land at equal screen
+        # heights. Place each bowl so its minimum projects to the same height.
+        def bowl_at(sx, sy):
+            ax = circular_bowl_axes(0.0, cy=0.0)
+            for _ in range(4):
+                o = scr(ax.c2p(0, 0, 0))
+                d = np.array([sx, sy]) - o[:2]
+                jx = scr(ax.c2p(0, 0, 0) + RIGHT * 0.01)[:2] - o[:2]
+                jy = scr(ax.c2p(0, 0, 0) + UP * 0.01)[:2] - o[:2]
+                step = np.linalg.solve(np.column_stack([jx, jy]) / 0.01, d)
+                ax.shift(np.array([step[0], step[1], 0.0]))
+            return ax
+
+        ax_l = bowl_at(-2.5, 0.15)
+        ax_r = bowl_at(2.5, 0.15)
         surf_l = circular_bowl_surface(ax_l)
         surf_r = circular_bowl_surface(ax_r)
 
@@ -444,13 +458,12 @@ class NoiseBallSchedule(ThreeDScene):
 
         # live eta readout beside each curve's title
         def readout(cx, f):
+            sym = MathTex(r"\eta_k =", font_size=MIN_FONT, color=INK_DIM)
             d = DecimalNumber(f(0), num_decimal_places=2, font_size=MIN_FONT, color=INK)
-            d.move_to(np.array([cx, -2.42, 0]))
-            return d
+            VGroup(sym, d).arrange(RIGHT, buff=0.15).move_to(np.array([cx, -2.42, 0]))
+            return d, sym
 
-        ro_l, ro_r = readout(-2.1, const), readout(2.9, decay)
-        ro_l_sym = MathTex(r"\eta_k =", font_size=MIN_FONT, color=INK_DIM).next_to(ro_l, LEFT, buff=0.12)
-        ro_r_sym = MathTex(r"\eta_k =", font_size=MIN_FONT, color=INK_DIM).next_to(ro_r, LEFT, buff=0.12)
+        (ro_l, ro_l_sym), (ro_r, ro_r_sym) = readout(-2.6, const), readout(2.6, decay)
 
         t_l = MathTex(r"\text{constant } \eta = 0.30", font_size=MIN_FONT, color=INK).move_to(np.array([-2.6, 2.45, 0]))
         t_r = MathTex(r"\eta_k = 0.30/(1 + k/50)", font_size=MIN_FONT, color=INK).move_to(np.array([2.6, 2.45, 0]))
@@ -479,8 +492,12 @@ class NoiseBallSchedule(ThreeDScene):
             dot_r.move_to(on_circular_bowl(ax_r, P_d[k]))
             mk_l.move_to(ea_l.c2p(k, const(k)))
             mk_r.move_to(ea_r.c2p(k, decay(k)))
-            ro_l.set_value(const(k))
-            ro_r.set_value(decay(k))
+            # set_value rebuilds the digits, which drops them out of the
+            # fixed-in-frame set, so pin them again and re-seat beside eta_k =
+            for ro, sym, v in ((ro_l, ro_l_sym, const(k)), (ro_r, ro_r_sym, decay(k))):
+                ro.set_value(v)
+                ro.next_to(sym, RIGHT, buff=0.15)
+                self.camera.add_fixed_in_frame_mobjects(ro)
         trace_l.add_updater(refresh)
 
         self.add(trace_l, trace_r, dot_l, dot_r, mk_l, mk_r)
