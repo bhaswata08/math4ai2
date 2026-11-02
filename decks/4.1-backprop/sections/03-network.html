@@ -1,0 +1,165 @@
+<!-- ============================================================
+     ACT 3 of 6. The network and the objective. Budget: 18 min.
+
+     Covers Mitesh Khapra, CS7015 Deep Learning, Lecture 4, modules
+     4.1 (feedforward networks), 4.2 (learning the parameters) and
+     4.3 (output and loss functions). This act exists to set up his
+     notation and to justify the softmax-plus-cross-entropy choice
+     before Act 4 differentiates it.
+
+     Notation, used from here to the end of the deck:
+       x in R^n            input
+       a_i = b_i + W_i h_{i-1}     pre-activation at layer i
+       h_i = g(a_i)                activation at layer i
+       h_L = y-hat = O(a_L)        output
+       L(theta)                    the loss
+     No clips in this act yet: the layer diagram is built in HTML.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 3 of 6</div>
+  <h1>The network and the objective</h1>
+  <p class="act-sub">Before you can differentiate a network you have to write one down. Layers, parameters, and the one number you are trying to make small.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / The model</div>
+  <h2>A feedforward network, in two lines</h2>
+  <div class="cols">
+    <div>
+      <p>The input is a vector \(\mathbf x \in \mathbb R^n\). The network has \(L\) layers: \(L-1\) hidden ones and an output layer. Call the input layer the \(0\)-th layer, so \(\mathbf h_0 = \mathbf x\).</p>
+      <p>Each neuron splits into two halves. The <span class="cv">pre-activation</span> is an affine map of the layer below:</p>
+      <div class="eq-big">$$\mathbf a_i = \mathbf b_i + W_i \mathbf h_{i-1}$$</div>
+      <p>The <span class="cr">activation</span> applies a nonlinearity \(g\) entry by entry:</p>
+      <div class="eq-big">$$\mathbf h_i = g(\mathbf a_i)$$</div>
+    </div>
+    <div>
+      <p>At the top, a possibly different function \(O\) turns the last pre-activation into the prediction:</p>
+      <div class="eq-big">$$\mathbf h_L = \hat{\mathbf y} = f(\mathbf x) = O(\mathbf a_L)$$</div>
+      <table style="font-size:0.85em">
+        <thead><tr><th></th><th>shape</th></tr></thead>
+        <tbody>
+          <tr><td>\(W_i,\ \mathbf b_i\) for \(0 &lt; i &lt; L\)</td><td>\(\mathbb R^{n\times n}\), \(\mathbb R^{n}\)</td></tr>
+          <tr><td>\(W_L,\ \mathbf b_L\)</td><td>\(\mathbb R^{k\times n}\), \(\mathbb R^{k}\)</td></tr>
+        </tbody>
+      </table>
+      <p class="takeaway">Two equations, repeated \(L\) times. Everything else in this act and the next is bookkeeping on top of them.</p>
+    </div>
+  </div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Unrolled</div>
+  <h2>The whole network is one nested function</h2>
+  <p>Take \(L = 3\) and substitute each line into the next:</p>
+  <div class="eq-big">$$\hat{\mathbf y} \;=\; O\Big(\,\underbrace{W_3\,g\big(\underbrace{W_2\,g(\underbrace{W_1\mathbf x + \mathbf b_1}_{\mathbf a_1}) + \mathbf b_2}_{\mathbf a_2}\big) + \mathbf b_3}_{\mathbf a_3}\,\Big)$$</div>
+  <ul>
+    <li>Affine, squash, affine, squash, affine, output. No other kind of step appears.</li>
+    <li class="fragment">Every parameter sits inside a composition, which is why the chain rule is the only tool Act 4 needs.</li>
+  </ul>
+  <p class="takeaway fragment">A deep network is not a new kind of object. It is \(g\) and matrix multiplication, alternated.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / The parameters</div>
+  <h2>Gradient descent does not change</h2>
+  <div class="cols">
+    <div>
+      <p>Collect every weight and bias into one symbol:</p>
+      <div class="eq-big">$$\theta = [\,W_1, W_2, \dots, W_L,\ \mathbf b_1, \mathbf b_2, \dots, \mathbf b_L\,]$$</div>
+      <p>Then the update rule is the one from Block 3.4, unchanged:</p>
+      <div class="eq-big">$$\theta_{t+1} \;=\; \theta_t \;-\; \eta\,\nabla_{\theta_t}$$</div>
+    </div>
+    <div>
+<pre class="mono" style="font-size:0.66em; line-height:1.45"><code>gradient_descent():
+  t = 0
+  initialize theta_0
+  while t++ &lt; max_iterations:
+    theta_{t+1} = theta_t - eta * grad(theta_t)</code></pre>
+      <p>For one neuron, \(\theta\) was \([w, b]\) and \(\nabla_\theta\) was two numbers. For a network, \(\theta\) is a pile of matrices.</p>
+      <p class="takeaway">The algorithm does not care. It only needs someone to hand it \(\nabla_\theta\).</p>
+    </div>
+  </div>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / The ask</div>
+  <h2>What <span class="cr">\(\nabla_\theta\)</span> actually contains</h2>
+  <p>One partial derivative per parameter, arranged to match the parameter it belongs to:</p>
+  <div class="eq-big">$$\nabla_{W_1}, \nabla_{W_2}, \dots, \nabla_{W_{L-1}} \in \mathbb R^{n\times n}, \qquad \nabla_{W_L} \in \mathbb R^{k\times n}$$</div>
+  <div class="eq-big">$$\nabla_{\mathbf b_1}, \dots, \nabla_{\mathbf b_{L-1}} \in \mathbb R^{n}, \qquad \nabla_{\mathbf b_L} \in \mathbb R^{k}$$</div>
+  <p class="fragment">A 784&ndash;256&ndash;256&ndash;10 network has about 270,000 of these, and that is a small one. Writing out the full \(\nabla_\theta\) as one flat row would fill this slide and several more.</p>
+  <p class="takeaway fragment">So two questions are left, and they are the rest of this block. How do we choose \(L(\theta)\)? And how do we compute \(\nabla_\theta\) without touching each entry separately?</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Choosing the loss</div>
+  <h2>The loss follows the task, not the network</h2>
+  <p>Predicting numbers. Suppose each target is a vector of real ratings, \(\mathbf y_i \in \mathbb R^3\). Then \(\hat{\mathbf y}\) must be free to take any real value, so \(O\) is <span class="cv">linear</span> and the deviation is measured by <span class="cr">squared error</span>:</p>
+  <div class="eq-big">$$L(\theta) \;=\; \frac{1}{N}\sum_{i=1}^{N}\sum_{j=1}^{3}\big(\hat y_{ij} - y_{ij}\big)^2$$</div>
+  <ul>
+    <li>A logistic \(O\) would be wrong here: it pins \(\hat y_i\) into \((0,1)\) and the ratings are not.</li>
+    <li class="fragment">Nothing below the output layer changes. Only \(O\) and \(L\) did.</li>
+  </ul>
+  <p class="takeaway fragment">The output function and the loss are a matched pair. Pick the pair that fits what \(\mathbf y\) is.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Choosing the loss</div>
+  <h2>Classification needs a distribution</h2>
+  <div class="cols">
+    <div>
+      <p>Now sort an image into one of \(k\) classes. The target is one-hot:</p>
+      <div class="eq-big" style="font-size:0.9em">$$\mathbf y = [\,1,\ 0,\ 0,\ 0\,]$$</div>
+      <p style="font-size:0.9em">That is already a probability distribution: non-negative, sums to one. Squared error would work, but it ignores this.</p>
+      <p class="fragment">So make \(\hat{\mathbf y}\) a distribution too. The output function that does it is <span class="cr">softmax</span>:</p>
+    </div>
+    <div>
+      <div class="eq-big">$$\hat y_j \;=\; O(\mathbf a_L)_j \;=\; \frac{e^{a_{L,j}}}{\sum_{i=1}^{k} e^{a_{L,i}}}$$</div>
+      <ul style="font-size:0.9em">
+        <li>Exponentiating makes every entry positive.</li>
+        <li>Dividing by the total makes them sum to one.</li>
+        <li>The ordering of the \(a_{L,i}\) survives, so the largest pre-activation stays the most likely class.</li>
+      </ul>
+    </div>
+  </div>
+  <p class="takeaway">Softmax is the cheapest way to turn \(k\) unconstrained numbers into \(k\) probabilities.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Cross entropy</div>
+  <h2>Comparing two distributions</h2>
+  <p style="margin-bottom:0.2em">With both \(\mathbf y\) and \(\hat{\mathbf y}\) distributions, the natural discrepancy is <span class="cr">cross entropy</span>:</p>
+  <div class="eq-big" style="font-size:0.95em; margin:0.15em 0 0.35em">$$L(\theta) \;=\; -\sum_{c=1}^{k} y_c \log \hat y_c$$</div>
+  <p class="fragment" style="margin-bottom:0.2em">But \(\mathbf y\) is one-hot. For true class \(\ell\), \(y_\ell = 1\) and every other term vanishes:</p>
+  <div class="eq-big fragment" style="margin:0.15em 0 0.35em">$$\boxed{\,L(\theta) \;=\; -\log \hat y_\ell\,}$$</div>
+  <ul class="fragment" style="font-size:0.9em; margin-bottom:0.2em">
+    <li>Minimising \(-\log \hat y_\ell\) is maximising \(\log \hat y_\ell\), the <span class="cv">log-likelihood</span> of the data.</li>
+    <li>\(\hat y_\ell\) is the probability the network assigns to the right answer. Push it towards 1.</li>
+  </ul>
+  <p class="takeaway fragment" style="margin-top:0.5em">A sum over \(k\) classes collapses to one term. That is why the gradients in Act 4 stay short.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / And it does depend on \(\theta\)</div>
+  <h2>Is \(\hat y_\ell\) a function of the parameters?</h2>
+  <p>It has to be, or there would be nothing to differentiate. Unroll it for \(L = 3\):</p>
+  <div class="eq-big">$$\hat y_\ell \;=\; \Big[\,O\big(W_3\,g(W_2\,g(W_1\mathbf x + \mathbf b_1) + \mathbf b_2) + \mathbf b_3\big)\Big]_\ell$$</div>
+  <p>Every \(W_i\) and every \(\mathbf b_i\) appears. So the objective</p>
+  <div class="eq-big">$$\min_\theta \; L(\theta) \;=\; -\log \hat y_\ell$$</div>
+  <p class="takeaway">is a genuine optimisation problem in \(\theta\), and gradient descent is allowed to attack it.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / The pair table</div>
+  <h2>Two tasks, two matched pairs</h2>
+  <table style="font-size:1em">
+    <thead><tr><th></th><th>output is real values</th><th>output is probabilities</th></tr></thead>
+    <tbody>
+      <tr><td><b>output activation \(O\)</b></td><td><span class="cv">linear</span></td><td><span class="cr">softmax</span></td></tr>
+      <tr><td><b>loss \(L(\theta)\)</b></td><td><span class="cv">squared error</span></td><td><span class="cr">cross entropy</span></td></tr>
+    </tbody>
+  </table>
+  <p>Other losses exist and some problems need them. These two cover most of what you will meet.</p>
+  <p class="takeaway">For the rest of this block: <span class="cr">softmax output, cross-entropy loss</span>. Every gradient in Act 4 is derived for that pair, and only the first step would change if you swapped it.</p>
+</section>

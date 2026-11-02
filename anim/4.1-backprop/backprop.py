@@ -154,43 +154,79 @@ class DependencyTree(Scene):
 
 class ChainRuleProduct(Scene):
     def construct(self):
+        # Left panel: the slice of the network the derivative runs through,
+        # drawn top to bottom so each arrow sits level with the factor it
+        # produces on the right. Every symbol in the formula is on screen.
+        cx = -4.1
+        lv = [1.95, 0.70, -0.55, -1.80]
+        n_prev = node(np.array([cx, lv[0], 0]), r=0.33, color=A_COL)
+        b_z = box(np.array([cx, lv[1], 0]), 0.9, 0.55, INK_DIM)
+        n_last = node(np.array([cx, lv[2], 0]), r=0.33, color=A_COL)
+        b_cost = box(np.array([cx, lv[3], 0]), 0.9, 0.55, D_COL)
+        t_prev = tex(r"a^{(L-1)}", A_COL).next_to(n_prev, RIGHT, buff=0.18)
+        t_z = tex(r"z^{(L)}", INK).move_to(b_z)
+        t_last = tex(r"a^{(L)}", A_COL).next_to(n_last, RIGHT, buff=0.18)
+        t_cost = tex(r"C", D_COL).move_to(b_cost)
+        t_y = tex(r"y", A_COL).move_to(np.array([cx + 1.0, lv[3], 0]))
+
+        a_wz = edge(n_prev.get_bottom(), b_z.get_top(), INK_DIM)
+        a_za = edge(b_z.get_bottom(), n_last.get_top(), INK_DIM)
+        a_ac = edge(n_last.get_bottom(), b_cost.get_top(), INK_DIM)
+        a_yc = edge(t_y.get_left(), b_cost.get_right(), INK_DIM)
+        l_w = tex(r"w^{(L)}", A_COL, bg=True).next_to(a_wz, RIGHT, buff=0.1)
+        l_s = tex(r"\sigma", S_COL, bg=True).next_to(a_za, RIGHT, buff=0.1)
+
+        net = VGroup(n_prev, b_z, n_last, b_cost, t_prev, t_z, t_last, t_cost, t_y,
+                     a_wz, a_za, a_ac, a_yc, l_w, l_s)
+
+        # Right panel: the same three steps as algebra.
         chain = MathTex(
             r"\frac{\partial C}{\partial w^{(L)}}", r"=",
-            r"\frac{\partial z^{(L)}}{\partial w^{(L)}}", r"\quad\cdot\quad",
-            r"\frac{\partial a^{(L)}}{\partial z^{(L)}}", r"\quad\cdot\quad",
+            r"\frac{\partial z^{(L)}}{\partial w^{(L)}}", r"\;\cdot\;",
+            r"\frac{\partial a^{(L)}}{\partial z^{(L)}}", r"\;\cdot\;",
             r"\frac{\partial C}{\partial a^{(L)}}", font_size=F)
         chain[0].set_color(INK)
         chain[2].set_color(A_COL)
         chain[4].set_color(S_COL)
         chain[6].set_color(D_COL)
-        chain.move_to(np.array([0, 1.75, 0]))
-        self.add(chain)
-        self.wait(1.5)
+        chain.move_to(np.array([1.45, 2.3, 0]))
 
-        evals = [
-            (2, r"a^{(L-1)}", A_COL),
-            (4, r"\sigma'(z^{(L)})", S_COL),
-            (6, r"2(a^{(L)} - y)", D_COL),
-        ]
-        shown = []
-        for idx, s, col in evals:
-            x = chain[idx].get_x()
-            arr = Arrow(np.array([x, 1.05, 0]), np.array([x, 0.35, 0]), buff=0.05, color=col, stroke_width=3,
-                        max_tip_length_to_length_ratio=0.25)
-            ev = tex(s, col, size=F).move_to(np.array([x, -0.1, 0]))
-            self.play(Create(arr), run_time=0.7)
-            self.play(FadeIn(ev, shift=DOWN * 0.2), run_time=0.7)
-            self.wait(0.7)
-            shown.append(ev)
+        rows = []
+        for num, den, val, col in [
+            (r"\partial z^{(L)}", r"\partial w^{(L)}", r"a^{(L-1)}", A_COL),
+            (r"\partial a^{(L)}", r"\partial z^{(L)}", r"\sigma'(z^{(L)})", S_COL),
+            (r"\partial C", r"\partial a^{(L)}", r"2(a^{(L)} - y)", D_COL),
+        ]:
+            r = MathTex(rf"\frac{{{num}}}{{{den}}}", r"=", val, font_size=F, color=col)
+            rows.append(r)
+        # One row per network arrow, in the same order, flush with the chain.
+        for r, y in zip(rows, [1.18, 0.08, -1.02]):
+            r.move_to(np.array([chain.get_left()[0], y, 0]), aligned_edge=LEFT)
 
         final = MathTex(r"\frac{\partial C}{\partial w^{(L)}}", r"=", r"a^{(L-1)}", r"\cdot",
-                        r"\sigma'(z^{(L)})", r"\cdot", r"2(a^{(L)} - y)", font_size=F + 2)
+                        r"\sigma'(z^{(L)})", r"\cdot", r"2(a^{(L)} - y)", font_size=F)
         final[0].set_color(INK)
         final[2].set_color(A_COL)
         final[4].set_color(S_COL)
         final[6].set_color(D_COL)
-        final.move_to(np.array([0, -1.65, 0]))
-        fbox = SurroundingRectangle(final, color=D_COL, buff=0.16, stroke_width=2.5)
+        final.move_to(np.array([1.2, -2.18, 0]))
+        fbox = SurroundingRectangle(final, color=D_COL, buff=0.14, stroke_width=2.5)
+
+        self.add(net, chain)
+        self.wait(1.5)
+
+        for idx, row, arr, lbl, col in [
+            (2, rows[0], a_wz, l_w, A_COL),
+            (4, rows[1], a_za, l_s, S_COL),
+            (6, rows[2], a_ac, None, D_COL),
+        ]:
+            self.play(Indicate(chain[idx], color=HIGHLIGHT, scale_factor=1.15),
+                      arr.animate.set_color(col).set_stroke(width=5),
+                      *([Indicate(lbl, color=HIGHLIGHT, scale_factor=1.15)] if lbl else []),
+                      run_time=0.9)
+            self.play(FadeIn(row, shift=RIGHT * 0.2), run_time=0.7)
+            self.wait(0.8)
+
         self.play(FadeIn(final, shift=UP * 0.2), FadeIn(fbox), run_time=1.0)
         self.wait(3.5)
 
@@ -220,13 +256,13 @@ class GoDeeper(Scene):
         eq[6].set_color(D_COL)
         eq.move_to(np.array([0, 0.1, 0]))
         self.add(net, eq)
-        self.wait(1.5)
+        self.wait(2.5)
 
         reused = VGroup(eq[4], eq[5], eq[6])
         brace = Brace(reused, DOWN, buff=0.1, color=HIGHLIGHT)
         r_lbl = tex(r"\text{reused from layer } L", HIGHLIGHT).next_to(brace, DOWN, buff=0.12)
-        self.play(Create(brace), FadeIn(r_lbl), run_time=1.0)
-        self.wait(1.5)
+        self.play(Create(brace), FadeIn(r_lbl), run_time=1.4)
+        self.wait(2.5)
         d_def = MathTex(r"\boldsymbol{\delta}^{(L)}", r"=", r"\frac{\partial C}{\partial z^{(L)}}", r"=",
                         r"\sigma'(z^{(L)})", r"\cdot", r"2(a^{(L)} - y)", font_size=F)
         d_def[0].set_color(D_COL)
@@ -234,12 +270,12 @@ class GoDeeper(Scene):
         d_def[4].set_color(S_COL)
         d_def[6].set_color(D_COL)
         d_def.move_to(np.array([0.0, -1.55, 0]))
-        self.play(FadeOut(r_lbl), run_time=0.4)
-        self.play(FadeIn(d_def), run_time=0.8)
-        self.wait(2.5)
+        self.play(FadeOut(r_lbl), run_time=0.6)
+        self.play(FadeIn(d_def), run_time=1.2)
+        self.wait(3.0)
 
         # Pull the reused product out as delta^{(L)}.
-        self.play(FadeOut(brace), FadeOut(d_def), FadeOut(eq), run_time=0.6)
+        self.play(FadeOut(brace), FadeOut(d_def), FadeOut(eq), run_time=0.9)
         eq_a = MathTex(r"\frac{\partial C}{\partial a^{(L-1)}}", r"=", r"w^{(L)}", r"\cdot",
                        r"\boldsymbol{\delta}^{(L)}", font_size=F + 2)
         eq_w = MathTex(r"\frac{\partial C}{\partial w^{(L)}}", r"=", r"a^{(L-1)}", r"\cdot",
@@ -250,31 +286,35 @@ class GoDeeper(Scene):
             e[4].set_color(D_COL)
         VGroup(eq_a, eq_w).arrange(DOWN, buff=0.55, aligned_edge=LEFT).move_to(np.array([0, -0.5, 0]))
         eq_w.align_to(eq_a, LEFT)
-        self.play(FadeIn(eq_a), FadeIn(eq_w), run_time=0.8)
+        self.play(FadeIn(eq_a), FadeIn(eq_w), run_time=1.2)
+        self.wait(1.2)
         boxes = VGroup(SurroundingRectangle(eq_a[4], color=HIGHLIGHT, buff=0.1, stroke_width=3),
                        SurroundingRectangle(eq_w[4], color=HIGHLIGHT, buff=0.1, stroke_width=3))
         tw = tex(r"\text{one } \delta^{(L)}\text{, used twice}", HIGHLIGHT).move_to(np.array([0, -2.1, 0]))
-        self.play(Create(boxes), FadeIn(tw), run_time=0.8)
-        self.wait(2.5)
-        self.play(FadeOut(boxes), FadeOut(tw), run_time=0.4)
+        self.play(Create(boxes), FadeIn(tw), run_time=1.2)
+        self.wait(3.0)
+        self.play(FadeOut(boxes), FadeOut(tw), run_time=0.6)
 
-        # Backward sweep along the chain.
+        # Backward sweep along the chain, one node at a time so it can be
+        # followed at talking speed.
         cb = SurroundingRectangle(bc, color=HIGHLIGHT, buff=0.08, stroke_width=3)
-        self.play(Create(cb), run_time=0.3)
-        self.play(FadeOut(cb), run_time=0.2)
+        self.play(Create(cb), run_time=0.6)
+        self.wait(0.4)
+        self.play(FadeOut(cb), run_time=0.4)
         prev, pts = bc, [n_l, n_l1, n_l2]
         for tgt in pts:
             pulse = Arrow(prev.get_left(), tgt.get_right(), buff=0.08, color=HIGHLIGHT, stroke_width=5,
                           max_tip_length_to_length_ratio=0.22)
             fl = SurroundingRectangle(tgt, color=HIGHLIGHT, buff=0.08, stroke_width=3)
-            self.play(Create(pulse), run_time=0.35)
-            self.play(Create(fl), FadeOut(pulse), run_time=0.3)
-            self.play(FadeOut(fl), run_time=0.2)
+            self.play(Create(pulse), run_time=0.8)
+            self.play(Create(fl), FadeOut(pulse), run_time=0.5)
+            self.wait(0.35)
+            self.play(FadeOut(fl), run_time=0.35)
             prev = tgt
-        self.wait(0.3)
+        self.wait(0.8)
 
         # Next layer back: delta^{(L)} reaches every earlier weight.
-        self.play(FadeOut(eq_a), FadeOut(eq_w), run_time=0.5)
+        self.play(FadeOut(eq_a), FadeOut(eq_w), run_time=0.7)
         e1 = MathTex(r"\frac{\partial C}{\partial w^{(L-1)}}", r"=", r"a^{(L-2)}", r"\cdot",
                      r"\sigma'(z^{(L-1)})", r"\cdot", r"\frac{\partial C}{\partial a^{(L-1)}}", font_size=F)
         e2 = MathTex(r"=", r"a^{(L-2)}", r"\cdot", r"\sigma'(z^{(L-1)})", r"\cdot", r"w^{(L)}", r"\cdot",
@@ -284,10 +324,10 @@ class GoDeeper(Scene):
         e1.move_to(np.array([0, -0.3, 0]))
         e2.next_to(e1, DOWN, buff=0.45).align_to(e1[1], LEFT)
         fb = SurroundingRectangle(VGroup(e1, e2), color=D_COL, buff=0.2, stroke_width=2.5)
-        self.play(FadeIn(e1), run_time=0.8)
-        self.wait(1.0)
-        self.play(FadeIn(e2), FadeIn(fb), run_time=0.8)
-        self.wait(3.0)
+        self.play(FadeIn(e1), run_time=1.2)
+        self.wait(2.0)
+        self.play(FadeIn(e2), FadeIn(fb), run_time=1.2)
+        self.wait(3.5)
 
 
 def rounded(v, nd):
@@ -548,3 +588,244 @@ class MatrixBackprop(Scene):
                 self.play(FadeIn(gents[i * 2 + j], scale=1.2), run_time=0.35)
                 self.remove(r1, r2)
         self.wait(2.5)
+
+
+
+# The three scenes below follow Mitesh Khapra, CS7015 lecture 4.4,
+# "Backpropagation (Intuition)": the chain for a weight at the far end of a
+# deep but thin network, the loss interrogating a wide network layer by
+# layer, and the chain rule read back as that interrogation.
+
+
+def fit(m, w=9.2):
+    """Shrink a line only if it would run off the 10-unit frame."""
+    if m.width > w:
+        m.scale(w / m.width)
+    return m
+
+
+def keep_in_frame(m, margin=0.3):
+    """Nudge a mobject back inside the frame if next_to pushed it out."""
+    half = config.frame_width / 2 - margin
+    if m.get_left()[0] < -half:
+        m.shift(RIGHT * (-half - m.get_left()[0]))
+    if m.get_right()[0] > half:
+        m.shift(LEFT * (m.get_right()[0] - half))
+    return m
+
+
+class LongChainCompress(Scene):
+    def construct(self):
+        # Deep but thin, drawn left to right with the cost at the end. The
+        # first edge is the subject: w^(1) is as far from C as a weight gets.
+        yn = 1.75
+        xs = [-4.0, -2.3, -0.6, 1.7]
+        n_in, n_a1, n_a2, n_aL = [node(np.array([x, yn, 0]), r=0.26, color=c, sw=2.5)
+                                  for x, c in zip(xs, [INK_FAINT, A_COL, INK_DIM, INK_DIM])]
+        bc = box(np.array([3.5, yn, 0]), 1.0, 0.65, D_COL)
+        tc = tex(r"C", D_COL).move_to(bc)
+        l_in = tex(r"x", INK_FAINT).next_to(n_in, UP, buff=0.12)
+        l_a1 = tex(r"a^{(1)}", A_COL).next_to(n_a1, UP, buff=0.12)
+        l_a2 = tex(r"a^{(2)}", INK_DIM).next_to(n_a2, UP, buff=0.12)
+        l_aL = tex(r"a^{(L)}", INK_DIM).next_to(n_aL, UP, buff=0.12)
+
+        e1 = edge(n_in.get_right(), n_a1.get_left(), A_COL, sw=4.5)
+        e2 = edge(n_a1.get_right(), n_a2.get_left(), INK_DIM)
+        gap = VGroup(*[Dot(np.array([0.6 + i * 0.3, yn, 0]), radius=0.045, color=INK_FAINT)
+                       for i in range(3)])
+        e3 = edge(np.array([1.25, yn, 0]), n_aL.get_left(), INK_DIM)
+        e4 = edge(n_aL.get_right(), bc.get_left(), D_COL)
+        w1 = tex(r"w^{(1)}", A_COL, bg=True).next_to(e1, DOWN, buff=0.1)
+        w2 = tex(r"w^{(2)}", INK_DIM, bg=True).next_to(e2, DOWN, buff=0.1)
+
+        net = VGroup(n_in, n_a1, n_a2, n_aL, bc, tc, l_in, l_a1, l_a2, l_aL,
+                     e1, e2, gap, e3, e4, w1, w2)
+
+        # One factor per arrow, all the way back. The gap in the middle stands
+        # for the layers the picture skips; it carries no multiplication dots
+        # of its own, or the run of dots reads as one long ellipsis.
+        chain = MathTex(
+            r"\frac{\partial C}{\partial w^{(1)}}", r"=",
+            r"\frac{\partial C}{\partial a^{(L)}}", r"\cdot",
+            r"\frac{\partial a^{(L)}}{\partial z^{(L)}}", r"\;\cdots\;",
+            r"\frac{\partial a^{(1)}}{\partial z^{(1)}}", r"\cdot",
+            r"\frac{\partial z^{(1)}}{\partial w^{(1)}}", font_size=F)
+        chain[0].set_color(D_COL)
+        chain[8].set_color(A_COL)
+        fit(chain).move_to(np.array([0, 0.3, 0]))
+
+        self.add(net)
+        self.wait(2.0)
+        self.play(FadeIn(chain, shift=UP * 0.15), run_time=1.2)
+        self.wait(3.0)
+
+        tail = VGroup(*chain[2:7])
+        brace = Brace(tail, DOWN, buff=0.12, color=HIGHLIGHT)
+        b_lbl = MathTex(r"\text{all of this is just}", r"\;",
+                        r"\frac{\partial C}{\partial a^{(1)}}",
+                        font_size=F, color=HIGHLIGHT)
+        keep_in_frame(b_lbl.next_to(brace, DOWN, buff=0.2))
+        self.play(Create(brace), FadeIn(b_lbl), run_time=1.3)
+        self.wait(3.0)
+
+        # Collapse the tail. Two factors left: one already computed, one local.
+        comp = MathTex(r"\frac{\partial C}{\partial w^{(1)}}", r"\;=\;",
+                       r"\frac{\partial C}{\partial a^{(1)}}", r"\;\cdot\;",
+                       r"\frac{\partial a^{(1)}}{\partial w^{(1)}}", font_size=F + 2)
+        comp[0].set_color(D_COL)
+        comp[2].set_color(D_COL)
+        comp[4].set_color(A_COL)
+        comp.move_to(np.array([0, 0.05, 0]))
+        self.play(FadeOut(brace), FadeOut(b_lbl), FadeOut(chain), run_time=0.8)
+        self.play(FadeIn(comp, scale=1.05), run_time=1.1)
+        self.wait(1.2)
+
+        hb = SurroundingRectangle(comp[2], color=HIGHLIGHT, buff=0.14, stroke_width=3)
+        hl = tex(r"\text{computed once, on the way back}", HIGHLIGHT)
+        fit(hl).move_to(np.array([0, -1.75, 0]))
+        self.play(Create(hb), FadeIn(hl), run_time=1.2)
+        self.wait(3.5)
+
+
+class BlameSpreads(Scene):
+    def construct(self):
+        # A wide network. The question is not which neuron is wrong, it is how
+        # far back the responsibility reaches: all the way, is the answer.
+        cols_x = [-3.7, -1.7, 0.3, 2.3]
+        ys3 = [0.8, -0.1, -1.0]
+        ys2 = [0.45, -0.65]
+        r = 0.22
+        c_in = [node(np.array([cols_x[0], y, 0]), r=r, color=INK_FAINT, sw=2.5) for y in ys3]
+        c_h1 = [node(np.array([cols_x[1], y, 0]), r=r, color=INK_DIM, sw=2.5) for y in ys3]
+        c_h2 = [node(np.array([cols_x[2], y, 0]), r=r, color=INK_DIM, sw=2.5) for y in ys3]
+        c_out = [node(np.array([cols_x[3], y, 0]), r=r, color=INK_DIM, sw=2.5) for y in ys2]
+        x_lbls = VGroup(*[tex(rf"x_{i + 1}", INK_FAINT).next_to(n, LEFT, buff=0.16)
+                          for i, n in enumerate(c_in)])
+
+        def bundle(left, right):
+            return VGroup(*[Line(a.get_right(), b.get_left(), color=INK_FAINT, stroke_width=1.6)
+                            for a in left for b in right])
+
+        b1, b2, b3 = bundle(c_in, c_h1), bundle(c_h1, c_h2), bundle(c_h2, c_out)
+        # No background plate on these: a plate recolours with the label when
+        # the blame reaches it and swallows the text.
+        w1 = tex(r"W^{(1)}", A_COL).move_to(np.array([-2.7, 1.55, 0]))
+        w2 = tex(r"W^{(2)}", A_COL).move_to(np.array([-0.7, 1.55, 0]))
+        w3 = tex(r"W^{(3)}", A_COL).move_to(np.array([1.3, 1.55, 0]))
+
+        bc = box(np.array([4.0, 1.55, 0]), 1.0, 0.62, D_COL)
+        tc = tex(r"C", D_COL).move_to(bc)
+        to_c = VGroup(*[Line(n.get_right(), bc.get_bottom(), color=INK_FAINT, stroke_width=1.6)
+                        for n in c_out])
+
+        net = VGroup(b1, b2, b3, to_c, *c_in, *c_h1, *c_h2, *c_out,
+                     x_lbls, w1, w2, w3, bc, tc)
+        self.add(net)
+
+        say = fit(tex(r"\text{forward pass done}", INK_DIM)).move_to(np.array([0, -2.3, 0]))
+        self.add(say)
+        self.wait(1.5)
+
+        def line(text, color=INK_DIM):
+            nonlocal say
+            new = fit(tex(rf"\text{{{text}}}", color)).move_to(np.array([0, -2.3, 0]))
+            self.play(FadeOut(say), FadeIn(new), run_time=0.6)
+            say = new
+
+        # Stroke only: these circles are filled with the background colour so
+        # the lines behind them are hidden, and set_color would fill them too.
+        def light(mobs, width=3.2):
+            return [m.animate.set_stroke(color=HIGHLIGHT, width=width) for m in mobs]
+
+        line(r"and $C$ is not zero", D_COL)
+        pulse = SurroundingRectangle(bc, color=D_COL, buff=0.1, stroke_width=3)
+        self.play(Create(pulse), run_time=0.6)
+        self.wait(1.6)
+        self.play(FadeOut(pulse), run_time=0.4)
+
+        line(r"so ask the output layer what went wrong", HIGHLIGHT)
+        self.play(*light(to_c, 2.6), run_time=0.8)
+        self.play(*light(c_out), run_time=0.7)
+        self.wait(1.5)
+
+        for lbl, bun, col, text in [
+            (w3, b3, c_h2, r"it blames $W^{(3)}$ and the layer under it"),
+            (w2, b2, c_h1, r"which blames $W^{(2)}$ and the layer under it"),
+            (w1, b1, None, r"which blames $W^{(1)}$, and we are at the input"),
+        ]:
+            line(text, HIGHLIGHT)
+            self.play(lbl.animate.set_color(HIGHLIGHT), *light(bun, 2.4), run_time=0.9)
+            if col is not None:
+                self.play(*light(col), run_time=0.7)
+            self.wait(1.4)
+
+        line(r"every weight and every bias, in some amount", HIGHLIGHT)
+        self.wait(3.5)
+
+
+class TalkThroughTheChain(Scene):
+    def construct(self):
+        # The chain rule, read back as the conversation from the clip before.
+        chain = MathTex(
+            r"\frac{\partial C}{\partial w^{(1)}}", r"=",
+            r"\frac{\partial C}{\partial a^{(L)}}", r"\cdot",
+            r"\frac{\partial a^{(L)}}{\partial a^{(2)}}", r"\cdot",
+            r"\frac{\partial a^{(2)}}{\partial a^{(1)}}", r"\cdot",
+            r"\frac{\partial a^{(1)}}{\partial w^{(1)}}", font_size=F)
+        chain[0].set_color(D_COL)
+        fit(chain).move_to(np.array([0, 1.95, 0]))
+        self.add(chain)
+        self.wait(2.0)
+
+        # The direct question, which has no answer.
+        br0 = Brace(chain[0], DOWN, buff=0.12, color=INK_DIM)
+        l0 = keep_in_frame(fit(tex(r"\text{ask the weight directly}", INK_DIM))
+                           .next_to(br0, DOWN, buff=0.18))
+        l0b = fit(tex(r"\text{the loss never sees } w^{(1)}", INK_FAINT)).move_to(
+            np.array([0, -0.6, 0]))
+        self.play(Create(br0), FadeIn(l0), run_time=1.0)
+        self.wait(1.2)
+        self.play(FadeIn(l0b), run_time=0.8)
+        self.wait(2.2)
+        self.play(FadeOut(br0), FadeOut(l0), FadeOut(l0b), run_time=0.7)
+
+        # One brace per factor, and a numbered line per brace. Both stay up, so
+        # the last frame carries the whole conversation rather than four
+        # unlabelled braces.
+        steps = [
+            (2, r"1.\ \text{ask the output layer}"),
+            (4, r"2.\ \text{then the hidden layer below it}"),
+            (6, r"3.\ \text{then the one below that}"),
+            (8, r"4.\ \text{and now ask the weight}"),
+        ]
+        # Lay the four lines out together so the gaps are even, then reveal
+        # them one at a time. Spacing one line at a time off its own height
+        # leaves visibly uneven rows, since not every line has a descender.
+        lines = [tex(t, HIGHLIGHT) for _, t in steps]
+        block = VGroup(*lines).arrange(DOWN, buff=0.3, aligned_edge=LEFT)
+        fit(block, 8.4).move_to(np.array([0, -0.95, 0]))
+        block.shift(LEFT * (block.get_left()[0] + 4.35))
+
+        prev = None
+        for i, (idx, _) in enumerate(steps):
+            ln = lines[i]
+            br = Brace(chain[idx], DOWN, buff=0.12, color=HIGHLIGHT)
+            num = tex(str(i + 1), HIGHLIGHT).next_to(br, DOWN, buff=0.1)
+            anims = [Create(br), FadeIn(num), chain[idx].animate.set_color(HIGHLIGHT)]
+            if prev is not None:
+                pbr, pnum, pfac = prev
+                anims += [pbr.animate.set_color(INK_FAINT), pnum.animate.set_color(INK_DIM),
+                          pfac.animate.set_color(INK)]
+            self.play(*anims, run_time=0.9)
+            self.play(FadeIn(ln, shift=RIGHT * 0.15), run_time=0.6)
+            self.wait(1.3)
+            if prev is not None:
+                self.play(lines[i - 1].animate.set_color(INK), run_time=0.3)
+            prev = (br, num, chain[idx])
+
+        # No closing line: the numbered list already is the closing line, and
+        # a restatement under it only crowds the frame.
+        pbr, pnum, pfac = prev
+        self.play(pbr.animate.set_color(INK_FAINT), pnum.animate.set_color(INK_DIM),
+                  pfac.animate.set_color(INK), lines[-1].animate.set_color(INK), run_time=0.7)
+        self.wait(3.5)

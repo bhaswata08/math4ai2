@@ -1,0 +1,173 @@
+<!-- ============================================================
+     ACT 5 of 6. Automatic differentiation. Budget: 25 min.
+     Goal: students decompose a function into elementary operations,
+     run the chain rule over it in both directions by hand, and say
+     which direction suits one loss and many parameters.
+
+     One running example carries the act: f(a, b) = b sin a + b^2,
+     after ArchQuant, 'Automatic Differentiation Explained with
+     Example'. Credits slide.
+     ============================================================ -->
+
+<section class="act-open">
+  <div class="act-num">Act 5 of 6</div>
+  <h1>Automatic differentiation</h1>
+  <p class="act-sub">Not symbolic, not numeric: the chain rule, applied to a recorded computation.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / The thing we are replacing</div>
+  <h2>Bump and revalue</h2>
+  <p>The obvious way to get a derivative from code: nudge one input by \(\delta\), run the function again, divide.</p>
+  <p class="eq-big">$$\frac{\partial f}{\partial x_i} \;\approx\; \frac{f(x + \delta e_i) - f(x)}{\delta}$$</p>
+  <div class="beats two">
+    <div class="beat"><h4>Truncation error</h4><p>The Taylor series has a tail, and this throws it away. The answer is approximate however carefully you pick \(\delta\).</p></div>
+    <div class="beat"><h4>One bump per input</h4><p>Every \(x_i\) needs its own revaluation, so a gradient over \(n\) inputs costs \(n\) extra runs of the whole function.</p></div>
+  </div>
+  <p class="takeaway">Autodiff fixes both: exact to machine precision, and for a gradient, a cost that does not grow with \(n\).</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Break \(f\) into operations you already know</h2>
+  <div class="clip-talk">
+    <ul>
+      <li>Follow every place \(a\) appears: \(\sin a\), then times \(b\), then plus \(b^2\).</li>
+      <li>Every step is an operation whose derivative you know by heart.</li>
+      <li>The chain rule is then a product of three factors, and you may multiply it from either end: <span class="cv">right to left</span> is forward, <span class="cr">left to right</span> is reverse.</li>
+    </ul>
+    <video class="clip" src="assets/clips/DecomposeToPrimals.mp4"></video>
+  </div>
+  <span class="fragment clip-play"></span>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / Two directions, two names</div>
+  <h2>The same product, multiplied two ways</h2>
+  <p class="eq-big">$$\frac{\partial r}{\partial a} \;=\; \underbrace{\frac{\partial r}{\partial w_1}}_{\text{last step}}\;\frac{\partial w_1}{\partial w_0}\;\underbrace{\frac{\partial w_0}{\partial a}}_{\text{first step}}$$</p>
+  <div class="beats two">
+    <div class="beat purpose"><h4>Forward, or <i>tangent</i> mode</h4><p>Start at the input end. Fix the denominator: every quantity you carry is \(\partial(\cdot)/\partial a\), written \(\dot{(\cdot)}\).</p></div>
+    <div class="beat purpose"><h4>Reverse, or <i>adjoint</i> mode</h4><p>Start at the output end. Fix the numerator: every quantity you carry is \(\partial r/\partial(\cdot)\), written \(\overline{(\cdot)}\).</p></div>
+  </div>
+  <p class="takeaway">A dot means "with respect to a chosen input". A bar means "of a chosen output". <b>AAD</b> is adjoint autodiff, the reverse one.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Forward mode: a tangent beside every value</h2>
+  <div class="clip-talk">
+    <ul>
+      <li><span class="cv">Primal</span> and <span class="cr">tangent</span> computed in parallel, row by row.</li>
+      <li>The seed picks the input: \(\dot a = 1,\ \dot b = 0\) gives \(\partial r/\partial a = b\cos a = 1.755\), exact.</li>
+      <li>Reseed with \(\dot b = 1\) for \(\partial r/\partial b\). One sweep per input, so \(n\) inputs cost \(n\) sweeps.</li>
+    </ul>
+    <video class="clip" src="assets/clips/ForwardTangentTrace.mp4"></video>
+  </div>
+  <span class="fragment clip-play"></span>
+</section>
+
+<section class="clip-slide">
+  <h2>Reverse mode: one scan down, one scan back</h2>
+  <div class="clip-talk">
+    <ul>
+      <li>Scan forward and store every value. That store is the <b>tape</b>.</li>
+      <li>Scan back from \(\bar r = 1\), accumulating into whatever fed each step.</li>
+      <li>\(b\) is used twice, so \(\bar b\) adds two terms: \(4.000 + 0.479\). Hence \(\mathrel{+}=\), not \(=\).</li>
+      <li>One scan returns \(\bar a\) and \(\bar b\). Forward mode needed two.</li>
+    </ul>
+    <video class="clip" src="assets/clips/ReverseAdjointTape.mp4"></video>
+  </div>
+  <span class="fragment clip-play"></span>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / Notation</div>
+  <h2>Why a bar, and why \(\mathrel{+}=\)</h2>
+  <div class="cols">
+    <div>
+      <p>The bar is a definition. For any variable \(v\) in the graph,</p>
+      <p>$$\bar v \;=\; \frac{\partial r}{\partial v}$$</p>
+      <p>so the seed at the output end is simply</p>
+      <p>$$\bar r \;=\; \frac{\partial r}{\partial r} \;=\; 1.$$</p>
+    </div>
+    <div>
+      <p>Take the first step back, \(r = w_1 + w_2\). Holding \(w_2\) fixed,</p>
+      <p>$$\frac{\partial r}{\partial w_1} = \frac{\partial}{\partial w_1}(w_1 + w_2) = 1 + 0 = 1,$$</p>
+      <p>and the chain rule hands that local slope the sensitivity already accumulated at \(r\):</p>
+      <p>$$\bar w_1 \mathrel{+}= \bar r \cdot \frac{\partial r}{\partial w_1} = 1 \cdot 1 = 1.$$</p>
+    </div>
+  </div>
+  <p class="takeaway">An adjoint starts at \(0\) and <b>accumulates</b>: one term per path, summed.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / The adjoint rule</div>
+  <h2>One rule runs the whole backward scan</h2>
+  <p class="eq-big">$$\bar u \;=\; \sum_{v \,\in\, \mathrm{children}(u)} \bar v \,\frac{\partial v}{\partial u}$$</p>
+  <p>How much \(u\) moves the output is set by two things: how much each child moves the output, and how much \(u\) moves that child. Walk the tape in reverse and apply this at every step.</p>
+  <p class="takeaway">The price is the tape: every intermediate value has to survive until the backward scan asks for it.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / The backward sweep</div>
+  <h2>Four steps, five accumulations</h2>
+  <table style="font-size:0.85em">
+    <thead><tr><th>from</th><th>local derivative</th><th>accumulate</th><th>running value</th></tr></thead>
+    <tbody>
+      <tr><td>\(r = w_1 + w_2\)</td><td>\(\partial r/\partial w_1 = \partial r/\partial w_2 = 1\)</td><td>\(\bar w_1 \mathrel{+}= \bar r,\quad \bar w_2 \mathrel{+}= \bar r\)</td><td>\(\bar w_1 = \bar w_2 = 1\)</td></tr>
+      <tr><td>\(w_2 = b^2\)</td><td>\(\partial w_2/\partial b = 2b\)</td><td>\(\bar b \mathrel{+}= \bar w_2 \cdot 2b\)</td><td><span class="cr">\(\bar b = 2b\)</span></td></tr>
+      <tr><td>\(w_1 = b\,w_0\)</td><td>\(\partial w_1/\partial w_0 = b\)</td><td>\(\bar w_0 \mathrel{+}= \bar w_1 \cdot b\)</td><td>\(\bar w_0 = b\)</td></tr>
+      <tr><td>\(w_1 = b\,w_0\)</td><td>\(\partial w_1/\partial b = w_0\)</td><td>\(\bar b \mathrel{+}= \bar w_1 \cdot w_0\)</td><td><span class="cr">\(\bar b = 2b + \sin a\)</span></td></tr>
+      <tr><td>\(w_0 = \sin a\)</td><td>\(\partial w_0/\partial a = \cos a\)</td><td>\(\bar a \mathrel{+}= \bar w_0 \cos a\)</td><td>\(\bar a = b\cos a\)</td></tr>
+    </tbody>
+  </table>
+  <p class="takeaway">Rows two and four are both \(b\): one contribution per place \(b\) appears, summed by the \(\mathrel{+}=\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / The result</div>
+  <h2>Both derivatives, one sweep</h2>
+  <p class="eq-big">$$\bar a = \frac{\partial r}{\partial a} = b\cos a = 1.755 \qquad \bar b = \frac{\partial r}{\partial b} = 2b + \sin a = 4.479$$</p>
+  <p>Nothing was approximated, so these agree with differentiating \(f\) by hand to the last digit a float can hold. Forward mode reached the same pair, but it needed one sweep for each.</p>
+  <p class="takeaway">Seed once at the output, sweep back once, and the number of inputs does not enter the cost.</p>
+</section>
+
+<section class="clip-slide">
+  <h2>Seeds, columns and rows</h2>
+  <div class="clip-talk">
+    <ul>
+      <li>Four inputs, two outputs, eight Jacobian entries to fill.</li>
+      <li>Forward seeds an <b>input</b> and fills a <b>column</b>: four sweeps.</li>
+      <li>Reverse seeds an <b>output</b> and fills a <b>row</b>: two sweeps.</li>
+      <li>Training is the extreme case: one loss, millions of parameters, one scan.</li>
+    </ul>
+    <video class="clip" src="assets/clips/JacobianSeeds.mp4"></video>
+  </div>
+  <span class="fragment clip-play"></span>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / Which mode</div>
+  <h2>Pick the mode from the shape</h2>
+  <table style="font-size:1.0em">
+    <thead><tr><th></th><th>finite differences</th><th>forward (tangent)</th><th>reverse (adjoint)</th></tr></thead>
+    <tbody>
+      <tr><td>accuracy</td><td>truncation error</td><td>machine precision</td><td>machine precision</td></tr>
+      <tr><td>seed on</td><td>each input</td><td>each input</td><td>each output</td></tr>
+      <tr><td>sweeps for \(J_f\)</td><td>\(n\)</td><td>\(n\)</td><td>\(m\)</td></tr>
+      <tr><td>extra memory</td><td>none</td><td>none</td><td>the tape</td></tr>
+      <tr><td>good when</td><td>\(n\) is tiny</td><td>\(n \ll m\)</td><td>\(m \ll n\)</td></tr>
+    </tbody>
+  </table>
+  <p class="takeaway">Backpropagation is reverse-mode automatic differentiation on a neural network: \(m = 1\), \(n\) in the millions.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 5</b> / In code</div>
+  <h2>What <span class="mono">loss.backward()</span> does</h2>
+<pre class="mono" style="font-size:0.85em; line-height:1.45; margin-bottom:0.9em"><code>a = torch.tensor(0.5, requires_grad=True)
+b = torch.tensor(2.0, requires_grad=True)
+r = b * torch.sin(a) + b**2   # forward scan: this builds the tape
+r.backward()                  # backward scan, seeded with r_bar = 1
+print(a.grad, b.grad)         # tensor(1.7552) tensor(4.4794)</code></pre>
+  <p><span class="mono">requires_grad</span> is what puts a value on the tape. <span class="mono">backward()</span> walks it in reverse and accumulates each adjoint into <span class="mono">.grad</span>, which is why you must zero the gradients between steps.</p>
+  <p class="takeaway">The same two numbers as the clip, and no formula for \(\partial r/\partial b\) was written down by anyone.</p>
+</section>

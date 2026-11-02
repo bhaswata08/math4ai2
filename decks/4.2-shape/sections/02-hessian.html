@@ -1,37 +1,99 @@
 <!-- ============================================================
      ACT 2 of 5. Many variables: the Hessian. Budget: 30 min.
      Source: built for this course (curvature.py:
-     QuadraticAlongDirection, CurvatureAllDirections).
-     Goal: students write the second-order approximation with ∇f and
-     H, compute a Hessian by hand, and know H is symmetric (Day 2's
-     spectral theorem applies). Act 3 owns classification.
+     QuadraticAlongDirection, CurvatureAllDirections). Newton-Raphson
+     framing follows bhaswata08.github.io/blog/2026/newton-raphson/.
+     Goal: students write the Taylor series of a loss in the step,
+     cut it after the quadratic term, minimise what is left to get
+     -L'/L'', lift that to -H^{-1}∇L, see first order give gradient
+     descent and second order give Newton, compute a Hessian by hand,
+     and know H is symmetric (Day 2's spectral theorem applies).
+     Act 3 owns classification; Block 4.3 owns the learning rate.
+     Notation: ω for parameters, δ for the step.
      ============================================================ -->
 
 <section class="act-open">
   <div class="act-num">Act 2 of 5</div>
   <h1>The Hessian</h1>
-  <p class="act-sub">The same Taylor step, with a vector for the slope and a matrix for the curvature.</p>
+  <p class="act-sub">Fit a parabola to the loss, jump to its lowest point, repeat. That is Newton-Raphson, and the matrix it needs is the Hessian.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Newton-Raphson in one variable</div>
+  <h2>Write the whole series, then cut it</h2>
+  <p style="font-size:0.85em; margin:0 0 0.3em">We are at \(\omega_0\) and want a step \(\delta\) that lowers the loss \(L\). Act 1 gives the whole Taylor series of \(L\) around \(\omega_0\), written in \(\delta\):</p>
+  <div style="font-size:1.05em">$$L(\omega_0 + \delta) = \sum_{k=0}^{\infty} \frac{L^{(k)}(\omega_0)}{k!}\,\delta^k = L(\omega_0) + L'(\omega_0)\,\delta + \tfrac12\,L''(\omega_0)\,\delta^2 + \tfrac16\,L'''(\omega_0)\,\delta^3 + \cdots$$</div>
+  <p style="font-size:0.85em; margin:0.2em 0 0.3em">The step is small, so \(\delta^3\) and everything after it is smaller still. <b>We cut the series off</b> after the quadratic term and keep:</p>
+  <div style="font-size:1.3em">$$L(\omega_0 + \delta) \approx L(\omega_0) + L'(\omega_0)\,\delta + \tfrac12\,L''(\omega_0)\,\delta^2$$</div>
+  <p class="takeaway" style="font-size:0.85em">Three numbers we can compute at \(\omega_0\), and a parabola in \(\delta\). We know where a parabola's bottom is.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Newton-Raphson in one variable</div>
+  <h2>Ask the parabola where its bottom is</h2>
+  <div style="font-size:1.1em; color:var(--ink-dim)">$$L(\omega_0 + \delta) \approx L(\omega_0) + L'(\omega_0)\,\delta + \tfrac12\,L''(\omega_0)\,\delta^2$$</div>
+  <p style="font-size:0.85em; margin:0.2em 0 0.3em">Differentiate the right-hand side with respect to \(\delta\), set that to zero, and solve. Only the last two terms survive, since \(L(\omega_0)\) is a constant:</p>
+  <div class="cols" style="font-size:1.2em; align-items:center">
+    <div>$$L'(\omega_0) + L''(\omega_0)\,\delta = 0$$</div>
+    <div>$$\delta^{*} = -\,\frac{L'(\omega_0)}{L''(\omega_0)}$$</div>
+  </div>
+  <div style="font-size:1.35em">$$\omega_{1} = \omega_0 - \frac{L'(\omega_0)}{L''(\omega_0)}$$</div>
+  <p class="takeaway" style="font-size:0.85em">No learning rate appears. The second derivative sets the step length for us.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Reading the step</div>
+  <h2>Curvature decides how far to move</h2>
+  <div class="beats" style="font-size:0.95em">
+    <div class="beat purpose"><h4>Steep bowl</h4><p>\(L''\) large: dividing by it gives a short, careful step. The minimum is close.</p></div>
+    <div class="beat purpose"><h4>Flat ground</h4><p>\(L''\) small: the step is long. The slope will not change much on the way.</p></div>
+    <div class="beat purpose"><h4>Curving down</h4><p>\(L'' &lt; 0\): the parabola has no bottom, and the step walks to a maximum instead.</p></div>
+  </div>
+  <p style="font-size:0.85em; margin:0.3em 0 0">On \(L(\omega) = \omega^2\) the step is \(-2\omega_0/2 = -\omega_0\): one jump to the minimum, exactly, because the quadratic model is the function. On anything else the model is only local, so you take the step, refit, and repeat.</p>
+  <p class="takeaway" style="font-size:0.85em">The sign of the curvature decides whether the Newton step is even pointing downhill. Act 3 turns that into a test.</p>
 </section>
 
 <section class="act-body">
   <div class="act-tag"><b>Act 2</b> / One variable to many</div>
-  <h2>Second-order approximation</h2>
-  <p style="font-size:0.85em; margin:0">Take \(\mathbf p \in \mathbb R^n\) as the base point and \(\mathbf h\) as a small step away from it. \(\nabla f(\mathbf p)\) is the gradient there, and \(H(\mathbf p)\) is the Hessian: the matrix of second derivatives, \(H_{ij} = \tfrac{\partial^2 f}{\partial x_i \partial x_j}\) evaluated at \(\mathbf p\). In one variable:</p>
-  <div style="font-size:0.95em; color:var(--ink-dim)">$$f(a + h) \approx f(a) + f'(a)\,h + \tfrac12\,f''(a)\,h^2$$</div>
-  <div style="font-size:1.35em">$$f(\mathbf p + \mathbf h) \approx f(\mathbf p) + \nabla f(\mathbf p)^{\top}\mathbf h + \tfrac12\,\mathbf h^{\top} H(\mathbf p)\,\mathbf h$$</div>
-  <p class="takeaway" style="font-size:0.85em">For smooth \(f\) the mixed partials agree, so \(H\) is symmetric: real eigenvalues, orthogonal eigenvectors.</p>
+  <h2>The same step with \(p\) parameters</h2>
+  <p style="font-size:0.8em; margin:0 0 0.2em">Now \(\boldsymbol\omega \in \mathbb R^p\) and the step \(\boldsymbol\delta\) is a vector too. The slope becomes the gradient \(\nabla L(\boldsymbol\omega)\), a vector of \(p\) first derivatives, and the curvature becomes the <b>Hessian</b> \(H(\boldsymbol\omega)\), the \(p \times p\) matrix of second derivatives \(H_{ij} = \partial^2 L / \partial \omega_i \partial \omega_j\). Every term keeps its shape:</p>
+  <div style="font-size:1.25em">$$L(\boldsymbol\omega + \boldsymbol\delta) \approx L(\boldsymbol\omega) + \nabla L(\boldsymbol\omega)^{\top}\boldsymbol\delta + \tfrac12\,\boldsymbol\delta^{\top} H(\boldsymbol\omega)\,\boldsymbol\delta$$</div>
+  <p style="font-size:0.8em; margin:0 0 0.2em">Minimise the right-hand side over \(\boldsymbol\delta\) and the division by \(L''\) becomes a solve against \(H\):</p>
+  <div style="font-size:1.25em">$$\boldsymbol\omega_{1} = \boldsymbol\omega_0 - H(\boldsymbol\omega_0)^{-1}\,\nabla L(\boldsymbol\omega_0)$$</div>
+  <p class="takeaway" style="font-size:0.85em">For smooth \(L\) the mixed partials agree, so \(H\) is symmetric: real eigenvalues, orthogonal eigenvectors. With \(p\) in the millions nobody forms \(H\), let alone inverts it, which is why Block 4.3 goes back to a learning rate.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 2</b> / Where you cut the series</div>
+  <h2>Cut after the linear term, cut after the quadratic</h2>
+  <p style="font-size:0.88em; margin:0 0 0.4em">Both optimisers in this course are the same Taylor series, truncated in different places. For a scalar loss the Jacobian of \(L\) is the \(1 \times p\) row of first derivatives, and \(\nabla L\) is its transpose.</p>
+  <div class="cols" style="font-size:0.88em; align-items:start">
+    <div class="beat purpose">
+      <h4>First order: gradient descent</h4>
+      <div style="font-size:1.1em">$$L(\boldsymbol\omega_0 + \boldsymbol\delta) \approx L(\boldsymbol\omega_0) + \nabla L(\boldsymbol\omega_0)^{\top}\boldsymbol\delta$$</div>
+      <p>A plane has no bottom: pushing \(\boldsymbol\delta\) along \(-\nabla L\) lowers it forever. The model gives a direction and nothing else, so you pick the step length yourself.</p>
+      <div style="font-size:1.1em">$$\boldsymbol\omega_1 = \boldsymbol\omega_0 - \eta\,\nabla L(\boldsymbol\omega_0)$$</div>
+    </div>
+    <div class="beat purpose">
+      <h4>Second order: Newton</h4>
+      <div style="font-size:1.1em">$$L(\boldsymbol\omega_0 + \boldsymbol\delta) \approx L(\boldsymbol\omega_0) + \nabla L(\boldsymbol\omega_0)^{\top}\boldsymbol\delta + \tfrac12\,\boldsymbol\delta^{\top} H \boldsymbol\delta$$</div>
+      <p>A bowl has a bottom. Setting the derivative in \(\boldsymbol\delta\) to zero solves for it, and the curvature fixes the step length.</p>
+      <div style="font-size:1.1em">$$\boldsymbol\omega_1 = \boldsymbol\omega_0 - H(\boldsymbol\omega_0)^{-1}\nabla L(\boldsymbol\omega_0)$$</div>
+    </div>
+  </div>
+  <p class="takeaway" style="font-size:0.85em">\(\eta\) is the price of throwing the curvature away. Block 4.3 spends an act on choosing it.</p>
 </section>
 
 <section class="clip-slide">
   <h2>From slices to a quadratic</h2>
   <video class="clip" src="assets/clips/QuadraticAlongDirection.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">Take \(f(x, y) = x^3 + 2xy - y^2\) at \(\mathbf p = (1,1)\): slope 5 along \(x\), none along \(y\). The gradient gives the tangent plane, the Hessian bends it.</p>
+  <p class="caption">Take \(f(x, y) = x^3 + 2xy - y^2\) at \(\boldsymbol\omega = (1,1)\): slope 5 along \(x\), none along \(y\). The gradient gives the tangent plane, the Hessian bends it.</p>
 </section>
 
 <section class="act-body">
   <div class="act-tag"><b>Act 2</b> / Worked example</div>
-  <h2>\(f(x, y) = x^3 + 2xy - y^2\) at \(\mathbf p = (1,1)\)</h2>
+  <h2>\(f(x, y) = x^3 + 2xy - y^2\) at \(\boldsymbol\omega = (1,1)\)</h2>
   <div class="cols" style="font-size:1.35em; align-items:center">
     <div>$$\nabla f = \begin{bmatrix} 3x^2 + 2y \\ 2x - 2y \end{bmatrix}$$</div>
     <div>$$H = \begin{bmatrix} 6x & 2 \\ 2 & -2 \end{bmatrix}$$</div>
@@ -40,12 +102,14 @@
     <div>$$\nabla f(1,1) = \begin{bmatrix} 5 \\ 0 \end{bmatrix}$$</div>
     <div>$$H(1,1) = \begin{bmatrix} 6 & 2 \\ 2 & -2 \end{bmatrix}$$</div>
   </div>
-  <p class="takeaway" style="font-size:0.85em">At \(\mathbf p = (1, 1)\), \(f(\mathbf p) = 2\), so \(f(\mathbf p + \mathbf h) \approx 2 + 5h_1 + 3h_1^2 + 2h_1h_2 - h_2^2\). The two off-diagonal entries of \(H\) are equal, as promised.</p>
+  <p class="takeaway" style="font-size:0.85em">\(f(\boldsymbol\omega) = 2\), so \(f(\boldsymbol\omega + \boldsymbol\delta) \approx 2 + 5\delta_1 + 3\delta_1^2 + 2\delta_1\delta_2 - \delta_2^2\). The two off-diagonal entries of \(H\) are equal, as promised.</p>
 </section>
 
+<!-- Cut: the contour map on the left is the wrong picture for a surface.
 <section class="clip-slide">
   <h2>Curvature in every direction</h2>
   <video class="clip" src="assets/clips/CurvatureAllDirections.mp4"></video>
   <span class="fragment clip-play"></span>
   <p class="caption">For \(\mathbf u = (\cos\theta, \sin\theta)\): \(\mathbf u^{\top}H\mathbf u = 2\cos\theta\sin\theta = \sin 2\theta\). Max \(1\) at \(\theta = \pi/4\), min \(-1\) at \(3\pi/4\): the largest and smallest eigenvalues of \(H\).</p>
 </section>
+-->

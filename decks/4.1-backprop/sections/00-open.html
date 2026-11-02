@@ -1,5 +1,10 @@
 <!-- ============================================================
      ACT 0. Title, credits and outcomes. Budget: 3 min.
+
+     The backpropagation spine of this block (Acts 3 and 4) follows
+     Mitesh Khapra, CS7015 Deep Learning, IIT Madras, Lecture 4,
+     modules 4.1 through 4.9: his notation, his module order, his
+     choice of softmax output with cross-entropy loss.
      ============================================================ -->
 
 <section class="title-slide">
@@ -14,7 +19,9 @@
   <div class="act-tag"><b>Block 4.1</b> / Credits</div>
   <h2>Credits</h2>
   <ul class="credits">
+    <li><b>The network, the objective and the backpropagation derivation</b> (Acts 3 and 4) follow Mitesh Khapra, <i>CS7015 Deep Learning</i>, IIT Madras, lecture 4, modules 4.1&ndash;4.9. His notation (\(\mathbf a_i\), \(\mathbf h_i\), \(g\), \(L(\theta)\)), his module order, and his softmax-with-cross-entropy choice are used throughout. Slides at <span class="mono">cse.iitm.ac.in/~miteshk/CS7015</span>.</li>
     <li><b>Backpropagation animations</b> adapted from Grant Sanderson, 3Blue1Brown, <i>Neural networks</i> chapter 4, 'Backpropagation calculus'. Scene source: <span class="mono">github.com/3b1b/videos</span>, CC BY-NC-SA 4.0.</li>
+    <li><b>Automatic differentiation</b> follows ArchQuant, <i>Automatic Differentiation Explained with Example</i>, including its running example \(f(a,b) = b\sin a + b^2\) and its tangent and adjoint notation.</li>
     <li><b>Identities</b> follow Petersen and Pedersen, <i>The Matrix Cookbook</i> (2012), section 2.4, and Deisenroth, Faisal and Ong, <i>Mathematics for Machine Learning</i> (2020), chapter 5.</li>
     <li><b>Built with</b> Manim Community Edition, reveal.js and KaTeX.</li>
   </ul>
@@ -26,7 +33,38 @@
   <ol class="practice">
     <li>Say the shape of any derivative before computing it</li>
     <li>Differentiate linear and quadratic forms with the standard identities</li>
-    <li>Derive the backpropagation equations for a small network with the chain rule</li>
+    <li>Write down a feedforward network and say why softmax pairs with cross entropy</li>
+    <li>Derive all five backpropagation equations, from the output seed to the weight gradients</li>
     <li>Explain what reverse-mode automatic differentiation computes, and why it is cheap</li>
   </ol>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Block 4.1</b> / Notation</div>
+  <h2>The symbols, once, so they are not a surprise later</h2>
+  <div class="cols">
+    <div>
+      <table style="font-size:0.72em">
+        <tbody>
+          <tr><td>\(\mathbf x \in \mathbb R^n\)</td><td>the input; also \(\mathbf h_0\)</td></tr>
+          <tr><td>\(L\)</td><td>layer count: \(L-1\) hidden, plus output</td></tr>
+          <tr><td>\(\mathbf a_i\)</td><td><span class="cv">pre-activation</span>: \(\mathbf b_i + W_i\mathbf h_{i-1}\)</td></tr>
+          <tr><td>\(\mathbf h_i\)</td><td><span class="cr">activation</span>: \(g(\mathbf a_i)\)</td></tr>
+          <tr><td>\(g\)</td><td>the nonlinearity, entry by entry</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <table style="font-size:0.72em">
+        <tbody>
+          <tr><td>\(O\)</td><td>output function: linear or softmax</td></tr>
+          <tr><td>\(\hat{\mathbf y} = \mathbf h_L\)</td><td>the prediction, \(k\)-dimensional</td></tr>
+          <tr><td>\(\ell\)</td><td>index of the true class</td></tr>
+          <tr><td>\(\theta\)</td><td>\([W_1,\dots,W_L,\mathbf b_1,\dots,\mathbf b_L]\)</td></tr>
+          <tr><td>\(L(\theta)\)</td><td>the loss; for classification \(-\log \hat y_\ell\)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <p class="takeaway">Two warnings. \(L\) is both the layer count and the loss, as in Khapra's lectures; the loss always carries its \((\theta)\). And the 3Blue1Brown clips label things \(C\), \(a\), \(z\), \(\sigma\): that is \(L(\theta)\), \(\mathbf h\), \(\mathbf a\), \(g\) here.</p>
 </section>

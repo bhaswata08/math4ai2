@@ -356,19 +356,42 @@ class FactorialByDifferentiating(Scene):
         self.wait(2.0)
         self.play(*[FadeOut(m) for m in (*mobs, *dd, tag)], run_time=0.8)
 
+        # the derivatives of cos cycle with period 4, so the fourth one is cos again
+        cyc = [
+            (r"f(x)=\cos x", V_COLOR),
+            (r"f'(x)=-\sin x", INK_DIM),
+            (r"f''(x)=-\cos x", INK_DIM),
+            (r"f'''(x)=\sin x", INK_DIM),
+            (r"f^{(4)}(x)=\cos x", V_COLOR),
+        ]
+        cmobs = [MathTex(t, font_size=MIN_FONT + 2, color=c) for t, c in cyc]
+        ccol = VGroup(*cmobs).arrange(DOWN, aligned_edge=LEFT, buff=0.34).move_to(UP * 0.35)
+        cnote = MathTex(r"\text{four derivatives and }\cos\text{ is back}",
+                        font_size=MIN_FONT, color=RESULT_COLOR)
+        cnote.next_to(ccol, DOWN, buff=0.6)
+        self.play(FadeIn(cmobs[0]), run_time=0.8)
+        self.wait(1.2)
+        for m in cmobs[1:]:
+            self.play(FadeIn(m), run_time=0.7)
+            self.wait(1.1)
+        self.play(Indicate(cmobs[-1], color=HIGHLIGHT, scale_factor=1.12), run_time=1.0)
+        self.play(FadeIn(cnote), run_time=0.8)
+        self.wait(4.0)
+        self.play(*[FadeOut(m) for m in (*cmobs, cnote)], run_time=0.8)
+
         # match with cos at 0
-        d4 = int(np.round(np.cos(0.0)))  # cos''''(x) = cos(x), so cos''''(0) = 1
+        d4 = int(np.round(np.cos(0.0)))  # the fourth derivative of cos is cos, so it is 1 at 0
         l1 = MathTex(r"P^{(4)}(0)=24\,c_4", font_size=MIN_FONT + 4, color=RESULT_COLOR)
-        l2 = MathTex(rf"\cos^{{(4)}}(0)={d4}", font_size=MIN_FONT + 4, color=V_COLOR)
+        l2 = MathTex(rf"\cos^{{(4)}}(0)=\cos 0={d4}", font_size=MIN_FONT + 4, color=V_COLOR)
         l3 = MathTex(rf"24\,c_4={d4}\ \Rightarrow\ c_4=\frac{{{d4}}}{{24}}", font_size=MIN_FONT + 4, color=RESULT_COLOR)
         l4 = MathTex(r"P(x)=1-\frac{x^2}{2}+", r"\frac{x^4}{24}", font_size=MIN_FONT + 4, color=RESULT_COLOR)
         l4[1].set_color(HIGHLIGHT)
         grp = VGroup(l1, l2, l3, l4).arrange(DOWN, aligned_edge=LEFT, buff=0.4).move_to(ORIGIN)
         for l in (l1, l2, l3):
             self.play(FadeIn(l), run_time=0.8)
-            self.wait(1.0)
+            self.wait(2.2)
         self.play(FadeIn(l4), run_time=0.8)
-        self.wait(2.0)
+        self.wait(4.0)
         self.play(*[FadeOut(m) for m in (l1, l2, l3, l4)], run_time=0.8)
 
         # general rule, stated at 0 first, then shifted to a
@@ -457,7 +480,10 @@ class ApproximateNearPoint(Scene):
             return np.format_float_positional(v, precision=sig, unique=False, fractional=False, trim="-")
 
         head = MathTex(rf"f(1)={fmt(fa,4)},\ f'(1)={fmt(f1,3)},\ f''(1)={fmt(f2,3)}", font_size=MIN_FONT, color=V_COLOR)
-        head.move_to(UP * 2.3)
+        head.move_to(UP * 1.95)
+        setup = MathTex(r"f(x)=e^{x/2},\quad a=1,\quad \text{read at } x=1+h",
+                        font_size=MIN_FONT, color=INK_DIM)
+        setup.move_to(UP * 2.5)
         rows = []
         errs = []
         for h in (0.5, 0.1):
@@ -467,22 +493,22 @@ class ApproximateNearPoint(Scene):
             r = MathTex(rf"h={h:g}:\ f({a+h:g})={fmt(ft,4)},\ \text{{lin}}={fmt(li,4)},\ \text{{quad}}={fmt(qu,4)}",
                         font_size=MIN_FONT)
             rows.append(r)
-        rows[0].move_to(UP * 1.5)
-        rows[1].move_to(UP * 0.8)
+        rows[0].move_to(UP * 1.3)
+        rows[1].move_to(UP * 0.65)
         # error table
         cx = [-3.7, -0.5, 3.0]
-        h1 = MathTex(r"\text{linear error}\sim h^2", font_size=MIN_FONT, color=INK_DIM).move_to(RIGHT * cx[1] + DOWN * 0.1)
-        h2 = MathTex(r"\text{quad error}\sim h^3", font_size=MIN_FONT, color=INK_DIM).move_to(RIGHT * cx[2] + DOWN * 0.1)
+        h1 = MathTex(r"\text{linear error}\sim h^2", font_size=MIN_FONT, color=INK_DIM).move_to(RIGHT * cx[1] + DOWN * 0.25)
+        h2 = MathTex(r"\text{quad error}\sim h^3", font_size=MIN_FONT, color=INK_DIM).move_to(RIGHT * cx[2] + DOWN * 0.25)
         h1.shift(LEFT * 0.0)
         cells = VGroup()
         for i, h in enumerate((0.5, 0.1)):
-            y = -0.9 - 0.7 * i
+            y = -1.05 - 0.7 * i
             cells.add(MathTex(rf"h={h:g}", font_size=MIN_FONT, color=INK).move_to(RIGHT * cx[0] + UP * y))
             cells.add(MathTex(fmt(errs[i][0], 2), font_size=MIN_FONT, color=RESULT_COLOR).move_to(RIGHT * cx[1] + UP * y))
             cells.add(MathTex(fmt(errs[i][1], 2), font_size=MIN_FONT, color=RESULT_COLOR).move_to(RIGHT * cx[2] + UP * y))
         # sanity: shrinking h by 5 cuts the errors by about 5^2 and 5^3
         assert 20 < errs[0][0] / errs[1][0] < 35 and 70 < errs[0][1] / errs[1][1] < 160
-        self.add(head)
+        self.add(setup, head)
         self.wait(1.5)
         self.play(FadeIn(rows[0]), run_time=0.8)
         self.wait(2.0)

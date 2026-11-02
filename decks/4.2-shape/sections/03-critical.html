@@ -27,15 +27,59 @@
 </section>
 
 <section class="act-body">
-  <div class="act-tag"><b>Act 3</b> / Worked example</div>
-  <h2>Solve \(\nabla f = \mathbf 0\)</h2>
-  <div style="font-size:1.2em">$$f = x^3 + 2xy - y^2 \qquad \nabla f = \begin{bmatrix} 3x^2 + 2y \\ 2x - 2y \end{bmatrix} = \mathbf 0$$</div>
-  <ol class="practice" style="font-size:1.05em">
-    <li class="fragment">\(2x - 2y = 0 \Rightarrow y = x\).</li>
-    <li class="fragment">\(3x^2 + 2x = x(3x + 2) = 0 \Rightarrow x = 0\) or \(x = -\tfrac23\).</li>
-    <li class="fragment">\(H(0,0) = \begin{bmatrix} 0 & 2 \\ 2 & -2 \end{bmatrix}\), \(\lambda = -1 \pm \sqrt5\) (\(1.24, -3.24\)): saddle.</li>
-    <li class="fragment">\(H(-\tfrac23,-\tfrac23) = \begin{bmatrix} -4 & 2 \\ 2 & -2 \end{bmatrix}\), \(\lambda = -3 \pm \sqrt5\) (\(-0.76, -5.24\)): maximum.</li>
+  <div class="act-tag"><b>Act 3</b> / Worked example, step 1</div>
+  <h2>Take the two partials</h2>
+  <div style="font-size:1.3em">$$f(x, y) = x^3 + 2xy - y^2$$</div>
+  <p style="font-size:0.85em; margin:0.2em 0 0.3em">Differentiate in \(x\) with \(y\) held constant, then in \(y\) with \(x\) held constant. The gradient stacks the two:</p>
+  <div class="cols" style="font-size:1.15em; align-items:center">
+    <div>$$\frac{\partial f}{\partial x} = 3x^2 + 2y \qquad \frac{\partial f}{\partial y} = 2x - 2y$$</div>
+    <div>$$\nabla f = \begin{bmatrix} 3x^2 + 2y \\ 2x - 2y \end{bmatrix} = \mathbf 0$$</div>
+  </div>
+  <p class="takeaway" style="font-size:0.85em">A critical point is any \((x,y)\) where both entries vanish at once. That is two equations in two unknowns.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Worked example, step 2</div>
+  <h2>Solve the system</h2>
+  <ol class="practice" style="font-size:1.1em">
+    <li class="fragment">The second row is linear: \(2x - 2y = 0 \Rightarrow y = x\).</li>
+    <li class="fragment">Put \(y = x\) into the first row: \(3x^2 + 2x = x(3x + 2) = 0\).</li>
+    <li class="fragment">\(x = 0\), so \(y = 0\): the point \((0, 0)\).</li>
+    <li class="fragment">\(3x + 2 = 0\), so \(x = y = -\tfrac23\): the point \(\left(-\tfrac23, -\tfrac23\right)\).</li>
   </ol>
+  <p class="takeaway" style="font-size:0.85em">Two flat points. The gradient says nothing about which is which.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Worked example, step 3</div>
+  <h2>Build the Hessian</h2>
+  <p style="font-size:0.85em; margin:0 0 0.3em">Differentiate each entry of \(\nabla f\) again, in \(x\) and in \(y\):</p>
+  <div class="cols" style="font-size:1.1em; align-items:center">
+    <div>$$f_{xx} = 6x \qquad f_{xy} = f_{yx} = 2 \qquad f_{yy} = -2$$</div>
+    <div>$$H(x, y) = \begin{bmatrix} 6x & 2 \\ 2 & -2 \end{bmatrix}$$</div>
+  </div>
+  <p class="takeaway" style="font-size:0.85em">Only \(x\) survives in \(H\), so the two critical points get different matrices. The off-diagonals agree, as they must.</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 3</b> / Worked example, step 4</div>
+  <h2>Classify each point by its eigenvalues</h2>
+  <div class="cols" style="font-size:0.85em; align-items:start">
+    <div class="beat purpose">
+      <h4>At \((0, 0)\)</h4>
+      <div style="font-size:1.15em">$$H = \begin{bmatrix} 0 & 2 \\ 2 & -2 \end{bmatrix}$$</div>
+      <div style="font-size:1.05em">$$\det(H - \lambda I) = \lambda^2 + 2\lambda - 4 = 0$$</div>
+      <div style="font-size:1.1em">$$\lambda = -1 \pm \sqrt5 \approx 1.24,\; -3.24$$</div>
+      <p>Opposite signs: up along one eigenvector, down along the other. A <b>saddle</b>.</p>
+    </div>
+    <div class="beat purpose">
+      <h4>At \(\left(-\tfrac23, -\tfrac23\right)\)</h4>
+      <div style="font-size:1.15em">$$H = \begin{bmatrix} -4 & 2 \\ 2 & -2 \end{bmatrix}$$</div>
+      <div style="font-size:1.05em">$$\det(H - \lambda I) = \lambda^2 + 6\lambda + 4 = 0$$</div>
+      <div style="font-size:1.1em">$$\lambda = -3 \pm \sqrt5 \approx -0.76,\; -5.24$$</div>
+      <p>Both negative: \(H\) is negative definite, the surface curves down every way. A <b>local maximum</b>.</p>
+    </div>
+  </div>
 </section>
 
 <section class="act-body">

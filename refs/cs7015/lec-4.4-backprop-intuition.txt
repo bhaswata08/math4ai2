@@ -1,0 +1,344 @@
+[0:00] [Music]
+[0:12] so we hadn't no module four point four
+[0:14] of this longest lecture on back
+[0:16] propagation and feed-forward neural
+[0:17] networks so we introduced a feed-forward
+[0:20] neural networks we saw the input layer
+[0:23] hidden layer and the output layers and
+[0:25] we saw that the output layer actually
+[0:27] the output function depends on the task
+[0:28] at hand and we considered two main tasks
+[0:31] one was classification the other was a
+[0:32] regression for regression it made sense
+[0:35] to use a linear layer at the output
+[0:37] because we didn't want the outputs to be
+[0:40] bounded they could be any range and for
+[0:44] the classification problem we realized
+[0:48] that we want a special kind of output
+[0:51] because we are looking for a probability
+[0:53] distribution over the output and for
+[0:56] that we use the softmax function and in
+[0:58] both cases we used a different kind of a
+[1:00] loss for the regression problem the
+[1:02] squared error loss made sense because we
+[1:04] predict some values and we want to see
+[1:06] how far we are from those values but for
+[1:08] the other case the classification we
+[1:10] realize that it's a distribution so
+[1:12] maybe we could use something which
+[1:14] allows us to capture the difference
+[1:16] between the true distribution and the
+[1:18] predicted distribution right and
+[1:19] therefore we had this figure emerging
+[1:23] which was depending on the output
+[1:26] whether it's real values or
+[1:27] probabilities you will have different
+[1:29] types of output activation functions and
+[1:31] different types of losses and of these
+[1:33] combinations today we are going to focus
+[1:35] on softmax and cross-entropy
+[1:38] and our aim is to actually find these
+[1:41] gradients right remember there are many
+[1:44] of those we have seen this large matrix
+[1:46] which had many such partial derivatives
+[1:48] and we want to find that entire matrix I
+[1:50] hopefully do it in a way that it's not a
+[1:53] repetitive we could come compute a large
+[1:55] number of partial derivatives at one go
+[1:58] right so okay so before we look at the
+[2:02] mathematical details we just get an
+[2:05] intuition for back propagation and then
+[2:08] we'll get into the gory details of how
+[2:10] to actually compute these gradients and
+[2:13] partial derivatives okay so this is the
+[2:15] portion that we are in we had intended
+[2:17] to ask these two questions and this is
+[2:19] where we are okay so now this is what
+[2:22] our network looks like this is clearly
+[2:24] much more
+[2:25] complex than that single neuron that we
+[2:28] had and which had only two weights wnb
+[2:30] that was very easy to compute the
+[2:32] gradients there now imagine that I want
+[2:34] to compute the gradient of the loss
+[2:36] function right and let's assume it's a
+[2:40] classification problem then what's the
+[2:41] loss function minus log of Y hat okay so
+[2:47] this is the loss function and we want to
+[2:49] compute the derivative of this with
+[2:51] respect to one of these weights in the
+[2:53] network and I'm deliberately taking
+[2:54] something which is much farther away
+[2:56] from the loss but why do you say why do
+[2:58] I say it's much farther away it's right
+[3:01] at the input layer right and the loss is
+[3:03] somewhere at the output layer okay so we
+[3:06] want to compute this gradient now to
+[3:10] learn our sorry you want to learn this
+[3:12] way to learn this weight we know that we
+[3:14] can use gradient descent we are all
+[3:15] convinced that this gradient descent
+[3:17] algorithm which I have shown here as
+[3:18] long as we put all these variables or
+[3:23] all these parameters that we have into
+[3:24] theta we can just run the gradient
+[3:27] descent algorithm and compute them the
+[3:28] only thing that we will need is this
+[3:30] partial derivative with respect to all
+[3:31] the weights in the network and in
+[3:33] particular with respect to this weight
+[3:35] that I am interested in okay now so we
+[3:37] will now see how to calculate this I
+[3:39] will first this is only to get the
+[3:42] intuition right so we will first think
+[3:43] of a very simple Network which is a very
+[3:45] deep but the thin network okay it has
+[3:48] many layers but it's a very thin network
+[3:51] a you see what I mean by a thin network
+[3:52] okay now this is what I am interested in
+[3:55] can you tell me how to compute this this
+[3:59] looks like a chain so it's so it's
+[4:04] justified the user chain rule of
+[4:07] derivatives right so what would the
+[4:09] chain rule look like you want to compute
+[4:12] the derivative of this with respect to
+[4:15] this and you have done this in high
+[4:18] school right so you have functions of
+[4:19] the form of sign of course of fan of
+[4:22] arrays to sine of X right and this is
+[4:26] exactly how this chain is right you have
+[4:27] some function of X followed by another
+[4:30] function of X another function of X
+[4:32] function of X function of X and so on
+[4:34] right you just keep making a composite
+[4:36] function of the input we actually wrote
+[4:37] down that function if you remember right
+[4:39] it was just one function applied after
+[4:42] the other function write a very
+[4:43] composite function so you just need to
+[4:45] apply the same idea here does this look
+[4:49] okay
+[4:50] right so we take we go step by step
+[4:53] right so I'm almost accounting for every
+[4:55] shade of color here right so BL theta by
+[4:59] D Y hat then D by hat by D a l11 there's
+[5:05] only one you don't here then this with
+[5:08] respect to the sorry it's two one then
+[5:11] it's two one with respect to a 2 1 a 2 1
+[5:14] with respect to H 1 1 H 1 1 with respect
+[5:17] to a 1 1 and then a 1 1 with respect to
+[5:20] W 1 1 right so I just traversed down the
+[5:22] chain in the reverse order this is how
+[5:24] the chain rule works right anyone has a
+[5:25] problem with this it's straight forward
+[5:28] right and now what I've done is for
+[5:31] convenience I've just compressed the
+[5:33] chain you see the red part and the green
+[5:37] part I've just compressed this weight so
+[5:38] that and this is again something that
+[5:39] you have done in high school right if
+[5:40] you have this you could just write the
+[5:42] chain as the first and the last it so
+[5:45] this is what you can do and I also
+[5:46] compress this other chief ok and I'm
+[5:49] going to use these kind of compressions
+[5:50] later on so what I'm trying to impress
+[5:52] on you is that if I want to go from here
+[5:54] to here that's what my intention is if
+[5:58] somehow I've already Travers from here
+[6:00] to here then I can just reuse that
+[6:02] computation right that's the idea which
+[6:05] I'm trying to impress on it I don't need
+[6:07] to follow the entire chain every time I
+[6:08] can do these partial computations up to
+[6:11] a point
+[6:11] have you seen this something similar
+[6:13] idea somewhere else dynamic program is
+[6:15] something like that so you have just
+[6:16] computed up to a certain point and then
+[6:19] it's reuse the value for further down
+[6:21] the chain so that's what we are going to
+[6:23] do and same for all the weights right
+[6:27] for each weight the chain size would be
+[6:29] different depending on where it lies in
+[6:32] the network right for the weights which
+[6:33] are very close to the output layer the
+[6:34] chain would be very small makes sense ok
+[6:37] so this is the intuition and we will see
+[6:40] the intuition a bit more right so let's
+[6:42] now understand this in the terms of the
+[6:45] wide complex network that we are using
+[6:47] ok so what actually is happening is that
+[6:52] we are at a certain stage that means we
+[6:55] have some values of WS and B's okay at
+[6:58] the initial stage we just have these W
+[7:00] knots and B knots but let's assume that
+[7:01] we have done some training and we are at
+[7:03] a certain level we are at WT at time
+[7:05] step T and B T at time step T wait for
+[7:08] all the weights inverse now we feed it a
+[7:10] training example we do this entire
+[7:13] compute computation what do we get at
+[7:15] the end we get Y hat which is a function
+[7:18] of this X that we have fed it but we
+[7:21] also know this to Y right
+[7:24] we know the true value we know Y hat so
+[7:26] we can compute the loss function so we
+[7:30] compute the loss and to our surprise we
+[7:31] see that the loss is not 0 right we are
+[7:34] getting a non 0 loss that means the
+[7:36] network has not yet learnt properly
+[7:40] right if the weights and biases are
+[7:41] still not in the right configuration
+[7:43] that we want them to be in right so now
+[7:46] what do we do we go on this path of
+[7:49] investigation we want to find at who in
+[7:51] this network is messing up things right
+[7:53] there's someone who is causing this
+[7:55] problem because of which I am NOT
+[7:56] getting the desired output and we are on
+[7:58] a quest is to now find out who this guy
+[8:01] is who is responsible for this so what
+[8:03] would you do where would you start the
+[8:06] output layer because the output layer is
+[8:08] the guy who gave you the output right so
+[8:10] go and talk to him and we say that hey
+[8:14] what is wrong with you why are you not
+[8:16] producing the desired output right now
+[8:18] what is the output we are going to tell
+[8:19] you in very civil language I will say I
+[8:27] can't do anything boss I mean I was just
+[8:29] given some weights and inputs from the
+[8:31] previous layer and those weights and
+[8:34] inputs were messed up so there is
+[8:35] nothing which I can do go and talk to
+[8:37] them so who will it directors - it will
+[8:42] say that I am just as good as WL HL
+[8:46] minus 1 and be it because these are the
+[8:48] guys that I completely depend on if
+[8:49] these guys were ok
+[8:51] right then I would have been fine ok so
+[8:54] we then go and talk to these guys that
+[8:55] what is wrong with you so now they say
+[8:59] ok fine WN and B I'll take
+[9:01] responsibility they are the nice guys
+[9:02] they say ok we are the weights we are
+[9:04] supposed to make a
+[9:05] all right we are the ones who are
+[9:07] responsible for the adjustments in the
+[9:09] network so we have failed to do our job
+[9:10] properly and I think we should get
+[9:12] adjusted right but then HL will resist
+[9:15] it'll say it's not my fault why will it
+[9:17] resist because it against again depends
+[9:20] on the previous activation layer right
+[9:22] so till then point as to what the WS and
+[9:27] B's in the previous layer right and you
+[9:30] see how the investigation is now
+[9:32] proceeding where will we reach we'll
+[9:34] keep going down the network we are
+[9:36] talking to everyone in the network we
+[9:38] are talking to every dark green guy
+[9:39] every light green guy every dark blue
+[9:42] guy every light blue guy we are also
+[9:43] talking to all these weights and biases
+[9:45] and in the end what do we figure out the
+[9:48] responsibility lies with all the weights
+[9:51] and all the biases they are the ones who
+[9:53] are responsible for this ok now ok
+[9:58] but now ok we find out that this is also
+[10:01] one of those weights which is
+[10:02] responsible and this is also one of
+[10:03] these weights that is responsible but it
+[10:06] was have been very difficult for us to
+[10:07] talk to them directly so then what are
+[10:09] we going to do instead of talking to
+[10:14] them directly which is this we will talk
+[10:17] to them through the chain rule so we'll
+[10:19] talk to the output layer
+[10:20] that's exactly how what we did maybe
+[10:21] went to the first guy that we knew that
+[10:23] guy pointed out to the previous hidden
+[10:25] layer that guy pointed us to the
+[10:27] previous hidden layer and then finally
+[10:28] we get to the weights right okay so this
+[10:32] talking to is fine but where do
+[10:34] derivatives figure out in this why are
+[10:36] why is the language derivatives why are
+[10:39] we not talking in English or India or
+[10:40] some things what does the derivative
+[10:47] tell us okay so talking about gradient
+[10:52] descent like what we saw in gradient
+[10:54] descent but in general what does the
+[10:56] derivative tell us if I change this a
+[10:59] bit how much does my loss change right
+[11:02] so that's how much this guy is
+[11:05] responsible for the loss right because
+[11:06] if this is very sensitive even adjusting
+[11:09] a bit of this I could drastically reduce
+[11:11] the loss so that's what the derivative
+[11:13] tells us that tells us how sensitive is
+[11:16] the loss function to the weight or any
+[11:19] quantity with this with respect to which
+[11:20] I'm taking the derivative that's why the
+[11:22] language is of derivatives right is that
+[11:25] clear
+[11:25] is the intuition fine to everyone okay
+[11:27] fine so now we can convert this
+[11:29] intuition into actual math and try to
+[11:31] figure out how to compute every guy
+[11:33] along the way right and we will use this
+[11:35] idea that we have made some partial
+[11:37] computations and then we'll use it for
+[11:39] the rest of the chain so we have made
+[11:40] this much at some point we in reach
+[11:42] where we have made this much and then
+[11:44] you could use it for the rest of the
+[11:45] chain in fact we will start right from
+[11:47] here right we'll start with this guy and
+[11:48] then keep expanding the chain okay so
+[11:50] the rest of the story is going to be
+[11:52] about computing three quantities can you
+[11:55] tell me which are these three quantities
+[11:57] gradients with respect to the output
+[11:59] units gradients with respect to the
+[12:01] hidden units and then gradients with
+[12:04] respect to the parameters okay so these
+[12:06] are the three things that we need to do
+[12:08] if we do this we have everything in the
+[12:10] chain and we are done okay and the other
+[12:13] thing that we need to do is we can't sit
+[12:16] down and compute this for every element
+[12:18] right we want to have it in a generic
+[12:19] fashion where instead of talking about W
+[12:22] 1 1 1 W 1 1 2 and so on we should at
+[12:25] least be able to talk about W 1 W 2 and
+[12:27] so on right so that means we have only
+[12:29] three matrices and three biases wait at
+[12:31] least at that level so we have to do a
+[12:32] collective computation instead of just
+[12:35] computing for every guy right so instead
+[12:37] of looking at scalars which is what we
+[12:39] are doing when we are doing gradient
+[12:40] descent for W naught and V naught right
+[12:42] we were just computing the update rule
+[12:44] for W and B we want to now do it for
+[12:47] vectors and matrices okay so that's
+[12:49] that's the transition that is going to
+[12:50] happen okay so and our focus is going to
+[12:54] be on what cross entropy and softmax why
+[12:56] is that important because that's the
+[12:58] loss function right so that's the
+[13:00] quantity that I'm going to take the
+[13:01] derivative if I change the loss function
+[13:02] all the gradients are going to change or
+[13:05] all the gradients going to change only
+[13:07] the first guy will change in the change
+[13:08] all this should remains still same right
+[13:12] modulus some conditions but largely it
+[13:14] should remain the same maybe unless you
+[13:15] change something in between okay okay so
+[13:17] this is the set up cleared everyone so
+[13:19] that's the end of this module
+[13:23] [Music]
+[13:50] [Music]

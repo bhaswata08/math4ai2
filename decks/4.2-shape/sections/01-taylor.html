@@ -32,12 +32,39 @@
   <h2>Where the factorial comes from</h2>
   <video class="clip" src="assets/clips/FactorialByDifferentiating.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">Differentiating \(c_4x^4\) four times leaves \(4\cdot3\cdot2\cdot1 = 24\), so \(c_4 = f^{(4)}(0)/24\).</p>
+  <p class="caption">Differentiating \(c_4x^4\) four times leaves \(4\cdot3\cdot2\cdot1 = 24\). Four derivatives also bring \(\cos\) back to itself, so \(\cos^{(4)}(0) = \cos 0 = 1\) and \(c_4 = 1/24\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 1</b> / Where the factorial comes from</div>
+  <h2>Differentiate the polynomial and read off \(c_n\)</h2>
+  <p style="font-size:0.8em; margin:0 0 0.2em">Write the approximation as an unknown polynomial in \((x-a)\) and find the coefficients one at a time. Setting \(x = a\) kills every term that still carries a factor of \((x-a)\), so each derivative exposes exactly one coefficient.</p>
+  <div style="font-size:0.95em">$$f(x) = c_0 + c_1(x-a) + c_2(x-a)^2 + c_3(x-a)^3 + c_4(x-a)^4 + \cdots$$</div>
+  <table class="deriv" style="font-size:0.68em">
+    <tr><td>$$f(a) = c_0$$</td><td>every other term has a factor \((x-a)\)</td></tr>
+    <tr><td>$$f'(x) = c_1 + 2c_2(x-a) + 3c_3(x-a)^2 + \cdots \;\Rightarrow\; f'(a) = c_1 = 1!\,c_1$$</td><td>the power rule brings each exponent down</td></tr>
+    <tr><td>$$f''(x) = 2c_2 + 3\cdot 2\,c_3(x-a) + \cdots \;\Rightarrow\; f''(a) = 2c_2 = 2!\,c_2$$</td><td>\(c_2\) has been multiplied by \(2\), then \(1\)</td></tr>
+    <tr><td>$$f'''(x) = 3\cdot 2\cdot 1\,c_3 + 4\cdot3\cdot2\,c_4(x-a) + \cdots \;\Rightarrow\; f'''(a) = 3!\,c_3$$</td><td>\(c_3\) picks up \(3\), then \(2\), then \(1\)</td></tr>
+  </table>
+  <p class="takeaway" style="font-size:0.8em">Each line gives one coefficient: \(c_1 = f'(a)/1!\), \(c_2 = f''(a)/2!\), \(c_3 = f'''(a)/3!\).</p>
+</section>
+
+<section class="act-body">
+  <div class="act-tag"><b>Act 1</b> / Where the factorial comes from</div>
+  <h2>The \(n\)-th derivative leaves \(n!\,c_n\)</h2>
+  <p style="font-size:0.85em; margin:0 0 0.3em">Differentiate \(c_n(x-a)^n\) \(n\) times. The power rule brings down \(n\), then \(n-1\), then \(n-2\), down to \(1\):</p>
+  <div style="font-size:0.95em">$$\frac{d^n}{dx^n}\,c_n(x-a)^n = n\,(n-1)\,(n-2)\cdots 1 \cdot c_n = n!\,c_n$$</div>
+  <div class="cols" style="font-size:0.8em">
+    <div class="beat purpose"><h4>Lower terms</h4><p>Degree below \(n\) differentiates to \(0\) after \(n\) steps, so nothing from them survives.</p></div>
+    <div class="beat purpose"><h4>Higher terms</h4><p>Degree above \(n\) still carries a factor \((x-a)\), so it vanishes at \(x = a\).</p></div>
+  </div>
+  <div style="font-size:1.05em">$$f^{(n)}(a) = n!\,c_n \qquad\Longrightarrow\qquad \boxed{\,c_n = \frac{f^{(n)}(a)}{n!}\,}$$</div>
+  <p class="takeaway" style="font-size:0.8em">The factorial undoes the scaling that \(n\) differentiations put on a degree-\(n\) term.</p>
 </section>
 
 <section class="clip-slide">
   <h2>Around any point</h2>
   <video class="clip" src="assets/clips/ApproximateNearPoint.mp4"></video>
   <span class="fragment clip-play"></span>
-  <p class="caption">Tangent line, then curvature. Shrink \(h\) by 5: the linear error falls about 25 times, the quadratic error about 100.</p>
+  <p class="caption">Tangent line, then curvature at \(a=1\), read at \(x = 1+h\). Shrink \(h\) by 5: the linear error falls about 25 times, the quadratic error about 100.</p>
 </section>

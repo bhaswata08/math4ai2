@@ -822,6 +822,93 @@ div.boardhandle i.fa-chevron-down::before { transform: translateY(-0.1em) rotate
 .reveal .eraser-mul .katex-display { margin: 0.3em 0; }
 .reveal .eraser-mul p { margin: 0.2em 0 0; font-size: 1.1em; color: var(--ink-dim); }
 
+/* A small worked example under the talking points on a clip slide. */
+.reveal .worked { font-size: 0.66em; margin-top: 0.2em; }
+.reveal .worked .katex-display { margin: 0.3em 0; }
+.reveal .worked p { margin: 0.2em 0 0; font-size: 1.1em; color: var(--ink-dim); }
+
 /* A worked factorization kept on screen across a run of clip slides. */
 .reveal .eq-ref { align-self: center; font-size: 0.62em; margin: 0 0 0.3em; }
 .reveal .clip-slide .eq-ref ~ .clip-talk video.clip { max-height: 400px; }
+
+/* Feedforward layer diagram used down the right of block 4.1 Act 4,
+   in place of the clips. Drawn inline so it inherits the deck palette. */
+.reveal .net { width: 100%; height: auto; max-height: 74vh; display: block; margin: 0 auto; }
+.reveal .cols.net-right { grid-template-columns: 1fr 0.5fr; align-items: center; gap: 1.2em; }
+
+/* Internals of the layer diagram above: edges, neurons and labels. */
+.reveal .net .edge path { fill: none; stroke: var(--rule); stroke-width: 1; }
+.reveal .net .edge path.pair { stroke: var(--ink-faint); stroke-width: 1.6; }
+.reveal .net .edge path.hot  { stroke: var(--v); stroke-width: 2.4; }
+.reveal .net .node circle { fill: var(--bg-raised); stroke: var(--ink-dim); stroke-width: 1.4; }
+.reveal .net .node.out circle { stroke: var(--result); }
+.reveal .net .lab { font-family: var(--font-mono); font-size: 13px; fill: var(--ink-dim); }
+.reveal .net .lab.wb { fill: var(--ink-faint); font-size: 11px; }
+.reveal .net .lab.top { fill: var(--ink); font-size: 14px; }
+.reveal .net .lab.loss { fill: var(--result); font-size: 15px; }
+
+/* A single-statement slide: one sentence, centred, nothing else. */
+.reveal .act-body.big-line { display: flex; align-items: center; justify-content: center; min-height: 60vh; }
+.reveal .act-body.big-line h2 { text-align: center; max-width: 24em; line-height: 1.35; }
+
+/* --- 4.1 Act 4: the five reproduced CS7015 4.4 slides ------------------- */
+
+/* Slide 1: the outputs / loss-function table. */
+.reveal .khapra-outputs { width: auto; margin: 0 auto 0.8em; font-size: 0.8em; }
+.reveal .khapra-outputs th,
+.reveal .khapra-outputs td { border: 1px solid var(--ink-dim); padding: 0.45em 1.1em; text-align: center; background: none; }
+.reveal .khapra-outputs td.blank { border: none; }
+.reveal .khapra-outputs th.rowhead { text-align: right; font-weight: 400; }
+.reveal .khapra-outputs .hot { color: var(--result); }
+
+/* Slides 2 and 3/4: text beside the figure (and the algorithm box). */
+.reveal .khapra3 { display: grid; grid-template-columns: 0.95fr 1.7fr 0.8fr; gap: 0.9em; align-items: center; }
+.reveal .khapra2 { display: grid; grid-template-columns: 1.25fr 1fr; gap: 1em; align-items: center; }
+.reveal .khapra3 ul, .reveal .khapra2 ul { font-size: 0.8em; }
+.reveal .khapra2 ul.tight { font-size: 0.72em; }
+.reveal .khapra2 ul.tight li { margin-bottom: 0.25em; }
+
+/* The boxed gradient-descent algorithm down the right of slide 2. */
+.reveal .algobox { font-size: 0.62em; line-height: 1.35; border-top: 1.5px solid var(--ink); border-bottom: 1.5px solid var(--ink); padding: 0.4em 0; }
+.reveal .algobox p { margin: 0.1em 0; }
+.reveal .algobox hr { border: none; border-top: 1px solid var(--ink-dim); margin: 0.3em 0; }
+.reveal .algobox .ind { padding-left: 1em; }
+
+/* The stack of chain-rule lines on slide 3. */
+.reveal .chainstack { font-size: 0.52em; }
+.reveal .chainstack .katex-display { margin: 0.28em 0; text-align: left; }
+.reveal .chainstack .katex-display > .katex { text-align: left; }
+
+/* The factorised chain rule with its labelled braces. */
+.reveal .brace-eq .katex-display { margin: 0.3em 0; }
+.reveal .brace-eq.small { font-size: 0.56em; }
+.reveal .act-body.brace-only { display: flex; align-items: center; justify-content: center; min-height: 62vh; }
+.reveal .act-body.brace-only .brace-eq { font-size: 0.85em; width: 100%; }
+
+/* Figure parts shared by the three diagrams. */
+.reveal .net .node.in circle   { fill: var(--warn-soft); stroke: var(--warn); }
+.reveal .net .node.hid circle  { fill: var(--accent-soft); stroke: var(--accent); }
+.reveal .net .node.out circle  { fill: var(--data-soft); stroke: var(--data); }
+.reveal .net .node.bias circle { fill: var(--warn-soft); stroke: var(--warn); }
+.reveal .net .edge path.bias  { stroke: var(--ink-faint); }
+.reveal .net .edge path.arrow,
+.reveal .net .edge.arrow path { stroke: var(--ink-dim); stroke-width: 1.6; }
+.reveal .net .edge.down path  { stroke: var(--accent); stroke-width: 1; opacity: 0.75; }
+.reveal .net .lossbox rect { fill: var(--bg-raised); stroke: var(--ink-dim); stroke-width: 1.2; }
+.reveal .net .lab.sub { font-size: 12px; fill: var(--ink); }
+
+/* Slide 1 table: keep the header wording as written, not uppercased mono. */
+.reveal .khapra-outputs th {
+  font-family: var(--font-sans); font-size: 1em; font-weight: 400;
+  letter-spacing: 0; text-transform: none; color: var(--ink);
+  border: 1px solid var(--ink-dim); text-align: center;
+}
+.reveal .khapra-outputs th.rowhead { text-align: right; }
+.reveal .khapra-outputs .hot { color: var(--result); }
+.reveal .hotx { color: var(--result); }
+
+/* Slide 3: the chain-rule stack needs to read from the back row. */
+.reveal .chainstack { font-size: 0.6em; }
+
+/* Output units: distinct from the grey table/code colour. */
+.reveal .net .node.out circle { fill: var(--result-soft, #4ade8026); stroke: var(--result); }

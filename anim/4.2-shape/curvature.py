@@ -83,12 +83,12 @@ class QuadraticAlongDirection(ThreeDScene):
         lab_x = tex("x", X_COLOR).move_to(scr(axes.c2p(2.0, 0, -4)) + DOWN * 0.4 + RIGHT * 0.3)
         lab_y = tex("y", Y_COLOR).move_to(scr(axes.c2p(0, 2.0, -4)) + LEFT * 0.4 + UP * 0.1)
         lab_f = tex("f", INK_DIM).move_to(scr(axes.c2p(0, 0, 12)) + UP * 0.35)
-        lab_p = tex(r"\mathbf p", INK).move_to(scr(P(px, py)) + UP * 0.38 + LEFT * 0.3)
+        lab_p = tex(r"\boldsymbol\omega", INK).move_to(scr(P(px, py)) + UP * 0.38 + LEFT * 0.3)
 
         # fixed-in-frame text
         head = VGroup(
             tex(r"f(x,y)=x^3+2xy-y^2", V_COLOR),
-            tex(r"\mathbf p=(1,1)", INK),
+            tex(r"\boldsymbol\omega=(1,1)", INK),
         ).arrange(RIGHT, buff=0.5).to_corner(UL, buff=0.2)
         head = bg(head)
 
@@ -125,9 +125,9 @@ class QuadraticAlongDirection(ThreeDScene):
             slope = g @ d
             curv = 0.5 * d @ H @ d
             r0 = tex(hlabel, hcolor)
-            r1 = tex(rf"\nabla f\cdot\mathbf h={coef(slope,1)}" if slope else r"\nabla f\cdot\mathbf h=0", HIGHLIGHT)
-            r2 = tex(rf"\tfrac12\mathbf h^{{\top}}H\mathbf h={coef(curv,2)}", RESULT_COLOR)
-            r0 = VGroup(r0, tex(r"f(\mathbf p+\mathbf h)", V_COLOR)).arrange(RIGHT, buff=0.35)
+            r1 = tex(rf"\nabla f\cdot\boldsymbol\delta={coef(slope,1)}" if slope else r"\nabla f\cdot\boldsymbol\delta=0", HIGHLIGHT)
+            r2 = tex(rf"\tfrac12\boldsymbol\delta^{{\top}}H\boldsymbol\delta={coef(curv,2)}", RESULT_COLOR)
+            r0 = VGroup(r0, tex(r"f(\boldsymbol\omega+\boldsymbol\delta)", V_COLOR)).arrange(RIGHT, buff=0.35)
             grp = VGroup(r0, r1, r2).arrange(DOWN, aligned_edge=LEFT, buff=0.16)
             grp.move_to(RIGHT * 2.95 + DOWN * 1.45)
             grp.align_to(RIGHT * 1.0, LEFT)
@@ -140,7 +140,7 @@ class QuadraticAlongDirection(ThreeDScene):
         # ---- step 1: slice along x ----
         cx = slice_curve((1, 0), X_COLOR)
         ax1, tr1, li1, qu1 = panel((1, 0), [-1, 11], [0, 5, 10])
-        rw1 = rows(r"\mathbf h=(t,0)", X_COLOR, (1, 0))
+        rw1 = rows(r"\boldsymbol\delta=(t,0)", X_COLOR, (1, 0))
         self.camera.add_fixed_in_frame_mobjects(ax1, tr1, li1, qu1, rw1)
         for m in (ax1, tr1, li1, qu1, rw1):
             self.remove(m)
@@ -156,7 +156,7 @@ class QuadraticAlongDirection(ThreeDScene):
         self.play(*[FadeOut(m) for m in (cx, ax1, tr1, li1, qu1, rw1)], run_time=0.8)
         cy = slice_curve((0, 1), Y_COLOR)
         ax2, tr2, li2, qu2 = panel((0, 1), [0, 3], [1, 2, 3])
-        rw2 = rows(r"\mathbf h=(0,t)", Y_COLOR, (0, 1))
+        rw2 = rows(r"\boldsymbol\delta=(0,t)", Y_COLOR, (0, 1))
         self.camera.add_fixed_in_frame_mobjects(ax2, tr2, li2, qu2, rw2)
         for m in (ax2, tr2, li2, qu2, rw2):
             self.remove(m)
@@ -194,10 +194,10 @@ class QuadraticAlongDirection(ThreeDScene):
                     element_to_mobject=lambda t: MathTex(t, font_size=MIN_FONT), h_buff=0.9, v_buff=0.6)
         Hlab = tex("H=")
         Hrow = VGroup(Hlab, Hm).arrange(RIGHT, buff=0.2).move_to(RIGHT * 3.2 + UP * 1.7)
-        t1 = tex(r"f(\mathbf p)+\nabla f^{\top}\mathbf h", HIGHLIGHT)
-        t1n = tex(rf"={int(z0)}+{int(g[0])}h_1", HIGHLIGHT)
-        t2 = tex(r"+\tfrac12\mathbf h^{\top}H\mathbf h", RESULT_COLOR)
-        t2n = tex(r"=3h_1^2+2h_1h_2-h_2^2", RESULT_COLOR)
+        t1 = tex(r"f(\boldsymbol\omega)+\nabla f^{\top}\boldsymbol\delta", HIGHLIGHT)
+        t1n = tex(rf"={int(z0)}+{int(g[0])}\delta_1", HIGHLIGHT)
+        t2 = tex(r"+\tfrac12\boldsymbol\delta^{\top}H\boldsymbol\delta", RESULT_COLOR)
+        t2n = tex(r"=3\delta_1^2+2\delta_1\delta_2-\delta_2^2", RESULT_COLOR)
         # numbers from H: 1/2 h^T H h = (H00/2) h1^2 + H01 h1 h2 + (H11/2) h2^2
         assert (H[0, 0] / 2, H[0, 1], H[1, 1] / 2) == (3, 2, -1)
         side = VGroup(t1, t1n, t2, t2n).arrange(DOWN, aligned_edge=LEFT, buff=0.14)
@@ -238,7 +238,7 @@ class CriticalPoints(ThreeDScene):
         self.camera.rotation_matrix = self.camera.generate_rotation_matrix()
         scr = lambda pt: self.camera.project_point(np.array(pt, dtype=float))
         lab_x = tex("x", X_COLOR).move_to(scr(axes.c2p(1.6, 0, 0)) + RIGHT * 0.25 + DOWN * 0.1)
-        lab_y = tex("y", Y_COLOR).move_to(scr(axes.c2p(0, -1.9, 0)) + LEFT * 0.3 + DOWN * 0.2)
+        lab_y = tex("y", Y_COLOR).move_to(scr(axes.c2p(0, -1.75, 0)) + LEFT * 0.6 + DOWN * 0.6)
 
         def make_surface(fn):
             surf = Surface(lambda u, v: axes.c2p(u, v, fn(u, v)), u_range=[-R, R], v_range=[-R, R],
@@ -404,9 +404,9 @@ class CurvatureAllDirections(Scene):
 
 
 # =============================================================================
-# SCENE 4: CriticalPointsNumbers (2D): f = x^3 + 2xy - y^2
+# SCENE 4: CriticalPointsNumbers (ThreeDScene): f = x^3 + 2xy - y^2
 # =============================================================================
-class CriticalPointsNumbers(Scene):
+class CriticalPointsNumbers(ThreeDScene):
     def construct(self):
         # critical points from the real equations: 3x^2+2y=0, 2x-2y=0 -> y=x, 3x^2+2x=0
         xs = np.roots([3, 2, 0])
@@ -415,90 +415,117 @@ class CriticalPointsNumbers(Scene):
         for (x, y) in pts:
             assert np.allclose(GRAD(x, y), 0)
 
-        title = bg(tex(r"f=x^3+2xy-y^2,\quad \nabla f=\mathbf 0\ \text{at}\ (0,0),\ (-\tfrac23,-\tfrac23)", V_COLOR, 38)).to_edge(UP, buff=0.15)
+        # Both critical points sit on the line y = x. Cut the patch along that line
+        # rather than along the axes: the axis-aligned square puts most of its area
+        # in the cubic's plunge, which flattens the bump and the pass to nothing.
+        cx, cy = (pts[0][0] + pts[1][0]) / 2, (pts[0][1] + pts[1][1]) / 2
+        along = np.array([1.0, 1.0]) / np.sqrt(2)
+        across = np.array([1.0, -1.0]) / np.sqrt(2)
+        U, V = 0.8, 0.4
 
-        lo, hi = -1.5, 1.0
-        S = 3.8
-        mp = Axes(x_range=[lo, hi, 1], y_range=[lo, hi, 1], x_length=S, y_length=S,
-                  axis_config={"stroke_color": INK_DIM, "stroke_width": 2, "include_tip": False,
-                               "include_ticks": True, "tick_size": 0.05}).move_to(LEFT * 3.0 + DOWN * 0.4)
-        mp.x_axis.add_labels({-1: MathTex("-1", font_size=MIN_FONT), 1: MathTex("1", font_size=MIN_FONT)})
-        mp.y_axis.add_labels({-1: MathTex("-1", font_size=MIN_FONT), 1: MathTex("1", font_size=MIN_FONT)})
-        for ax_ in mp.get_axes():
-            for m in ax_.labels:
-                m.set_color(INK_DIM)
-        xl = tex("x", X_COLOR).next_to(mp.c2p(hi, 0), UP, buff=0.05).shift(LEFT * 0.12)
-        yl = tex("y", Y_COLOR).next_to(mp.c2p(0, hi), RIGHT, buff=0.08)
+        theta, phi = -50 * DEGREES, 65 * DEGREES
+        self.set_camera_orientation(phi=phi, theta=theta)
+        right = np.array([-np.sin(theta), np.cos(theta), 0.0])
 
-        contours = VGroup()
-        for c in [-2.0, -1.0, -0.4, 0.0, 0.1]:
-            try:
-                cv = mp.plot_implicit_curve(lambda x, y, c=c: F(x, y) - c, color=INK_FAINT, stroke_width=2)
-                contours.add(cv)
-            except Exception as e:  # pragma: no cover
-                print("contour fail", c, e)
+        lo, hi = -1.1, 0.35
+        zlo, zhi = -0.55, 0.2
+        axes = ThreeDAxes(
+            x_range=[lo, hi, 0.5], y_range=[lo, hi, 0.5], z_range=[zlo, zhi, 0.25],
+            x_length=3.3, y_length=3.3, z_length=2.4,
+            axis_config={"stroke_color": INK_DIM, "stroke_width": 1.5,
+                         "include_ticks": False, "include_tip": True, "tip_length": 0.18},
+        )
+        # The axes would cut straight through the patch, and green and rose are
+        # already spoken for here: they mark which way the surface bends. Keep the
+        # frame for c2p only.
+        axes.set_opacity(0)
+        axes.shift(-axes.c2p((lo + hi) / 2, (lo + hi) / 2, (zlo + zhi) / 2) - 2.6 * right + DOWN * 0.2)
 
-        # gradient field: short amber arrows
-        field = VGroup()
-        for gx in np.linspace(-1.3, 0.8, 6):
-            for gy in np.linspace(-1.3, 0.8, 6):
-                gv = GRAD(gx, gy)
-                n = np.linalg.norm(gv)
-                if n < 1e-6:
-                    continue
-                ln = 0.3
-                o = mp.c2p(gx, gy)
-                dirv = np.array([gv[0], gv[1], 0]) / n
-                field.add(Arrow(o - dirv * ln / 2, o + dirv * ln / 2, buff=0, color=RESULT_COLOR, stroke_width=3,
-                                max_tip_length_to_length_ratio=0.5, max_stroke_width_to_length_ratio=20))
+        def P(x, y, lift=0.0):
+            return axes.c2p(x, y, np.clip(F(x, y), zlo, zhi) + lift)
 
-        dots = [Dot(mp.c2p(*p), radius=0.1, color=HIGHLIGHT).set_z_index(5) for p in pts]
-        rings = [Circle(radius=0.2, color=HIGHLIGHT, stroke_width=3).move_to(d) for d in dots]
+        def patch(u, v):
+            p = np.array([cx, cy]) + along * u + across * v
+            return P(p[0], p[1])
+
+        surface = Surface(patch, u_range=[-U, U], v_range=[-V, V],
+                          resolution=(24, 12), stroke_color=V_COLOR, stroke_width=0.4,
+                          stroke_opacity=0.3)
+        for face in surface.submobjects:
+            face.set_fill(color=V_COLOR, opacity=0.40 if (face.u_index + face.v_index) % 2 == 0 else 0.60)
+
+        legend = VGroup(
+            tex(r"\lambda>0:\ \text{curves up}", X_COLOR),
+            tex(r"\lambda<0:\ \text{curves down}", Y_COLOR),
+        ).arrange(DOWN, aligned_edge=LEFT, buff=0.16).to_corner(DL, buff=0.35)
+
+        title = bg(tex(r"f=x^3+2xy-y^2,\quad \nabla f=\mathbf 0\ \text{at}\ (0,0),\ (-\tfrac23,-\tfrac23)",
+                       V_COLOR, 38)).to_edge(UP, buff=0.15)
+
+        col = lambda v: X_COLOR if v > 0 else Y_COLOR
 
         def eigen_block(p, name, y_c):
+            """Panel of numbers, plus the two slice curves through p along H's eigenvectors.
+
+            The gradient is zero at p, so the tangent plane is flat and each slice
+            rises or falls exactly as the sign of its eigenvalue says.
+            """
             Hn = HESS(*p)
             ev, vec = np.linalg.eigh(Hn)
             ev, vec = ev[::-1], vec[:, ::-1]  # descending
             Hn_str = [[f"{Hn[i,j]:.0f}" for j in range(2)] for i in range(2)]
             m = Matrix(Hn_str, element_to_mobject=lambda t: MathTex(t, font_size=MIN_FONT), h_buff=0.85, v_buff=0.55)
             if ev[1] > 0:
-                kind, kc = "minimum", V_COLOR
+                kind = "minimum"
             elif ev[0] < 0:
-                kind, kc = "maximum", V_COLOR
+                kind = "maximum"
             else:
-                kind, kc = "saddle", V_COLOR
-            col = lambda v: X_COLOR if v > 0 else Y_COLOR
+                kind = "saddle"
             r1 = VGroup(tex(name + r"\ \Rightarrow"), tex(r"\text{" + kind + "}", HIGHLIGHT)).arrange(RIGHT, buff=0.2)
             lams = VGroup(
                 tex(rf"\lambda_1={ev[0]:.2f}", col(ev[0])),
                 tex(rf"\lambda_2={ev[1]:.2f}", col(ev[1])),
             ).arrange(DOWN, aligned_edge=LEFT, buff=0.12)
             r2 = VGroup(tex("H="), m, lams).arrange(RIGHT, buff=0.2)
-            blk = VGroup(r1, r2).arrange(DOWN, aligned_edge=LEFT, buff=0.15)
+            blk = bg(VGroup(r1, r2).arrange(DOWN, aligned_edge=LEFT, buff=0.15))
             blk.move_to(RIGHT * 2.45 + UP * y_c)
             blk.align_to(RIGHT * -0.95, LEFT)
-            # eigen-direction arrows on the map
-            arrs = VGroup()
-            for k in range(2):
-                o = mp.c2p(*p)
-                d = np.array([vec[0, k], vec[1, k], 0.0])
-                d = d * 0.55
-                # keep direction readable on the map: map axes share the same scale
-                arrs.add(Arrow(o - d, o + d, buff=0, color=col(ev[k]), stroke_width=6,
-                               max_tip_length_to_length_ratio=0.2).set_z_index(4))
-            return blk, arrs, ev
 
-        blkA, arrA, evA = eigen_block(pts[0], "(0,0)", 0.95)
-        blkB, arrB, evB = eigen_block(pts[1], r"(-\tfrac23,-\tfrac23)", -1.2)
+            # slice curves along the eigen-directions, drawn on the surface
+            crvs = VGroup()
+            for k in range(2):
+                d = vec[:, k]
+                # 1/2 lambda t^2 is the whole rise, so shorten the steep slices:
+                # every curve then climbs or drops by about the same amount
+                t = float(np.clip(0.45 / np.sqrt(abs(ev[k])), 0.15, 0.4))
+                # and never let one run off the edge of the patch
+                off = np.array([p[0] - cx, p[1] - cy])
+                for axis, half in ((along, U), (across, V)):
+                    step = d @ axis
+                    if abs(step) > 1e-9:
+                        t = min(t, (half - 0.06 - abs(off @ axis)) / abs(step))
+                crvs.add(ParametricFunction(
+                    lambda s, d=d: P(p[0] + d[0] * s, p[1] + d[1] * s, lift=0.03),
+                    t_range=[-t, t], color=col(ev[k]), stroke_width=7).set_z_index(4))
+            return blk, crvs, ev
+
+        blkA, crvA, evA = eigen_block(pts[0], "(0,0)", 1.05)
+        blkB, crvB, evB = eigen_block(pts[1], r"(-\tfrac23,-\tfrac23)", -1.3)
         assert abs(evA[0] - (-1 + np.sqrt(5))) < 1e-9 and abs(evB[1] - (-3 - np.sqrt(5))) < 1e-9
 
-        self.add(title, mp, xl, yl, contours, field)
-        self.play(FadeIn(VGroup(*dots)), *[Create(r) for r in rings], run_time=1.2)
+        dots = [Dot3D(point=P(*p, lift=0.05), radius=0.08, color=HIGHLIGHT).set_z_index(5) for p in pts]
+
+        self.camera.add_fixed_in_frame_mobjects(title, legend, blkA, blkB)
+        for m in (blkA, blkB):
+            self.remove(m)
+
+        self.add(axes, surface, title, legend)
+        self.wait(1.5)
+        self.play(FadeIn(VGroup(*dots)), run_time=1.2)
         self.wait(2.5)
-        self.play(FadeOut(field), run_time=0.8)
-        self.play(FadeIn(blkA), Create(arrA), run_time=1.5)
+        self.play(FadeIn(blkA), Create(crvA), run_time=1.5)
         self.wait(4.0)
-        self.play(FadeIn(blkB), Create(arrB), run_time=1.5)
+        self.play(FadeIn(blkB), Create(crvB), run_time=1.5)
         self.wait(5.0)
 
 
@@ -591,72 +618,124 @@ class Convexity(Scene):
 
 
 # =============================================================================
-# SCENE 5: ConvexAlongEveryLine (2D): chord test in each direction
+# SCENE 5: ConvexAlongEveryLine (ThreeDScene): chord test on the surface itself
 # =============================================================================
-class ConvexAlongEveryLine(Scene):
+class ConvexAlongEveryLine(ThreeDScene):
     def construct(self):
-        def panel(cx, ylo, yhi, ticks):
-            ax = Axes(x_range=[-1.5, 1.5, 1], y_range=[ylo, yhi, 1], x_length=3.6, y_length=2.0,
-                      axis_config={"stroke_color": INK_DIM, "stroke_width": 2.5, "include_tip": False,
-                                   "include_ticks": False}).move_to(RIGHT * cx + DOWN * 0.35)
-            return ax
+        theta, phi = -65 * DEGREES, 66 * DEGREES
+        self.set_camera_orientation(phi=phi, theta=theta)
+        R = 1.2
+        axes = ThreeDAxes(
+            x_range=[-1.5, 1.5, 1.0], y_range=[-1.5, 1.5, 1.0], z_range=[-1.5, 1.5, 1.0],
+            x_length=4.4, y_length=4.4, z_length=2.4,
+            axis_config={"stroke_color": INK_DIM, "stroke_width": 1.5,
+                         "include_ticks": False, "include_tip": False},
+        )
+        axes.x_axis.set_color(X_COLOR)
+        axes.y_axis.set_color(Y_COLOR)
+        axes.shift(DOWN * 0.35)
 
-        def build(Hd, cases):
-            """cases: list of (cx, label, colour, coefficient of t^2)."""
-            grp = VGroup()
-            out = []
-            for cx, name, ncol, c in cases:
-                ax = panel(cx, -2.3, 2.3, None)
-                curve = ax.plot(lambda t, c=c: c * t * t, x_range=[-1.4, 1.4], color=V_COLOR, stroke_width=4)
-                ta, tb = -1.1, 1.1
-                A = ax.c2p(ta, c * ta * ta)
-                B = ax.c2p(tb, c * tb * tb)
-                chord = Line(A, B, color=RESULT_COLOR, stroke_width=5)
-                da, db = Dot(A, radius=0.09, color=RESULT_COLOR), Dot(B, radius=0.09, color=RESULT_COLOR)
-                # chord height vs curve height at the midpoint tells above/below
-                mid_chord = c * ta * ta  # symmetric endpoints: chord is flat at c*1.21
-                above = mid_chord >= 0
-                verdict = tex(r"\text{chord above}" if above else r"\text{chord below}", X_COLOR if above else Y_COLOR)
-                verdict.next_to(ax, DOWN, buff=0.25)
-                lab = tex(name, ncol).next_to(ax, UP, buff=0.15)
-                out.append((ax, curve, chord, VGroup(da, db), verdict, lab, above))
-            return out
+        self.camera.rotation_matrix = self.camera.generate_rotation_matrix()
+        scr = lambda pt: self.camera.project_point(np.array(pt, dtype=float))
+
+        lab_x = tex("x", X_COLOR).move_to(scr(axes.c2p(1.6, 0, 0)) + RIGHT * 0.25 + DOWN * 0.1)
+        lab_y = tex("y", Y_COLOR).move_to(scr(axes.c2p(0, -1.9, 0)) + LEFT * 0.3 + DOWN * 0.2)
+        self.camera.add_fixed_in_frame_mobjects(lab_x, lab_y)
+        self.add(lab_x, lab_y)
+
+        LIFT = 0.05   # keeps the slice curves off the mesh they sit on
+        T = 1.05      # chord endpoints, inside the surface patch
+
+        def surface(a, b):
+            # A disc, not a square: the corners of a square patch of the bowl reach
+            # f = 2R^2 and run off the top of the frame.
+            def pt(r, ang):
+                u, v = r * np.cos(ang), r * np.sin(ang)
+                return axes.c2p(u, v, a * u**2 + b * v**2)
+            surf = Surface(pt, u_range=[0.001, R], v_range=[0, TAU], resolution=(10, 24),
+                           stroke_color=V_COLOR, stroke_width=0.4, stroke_opacity=0.3)
+            for face in surf.submobjects:
+                face.set_fill(color=V_COLOR, opacity=0.40 if (face.u_index + face.v_index) % 2 == 0 else 0.60)
+            return surf
+
+        def along(c, axis):
+            """Point on the slice: axis 0 is y = 0, axis 1 is x = 0."""
+            return lambda t: axes.c2p(t if axis == 0 else 0, 0 if axis == 0 else t, c * t * t + LIFT)
+
+        def slice_curve(c, axis, color):
+            return ParametricFunction(along(c, axis), t_range=[-R, R], color=color, stroke_width=6)
+
+        def chord(c, axis):
+            """The straight line between the two endpoints of the slice, drawn in 3D."""
+            p = along(c, axis)
+            a, b = p(-T), p(T)
+            line = Line(a, b, color=RESULT_COLOR, stroke_width=6)
+            dots = VGroup(Dot(scr(a), radius=0.09, color=RESULT_COLOR).set_stroke(BG, 2),
+                          Dot(scr(b), radius=0.09, color=RESULT_COLOR).set_stroke(BG, 2))
+            self.camera.add_fixed_in_frame_mobjects(*dots)
+            return line, dots
 
         def header(fx, Hd):
-            return bg(tex(rf"f={fx},\quad H=\mathrm{{diag}}({Hd[0]:g},{Hd[1]:g})", V_COLOR)).to_edge(UP, buff=0.2)
+            m = bg(tex(rf"f={fx},\quad H=\mathrm{{diag}}({Hd[0]:g},{Hd[1]:g})", V_COLOR))
+            m.to_edge(UP, buff=0.2)
+            self.camera.add_fixed_in_frame_mobjects(m)
+            return m
 
-        def run_case(fx, Hd, last):
-            c1, c2 = Hd[0] / 2, Hd[1] / 2  # f(t,0)=c1 t^2, f(0,t)=c2 t^2
+        def label(text, color, corner):
+            m = bg(tex(text, color))
+            m.to_corner(corner, buff=0.25).shift(DOWN * 0.75)
+            self.camera.add_fixed_in_frame_mobjects(m)
+            return m
+
+        def verdict(above, corner):
+            m = bg(tex(r"\text{chord above}" if above else r"\text{chord below}",
+                       X_COLOR if above else Y_COLOR))
+            m.to_corner(corner, buff=0.25).shift(DOWN * 1.45)
+            self.camera.add_fixed_in_frame_mobjects(m)
+            return m
+
+        def bottom(text, color):
+            m = bg(tex(text, color)).to_edge(DOWN, buff=0.15)
+            self.camera.add_fixed_in_frame_mobjects(m)
+            return m
+
+        def case(fx, Hd):
+            c1, c2 = Hd[0] / 2, Hd[1] / 2   # f(t,0) = c1 t^2, f(0,t) = c2 t^2
             hd = header(fx, Hd)
-            items = build(Hd, [(-2.55, r"\mathbf h=(t,0)", X_COLOR, c1), (2.55, r"\mathbf h=(0,t)", Y_COLOR, c2)])
-            return hd, items
+            surf = surface(c1, c2)
+            cx = slice_curve(c1, 0, X_COLOR)
+            cy = slice_curve(c2, 1, Y_COLOR)
+            lx = label(r"\text{along }x\text{:}\ \boldsymbol\delta=(t,0)", X_COLOR, UL)
+            ly = label(r"\text{along }y\text{:}\ \boldsymbol\delta=(0,t)", Y_COLOR, UR)
+            chx, dtx = chord(c1, 0)
+            chy, dty = chord(c2, 1)
+            vx = verdict(c1 > 0, UL)
+            vy = verdict(c2 > 0, UR)
+            return hd, surf, cx, cy, lx, ly, chx, dtx, chy, dty, vx, vy
 
-        # ---- f = x^2 - y^2 ----
-        hd, items = run_case("x^2-y^2", (2, -2), False)
-        (ax1, cu1, ch1, dt1, v1, l1, ab1), (ax2, cu2, ch2, dt2, v2, l2, ab2) = items
-        assert ab1 and not ab2
-        self.add(hd, ax1, cu1, l1, ax2, cu2, l2)
+        # ---- f = x^2 - y^2: the saddle, one direction fails ----
+        hd, surf, cx, cy, lx, ly, chx, dtx, chy, dty, vx, vy = case("x^2-y^2", (2, -2))
+        self.add(axes, surf, cx, cy, hd, lx, ly)
         self.wait(1.5)
-        self.play(Create(ch1), FadeIn(dt1), run_time=1.0)
-        self.play(FadeIn(v1), run_time=0.6)
+        self.play(Create(chx), FadeIn(dtx), run_time=1.0)
+        self.play(FadeIn(vx), run_time=0.6)
         self.wait(1.5)
-        self.play(Create(ch2), FadeIn(dt2), run_time=1.0)
-        self.play(FadeIn(v2), run_time=0.6)
+        self.play(Create(chy), FadeIn(dty), run_time=1.0)
+        self.play(FadeIn(vy), run_time=0.6)
         self.wait(1.2)
-        verdict_a = bg(tex(r"\text{one direction fails}\Rightarrow\text{not convex}", Y_COLOR)).to_edge(DOWN, buff=0.15)
-        self.play(FadeIn(verdict_a), run_time=0.8)
+        bot = bottom(r"\text{one direction fails}\Rightarrow\text{not convex}", Y_COLOR)
+        self.play(FadeIn(bot), run_time=0.8)
         self.wait(3.0)
-        self.play(*[FadeOut(m) for m in (hd, ax1, cu1, l1, ch1, dt1, v1, ax2, cu2, l2, ch2, dt2, v2, verdict_a)], run_time=0.8)
+        self.play(*[FadeOut(m) for m in (hd, surf, cx, cy, lx, ly, chx, dtx, chy, dty, vx, vy, bot)],
+                  run_time=0.8)
 
-        # ---- f = x^2 + y^2 ----
-        hd, items = run_case("x^2+y^2", (2, 2), True)
-        (ax1, cu1, ch1, dt1, v1, l1, ab1), (ax2, cu2, ch2, dt2, v2, l2, ab2) = items
-        assert ab1 and ab2
-        self.add(hd, ax1, cu1, l1, ax2, cu2, l2)
+        # ---- f = x^2 + y^2: the bowl, every direction passes ----
+        hd, surf, cx, cy, lx, ly, chx, dtx, chy, dty, vx, vy = case("x^2+y^2", (2, 2))
+        self.add(surf, cx, cy, hd, lx, ly)
         self.wait(1.0)
-        self.play(Create(ch1), FadeIn(dt1), Create(ch2), FadeIn(dt2), run_time=1.2)
-        self.play(FadeIn(v1), FadeIn(v2), run_time=0.6)
-        verdict_b = bg(tex(r"\text{every direction passes}\Rightarrow\text{convex},\ H\succeq 0", X_COLOR)).to_edge(DOWN, buff=0.15)
+        self.play(Create(chx), FadeIn(dtx), Create(chy), FadeIn(dty), run_time=1.2)
+        self.play(FadeIn(vx), FadeIn(vy), run_time=0.6)
         self.wait(1.2)
-        self.play(FadeIn(verdict_b), run_time=0.8)
+        bot = bottom(r"\text{every direction passes}\Rightarrow\text{convex},\ H\succeq 0", X_COLOR)
+        self.play(FadeIn(bot), run_time=0.8)
         self.wait(3.5)

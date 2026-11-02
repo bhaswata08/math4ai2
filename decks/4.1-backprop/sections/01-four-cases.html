@@ -1,5 +1,5 @@
 <!-- ============================================================
-     ACT 1 of 5. The four cases. Budget: 15 min.
+     ACT 1 of 6. The four cases. Budget: 15 min.
      Goal: students predict the shape of a derivative from the shapes
      of input and output, including derivatives with respect to a
      matrix. Convention: numerator layout (Jacobian is m x n), as in
@@ -7,34 +7,63 @@
      ============================================================ -->
 
 <section class="act-open">
-  <div class="act-num">Act 1 of 5</div>
+  <div class="act-num">Act 1 of 6</div>
   <h1>The four cases</h1>
   <p class="act-sub">Before computing a derivative, know its shape.</p>
 </section>
 
 <section class="clip-slide">
   <h2>Counting the pairs</h2>
-  <video class="clip" src="assets/clips/CountThePairs.mp4"></video>
+  <div class="clip-talk">
+    <div>
+      <ul>
+        <li>Every input-output pair gets one partial derivative. Count the pairs and you know the shape: here \(2 \times 3 = 6\).</li>
+        <li>Each entry is an ordinary partial derivative. Work the top-left one and the other five follow the same recipe.</li>
+      </ul>
+      <div class="worked">
+        $$\begin{aligned}
+          f_1(x_1, x_2, x_3) &= x_1 x_2 \\[2pt]
+          \frac{\partial f_1}{\partial x_1} &= \frac{\partial}{\partial x_1}(x_1 x_2) \;=\; x_2 \\[2pt]
+          &= 2 \quad \text{at } x = (1, 2, 3)
+        \end{aligned}$$
+        <p>Hold \(x_2\) and \(x_3\) fixed, differentiate in \(x_1\), then substitute.</p>
+      </div>
+    </div>
+    <video class="clip" src="assets/clips/CountThePairs.mp4"></video>
+  </div>
   <span class="fragment clip-play"></span>
-  <p class="caption">Every input-output pair gets one partial derivative. Count the pairs and you know the shape.</p>
 </section>
 
 <section class="act-body">
   <div class="act-tag"><b>Act 1</b> / Shapes</div>
-  <h2>Input shape × output shape</h2>
-  <table style="font-size:1.05em">
-    <thead><tr><th></th><th>scalar input</th><th>vector input</th></tr></thead>
+  <h2>Four cases, one object</h2>
+  <p>All four are the same Jacobian of \(f(x) = (x_1x_2,\; x_2 + x_3^2)\) at \((1,2,3)\), restricted.</p>
+  <table style="font-size:0.92em">
+    <thead><tr><th>case</th><th>shape</th><th>answers</th><th>here</th></tr></thead>
     <tbody>
-      <tr><td>scalar output</td><td>\(\dfrac{df}{dx}\): a number</td><td>\(\nabla f \in \mathbb R^{n}\): a vector</td></tr>
-      <tr><td>vector output (\(m\) entries)</td><td>\(\dfrac{d\mathbf f}{dx} \in \mathbb R^{m}\): a velocity</td><td>\(J \in \mathbb R^{m \times n}\): the Jacobian</td></tr>
+      <tr><td><span class="cr">slope</span></td><td>a number</td><td>one output, one input</td><td>\(\partial f_1/\partial x_2 = 1\): one entry</td></tr>
+      <tr><td><span class="cr">gradient</span></td><td>\(n\)-vector</td><td>one output, every input</td><td>\(\nabla f_1 = (2,1,0)^{\top}\): row 1</td></tr>
+      <tr><td><span class="cr">velocity</span></td><td>\(m\)-vector</td><td>every output, one input</td><td>\(\partial f/\partial x_2 = (1,1)\): column 2</td></tr>
+      <tr><td><span class="cr">Jacobian</span></td><td>\(m \times n\)</td><td>every output, every input</td><td>\(J_f \in \mathbb R^{2\times3}\): all six</td></tr>
     </tbody>
   </table>
-  <p class="takeaway">One entry per (output, input) pair. Count them and you know the shape. We write gradients as columns.</p>
+  <p class="takeaway">One entry per (output, input) pair, so \(J\) is \(m \times n\). We write a gradient as a column, which makes row \(i\) of \(J\) equal to \(\nabla f_i^{\top}\).</p>
 </section>
 
 <section class="act-body">
   <div class="act-tag"><b>Act 1</b> / With respect to a matrix</div>
   <h2>A scalar loss, a matrix of weights</h2>
-  $$L: \mathbb R^{m \times n} \to \mathbb R \qquad \frac{\partial L}{\partial W} = \begin{bmatrix} \partial L/\partial w_{11} & \cdots & \partial L/\partial w_{1n} \\ \vdots & & \vdots \\ \partial L/\partial w_{m1} & \cdots & \partial L/\partial w_{mn} \end{bmatrix} \in \mathbb R^{m \times n}$$
+  <p>\(L : \mathbb R^{m \times n} \to \mathbb R\) says \(L\) eats the <b>whole</b> weight matrix and hands back <b>one</b> number.</p>
+  <div class="cols wide-right">
+    <div>
+      <p style="font-size:0.9em">$$x \;\xrightarrow{\;W\;}\; z = Wx \;\longrightarrow\; L = \tfrac12\lVert z - y\rVert^2$$</p>
+      <p style="font-size:0.82em">Every one of the \(mn\) weights feeds into \(z\), and the norm collapses \(z\) to a single scalar. That is the \(\to \mathbb R\).</p>
+      <p style="font-size:0.82em">\(\mathbb R^{m \times n}\) is just \(\mathbb R^{mn}\) with the entries written in a grid, so \(L\) has \(mn\) inputs and one output: the <span class="cr">gradient</span> case, one partial derivative per weight.</p>
+    </div>
+    <div>
+      $$\frac{\partial L}{\partial W} = \begin{bmatrix} \partial L/\partial w_{11} & \cdots & \partial L/\partial w_{1n} \\ \vdots & & \vdots \\ \partial L/\partial w_{m1} & \cdots & \partial L/\partial w_{mn} \end{bmatrix} \in \mathbb R^{m \times n}$$
+      <p style="font-size:0.82em" class="cdim">The \(mn\) partials could be stacked into one long vector. We keep them in the grid instead.</p>
+    </div>
+  </div>
   <p class="takeaway">The gradient has the same shape as the weights, so the update \(W \leftarrow W - \eta\,\partial L/\partial W\) type-checks.</p>
 </section>

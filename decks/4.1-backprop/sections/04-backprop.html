@@ -1,0 +1,181 @@
+<!-- ============================================================
+     ACT 4 of 6. Backpropagation (Intuition).
+
+     A one-to-one reproduction of five slides from Mitesh Khapra,
+     CS7015 Deep Learning, IIT Madras, Lecture 4 module 4.4
+     (youtu.be/DSqgn2lAN1M). Five slides, no more and no less:
+
+       1  Outputs table: linear/squared error vs softmax/cross entropy
+       2  Let us focus on this one weight (W112), with gradient descent
+       3  Deep but thin network, the chain rule, compressing it
+       4  Talking to W_L, b_L and h_L, down to the chain rule
+       5  The factorised chain rule on its own
+
+     Credited on the credits slide in 00-open.html. The figures are
+     rebuilt as inline SVG so they take the deck palette; everything
+     else follows the slides.
+     ============================================================ -->
+
+<!-- ===================== SLIDE 1 ===================== -->
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / 4.4</div>
+  <table class="khapra-outputs">
+    <tr><td class="blank"></td><th colspan="2">Outputs</th></tr>
+    <tr><td class="blank"></td><th>Real Values</th><th>Probabilities</th></tr>
+    <tr><th class="rowhead">Output Activation</th><td>Linear</td><td class="hot">Softmax</td></tr>
+    <tr><th class="rowhead">Loss Function</th><td>Squared Error</td><td class="hot">Cross Entropy</td></tr>
+  </table>
+  <ul>
+    <li>Other loss functions exist, and some problems need them. These two come up constantly.</li>
+    <li>For the rest of this section: <span class="hotx">softmax</span> output activation, <span class="hotx">cross-entropy</span> loss.</li>
+  </ul>
+</section>
+
+<!-- ===================== SLIDE 2 ===================== -->
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / 4.4</div>
+  <div class="khapra3">
+    <ul>
+      <li>Fix attention on one weight, \(W_{112}\).</li>
+      <li>Learning it by SGD needs a formula for \(\frac{\partial \mathscr L(\theta)}{\partial W_{112}}\).</li>
+      <li>Working that formula out is the job of this section.</li>
+    </ul>
+    <div>
+      <svg viewBox="0 0 340 320" class="net" role="img" aria-label="Feedforward network with the weight W112 marked">
+        <text class="lab top" x="170" y="14" text-anchor="middle">ŷ = f(x)</text>
+        <g class="edge">
+          <path d="M95 265 95 195 M95 265 165 195 M95 265 235 195 M165 265 95 195 M165 265 165 195 M165 265 235 195 M235 265 95 195 M235 265 165 195 M235 265 235 195"/>
+          <path d="M95 195 95 120 M95 195 165 120 M95 195 235 120 M165 195 95 120 M165 195 165 120 M165 195 235 120 M235 195 95 120 M235 195 165 120 M235 195 235 120"/>
+          <path d="M95 120 130 45 M95 120 210 45 M165 120 130 45 M165 120 210 45 M235 120 130 45 M235 120 210 45"/>
+          <path class="bias" d="M300 230 243 199 M300 155 243 124 M300 80 218 49"/>
+          <path class="hot" d="M165 265 95 195"/>
+        </g>
+        <g class="node in"><circle cx="95" cy="265" r="13"/><circle cx="165" cy="265" r="13"/><circle cx="235" cy="265" r="13"/></g>
+        <g class="node hid"><circle cx="95" cy="195" r="13"/><circle cx="165" cy="195" r="13"/><circle cx="235" cy="195" r="13"/></g>
+        <g class="node hid"><circle cx="95" cy="120" r="13"/><circle cx="165" cy="120" r="13"/><circle cx="235" cy="120" r="13"/></g>
+        <g class="node out"><circle cx="130" cy="45" r="13"/><circle cx="210" cy="45" r="13"/></g>
+        <g class="node bias"><circle cx="305" cy="228" r="7"/><circle cx="305" cy="153" r="7"/><circle cx="305" cy="78" r="7"/></g>
+        <g class="lab" text-anchor="middle" dominant-baseline="central">
+          <text x="95" y="265">x<tspan dy="3.5" font-size="8">1</tspan></text><text x="165" y="265">x<tspan dy="3.5" font-size="8">2</tspan></text><text x="235" y="265">x<tspan dy="3.5" font-size="8">d</tspan></text>
+        </g>
+        <g class="lab sub" text-anchor="end">
+          <text x="78" y="64">a₃₁</text>
+          <text x="78" y="113">h₂₁</text><text x="78" y="138">a₂₁</text>
+          <text x="78" y="188">h₁₁</text><text x="78" y="213">a₁₁</text>
+        </g>
+        <g class="lab sub" text-anchor="start">
+          <text x="104" y="82">W₃₁</text><text x="104" y="158">W₂₁</text>
+          <text x="80" y="242">W₁₁₁</text><text x="128" y="242">W₁₁₂</text>
+          <text x="292" y="72" text-anchor="end">b₃</text><text x="292" y="147" text-anchor="end">b₂</text><text x="292" y="222" text-anchor="end">b₁</text>
+        </g>
+      </svg>
+    </div>
+    <div class="algobox">
+      <p><b>Algorithm:</b> gradient descent()</p>
+      <hr>
+      <p>\(t \leftarrow 0\);</p>
+      <p>\(max\_iterations \leftarrow 1000\);</p>
+      <p>\(Initialize\ \theta_0\);</p>
+      <p><b>while</b></p>
+      <p class="ind">\(t{+}{+} &lt; max\_iterations\)</p>
+      <p><b>do</b></p>
+      <p class="ind">\(\theta_{t+1} \leftarrow \theta_t - \eta \nabla \theta_t\);</p>
+      <p><b>end</b></p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SLIDE 3 ===================== -->
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / 4.4</div>
+  <div class="khapra2">
+    <div>
+      <ul>
+        <li>Start with the easy case: a deep network that is only one neuron wide.</li>
+        <li>Every quantity is then a single number, and the chain rule gives the derivative directly.</li>
+      </ul>
+      <div class="chainstack">
+        $$\frac{\partial \mathscr L(\theta)}{\partial W_{111}} = \frac{\partial \mathscr L(\theta)}{\partial \hat y}\,\frac{\partial \hat y}{\partial a_{L11}}\,\frac{\partial a_{L11}}{\partial h_{21}}\,\frac{\partial h_{21}}{\partial a_{21}}\,\frac{\partial a_{21}}{\partial h_{11}}\,\frac{\partial h_{11}}{\partial a_{11}}\,\frac{\partial a_{11}}{\partial W_{111}}$$
+        $$\frac{\partial \mathscr L(\theta)}{\partial W_{111}} = \frac{\partial \mathscr L(\theta)}{\partial h_{11}}\,\frac{\partial h_{11}}{\partial W_{111}} \qquad \text{(just compressing the chain rule)}$$
+        $$\frac{\partial \mathscr L(\theta)}{\partial W_{211}} = \frac{\partial \mathscr L(\theta)}{\partial h_{21}}\,\frac{\partial h_{21}}{\partial W_{211}}$$
+        $$\frac{\partial \mathscr L(\theta)}{\partial W_{L11}} = \frac{\partial \mathscr L(\theta)}{\partial a_{L1}}\,\frac{\partial a_{L1}}{\partial W_{L11}}$$
+      </div>
+    </div>
+    <div>
+      <svg viewBox="0 0 200 330" class="net" role="img" aria-label="A deep but thin network, one neuron per layer">
+        <text class="lab top" x="100" y="16" text-anchor="middle">𝓛(θ)</text>
+        <text class="lab top" x="112" y="38" text-anchor="middle">ŷ = f(x)</text>
+        <g class="edge arrow">
+          <path d="M100 48 100 42"/>
+          <path d="M100 118 100 82"/>
+          <path d="M100 196 100 160"/>
+          <path d="M100 272 100 238"/>
+        </g>
+        <g class="node out"><circle cx="100" cy="64" r="15"/></g>
+        <g class="node hid"><circle cx="100" cy="142" r="15"/><circle cx="100" cy="218" r="15"/></g>
+        <g class="node in"><circle cx="100" cy="290" r="15"/></g>
+        <text class="lab" x="100" y="294" text-anchor="middle">x<tspan dy="3.5" font-size="8">1</tspan></text>
+        <g class="lab sub" text-anchor="end">
+          <text x="80" y="92">a<tspan dy="3.5" font-size="8">L1</tspan></text><text x="80" y="116">h₂₁</text>
+          <text x="80" y="170">a₂₁</text><text x="80" y="194">h₁₁</text>
+          <text x="80" y="248">a₁₁</text>
+        </g>
+        <g class="lab sub" text-anchor="start">
+          <text x="118" y="104">W<tspan dy="3.5" font-size="8">L11</tspan></text><text x="118" y="182">W₂₁₁</text><text x="124" y="266">W</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SLIDE 4 ===================== -->
+<section class="act-body">
+  <div class="act-tag"><b>Act 4</b> / 4.4</div>
+  <div class="khapra2">
+    <div>
+      <ul class="tight">
+        <li>Put the question to \(W_L\), \(b_L\) and \(h_L\): what went wrong here?</li>
+        <li>\(W_L\) and \(b_L\) own their share. \(h_L\) does not, and says it is only ever as good as the pre-activation layer feeding it.</li>
+        <li>That layer answers the same way, pointing at the hidden layer and the weights below it.</li>
+        <li>Carry on down and the responsibility turns out to be spread across every weight and bias in the model.</li>
+        <li>You cannot reach a deep weight directly. You reach it through the hidden layers and the output layer, and the chain rule is exactly what permits that.</li>
+      </ul>
+      <div class="brace-eq small">$$\underbrace{\frac{\partial \mathscr L(\theta)}{\partial W_{111}}}_{\substack{\text{Talk to the}\\\text{weight directly}}} = \underbrace{\frac{\partial \mathscr L(\theta)}{\partial \hat y}\,\frac{\partial \hat y}{\partial a_3}}_{\substack{\text{Talk to the}\\\text{output layer}}}\;\underbrace{\frac{\partial a_3}{\partial h_2}\,\frac{\partial h_2}{\partial a_2}}_{\substack{\text{Talk to the}\\\text{previous hidden}\\\text{layer}}}\;\underbrace{\frac{\partial a_2}{\partial h_1}\,\frac{\partial h_1}{\partial a_1}}_{\substack{\text{Talk to the}\\\text{previous}\\\text{hidden layer}}}\;\underbrace{\frac{\partial a_1}{\partial W_{111}}}_{\substack{\text{and now}\\\text{talk to the}\\\text{weights}}}$$</div>
+    </div>
+    <div>
+      <svg viewBox="0 0 356 330" class="net" role="img" aria-label="Feedforward network with the loss at the top and the blame travelling down">
+        <g class="lossbox"><rect x="118" y="6" width="104" height="26" rx="3"/></g>
+        <text class="lab top" x="170" y="24" text-anchor="middle">− log ŷ<tspan dy="3.5" font-size="9">ℓ</tspan></text>
+        <g class="edge down">
+          <path d="M130 55 95 120 M130 55 165 120 M130 55 235 120 M210 55 95 120 M210 55 165 120 M210 55 235 120"/>
+          <path d="M95 133 95 195 M95 133 165 195 M95 133 235 195 M165 133 95 195 M165 133 165 195 M165 133 235 195 M235 133 95 195 M235 133 165 195 M235 133 235 195"/>
+          <path d="M95 208 95 268 M95 208 165 268 M95 208 235 268 M165 208 95 268 M165 208 165 268 M165 208 235 268 M235 208 95 268 M235 208 165 268 M235 208 235 268"/>
+          <path d="M170 34 130 32 M170 34 210 32"/>
+          <path d="M218 49 300 78 M243 124 300 155 M243 199 300 230"/>
+        </g>
+        <g class="node out"><circle cx="130" cy="45" r="13"/><circle cx="210" cy="45" r="13"/></g>
+        <g class="node hid"><circle cx="95" cy="120" r="13"/><circle cx="165" cy="120" r="13"/><circle cx="235" cy="120" r="13"/></g>
+        <g class="node hid"><circle cx="95" cy="195" r="13"/><circle cx="165" cy="195" r="13"/><circle cx="235" cy="195" r="13"/></g>
+        <g class="node in"><circle cx="95" cy="281" r="13"/><circle cx="165" cy="281" r="13"/><circle cx="235" cy="281" r="13"/></g>
+        <g class="node bias"><circle cx="305" cy="78" r="7"/><circle cx="305" cy="155" r="7"/><circle cx="305" cy="230" r="7"/></g>
+        <g class="lab" text-anchor="middle" dominant-baseline="central">
+          <text x="95" y="281">x<tspan dy="3.5" font-size="8">1</tspan></text><text x="165" y="281">x<tspan dy="3.5" font-size="8">2</tspan></text><text x="235" y="281">x<tspan dy="3.5" font-size="8">n</tspan></text>
+        </g>
+        <g class="lab sub" text-anchor="end">
+          <text x="78" y="72">a₃</text><text x="78" y="118">h₂</text>
+          <text x="78" y="148">a₂</text><text x="78" y="194">h₁</text>
+          <text x="78" y="224">a₁</text>
+        </g>
+        <g class="lab sub" text-anchor="start">
+          <text x="104" y="88">W₃</text><text x="104" y="164">W₂</text><text x="104" y="240">W₁</text>
+          <text x="292" y="72" text-anchor="end">b₃</text><text x="292" y="149" text-anchor="end">b₂</text><text x="292" y="224" text-anchor="end">b₁</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SLIDE 5 ===================== -->
+<section class="act-body brace-only">
+  <div class="brace-eq">$$\underbrace{\frac{\partial \mathscr L(\theta)}{\partial W_{111}}}_{\substack{\text{Talk to the}\\\text{weight directly}}} = \underbrace{\frac{\partial \mathscr L(\theta)}{\partial \hat y}\,\frac{\partial \hat y}{\partial a_3}}_{\substack{\text{Talk to the}\\\text{output layer}}}\;\underbrace{\frac{\partial a_3}{\partial h_2}\,\frac{\partial h_2}{\partial a_2}}_{\substack{\text{Talk to the}\\\text{previous hidden}\\\text{layer}}}\;\underbrace{\frac{\partial a_2}{\partial h_1}\,\frac{\partial h_1}{\partial a_1}}_{\substack{\text{Talk to the}\\\text{previous}\\\text{hidden layer}}}\;\underbrace{\frac{\partial a_1}{\partial W_{111}}}_{\substack{\text{and now}\\\text{talk to the}\\\text{weights}}}$$</div>
+</section>
